@@ -1,0 +1,252 @@
+<template>
+	<div class="auth-test-container">
+		<p>
+			AuthTest
+		</p>
+
+		<p>
+			handyWallet ?
+
+			{{ hw.hello }}
+			{{ hw.appStateProxy.count }}
+
+			<!-- {{ handyWallet.hello }}
+			{{ handyWallet.appStateProxy.count }} -->
+			<!-- {{ state.count }} -->
+		</p>
+
+		<p>
+			<button @click="changeStoredState">changeStoredState</button>
+		</p>
+
+		<p>
+			<button @click="popProvs">pop provs</button>
+		</p>
+
+		<p>
+			ips
+			{{ ips }}
+
+			inkProv
+			<!-- {{ inkProv }} -->
+			<button v-if="inkProv" @click="inkProv.connect">inkey connect</button>
+		</p>
+
+		<p>
+			provs
+			<button v-for="prov of hw.appStateProxy.state.providers" @click="prov.connect()">connect</button>
+		</p>
+
+		<!-- <p>
+			hw
+		</p>
+		{{ hw }}
+		</p> -->
+
+		<!-- <button @click="doConnect">
+			connect
+		</button>
+		<button @click="doDisconnect">
+			disconnect
+		</button>
+		<button @click="showInkey">
+			showInkey
+		</button>
+		<button @click="hideInkey">
+			hideInkey
+		</button>
+
+		<div>
+			<p>account:</p>
+			<p style="font-size: 10px; color: skyblue;">
+				{{ inkeyClient.account }}
+			</p>
+		</div>
+
+		<div>
+			<p>txn tests</p>
+			<button @click="doTxnSimple">
+				doTxnSimple
+			</button>
+			<button @click="doTxnSimpleAlgJs">
+				doTxnSimpleAlgJs
+			</button>
+		</div>
+
+		<div>
+			<p>
+				inkeyClient.frameBus.ready? {{ inkeyClient.frameBus.ready }}
+			</p>
+		</div> -->
+	</div>
+</template>
+
+<script lang="ts">
+import { defineComponent, reactive, watch } from 'vue';
+
+// static algosdk
+// import algosdk from "algosdk";
+
+import { handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
+
+// reactive wrapper needed to make vue renderer update on changes
+const hw = reactive(handyWallet);
+
+export default defineComponent({
+	data() {
+		return {
+			// handyWallet,
+			// state: handyWallet.appStateProxy,
+			hw,
+
+			ips: null as any,
+			inkProv: null as any
+		}
+	},
+	mounted() {
+		console.log('mounted');
+		this.init();
+	},
+	methods: {
+		async init() {
+
+			//
+			// let ips = initializeProviders([], {}, algosdk);
+			let ips = initializeProviders();
+			console.log('ips', ips);
+			this.ips = ips;
+
+			let rps = await reconnectProviders(ips);
+			console.log('rps', rps);
+
+			const inkProv = await ips['inkey'];
+			console.log('inkProv', inkProv);
+			this.inkProv = inkProv;
+
+
+
+			setInterval(() => {
+				// this.hw.appStateProxy.count++;
+				hw.appStateProxy.count++;
+
+				// this.handyWallet.appStateProxy.count++;
+				// handyWallet.appStateProxy.count++;
+			}, 2 * 1000);
+			// }, 2500);
+
+			// await inkeyClient.frameBus.isReady()
+			// this.$forceUpdate(); // needed to update .ready readout in DOM template
+		},
+
+		changeStoredState() {
+			if (hw.appStateProxy.state.stored.activeAccount == '123') {
+				hw.appStateProxy.state.stored.activeAccount = '456';
+			} else {
+				hw.appStateProxy.state.stored.activeAccount = '123';
+			}
+		},
+
+		popProvs() {
+			hw.appStateProxy.state.populateProviders(this.ips);
+		},
+		// async doConnect() {
+		// 	const gotAcct = await inkeyClient.connect();
+		// 	console.log('gotAcct', gotAcct);
+		// },
+		// async doDisconnect() {
+		// 	const discRes = await inkeyClient.disconnect();
+		// 	console.log('discRes', discRes);
+		// },
+		// showInkey() {
+		// 	inkeyClient.show();
+		// },
+		// hideInkey() {
+		// 	inkeyClient.hide();
+		// },
+
+		//
+		// async doTxnSimple() {
+		// 	console.log('doTxnSimple');
+
+		// 	// let addr = this.inkeyClient.account?.addr;
+
+		// 	// if (!addr) {
+		// 	// 	console.warn('not authd');
+		// 	// 	return;
+		// 	// }
+
+		// 	// temp hardcoded addr to prove inkey does not need a .account - itll ask for auth first IF not authd THEN show to txn needing approval
+		// 	let addr = 'LL4YSTJUZWK4YHSR6QMSTPSHSSFLSH7TYP2VE3BLHLNPAPFBPJC4DXVIRY';
+
+		// 	const params = await algonaut.algodClient.getTransactionParams().do();
+		// 	console.log('params', params);
+
+		// 	// Construct a transaction to be signed and sent.
+		// 	const transaction = algonaut.sdk.makePaymentTxnWithSuggestedParamsFromObject({
+		// 		from: addr,
+		// 		to: addr,
+		// 		amount: 1000,
+		// 		suggestedParams: params,
+		// 	});
+		// 	console.log('transaction', transaction);
+
+
+		// 	const txnForInkey = buffer.from(transaction.toByte()).toString('base64')
+		// 	console.log('txnForInkey', txnForInkey);
+
+		// 	const inkeyRes = await inkeyClient.signTxns([txnForInkey]);
+		// 	console.log('inkeyRes', inkeyRes);
+
+		// 	if (inkeyRes.success && inkeyRes.signedTxns) {
+		// 		const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
+		// 		console.log('groupedTxn', groupedTxn);
+		// 		console.log('id: ', groupedTxn.txId);
+		// 	}
+
+		// },
+
+		// async doTxnSimpleAlgJs() {
+		// 	console.log('doTxnSimpleAlgJs');
+
+		// 	// temp hardcoded addr to prove inkey does not need a .account - itll ask for auth first IF not authd THEN show to txn needing approval
+		// 	let addr = 'LL4YSTJUZWK4YHSR6QMSTPSHSSFLSH7TYP2VE3BLHLNPAPFBPJC4DXVIRY';
+
+		// 	const txn = await algonaut.atomicSendAlgo({
+		// 		amount: 1000,
+		// 		to: addr,
+		// 		from: addr // .from needed IF algonaut doesnt have this.account populated
+		// 	});
+		// 	console.log('txn', txn);
+
+		// 	const txnForInkey = utils.txnToStr(txn.transaction);
+		// 	console.log('txnForInkey', txnForInkey);
+
+		// 	const inkeyRes = await inkeyClient.signTxns([txnForInkey]);
+		// 	console.log('inkeyRes', inkeyRes);
+
+		// 	if (inkeyRes.success && inkeyRes.signedTxns) {
+		// 		const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
+		// 		console.log('groupedTxn', groupedTxn);
+		// 		console.log('id: ', groupedTxn.txId);
+		// 	}
+
+		// }
+	}
+});
+</script>
+
+<style scoped>
+.auth-test-container {
+	display: flex;
+	flex-direction: column;
+	width: 350px;
+}
+
+p {
+	color: palevioletred;
+}
+
+button {
+	margin: 2px 0;
+}
+</style>
