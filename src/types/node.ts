@@ -1,4 +1,6 @@
-import type algosdk from "algosdk";
+import type algosdk from "algosdk"; // TODO remove this
+export type AlgodClientOptions = ConstructorParameters<typeof algosdk.Algodv2>;
+
 
 export type Network = "betanet" | "testnet" | "mainnet" | string;
 
@@ -53,5 +55,3 @@ export type DecodedSignedTransaction = {
   sig: Uint8Array;
   txn: DecodedTransaction;
 };
-
-export type AlgodClientOptions = ConstructorParameters<typeof algosdk.Algodv2>;

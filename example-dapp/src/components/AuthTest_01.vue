@@ -6,40 +6,78 @@
 
 		<p>
 			handyWallet ?
+
 			{{ hw.hello }}
-			{{ hw.appStateProxy.state.count }}
+			{{ hw.appStateProxy.count }}
+
+			<!-- {{ handyWallet.hello }}
+			{{ handyWallet.appStateProxy.count }} -->
+			<!-- {{ state.count }} -->
 		</p>
 
 		<p>
-			<button @click="doInitializeProviders">doInitializeProviders</button>
-		</p>
-
-		<p>
-			<button @click="doConnectInkey">doConnectInkey</button>
-		</p>
-
-
-
-		<!-- <p>
 			<button @click="changeStoredState">changeStoredState</button>
-		</p> -->
+		</p>
 
-		<!-- <p>
+		<p>
 			<button @click="popProvs">pop provs</button>
-		</p> -->
+		</p>
 
-		<!-- <p>
+		<p>
 			ips
 			{{ ips }}
 
 			inkProv
+			<!-- {{ inkProv }} -->
 			<button v-if="inkProv" @click="inkProv.connect">inkey connect</button>
-		</p> -->
+		</p>
 
-		<!-- <p>
+		<p>
 			provs
 			<button v-for="prov of hw.appStateProxy.state.providers" @click="prov.connect()">connect</button>
+		</p>
+
+		<!-- <p>
+			hw
+		</p>
+		{{ hw }}
 		</p> -->
+
+		<!-- <button @click="doConnect">
+			connect
+		</button>
+		<button @click="doDisconnect">
+			disconnect
+		</button>
+		<button @click="showInkey">
+			showInkey
+		</button>
+		<button @click="hideInkey">
+			hideInkey
+		</button>
+
+		<div>
+			<p>account:</p>
+			<p style="font-size: 10px; color: skyblue;">
+				{{ inkeyClient.account }}
+			</p>
+		</div>
+
+		<div>
+			<p>txn tests</p>
+			<button @click="doTxnSimple">
+				doTxnSimple
+			</button>
+			<button @click="doTxnSimpleAlgJs">
+				doTxnSimpleAlgJs
+			</button>
+		</div>
+
+		<div>
+			<p>
+				inkeyClient.frameBus.ready? {{ inkeyClient.frameBus.ready }}
+			</p>
+		</div> -->
 	</div>
 </template>
 
@@ -49,21 +87,10 @@ import { defineComponent, reactive, watch } from 'vue';
 // static algosdk
 // import algosdk from "algosdk";
 
-import { getHandy, handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
+import { handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
 
 // reactive wrapper needed to make vue renderer update on changes
 const hw = reactive(handyWallet);
-
-
-// const handy = getHandy();
-
-// or the modular way
-// const {
-// 	clients,
-// 	providers,
-// 	connectedAccounts,
-// 	defaultAccount,
-// } = getHandy();
 
 export default defineComponent({
 	data() {
@@ -71,7 +98,6 @@ export default defineComponent({
 			// handyWallet,
 			// state: handyWallet.appStateProxy,
 			hw,
-			// handy,
 
 			ips: null as any,
 			inkProv: null as any
@@ -83,58 +109,46 @@ export default defineComponent({
 	},
 	methods: {
 		async init() {
-			// console.log('handy', handy);
 
-			this.doInitializeProviders();
+			//
+			// let ips = initializeProviders([], {}, algosdk);
+			let ips = initializeProviders();
+			console.log('ips', ips);
+			this.ips = ips;
+
+			let rps = await reconnectProviders(ips);
+			console.log('rps', rps);
+
+			const inkProv = await ips['inkey'];
+			console.log('inkProv', inkProv);
+			this.inkProv = inkProv;
+
+
 
 			setInterval(() => {
 				// this.hw.appStateProxy.count++;
-				hw.appStateProxy.state.count++;
+				hw.appStateProxy.count++;
 
 				// this.handyWallet.appStateProxy.count++;
 				// handyWallet.appStateProxy.count++;
-			}, 5 * 1000);
+			}, 2 * 1000);
 			// }, 2500);
 
 			// await inkeyClient.frameBus.isReady()
 			// this.$forceUpdate(); // needed to update .ready readout in DOM template
 		},
 
-		async doInitializeProviders() {
-			let ips = initializeProviders(); // aka initClients()
-			console.log('ips', ips);
-			this.ips = ips;
-
-			let rps = await reconnectProviders(ips);
-			// console.log('rps', rps);
-
-			// inkey
-			// const inkProv = await ips['inkey'];
-			// console.log('inkProv', inkProv);
-			// this.inkProv = inkProv;
-		},
-
-		async doConnectInkey() {
-			console.log('doConnectInkey');
-
-			let clientInk = await hw.appStateProxy.state.initializedProviders['inkey'];
-			if (clientInk) {
-				clientInk.connect(() => { });
+		changeStoredState() {
+			if (hw.appStateProxy.state.stored.activeAccount == '123') {
+				hw.appStateProxy.state.stored.activeAccount = '456';
+			} else {
+				hw.appStateProxy.state.stored.activeAccount = '123';
 			}
 		},
 
-		changeStoredState() {
-			// if (hw.appStateProxy.state.stored.activeAccount == '123') {
-			// 	hw.appStateProxy.state.stored.activeAccount = '456';
-			// } else {
-			// 	hw.appStateProxy.state.stored.activeAccount = '123';
-			// }
+		popProvs() {
+			hw.appStateProxy.state.populateProviders(this.ips);
 		},
-
-		// popProvs() {
-		// 	hw.appStateProxy.state.populateProviders(this.ips);
-		// },
-
 		// async doConnect() {
 		// 	const gotAcct = await inkeyClient.connect();
 		// 	console.log('gotAcct', gotAcct);

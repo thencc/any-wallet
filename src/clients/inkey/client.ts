@@ -46,6 +46,7 @@ class InkeyWalletClient extends BaseWallet {
 
   static metadata = {
     id: PROVIDER_ID.INKEY,
+    chain: 'algorand',
     name: "Inkey Microwallet",
     icon: ICON,
     isWalletConnect: false,

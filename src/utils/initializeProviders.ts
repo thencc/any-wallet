@@ -7,10 +7,11 @@ import {
   DEFAULT_NODE_PORT,
   DEFAULT_NETWORK,
 } from "../constants";
+import { appStateProxy } from "src/state";
 
-type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
+export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 
-type NodeConfig = {
+export type NodeConfig = {
   network: Network;
   nodeServer: string;
   nodeToken?: string;
@@ -22,6 +23,8 @@ export const initializeProviders = (
   nodeConfig?: NodeConfig,
   algosdkStatic?: typeof algosdk
 ) => {
+  // do any necessary checks, then resets first before initing (think case of initing after already inited)
+
   const initializedProviders: SupportedProviders = {};
 
   const {
@@ -53,6 +56,8 @@ export const initializeProviders = (
       });
     }
   }
+
+  appStateProxy.state.initializedProviders = initializedProviders;
 
   return initializedProviders;
 };

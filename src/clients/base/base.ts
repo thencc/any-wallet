@@ -26,6 +26,7 @@ const getIsIOS = () => {
 };
 const isIOS = getIsIOS();
 
+// TODO review to BaseProvider
 abstract class BaseClient {
   algosdk: typeof _algosdk;
   algodClient: _algosdk.Algodv2;
@@ -33,9 +34,10 @@ abstract class BaseClient {
 
   static metadata: {
     id: PROVIDER_ID;
+    chain: string; // 'algorand'
     name: string;
     icon: string;
-    isWalletConnect: boolean;
+    isWalletConnect: boolean; // TODO delete
   };
 
   abstract connect(onDisconnect: () => void): Promise<Wallet>;
