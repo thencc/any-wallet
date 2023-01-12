@@ -26,8 +26,10 @@
 		"valtio": "^1.8.2"
 	},
 	"peerDependencies": {
+		"@perawallet/connect": "^1.1.0",
+		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.1",
-		"algosdk": "^1.24.0"
+		"algosdk": "^1.24.1"
 	},
 	"devDependencies": {
 		"tsup": "^6.5.0",

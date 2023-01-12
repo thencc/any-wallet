@@ -47,9 +47,6 @@ abstract class BaseClient {
     connectedAccounts: string[],
     transactions: Array<Uint8Array>
   ): Promise<Uint8Array[]>;
-  abstract signEncodedTransactions(
-    transactions: TransactionsArray
-  ): Promise<Uint8Array[]>;
 
   // TODO remove most of these async called for algo things, keep them in algjs
   protected constructor(
@@ -61,6 +58,7 @@ abstract class BaseClient {
     this.keepWCAlive = new Audio();
   }
 
+  // START remove / delete these...
   async healthCheck() {
     return await this.algodClient.healthCheck().do();
   }
@@ -189,6 +187,7 @@ abstract class BaseClient {
       ...confirmedTransaction,
     };
   }
+  // END remove
 
   keepWCAliveStart() {
     // Playing an audio file prevents Wallet Connect's

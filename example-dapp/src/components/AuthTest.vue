@@ -18,6 +18,13 @@
 			<button @click="doConnectInkey">doConnectInkey</button>
 		</p>
 
+		<p>
+			<button @click="doConnectMyalgo">doConnectMyalgo</button>
+		</p>
+
+		<p>
+			<button @click="doConnectPera">doConnectPera</button>
+		</p>
 
 
 		<!-- <p>
@@ -49,7 +56,7 @@ import { defineComponent, reactive, watch } from 'vue';
 // static algosdk
 // import algosdk from "algosdk";
 
-import { getHandy, handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
+import { handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
 
 // reactive wrapper needed to make vue renderer update on changes
 const hw = reactive(handyWallet);
@@ -85,7 +92,7 @@ export default defineComponent({
 		async init() {
 			// console.log('handy', handy);
 
-			this.doInitializeProviders();
+			// this.doInitializeProviders();
 
 			setInterval(() => {
 				// this.hw.appStateProxy.count++;
@@ -120,6 +127,24 @@ export default defineComponent({
 			let clientInk = await hw.appStateProxy.state.initializedProviders['inkey'];
 			if (clientInk) {
 				clientInk.connect(() => { });
+			}
+		},
+
+		async doConnectMyalgo() {
+			console.log('doConnectMyalgo');
+
+			let c = await hw.appStateProxy.state.initializedProviders['myalgo'];
+			if (c) {
+				c.connect(() => { });
+			}
+		},
+
+		async doConnectPera() {
+			console.log('doConnectPera');
+
+			let c = await hw.appStateProxy.state.initializedProviders['pera'];
+			if (c) {
+				c.connect(() => { });
 			}
 		},
 
