@@ -61,3 +61,6 @@ export const initializeProviders = (
 
   return initializedProviders;
 };
+
+
+(window as any).initializeProviders = initializeProviders;

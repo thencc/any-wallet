@@ -13,7 +13,7 @@ export default defineConfig({
 	},
 
 	clean: true,
-	// platform: 'browser',
+	platform: 'browser', // turn on to make lib browser compatible (shims require, buffer, process, etc)
 	// splitting: true,
 	// minify: true,
 	// treeshake: true,

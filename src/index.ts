@@ -12,4 +12,7 @@ export const handyWallet = {
 	appStateProxy
 };
 
+// test for iife
+(window as any).handyWallet = handyWallet;
+
 // TODO add to initClients a reset which iterates over all existing connectedClients and calls this.disconnect()
