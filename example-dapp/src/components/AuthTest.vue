@@ -56,11 +56,11 @@ import { defineComponent, reactive, watch } from 'vue';
 // static algosdk
 // import algosdk from "algosdk";
 
-import { handyWallet, initializeProviders, reconnectProviders } from '@thencc/web3-wallet-handler';
+import { handyWallet, initClients, initializeProviders, reconnectProviders, rrr } from '@thencc/web3-wallet-handler';
 
 // reactive wrapper needed to make vue renderer update on changes
 const hw = reactive(handyWallet);
-
+console.log('handyWallet', handyWallet);
 
 // const handy = getHandy();
 
@@ -81,7 +81,11 @@ export default defineComponent({
 			// handy,
 
 			ips: null as any,
-			inkProv: null as any
+			inkProv: null as any,
+
+			rps: [] as any,
+
+			rrr
 		}
 	},
 	mounted() {
@@ -108,12 +112,16 @@ export default defineComponent({
 		},
 
 		async doInitializeProviders() {
-			let ips = initializeProviders(); // aka initClients()
-			console.log('ips', ips);
-			this.ips = ips;
+			// let ips = await initializeProviders(); // aka initClients()
+			// console.log('ips', ips);
+			// this.ips = ips;
 
-			let rps = await reconnectProviders(ips);
+			// let rps = await reconnectProviders(ips);
 			// console.log('rps', rps);
+
+			const rps = await initClients();
+			console.log('rps', rps);
+			this.rps = rps;
 
 			// inkey
 			// const inkProv = await ips['inkey'];
@@ -124,10 +132,27 @@ export default defineComponent({
 		async doConnectInkey() {
 			console.log('doConnectInkey');
 
-			let clientInk = await hw.appStateProxy.state.initializedProviders['inkey'];
-			if (clientInk) {
-				clientInk.connect(() => { });
-			}
+			// let clientInk0 = hw.appStateProxy.state.initedClients['inkey'];
+			// console.log('clientInk0', clientInk0);
+			// if (clientInk0) {
+			// 	clientInk0.connect(() => { });
+			// }
+
+			// let clientInk = await hw.appStateProxy.state.initializedProviders['inkey'];
+			// console.log('clientInk', clientInk);
+
+			// if (clientInk) {
+			// 	clientInk.connect(() => { });
+			// }
+
+
+
+			// let clientInk3 = this.rps[2];
+			// clientInk3.connect();
+
+
+			let clientInk4 = this.rrr.rps[2];
+			clientInk4.connect();
 		},
 
 		async doConnectMyalgo() {

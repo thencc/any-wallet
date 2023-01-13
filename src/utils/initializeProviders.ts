@@ -10,6 +10,7 @@ import {
 import { appStateProxy } from "src/state";
 
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
+export type InitializedClients = { [x: string]: WalletClient };
 
 export type NodeConfig = {
   network: Network;
@@ -18,7 +19,7 @@ export type NodeConfig = {
   nodePort?: string;
 };
 
-export const initializeProviders = (
+export const initializeProviders = async (
   providers?: PROVIDER_ID[],
   nodeConfig?: NodeConfig,
   algosdkStatic?: typeof algosdk
@@ -26,6 +27,7 @@ export const initializeProviders = (
   // do any necessary checks, then resets first before initing (think case of initing after already inited)
 
   const initializedProviders: SupportedProviders = {};
+  const initedClients: any = {};
 
   const {
     network = DEFAULT_NETWORK,
@@ -40,24 +42,61 @@ export const initializeProviders = (
         continue;
       }
 
+      // og
       initializedProviders[id] = client.init({
         network,
         algodOptions: [nodeToken, nodeServer, nodePort],
         algosdkStatic: algosdkStatic,
       });
+
+      // let inst = new client({});
+      // console.log('inst', inst);
+
+      // let cli = await inst.init({
+      //   network,
+      //   algodOptions: [nodeToken, nodeServer, nodePort],
+      //   algosdkStatic: algosdkStatic,
+      // });
+      // console.log('cli', cli);
+
+      // initializedProviders[id] = cli as any;
+      // initedClients[id] = cli;
+
+      // const awaitedClient = await initializedProviders[id];
+      // initedClients[id] = awaitedClient;
+
+      // doesnt work somehow... ctx for public/private class becomes wrong? client becomes out of sync
+      // initializedProviders[id] = await client.init({
+      //   network,
+      //   algodOptions: [nodeToken, nodeServer, nodePort],
+      //   algosdkStatic: algosdkStatic,
+      // }) as any;
     }
 
   if (providers) {
     for (const id of providers) {
-      initializedProviders[id] = allClients[id].init({
-        network,
-        algodOptions: [nodeToken, nodeServer, nodePort],
-        algosdkStatic: algosdkStatic,
-      });
+      // initializedProviders[id] = allClients[id].init({
+      //   network,
+      //   algodOptions: [nodeToken, nodeServer, nodePort],
+      //   algosdkStatic: algosdkStatic,
+      // });
     }
   }
 
   appStateProxy.state.initializedProviders = initializedProviders;
+  console.log('initializedProviders', initializedProviders);
+
+  console.log('initedClients', initedClients);
+  appStateProxy.state.initedClients = initedClients;
+
+
+  /**
+   * then this works: (only because the ctx from logs is within the pkg?)
+   *    temp1 = initializedProviders
+   *    temp1.inkey.value.connect()
+   *
+   */
+
 
   return initializedProviders;
 };

@@ -5,6 +5,7 @@ export default defineConfig({
 	format: ['cjs', 'esm', 'iife'],
 	tsconfig: './tsconfig.json',
 	dts: true, // requires typescript peer dep
+	clean: true, // cleans outDir before build
 	outDir: './dist',
 	outExtension({ format }) {
 		return {
@@ -12,7 +13,6 @@ export default defineConfig({
 		}
 	},
 
-	clean: true,
 	platform: 'browser', // turn on to make lib browser compatible (shims require, buffer, process, etc)
 	// splitting: true,
 	// minify: true,

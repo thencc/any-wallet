@@ -40,6 +40,7 @@ abstract class BaseClient {
     isWalletConnect: boolean; // TODO delete
   };
 
+  // abstract init(x: any): Promise<any>;
   abstract connect(onDisconnect: () => void): Promise<Wallet>;
   abstract disconnect(): Promise<void>;
   abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;
@@ -49,7 +50,7 @@ abstract class BaseClient {
   ): Promise<Uint8Array[]>;
 
   // TODO remove most of these async called for algo things, keep them in algjs
-  protected constructor(
+  constructor(
     algosdk: typeof _algosdk,
     algodClient: _algosdk.Algodv2
   ) {

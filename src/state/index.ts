@@ -49,41 +49,41 @@ const connect = async (id: PROVIDER_ID) => {
 	}
 };
 
-export const getProviders = () => {
-	console.log('getProviders');
+// export const getProviders = () => {
+// 	console.log('getProviders');
 
-	// const clients = allClients;
-	// const clients = cs;
-	// console.log('clients', cs);
+// 	// const clients = allClients;
+// 	// const clients = cs;
+// 	// console.log('clients', cs);
 
 
-	// const supportedClients = Object.keys(clients) as PROVIDER_ID[];
-	const supportedClients = Object.keys(clientsUninited) as PROVIDER_ID[];
-	console.log('supportedClients', supportedClients);
+// 	// const supportedClients = Object.keys(clients) as PROVIDER_ID[];
+// 	const supportedClients = Object.keys(clientsUninited) as PROVIDER_ID[];
+// 	console.log('supportedClients', supportedClients);
 
-	const provs = supportedClients.map((id) => {
-		return {
-			// ...allClients[id],
-			...clientsUninited[id],
+// 	const provs = supportedClients.map((id) => {
+// 		return {
+// 			// ...allClients[id],
+// 			...clientsUninited[id],
 
-			// accounts: getAccountsByProvider(id),
-			// isActive: activeAccount?.providerId === id,
-			// isConnected: connectedAccounts.some(
-			// 	(accounts) => accounts.providerId === id
-			// ),
-			connect: () => connect(id),
-			// disconnect: () => disconnect(id),
-			// reconnect: () => reconnect(id),
-			// setActiveProvider: () => setActive(id),
-			// setActiveAccount: (account: string) => selectActiveAccount(id, account),
-		};
-	});
-	console.log('provs', provs);
+// 			// accounts: getAccountsByProvider(id),
+// 			// isActive: activeAccount?.providerId === id,
+// 			// isConnected: connectedAccounts.some(
+// 			// 	(accounts) => accounts.providerId === id
+// 			// ),
+// 			connect: () => connect(id),
+// 			// disconnect: () => disconnect(id),
+// 			// reconnect: () => reconnect(id),
+// 			// setActiveProvider: () => setActive(id),
+// 			// setActiveAccount: (account: string) => selectActiveAccount(id, account),
+// 		};
+// 	});
+// 	console.log('provs', provs);
 
-	return provs;
-};
+// 	return provs;
+// };
 
-const providers = getProviders();
+// const providers = getProviders();
 
 
 const initializedProviders: SupportedProviders = {};
@@ -97,7 +97,9 @@ const appState = {
 
 		clients: [],
 		initializedProviders,
-		providers,
+		initedClients: {} as any,
+		rps: [] as any,
+		// providers,
 
 		// do we want only .stored to be saved to localstorage?
 		// stored: {

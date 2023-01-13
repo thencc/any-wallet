@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@perawallet/connect': ^1.1.0
   '@randlabs/myalgo-connect': ^1.4.2
+  '@vue/reactivity': ^3.2.45
   algosdk: ^1.24.1
   buffer: ^6.0.3
   tsup: ^6.5.0
@@ -12,6 +13,7 @@ specifiers:
 dependencies:
   '@perawallet/connect': 1.1.0_algosdk@1.24.1
   '@randlabs/myalgo-connect': 1.4.2
+  '@vue/reactivity': 3.2.45
   algosdk: 1.24.1
   buffer: 6.0.3
   valtio: 1.8.2_react@18.2.0
@@ -90,6 +92,16 @@ packages:
     resolution: {integrity: sha512-K9hEyUi7G8tqOp7kWIALJLVbGCByhilcy6123WfcorxWwiE1sbQupPyIU5f3YdQK6wMjBsyTWiLW52ZBMp7sXA==}
     dependencies:
       '@randlabs/communication-bridge': 1.0.1
+    dev: false
+
+  /@vue/reactivity/3.2.45:
+    resolution: {integrity: sha512-PRvhCcQcyEVohW0P8iQ7HDcIOXRjZfAsOds3N99X/Dzewy8TVhTCT4uXpAHfoKjVTJRA0O0K+6QNkDIZAxNi3A==}
+    dependencies:
+      '@vue/shared': 3.2.45
+    dev: false
+
+  /@vue/shared/3.2.45:
+    resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
     dev: false
 
   /@walletconnect/browser-utils/1.8.0:
