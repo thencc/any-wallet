@@ -5,16 +5,22 @@
 		</p>
 
 		<p>
-			handyWallet ?
-			{{ hw.hello }}
-			{{ hw.appStateProxy.state.count }}
-		</p>
-
-		<p>
 			<button @click="doInitializeProviders">doInitializeProviders</button>
 		</p>
 
-		<p>
+		<div>
+			<p>active acct</p>
+			<div v-if="nccState.ls.activeAccount">
+				<p>{{ nccState.ls.activeAccount.providerId }}</p>
+				<p>{{ nccState.ls.activeAccount.name }}</p>
+				<p>{{ nccState.ls.activeAccount.address }}</p>
+			</div>
+			<div v-else>
+				none
+			</div>
+		</div>
+
+		<!-- <p>
 			<button @click="doConnectInkey">doConnectInkey</button>
 		</p>
 
@@ -24,6 +30,18 @@
 
 		<p>
 			<button @click="doConnectPera">doConnectPera</button>
+		</p> -->
+
+		<p>clients loop</p>
+		<div v-for="(p, k) of rps">
+			<span>{{k}}</span>
+			<button @click="doAnyConnect(p)">connect</button>
+		</div>
+
+		<p>
+			handyWallet ?
+			{{ hw.hello }}
+			{{ hw.appStateProxy.state.count }}
 		</p>
 
 
@@ -51,12 +69,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch } from 'vue';
+import { defineComponent, isReactive, markRaw, reactive, toRaw } from 'vue';
+import { watch } from '@vue-reactivity/watch';
 
 // static algosdk
 // import algosdk from "algosdk";
 
-import { handyWallet, initClients, initializeProviders, reconnectProviders, rrr } from '@thencc/web3-wallet-handler';
+import { handyWallet, initClients, initializeProviders, reconnectProviders, nccState, getNccState } from '@thencc/web3-wallet-handler';
 
 // reactive wrapper needed to make vue renderer update on changes
 const hw = reactive(handyWallet);
@@ -72,6 +91,55 @@ console.log('handyWallet', handyWallet);
 // 	defaultAccount,
 // } = getHandy();
 
+type ClientsTypeObj = Awaited<ReturnType<typeof initClients>>;
+
+// const nccState = getNccState();
+console.log('nccState', nccState);
+
+// watch(
+// 	nccState.rps,
+// 	(r) => {
+// 		// console.log('rps changed:', nccState.rps);
+// 		console.log('rps change:', r);
+// 	},
+// 	{
+// 		deep: true,
+// 		immediate: true
+// 	}
+// );
+
+// watch(
+// 	() => nccState.rps,
+// 	(r) => {
+// 		console.log('(outside) rps changed:', nccState.rps);
+// 		// console.log('(in lib) rps change:', r);
+// 	},
+// 	{
+// 		deep: true,
+// 		immediate: true
+// 	}
+// );
+
+// watch(
+// 	() => nccState.ls.connectedAccounts,
+// 	() => {
+// 		console.log('outside connectedAccounts changed:', nccState.ls.connectedAccounts);
+// 	},
+// 	{
+// 		deep: true,
+// 		immediate: true
+// 	}
+// );
+
+import { stately } from '../state-proj';
+// const stately2 = reactive( markRaw(stately) );
+// const stately2 = reactive(stately);
+// const stately2 = {...stately}; // nope
+// const stately2 = reactive(toRaw(stately));
+const stately2 = toRaw(stately);
+console.log('stately2', stately2);
+
+
 export default defineComponent({
 	data() {
 		return {
@@ -83,20 +151,120 @@ export default defineComponent({
 			ips: null as any,
 			inkProv: null as any,
 
-			rps: [] as any,
+			// rps: [] as any,
+			rps: undefined as ClientsTypeObj,
 
-			rrr
+			nccState,
+			stately,
+			stately2,
 		}
 	},
 	mounted() {
 		console.log('mounted');
 		this.init();
 	},
+	watch: {
+		'nccState.activeAddr': {
+			immediate: true,
+			handler(a: any) {
+				console.log('activeAddr change:', a);
+			}
+		},
+		'stately.someAddr': {
+			immediate: true,
+			handler(a: any) {
+				console.log('someAddr change:', a);
+			}
+		},
+		'stately2.someAddr': {
+			immediate: true,
+			handler(a: any) {
+				console.log('(stately2) someAddr change:', a);
+			}
+		},
+	},
 	methods: {
 		async init() {
 			// console.log('handy', handy);
 
-			// this.doInitializeProviders();
+			// await this.doInitializeProviders();
+
+			// only thing that works is if we use the watch fn FROM @vue-r/watch lib
+			watch(
+				() => stately.someAddr,
+				(s) => {
+					console.log('someAddr changed (2)', s);
+				},
+				{
+					immediate: true
+				}
+			);
+
+			watch(
+				// () => stately2.someAddr,
+				() => this.stately2.someAddr,
+				(s) => {
+					console.log('someAddr changed (stately in v comp)', s);
+				},
+				{
+					immediate: true
+				}
+			);
+
+			// let i = reactive(null);
+			// console.log('nccState.ls.activeAccount', nccState.ls.activeAccount);
+			// console.log('nccState isReactive?', isReactive(nccState.ls.activeAccount));
+
+			// TODO - dang... this watcher doesnt work right...
+			// watch(
+			// 	() => this.nccState.ls.connectedAccounts,
+			// 	() => {
+			// 		console.log('connectedAccounts changed:', this.nccState.ls.connectedAccounts);
+			// 	},
+			// 	{
+			// 		deep: true,
+			// 		immediate: true
+			// 	}
+			// );
+
+			// works.... (but how not .ls things..?)
+			watch(
+				() => this.nccState.rps,
+				() => {
+					console.log('(in v comp) rps changed:', this.nccState.rps);
+				},
+				{
+					deep: true,
+					immediate: true
+				}
+			);
+
+			watch(
+				() => this.nccState.activeAddr,
+				() => {
+					console.log('(in v comp) upper activeAddr changed:', this.nccState.activeAddr);
+				},
+				{
+					// deep: true,
+					immediate: true
+				}
+			);
+
+			// TODO - dang... this watcher doesnt work right...
+			watch(
+				() => this.nccState.ls.activeAccount,
+				// () => this.nccState.ls,
+				() => {
+					console.log('(in v comp) activeAccount changed:', this.nccState.ls.activeAccount);
+					// console.log('(in v comp) ls changed:', this.nccState.ls);
+
+					this.$forceUpdate(); // re-render <template>
+				},
+				{
+					deep: true,
+					immediate: true
+				}
+			);
 
 			setInterval(() => {
 				// this.hw.appStateProxy.count++;
@@ -104,7 +272,7 @@ export default defineComponent({
 
 				// this.handyWallet.appStateProxy.count++;
 				// handyWallet.appStateProxy.count++;
-			}, 5 * 1000);
+			}, 10 * 1000);
 			// }, 2500);
 
 			// await inkeyClient.frameBus.isReady()
@@ -129,6 +297,14 @@ export default defineComponent({
 			// this.inkProv = inkProv;
 		},
 
+		// async doAnyConnect(p: BaseClient ) {
+		async doAnyConnect(p: any) {
+			console.log('doAnyConnect', p);
+
+			let connectRes = await p.connect();
+			console.log('connectRes', connectRes);
+		},
+
 		async doConnectInkey() {
 			console.log('doConnectInkey');
 
@@ -151,26 +327,36 @@ export default defineComponent({
 			// clientInk3.connect();
 
 
-			let clientInk4 = this.rrr.rps[2];
-			clientInk4.connect();
+			// let clientInk4 = this.rrr.rps[2];
+			// clientInk4.connect();
+
+
+			let client = this.nccState.rps.inkey;
+			client.connect();
 		},
 
 		async doConnectMyalgo() {
 			console.log('doConnectMyalgo');
 
-			let c = await hw.appStateProxy.state.initializedProviders['myalgo'];
-			if (c) {
-				c.connect(() => { });
-			}
+			let client = this.nccState.rps.myalgo;
+			client.connect();
+
+			// let c = await hw.appStateProxy.state.initializedProviders['myalgo'];
+			// if (c) {
+			// 	c.connect(() => { });
+			// }
 		},
 
 		async doConnectPera() {
 			console.log('doConnectPera');
 
-			let c = await hw.appStateProxy.state.initializedProviders['pera'];
-			if (c) {
-				c.connect(() => { });
-			}
+			let client = this.nccState.rps.pera;
+			client.connect();
+
+			// let c = await hw.appStateProxy.state.initializedProviders['pera'];
+			// if (c) {
+			// 	c.connect(() => { });
+			// }
 		},
 
 		changeStoredState() {

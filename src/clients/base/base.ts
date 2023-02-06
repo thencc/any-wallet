@@ -40,6 +40,11 @@ abstract class BaseClient {
     isWalletConnect: boolean; // TODO delete
   };
 
+  setAsActiveAccount() {
+    console.log('setAsActiveAccount');
+    // this provider AND which account of this p?
+  };
+
   // abstract init(x: any): Promise<any>;
   abstract connect(onDisconnect: () => void): Promise<Wallet>;
   abstract disconnect(): Promise<void>;

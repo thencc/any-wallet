@@ -21,8 +21,11 @@ import {
   InitParams,
 } from "./types";
 
+import { markRaw } from "@vue/reactivity";
+import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+
 class PeraWalletClient extends BaseWallet {
-  #client: PeraWalletConnect;
+  client: PeraWalletConnect;
   network: Network;
 
   constructor({
@@ -32,7 +35,7 @@ class PeraWalletClient extends BaseWallet {
     network,
   }: PeraWalletClientConstructor) {
     super(algosdk, algodClient);
-    this.#client = client;
+    this.client = client;
     this.network = network;
   }
 
@@ -61,9 +64,9 @@ class PeraWalletClient extends BaseWallet {
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);
 
-      const peraWallet = new PeraWalletConnect({
+      const peraWallet = markRaw(new PeraWalletConnect({
         ...(clientOptions ? clientOptions : { shouldShowSignTxnToast: false }),
-      });
+      }));
 
       return new PeraWalletClient({
         client: peraWallet,
@@ -78,9 +81,9 @@ class PeraWalletClient extends BaseWallet {
   }
 
   async connect(onDisconnect: () => void): Promise<Wallet> {
-    const accounts = await this.#client.connect();
+    const accounts = await this.client.connect();
 
-    this.#client.connector?.on("disconnect", onDisconnect);
+    this.client.connector?.on("disconnect", onDisconnect);
 
     if (accounts.length === 0) {
       throw new Error(`No accounts found for ${PeraWalletClient.metadata.id}`);
@@ -92,6 +95,10 @@ class PeraWalletClient extends BaseWallet {
       providerId: PeraWalletClient.metadata.id,
     }));
 
+    // save to state
+    addConnectedAccounts(mappedAccounts);
+    setAsActiveAccount(mappedAccounts[0]);
+
     return {
       ...PeraWalletClient.metadata,
       accounts: mappedAccounts,
@@ -99,8 +106,8 @@ class PeraWalletClient extends BaseWallet {
   }
 
   async reconnect(onDisconnect: () => void) {
-    const accounts = await this.#client.reconnectSession().catch(console.info);
-    this.#client.connector?.on("disconnect", onDisconnect);
+    const accounts = await this.client.reconnectSession().catch(console.info);
+    this.client.connector?.on("disconnect", onDisconnect);
 
     if (!accounts) {
       return null;
@@ -117,7 +124,7 @@ class PeraWalletClient extends BaseWallet {
   }
 
   async disconnect() {
-    await this.#client.disconnect();
+    await this.client.disconnect();
   }
 
   async signTransactions(
@@ -150,7 +157,7 @@ class PeraWalletClient extends BaseWallet {
     }, []);
 
     // Sign them with the client.
-    const result = await this.#client.signTransaction([txnsToSign]);
+    const result = await this.client.signTransaction([txnsToSign]);
 
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {

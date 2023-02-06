@@ -22,6 +22,7 @@
 		"build": "tsup --config=tsup.config.ts"
 	},
 	"dependencies": {
+		"@vue-reactivity/watch": "^0.2.0",
 		"@vue/reactivity": "^3.2.45",
 		"buffer": "^6.0.3",
 		"valtio": "^1.8.2"

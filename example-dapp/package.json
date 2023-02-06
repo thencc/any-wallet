@@ -10,6 +10,8 @@
 	},
 	"dependencies": {
 		"@thencc/web3-wallet-handler": "^0.0.1",
+		"@vue-reactivity/watch": "^0.2.0",
+		"@vue/reactivity": "^3.2.47",
 		"vue": "^3.2.41"
 	},
 	"devDependencies": {

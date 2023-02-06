@@ -16,6 +16,8 @@ import {
 import { InitParams, InkeyClientType, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
+import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+
 // helpers
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 	var binary = '';
@@ -28,6 +30,8 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 };
 
 class InkeyWalletClient extends BaseWallet {
+	// client can be public because its exposed in clientside code anyway w the await obj value...
+	// possible MORE insecure that way. but honestly, this client api field shouldnt hold anything too secret anyway
 	client: InkeyClientType; // # means private field/method on a class
 	// client: InkeyClientType;
 	network: Network;
@@ -49,7 +53,7 @@ class InkeyWalletClient extends BaseWallet {
 		chain: "algorand",
 		name: "Inkey Microwallet",
 		icon: ICON,
-		isWalletConnect: false,
+		isWalletConnect: false, // TODO remove
 	};
 
 	static async init({
@@ -60,6 +64,9 @@ class InkeyWalletClient extends BaseWallet {
 		network = DEFAULT_NETWORK,
 	}: InitParams) {
 		try {
+
+			// TODO fix this
+			// make this able to init twice (other clients work ok)
 
 			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
 				// src: clientOptions?.iFrameUrl
@@ -113,6 +120,10 @@ class InkeyWalletClient extends BaseWallet {
 			...account,
 			providerId: InkeyWalletClient.metadata.id,
 		}));
+
+		// save accts to state (+ localstorage automatically)
+		addConnectedAccounts(mappedAccounts);
+		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...InkeyWalletClient.metadata,

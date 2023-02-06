@@ -1,3 +1,3 @@
 export { initializeProviders } from "./initializeProviders";
 export { reconnectProviders } from "./reconnectProviders";
-export { initClients, rrr } from './initClients';
+export { initClients, nccState, getNccState, addConnectedAccounts, setAsActiveAccount } from './initClients';

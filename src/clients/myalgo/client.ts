@@ -16,8 +16,11 @@ import {
 import { MyAlgoWalletClientConstructor, InitParams } from "./types";
 import { ICON } from "./constants";
 
+import { markRaw } from "@vue/reactivity";
+import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+
 class MyAlgoWalletClient extends BaseWallet {
-  #client: _MyAlgoConnect;
+  client: _MyAlgoConnect;
   network: Network;
 
   constructor({
@@ -27,7 +30,7 @@ class MyAlgoWalletClient extends BaseWallet {
     network,
   }: MyAlgoWalletClientConstructor) {
     super(algosdk, algodClient);
-    this.#client = client;
+    this.client = client;
     this.network = network;
   }
 
@@ -53,9 +56,10 @@ class MyAlgoWalletClient extends BaseWallet {
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);
 
-      const myAlgo = new MyAlgoConnect({
+      // markRaw needed to get around cross-origin err
+      const myAlgo = markRaw(new MyAlgoConnect({
         ...(clientOptions ? clientOptions : { disableLedgerNano: false }),
-      });
+      }));
 
       return new MyAlgoWalletClient({
         client: myAlgo,
@@ -70,7 +74,7 @@ class MyAlgoWalletClient extends BaseWallet {
   }
 
   async connect() {
-    const accounts = await this.#client.connect();
+    const accounts = await this.client.connect();
 
     if (accounts.length === 0) {
       throw new Error(
@@ -82,6 +86,10 @@ class MyAlgoWalletClient extends BaseWallet {
       ...account,
       providerId: MyAlgoWalletClient.metadata.id,
     }));
+
+    // save to state
+    addConnectedAccounts(mappedAccounts);
+    setAsActiveAccount(mappedAccounts[0]);
 
     return {
       ...MyAlgoWalletClient.metadata,
@@ -122,7 +130,7 @@ class MyAlgoWalletClient extends BaseWallet {
     }, []);
 
     // Sign them with the client.
-    const result = await this.#client.signTransaction(txnsToSign);
+    const result = await this.client.signTransaction(txnsToSign);
 
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {

@@ -1,19 +1,31 @@
 import { WalletClient } from "../types";
 
 type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
+type InitedClients = { [x: string]: WalletClient };
 
 export const reconnectProviders = async (providers: SupportedProviders) => {
   try {
-    const clients = Object.values(providers);
+    // const clients = Object.values(providers);
 
-    const awaitedClients = [];
+    const awaitedClients: InitedClients = {};
 
-    for (const client of clients) {
-      const c = await client;
-      c?.reconnect(c?.disconnect);
+    // TODO make this promise.All instead of stopping on each and awaiting (faster)
+    for (let cId in providers) {
+      let c = await providers[cId];
 
-      awaitedClients.push(c);
+      if (c) {
+        c.reconnect(c.disconnect);
+        awaitedClients[cId] = c;
+      } else {
+        console.error('no client for:', cId);
+      }
     }
+
+    // for (const client of clients) {
+    //   const c = await client;
+    //   c?.reconnect(c?.disconnect);
+    //   // awaitedClients.push(c);
+    // }
 
     return awaitedClients;
   } catch (e) {
