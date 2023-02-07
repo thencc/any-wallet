@@ -61,6 +61,10 @@
 			</select>
 		</div>
 
+		<button @click="doTxnSimpleAlgJs">
+			doTxnSimpleAlgJs
+		</button>
+
 		<p>
 			handyWallet ?
 			{{ hw.hello }}
@@ -111,6 +115,8 @@ import {
 	initializeProviders,
 	reconnectProviders,
 	nccState,
+
+	signTransactions,
 
 	PROVIDER_ID,
 	// getNccState as getNccState2, // how to name import
@@ -180,6 +186,14 @@ import { stately } from '../state-proj';
 // const stately2 = toRaw(stately);
 // console.log('stately2', stately2);
 
+import { Algonaut, utils } from '@thencc/algonautjs';
+const algonaut = new Algonaut({
+	BASE_SERVER: 'https://testnet-api.algonode.cloud',
+	INDEX_SERVER: '',
+	API_TOKEN: { 'accept': 'application/json' },
+	PORT:'',
+	LEDGER: 'testnet',
+});
 
 export default defineComponent({
 	data() {
@@ -230,6 +244,10 @@ export default defineComponent({
 	methods: {
 		async init() {
 			// console.log('handy', handy);
+
+			algonaut.checkStatus().then(h => {
+				console.log('h', h);
+			});
 
 			this.doInitializeProviders();
 
@@ -462,6 +480,10 @@ export default defineComponent({
 			// }
 		},
 
+		// async doSignTxn() {
+		// 	console.log('doSignTxn');
+		// },
+
 		// popProvs() {
 		// 	hw.appStateProxy.state.populateProviders(this.ips);
 		// },
@@ -547,7 +569,38 @@ export default defineComponent({
 		// 		console.log('id: ', groupedTxn.txId);
 		// 	}
 
-		// }
+		// },
+
+		async doTxnSimpleAlgJs() {
+			console.log('doTxnSimpleAlgJs');
+
+			let addr = this.nccState.activeAddress;
+
+			if (!addr) {
+				alert('no .to address provided');
+				return;
+			}
+
+			const txn = await algonaut.atomicSendAlgo({
+				amount: 1000,
+				to: addr,
+				from: addr // .from needed IF algonaut doesnt have this.account populated
+			});
+			console.log('txn', txn);
+
+			const txnArr = txn.transaction.toByte();
+
+			try {
+				let res = await signTransactions([txnArr]);
+				console.log('res', res);
+			} catch(e) {
+				console.warn(e);
+			}
+
+			// 	const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
+			// 	console.log('groupedTxn', groupedTxn);
+			// 	console.log('id: ', groupedTxn.txId);
+		},
 	}
 });
 </script>

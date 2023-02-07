@@ -35,6 +35,7 @@ export const nccState = reactive({
 	rps: null as any,
 	// isAuthed: false, // per session, just use .activeAcct is not null
 	activeAddress: '',
+	activeClientId: null as null | PROVIDER_ID,
 
 	// wallets: {} as any,
 	wallets: null as null | Record<string, WalletThing>,
@@ -255,13 +256,7 @@ export const getAccountsByProvider = (id: PROVIDER_ID) => {
 };
 
 const removeAccountsByClient = (id: PROVIDER_ID) => {
-	// remove this client's accts
-	let acctsToKeep = nccState.stored.connectedAccounts.filter(
-		(account) => account.providerId !== id
-	);
-	nccState.stored.connectedAccounts = acctsToKeep;
-
-	// nullify active acct if its being removed
+	// nullify active acct if its being removed (FYI this has to come first)
 	let acctsToRemove = nccState.stored.connectedAccounts.filter(
 		(account) => account.providerId == id
 	);
@@ -270,6 +265,36 @@ const removeAccountsByClient = (id: PROVIDER_ID) => {
 			nccState.stored.activeAccount = null; // how to unset activeAccount
 		}
 	}
+
+	// remove this client's accts
+	let acctsToKeep = nccState.stored.connectedAccounts.filter(
+		(account) => account.providerId !== id
+	);
+	nccState.stored.connectedAccounts = acctsToKeep;
+};
+
+export const signTransactions = async (txns: Uint8Array[]) => {
+	console.log('signTransactions', txns);
+
+	if (!nccState.wallets) {
+		throw new Error('No wallets initialized');
+	}
+	if (!nccState.activeClientId) {
+		throw new Error('No active wallet');
+	}
+	if (!nccState.activeAddress) {
+		throw new Error('No active account');
+	}
+
+	let txnsSigned = await nccState
+		.wallets[nccState.activeClientId]
+		.client.signTransactions(
+			[nccState.activeAddress],
+			txns
+		);
+	console.log('txnsSigned', txnsSigned);
+
+	return txnsSigned;
 };
 
 
@@ -315,10 +340,13 @@ watch(
 	(acct) => {
 		// update helpful top level prop
 		let activeAddress = '';
+		let activeClientId: null | PROVIDER_ID = null;
 		if (acct) {
 			activeAddress = acct.address;
+			activeClientId = acct.providerId;
 		}
 		nccState.activeAddress = activeAddress;
+		nccState.activeClientId = activeClientId;
 	},
 	{
 		deep: true,

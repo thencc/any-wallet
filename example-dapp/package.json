@@ -5,11 +5,14 @@
 	"scripts": {
 		"link-w3h": "pnpm link @thencc/web3-wallet-handler --global",
 		"unlink-w3h": "pnpm unlink @thencc/web3-wallet-handler",
+		"link-algjs": "pnpm link @thencc/algonautjs --global",
+		"unlink-algjs": "pnpm unlink @thencc/algonautjs",
 		"dev": "vite --force",
 		"build": "vue-tsc && vite build",
 		"ppreview": "vite preview"
 	},
 	"dependencies": {
+		"@thencc/algonautjs": "^0.2.3",
 		"@thencc/web3-wallet-handler": "^0.0.2",
 		"@vue-reactivity/watch": "^0.2.0",
 		"@vue/reactivity": "^3.2.47",

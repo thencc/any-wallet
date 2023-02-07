@@ -1,5 +1,5 @@
 // export { useWallet } from "./hooks";
-export { initializeProviders, reconnectProviders, initClients, nccState, watch } from "./utils";
+export { initializeProviders, reconnectProviders, initClients, nccState, watch, signTransactions } from "./utils";
 // export { WalletProvider } from "./store";
 // export * from "./constants";
 export * from "./types";
