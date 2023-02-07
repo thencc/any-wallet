@@ -119,6 +119,9 @@ import {
 	signTransactions,
 
 	PROVIDER_ID,
+	inkey, // client for configing
+	myalgo, // client
+
 	// getNccState as getNccState2, // how to name import
 	// watch as watchIt // doesnt work yet its the exact same thing....
 	// watch
@@ -382,7 +385,17 @@ export default defineComponent({
 				// PROVIDER_ID.MYALGO,
 			] as PROVIDER_ID[];
 
-			const rps = await initClients(providersToInit);
+			const enabledClients = {
+				[PROVIDER_ID.INKEY]: inkey.init({
+					clientOptions: {
+						iFrameUrl: 'http://localhost:5200',
+					},
+				}),
+				[PROVIDER_ID.MYALGO]: myalgo.init({}),
+			};
+
+			// const rps = await initClients(providersToInit);
+			const rps = await initClients(enabledClients);
 			console.log('rps', rps);
 			this.rps = rps;
 

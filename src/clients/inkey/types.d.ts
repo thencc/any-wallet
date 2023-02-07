@@ -13,6 +13,12 @@ export type InkeyWalletClientConstructor = {
 
 export type ClientOptions = {
 	iFrameUrl?: string;
+	align?: 'center' | 'left' | 'right';
+};
+// api config
+export type InkeyConfig = {
+	src?: string; // url
+	align?: 'center' | 'left' | 'right';
 };
 
 export type InitParams = {
@@ -22,3 +28,4 @@ export type InitParams = {
 	algosdkStatic?: typeof _algosdk;
 	network?: Network;
 };
+

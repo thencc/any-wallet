@@ -13,7 +13,7 @@ import {
 	Network,
 	Wallet,
 } from "../../types";
-import { InitParams, InkeyClientType, InkeyWalletClientConstructor } from "./types";
+import { InitParams, InkeyClientType, InkeyConfig, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
 import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
@@ -66,13 +66,18 @@ class InkeyWalletClient extends BaseWallet {
 		try {
 
 			// TODO fix this
-			// make this able to init twice (other clients work ok)
+			// make this inkey client be able to init twice (other clients work ok)
 
-			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
-				// src: clientOptions?.iFrameUrl
-				// src: 'http://127.0.0.1:5200',
-				src: 'http://localhost:5200',
-			});
+			let inkeyOptions: undefined | InkeyConfig = undefined;
+			if (clientOptions) {
+				inkeyOptions = {
+					src: clientOptions.iFrameUrl,
+					align: clientOptions.align
+				}
+			}
+
+			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js"))
+				.createClient(inkeyOptions);
 
 			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
 			const algodClient = await getAlgodClient(algosdk, algodOptions);

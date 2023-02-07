@@ -139,18 +139,40 @@ import type algosdk from "algosdk";
 // TODO support arg for partial/specific providers
 // export const initClients = async (providers: SupportedProviders) => {
 export const initClients = async (
-	providers?: PROVIDER_ID[],
+	providers?: PROVIDER_ID[] | SupportedProviders,
 	nodeConfig?: NodeConfig,
 	algosdkStatic?: typeof algosdk
 ) => {
 	console.log('initClients', providers, nodeConfig, algosdkStatic);
 
-	let ips = await initializeProviders(
-		providers,
-		nodeConfig,
-		algosdkStatic,
-	); // aka initClients()
+	let ips: SupportedProviders;
+
+
+	if (!providers) {
+		ips = await initializeProviders(
+			undefined, // providers,
+			nodeConfig,
+			algosdkStatic,
+		);
+	} else if (Array.isArray(providers)) {
+		ips = await initializeProviders(
+			providers,
+			nodeConfig,
+			algosdkStatic,
+		);
+	} else {
+		console.log('handle incoming configed client');
+		ips = providers;
+	}
 	console.log('ips', ips);
+
+	// og
+	// let ips = await initializeProviders(
+	// 	providers,
+	// 	nodeConfig,
+	// 	algosdkStatic,
+	// );
+	// console.log('ips', ips);
 
 	let rps = await reconnectProviders(ips);
 	console.log('rps', rps);
@@ -174,8 +196,8 @@ export const initClients = async (
 				// methods
 				connect: async () => await c.connect(() => { }), // arg is onDisconnect
 				disconnect: async () => {
-					await c.disconnect();
 					removeAccountsByClient(c.metadata.id);
+					await c.disconnect();
 				},
 				reconnect: async () => await c.reconnect(() => { }),
 				setAsActiveWallet: () => {
@@ -256,6 +278,7 @@ export const getAccountsByProvider = (id: PROVIDER_ID) => {
 };
 
 const removeAccountsByClient = (id: PROVIDER_ID) => {
+	console.log('removeAccountsByClient', id);
 	// nullify active acct if its being removed (FYI this has to come first)
 	let acctsToRemove = nccState.stored.connectedAccounts.filter(
 		(account) => account.providerId == id
