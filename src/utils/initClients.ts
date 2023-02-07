@@ -2,12 +2,12 @@ import { initializeProviders } from "./initializeProviders";
 import { reconnectProviders } from "./reconnectProviders";
 import { appStateProxy } from "src/state";
 
-import { PROVIDER_ID, WalletClient, Network, Account } from "../types";
+import { PROVIDER_ID, WalletClient, Network, Account, Wallet } from "../types";
 
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
 
-import { computed, reactive, readonly } from '@vue/reactivity';
+import { computed, reactive, readonly, Ref, DeepReadonly } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wow... this only works in built vue projs, not w vite dev server...)
 
@@ -17,8 +17,18 @@ import BaseClient from "src/clients/base/base";
 
 type WalletThing = {
 	client: BaseClient;
-	accounts: any;
-	connect: () => {};
+
+	// methods
+	connect: () => Promise<Wallet>;
+	disconnect: () => Promise<void>;
+	reconnect: () => Promise<Wallet | null>;
+	setAsActiveWallet: () => void;
+	removeAccounts: () => void;
+
+	// look, dont touch
+	accounts: DeepReadonly<Ref<Account[]>>;
+	isActive: DeepReadonly<Ref<boolean>>;
+	isConnected: DeepReadonly<Ref<boolean>>;
 }
 
 export const nccState = reactive({
@@ -144,15 +154,47 @@ export const initClients = async () => {
 		// .wallets init
 		if (nccState.wallets == null) nccState.wallets = {};
 
-		for (let k in clients) {
-			let c = clients[k];
-			nccState.wallets[k] = {
+		for (let id in clients) {
+			let c = clients[id];
+			let w: WalletThing = {
 				client: c,
 				// aProperty: 'skeet', // yes! ts catches err this way
-				// accounts: look( getAccountsByProvider(c.metadata.id) ), // works all around
+
+				// methods
+				connect: async () => await c.connect(() => { }), // arg is onDisconnect
+				disconnect: async () => {
+					await c.disconnect();
+					removeAccountsByClient(c.metadata.id);
+				},
+				reconnect: async () => await c.reconnect(() => { }),
+				setAsActiveWallet: () => {
+					// console.log('setAsActiveWallet');
+					let accts = getAccountsByProvider(c.metadata.id);
+					if (!accts) {
+						throw new Error('No accounts for this provider to set as active');
+					} else {
+						nccState.stored.activeAccount = accts[0];
+					}
+				},
+				removeAccounts() {
+					removeAccountsByClient(c.metadata.id);
+				},
+
+				// readonlys
+				// accounts: look( getAccountsByProvider(c.metadata.id) ), // DESIRED, how? + why doesnt this wrapper work?
 				accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
-				connect: () => c.connect(() => { }),
+				// COULD make the accts arr have methods like disconnect this acct
+				isActive: readonly(computed(() => {
+					return nccState.stored.activeAccount?.providerId === id
+				})),
+				isConnected: readonly(computed(() => {
+					return nccState.stored.connectedAccounts.some(
+						(accounts) => accounts.providerId === id
+					);
+				})),
+
 			};
+			nccState.wallets[id] = w;
 		}
 
 		// simpler than computed approach
@@ -200,6 +242,24 @@ export const initClients = async () => {
 
 export const getAccountsByProvider = (id: PROVIDER_ID) => {
 	return nccState.stored.connectedAccounts.filter((account) => account.providerId === id);
+};
+
+const removeAccountsByClient = (id: PROVIDER_ID) => {
+	// remove this client's accts
+	let acctsToKeep = nccState.stored.connectedAccounts.filter(
+		(account) => account.providerId !== id
+	);
+	nccState.stored.connectedAccounts = acctsToKeep;
+
+	// nullify active acct if its being removed
+	let acctsToRemove = nccState.stored.connectedAccounts.filter(
+		(account) => account.providerId == id
+	);
+	for (let acct of acctsToRemove) {
+		if (nccState.stored.activeAccount == acct) {
+			nccState.stored.activeAccount = null; // how to unset activeAccount
+		}
+	}
 };
 
 

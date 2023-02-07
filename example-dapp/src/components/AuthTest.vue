@@ -11,15 +11,18 @@
 		<div>
 			<p>active acct</p>
 			<div v-if="nccState.stored.activeAccount">
-				<p>{{ nccState.stored.activeAccount.providerId }}</p>
-				<p>{{ nccState.stored.activeAccount.name }}</p>
-				<p>{{ nccState.stored.activeAccount.address }}</p>
+				<p>
+					<span style="font-weight: bold;">{{ nccState.stored.activeAccount.providerId }}</span>:
+					<span>{{ nccState.stored.activeAccount.name }}</span>
+				</p>
+				<p style="font-family: monospace;">{{ nccState.stored.activeAccount.address }}</p>
 			</div>
 			<div v-else>
 				none
 			</div>
 		</div>
 
+		<p>keys of initialized clients (computed):</p>
 		<p>
 			{{ nccState.clientsC.initedClientKeys }}
 		</p>
@@ -46,8 +49,15 @@
 
 		<div v-for="(p, k) of nccState.wallets">
 			<span>{{k}}</span>
-			<button @click="doAnyConnect(p)">connect</button>
-			<button @click="doAnyDisconnect(p)">disconnect</button>
+			<button @click="doAnyConnect(p)" :disabled="!!(p.isConnected)">connect</button>
+			<button @click="doAnyDisconnect(p)" :disabled="!(p.isConnected)">disconnect</button>
+			<button @click="p.setAsActiveWallet()" :disabled="!(p.isConnected && !p.isActive)">set as active</button>
+
+			<select v-model="selectedAddrFromDropdown" style="width: 100px;" :name="`w_${k}_select`" id="" @change="activeAddrChanged(selectedAddrFromDropdown)">
+				<option v-for="a of p.accounts" :value="a">
+					{{ getAddrFromAccount(a) }}
+				</option>
+			</select>
 		</div>
 
 		<p>
@@ -185,6 +195,9 @@ export default defineComponent({
 			nccState,
 			stately,
 			// stately2,
+
+			// selectedAddrFromDropdown: null as any
+			selectedAddrFromDropdown: nccState.stored.activeAccount
 		}
 	},
 	mounted() {
@@ -282,11 +295,14 @@ export default defineComponent({
 			watch(
 				() => this.nccState.stored.activeAccount,
 				// () => this.nccState.ls,
-				() => {
+				(acct) => {
 					console.log('(in v comp) activeAccount changed:', this.nccState.stored.activeAccount);
 					// console.log('(in v comp) ls changed:', this.nccState.ls);
 
-					this.$forceUpdate(); // re-render <template>
+					// for ui
+					this.selectedAddrFromDropdown = acct;
+
+					this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
 				},
 				{
 					deep: true,
@@ -349,9 +365,20 @@ export default defineComponent({
 			// this.inkProv = inkProv;
 		},
 
+		getAddrFromAccount(a: any) {
+			return a.address;
+		},
+
+		activeAddrChanged(x: any) {
+			console.log('activeAddrChanged', x);
+			this.nccState.stored.activeAccount = x;
+		},
+
 		// async doAnyConnect(p: BaseClient ) {
 		async doAnyConnect(p: any) {
 			console.log('doAnyConnect', p);
+
+			// this.nccState.wallets?.inkey.accounts.push('test')
 
 			// let connectRes = await p.client.connect();
 			let connectRes = await p.connect();
@@ -520,7 +547,7 @@ export default defineComponent({
 .auth-test-container {
 	display: flex;
 	flex-direction: column;
-	width: 350px;
+	width: 600px;
 }
 
 p {
