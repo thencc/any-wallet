@@ -110,6 +110,8 @@ import {
 	initializeProviders,
 	reconnectProviders,
 	nccState,
+
+	PROVIDER_ID,
 	// getNccState as getNccState2, // how to name import
 	// watch as watchIt // doesnt work yet its the exact same thing....
 	// watch
@@ -355,7 +357,13 @@ export default defineComponent({
 			// let rps = await reconnectProviders(ips);
 			// console.log('rps', rps);
 
-			const rps = await initClients();
+			// empty arr inits all minus kmd
+			const providersToInit = [
+				// PROVIDER_ID.INKEY,
+				// PROVIDER_ID.MYALGO,
+			] as PROVIDER_ID[];
+
+			const rps = await initClients(providersToInit);
 			console.log('rps', rps);
 			this.rps = rps;
 
@@ -555,6 +563,12 @@ p {
 }
 
 button {
-	margin: 2px 0;
+	padding: 0 12px;
+	margin: 2px;
+	/* border-radius: 0; */
+
+	--h: 48px;
+	height: var(--h);
+	line-height: var(--h);
 }
 </style>

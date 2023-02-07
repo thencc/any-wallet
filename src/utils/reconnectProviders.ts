@@ -1,8 +1,9 @@
 import { PROVIDER_ID, WalletClient } from "../types";
 
 type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
+// type SupportedProviders = { [x in PROVIDER_ID]: Promise<WalletClient | null> };
 type InitedClients = { [x: string]: WalletClient };
-// type InitedClients = { [x: PROVIDER_ID]: WalletClient };
+// type InitedClients = { [x in PROVIDER_ID]: WalletClient };
 
 export const reconnectProviders = async (providers: SupportedProviders) => {
   try {

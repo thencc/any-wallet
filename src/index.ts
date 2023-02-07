@@ -2,7 +2,7 @@
 export { initializeProviders, reconnectProviders, initClients, nccState, watch } from "./utils";
 // export { WalletProvider } from "./store";
 // export * from "./constants";
-// export * from "./types";
+export * from "./types";
 // export * from "./clients";
 
 import { appStateProxy } from './state/index';

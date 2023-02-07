@@ -75,11 +75,13 @@ export const initializeProviders = async (
 
   if (providers) {
     for (const id of providers) {
-      // initializedProviders[id] = allClients[id].init({
-      //   network,
-      //   algodOptions: [nodeToken, nodeServer, nodePort],
-      //   algosdkStatic: algosdkStatic,
-      // });
+      console.log('do init for prov:', id);
+
+      initializedProviders[id] = allClients[id].init({
+        network,
+        algodOptions: [nodeToken, nodeServer, nodePort],
+        algosdkStatic: algosdkStatic,
+      });
     }
   }
 

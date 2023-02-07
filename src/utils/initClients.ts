@@ -1,4 +1,4 @@
-import { initializeProviders } from "./initializeProviders";
+import { initializeProviders, NodeConfig } from "./initializeProviders";
 import { reconnectProviders } from "./reconnectProviders";
 import { appStateProxy } from "src/state";
 
@@ -132,13 +132,22 @@ const look = <T>(x: T) => readonly(computed(() => x));
 // 	return r;
 // };
 
-
+import type algosdk from "algosdk";
 
 // TODO support arg for partial/specific providers
 // export const initClients = async (providers: SupportedProviders) => {
-export const initClients = async () => {
+export const initClients = async (
+	providers?: PROVIDER_ID[],
+	nodeConfig?: NodeConfig,
+	algosdkStatic?: typeof algosdk
+) => {
+	console.log('initClients', providers, nodeConfig, algosdkStatic);
 
-	let ips = await initializeProviders(); // aka initClients()
+	let ips = await initializeProviders(
+		providers,
+		nodeConfig,
+		algosdkStatic,
+	); // aka initClients()
 	console.log('ips', ips);
 
 	let rps = await reconnectProviders(ips);
