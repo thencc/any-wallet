@@ -10,15 +10,19 @@
 
 		<div>
 			<p>active acct</p>
-			<div v-if="nccState.ls.activeAccount">
-				<p>{{ nccState.ls.activeAccount.providerId }}</p>
-				<p>{{ nccState.ls.activeAccount.name }}</p>
-				<p>{{ nccState.ls.activeAccount.address }}</p>
+			<div v-if="nccState.stored.activeAccount">
+				<p>{{ nccState.stored.activeAccount.providerId }}</p>
+				<p>{{ nccState.stored.activeAccount.name }}</p>
+				<p>{{ nccState.stored.activeAccount.address }}</p>
 			</div>
 			<div v-else>
 				none
 			</div>
 		</div>
+
+		<p>
+			{{ nccState.clientsC.initedClientKeys }}
+		</p>
 
 		<!-- <p>
 			<button @click="doConnectInkey">doConnectInkey</button>
@@ -34,8 +38,10 @@
 
 		<p>clients loop</p>
 		<div v-for="(p, k) of rps">
+		<!-- <div v-for="(p, k) of nccState.rps"></div> -->
 			<span>{{k}}</span>
 			<button @click="doAnyConnect(p)">connect</button>
+			<button @click="doAnyDisconnect(p)">disconnect</button>
 		</div>
 
 		<p>
@@ -69,13 +75,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, isReactive, markRaw, reactive, toRaw } from 'vue';
-import { watch } from '@vue-reactivity/watch';
+import {
+	defineComponent,
+	isReactive,
+	markRaw,
+	reactive,
+	toRaw,
+	// watch
+} from 'vue';
+import { watch } from '@vue-reactivity/watch'; // works
 
 // static algosdk
 // import algosdk from "algosdk";
 
-import { handyWallet, initClients, initializeProviders, reconnectProviders, nccState, getNccState } from '@thencc/web3-wallet-handler';
+import {
+	handyWallet,
+	initClients,
+	initializeProviders,
+	reconnectProviders,
+	nccState,
+	// getNccState as getNccState2, // how to name import
+	// watch as watchIt // doesnt work yet its the exact same thing....
+	// watch
+} from '@thencc/web3-wallet-handler';
 
 // reactive wrapper needed to make vue renderer update on changes
 const hw = reactive(handyWallet);
@@ -136,8 +158,8 @@ import { stately } from '../state-proj';
 // const stately2 = reactive(stately);
 // const stately2 = {...stately}; // nope
 // const stately2 = reactive(toRaw(stately));
-const stately2 = toRaw(stately);
-console.log('stately2', stately2);
+// const stately2 = toRaw(stately);
+// console.log('stately2', stately2);
 
 
 export default defineComponent({
@@ -156,7 +178,7 @@ export default defineComponent({
 
 			nccState,
 			stately,
-			stately2,
+			// stately2,
 		}
 	},
 	mounted() {
@@ -176,18 +198,18 @@ export default defineComponent({
 				console.log('someAddr change:', a);
 			}
 		},
-		'stately2.someAddr': {
-			immediate: true,
-			handler(a: any) {
-				console.log('(stately2) someAddr change:', a);
-			}
-		},
+		// 'stately2.someAddr': {
+		// 	immediate: true,
+		// 	handler(a: any) {
+		// 		console.log('(stately2) someAddr change:', a);
+		// 	}
+		// },
 	},
 	methods: {
 		async init() {
 			// console.log('handy', handy);
 
-			// await this.doInitializeProviders();
+			this.doInitializeProviders();
 
 			// only thing that works is if we use the watch fn FROM @vue-r/watch lib
 			watch(
@@ -200,16 +222,16 @@ export default defineComponent({
 				}
 			);
 
-			watch(
-				// () => stately2.someAddr,
-				() => this.stately2.someAddr,
-				(s) => {
-					console.log('someAddr changed (stately in v comp)', s);
-				},
-				{
-					immediate: true
-				}
-			);
+			// watch(
+			// 	// () => stately2.someAddr,
+			// 	() => this.stately2.someAddr,
+			// 	(s) => {
+			// 		console.log('someAddr changed (stately in v comp)', s);
+			// 	},
+			// 	{
+			// 		immediate: true
+			// 	}
+			// );
 
 			// let i = reactive(null);
 			// console.log('nccState.ls.activeAccount', nccState.ls.activeAccount);
@@ -228,34 +250,34 @@ export default defineComponent({
 			// );
 
 			// works.... (but how not .ls things..?)
-			watch(
-				() => this.nccState.rps,
-				() => {
-					console.log('(in v comp) rps changed:', this.nccState.rps);
-				},
-				{
-					deep: true,
-					immediate: true
-				}
-			);
+			// watch(
+			// 	() => this.nccState.rps,
+			// 	() => {
+			// 		console.log('(in v comp) rps changed:', this.nccState.rps);
+			// 	},
+			// 	{
+			// 		deep: true,
+			// 		immediate: true
+			// 	}
+			// );
 
-			watch(
-				() => this.nccState.activeAddr,
-				() => {
-					console.log('(in v comp) upper activeAddr changed:', this.nccState.activeAddr);
-				},
-				{
-					// deep: true,
-					immediate: true
-				}
-			);
+			// watch(
+			// 	() => this.nccState.activeAddr,
+			// 	() => {
+			// 		console.log('(in v comp) upper activeAddr changed:', this.nccState.activeAddr);
+			// 	},
+			// 	{
+			// 		// deep: true,
+			// 		immediate: true
+			// 	}
+			// );
 
 			// TODO - dang... this watcher doesnt work right...
 			watch(
-				() => this.nccState.ls.activeAccount,
+				() => this.nccState.stored.activeAccount,
 				// () => this.nccState.ls,
 				() => {
-					console.log('(in v comp) activeAccount changed:', this.nccState.ls.activeAccount);
+					console.log('(in v comp) activeAccount changed:', this.nccState.stored.activeAccount);
 					// console.log('(in v comp) ls changed:', this.nccState.ls);
 
 					this.$forceUpdate(); // re-render <template>
@@ -303,6 +325,12 @@ export default defineComponent({
 
 			let connectRes = await p.connect();
 			console.log('connectRes', connectRes);
+		},
+		async doAnyDisconnect(p: any) {
+			console.log('doAnyDisconnect', p);
+
+			let disconnectRes = await p.disconnect();
+			console.log('disconnectRes', disconnectRes);
 		},
 
 		async doConnectInkey() {

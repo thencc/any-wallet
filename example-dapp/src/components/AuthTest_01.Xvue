@@ -146,9 +146,9 @@ export default defineComponent({
 			}
 		},
 
-		popProvs() {
-			hw.appStateProxy.state.populateProviders(this.ips);
-		},
+		// popProvs() {
+		// 	hw.appStateProxy.state.populateProviders(this.ips);
+		// },
 		// async doConnect() {
 		// 	const gotAcct = await inkeyClient.connect();
 		// 	console.log('gotAcct', gotAcct);

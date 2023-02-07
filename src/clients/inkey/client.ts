@@ -43,12 +43,12 @@ class InkeyWalletClient extends BaseWallet {
 		network,
 	}: InkeyWalletClientConstructor) {
 		super(algosdk, algodClient);
-		this.client = client;
+		this.client = client; // TODO rename this to .api
 		// this.client = client;
 		this.network = network;
 	}
 
-	static metadata = {
+	metadata = {
 		id: PROVIDER_ID.INKEY,
 		chain: "algorand",
 		name: "Inkey Microwallet",
@@ -70,7 +70,8 @@ class InkeyWalletClient extends BaseWallet {
 
 			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
 				// src: clientOptions?.iFrameUrl
-				src: 'http://127.0.0.1:5200'
+				// src: 'http://127.0.0.1:5200',
+				src: 'http://localhost:5200',
 			});
 
 			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
@@ -112,13 +113,13 @@ class InkeyWalletClient extends BaseWallet {
 
 		if (accounts.length === 0) {
 			throw new Error(
-				`No accounts found for ${InkeyWalletClient.metadata.id}`
+				`No accounts found for ${this.metadata.id}`
 			);
 		}
 
 		const mappedAccounts = accounts.map((account) => ({
 			...account,
-			providerId: InkeyWalletClient.metadata.id,
+			providerId: this.metadata.id,
 		}));
 
 		// save accts to state (+ localstorage automatically)
@@ -126,7 +127,7 @@ class InkeyWalletClient extends BaseWallet {
 		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
-			...InkeyWalletClient.metadata,
+			...this.metadata,
 			accounts: mappedAccounts,
 		};
 	}

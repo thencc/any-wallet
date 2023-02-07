@@ -39,7 +39,8 @@ class PeraWalletClient extends BaseWallet {
     this.network = network;
   }
 
-  static metadata = {
+  // static metadata = {
+  metadata = {
     id: PROVIDER_ID.PERA,
     chain: 'algorand',
     name: "Pera",
@@ -86,13 +87,13 @@ class PeraWalletClient extends BaseWallet {
     this.client.connector?.on("disconnect", onDisconnect);
 
     if (accounts.length === 0) {
-      throw new Error(`No accounts found for ${PeraWalletClient.metadata.id}`);
+      throw new Error(`No accounts found for ${this.metadata.id}`);
     }
 
     const mappedAccounts = accounts.map((address: string, index: number) => ({
       name: `Pera Wallet ${index + 1}`,
       address,
-      providerId: PeraWalletClient.metadata.id,
+      providerId: this.metadata.id,
     }));
 
     // save to state
@@ -100,7 +101,7 @@ class PeraWalletClient extends BaseWallet {
     setAsActiveAccount(mappedAccounts[0]);
 
     return {
-      ...PeraWalletClient.metadata,
+      ...this.metadata,
       accounts: mappedAccounts,
     };
   }
@@ -114,11 +115,11 @@ class PeraWalletClient extends BaseWallet {
     }
 
     return {
-      ...PeraWalletClient.metadata,
+      ...this.metadata,
       accounts: accounts.map((address: string, index: number) => ({
         name: `Pera Wallet ${index + 1}`,
         address,
-        providerId: PeraWalletClient.metadata.id,
+        providerId: this.metadata.id,
       })),
     };
   }

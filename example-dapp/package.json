@@ -6,10 +6,11 @@
 		"link-w3h": "pnpm link @thencc/web3-wallet-handler --global",
 		"unlink-w3h": "pnpm unlink @thencc/web3-wallet-handler",
 		"dev": "vite --force",
-		"build": "vue-tsc && vite build"
+		"build": "vue-tsc && vite build",
+		"ppreview": "vite preview"
 	},
 	"dependencies": {
-		"@thencc/web3-wallet-handler": "^0.0.1",
+		"@thencc/web3-wallet-handler": "^0.0.2",
 		"@vue-reactivity/watch": "^0.2.0",
 		"@vue/reactivity": "^3.2.47",
 		"vue": "^3.2.41"

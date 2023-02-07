@@ -80,7 +80,8 @@ class InkeyWalletClient {
 
       const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
         // src: clientOptions?.iFrameUrl
-        src: 'http://127.0.0.1:5200'
+        // src: 'http://127.0.0.1:5200',
+        src: 'http://localhost:5200',
       });
       this.client = inkeyClient;
 

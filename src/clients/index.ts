@@ -1,3 +1,5 @@
+import { PROVIDER_ID } from "src/constants";
+
 import pera from "./pera";
 import myalgo from "./myalgo";
 import inkey from "./inkey";
@@ -19,9 +21,13 @@ export {
 };
 
 export default {
-  [pera.metadata.id]: pera,
-  [myalgo.metadata.id]: myalgo,
-  [inkey.metadata.id]: inkey,
+  [PROVIDER_ID.PERA]: pera,
+  [PROVIDER_ID.MYALGO]: myalgo,
+  [PROVIDER_ID.INKEY]: inkey,
+
+  // [pera.metadata.id]: pera,
+  // [myalgo.metadata.id]: myalgo,
+  // [inkey.metadata.id]: inkey,
   // [defly.metadata.id]: defly,
   // [exodus.metadata.id]: exodus,
   // [algosigner.metadata.id]: algosigner,

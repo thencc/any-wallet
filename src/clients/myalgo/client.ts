@@ -34,7 +34,8 @@ class MyAlgoWalletClient extends BaseWallet {
     this.network = network;
   }
 
-  static metadata = {
+  // static metadata = {
+  metadata = {
     id: PROVIDER_ID.MYALGO,
     chain: 'algorand',
     name: "MyAlgo",
@@ -78,13 +79,13 @@ class MyAlgoWalletClient extends BaseWallet {
 
     if (accounts.length === 0) {
       throw new Error(
-        `No accounts found for ${MyAlgoWalletClient.metadata.id}`
+        `No accounts found for ${this.metadata.id}`
       );
     }
 
     const mappedAccounts = accounts.map((account) => ({
       ...account,
-      providerId: MyAlgoWalletClient.metadata.id,
+      providerId: this.metadata.id,
     }));
 
     // save to state
@@ -92,7 +93,7 @@ class MyAlgoWalletClient extends BaseWallet {
     setAsActiveAccount(mappedAccounts[0]);
 
     return {
-      ...MyAlgoWalletClient.metadata,
+      ...this.metadata,
       accounts: mappedAccounts,
     };
   }
