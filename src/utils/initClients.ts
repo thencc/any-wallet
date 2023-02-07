@@ -33,7 +33,8 @@ type WalletThing = {
 
 export const nccState = reactive({
 	rps: null as any,
-	isAuthed: false, // per session
+	// isAuthed: false, // per session, just use .activeAcct is not null
+	activeAddress: '',
 
 	// wallets: {} as any,
 	wallets: null as null | Record<string, WalletThing>,
@@ -295,12 +296,35 @@ watch(
 	() => {
 		// console.log('save me!', nccState.stored);
 		localStorage.setItem(lsKey, JSON.stringify(nccState.stored) );
+
+
+		// update helpful top level prop
+		let activeAddress = '';
+		if (nccState.stored.activeAccount) {
+			activeAddress = nccState.stored.activeAccount.address;
+		}
+		nccState.activeAddress = activeAddress;
 	},
 	{
 		deep: true
 	}
 );
 
+watch(
+	() => nccState.stored.activeAccount,
+	(acct) => {
+		// update helpful top level prop
+		let activeAddress = '';
+		if (acct) {
+			activeAddress = acct.address;
+		}
+		nccState.activeAddress = activeAddress;
+	},
+	{
+		deep: true,
+		immediate: true
+	}
+);
 
 
 // watch(

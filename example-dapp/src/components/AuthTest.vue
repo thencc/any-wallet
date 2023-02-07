@@ -15,7 +15,8 @@
 					<span style="font-weight: bold;">{{ nccState.stored.activeAccount.providerId }}</span>:
 					<span>{{ nccState.stored.activeAccount.name }}</span>
 				</p>
-				<p style="font-family: monospace;">{{ nccState.stored.activeAccount.address }}</p>
+				<!-- <p style="font-family: monospace;">{{ nccState.stored.activeAccount.address }}</p> -->
+				<p style="font-family: monospace;">{{ nccState.activeAddress }}</p>
 			</div>
 			<div v-else>
 				none
