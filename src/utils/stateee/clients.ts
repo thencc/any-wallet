@@ -4,7 +4,7 @@ import { getAccountsByProvider } from '../initClients';
 export const clientsReactive = reactive({
 
 	all: [], //
-	enabled: null as any, // defaults to all,
+	enabled: null as any, // uses passed in client from init, defaults to all.
 	inited: {}, // .client is awaited + initialized
 	// withState: null as any, // has .isConnected .isActive etc
 	// withState: computed(() => {
@@ -21,8 +21,8 @@ const objectMap = (obj: Object, fn: any) =>
 		)
 	);
 
-// export const clientsComputed = readonly(reactive(({
-export const clientsComputed = reactive(({
+export const clientsComputed = readonly(reactive(({
+// export const clientsComputed = reactive(({
 	initedClientKeys: computed(() => {
 		// return (clientsReactive.inited as any).map(c => c.);
 		return Object.keys(clientsReactive.inited);
@@ -32,15 +32,19 @@ export const clientsComputed = reactive(({
 	fullClients: computed(() => {
 		//
 		return objectMap(clientsReactive.inited, (c: any) => {
-			console.log('c', c);
+			// console.log('c', c);
+
 			return {
-				...c,
+				// ...c, // loses class methods this way, treats as an obj
+				client: c,
 				accounts: getAccountsByProvider(c.metadata.id),
-				andSomeState: 'bewm'
+				andSomeState: 'bewm',
+				connect: () => c.connect() // works but eh
 			};
 		});
 	}),
-}));
+// }));
+})));
 
 
 // export const clientsState = reactive({

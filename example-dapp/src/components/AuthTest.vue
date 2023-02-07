@@ -37,8 +37,14 @@
 		</p> -->
 
 		<p>clients loop</p>
-		<div v-for="(p, k) of rps">
-		<!-- <div v-for="(p, k) of nccState.rps"></div> -->
+
+		<!-- works -->
+		<!-- <div v-for="(p, k) of rps"> -->
+		<!-- <div v-for="(p, k) of nccState.clients.inited"> -->
+
+		<!-- <div v-for="(p, k) of nccState.clients.fullClients"> -->
+
+		<div v-for="(p, k) of nccState.wallets">
 			<span>{{k}}</span>
 			<button @click="doAnyConnect(p)">connect</button>
 			<button @click="doAnyDisconnect(p)">disconnect</button>
@@ -272,7 +278,7 @@ export default defineComponent({
 			// 	}
 			// );
 
-			// TODO - dang... this watcher doesnt work right...
+			// works IF watcher comes from @vue-r/watch
 			watch(
 				() => this.nccState.stored.activeAccount,
 				// () => this.nccState.ls,
@@ -287,6 +293,30 @@ export default defineComponent({
 					immediate: true
 				}
 			);
+
+			watch(
+				() => this.nccState.clients.fullClients,
+				(fc) => {
+					console.log('fullClients change', fc);
+				},
+				{
+					deep: true,
+					immediate: true
+				}
+			);
+
+			watch(
+				() => this.nccState.wallets,
+				(w) => {
+					console.log('wallets change', w);
+					this.$forceUpdate(); // re-render <template>
+				},
+				{
+					deep: true,
+					immediate: true
+				}
+			);
+
 
 			setInterval(() => {
 				// this.hw.appStateProxy.count++;
@@ -323,6 +353,7 @@ export default defineComponent({
 		async doAnyConnect(p: any) {
 			console.log('doAnyConnect', p);
 
+			// let connectRes = await p.client.connect();
 			let connectRes = await p.connect();
 			console.log('connectRes', connectRes);
 		},

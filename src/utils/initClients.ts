@@ -7,15 +7,33 @@ import { PROVIDER_ID, WalletClient, Network, Account } from "../types";
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
 
-import { computed, reactive } from '@vue/reactivity';
+import { computed, reactive, readonly } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wow... this only works in built vue projs, not w vite dev server...)
 
 import { clientsComputed, clientsReactive, clientsState } from "./stateee/clients";
 
+import BaseClient from "src/clients/base/base";
+
+type WalletThing = {
+	client: BaseClient;
+	accounts: any;
+	connect: () => {};
+}
+
 export const nccState = reactive({
 	rps: null as any,
 	isAuthed: false, // per session
+
+	// wallets: {} as any,
+	wallets: null as null | Record<string, WalletThing>,
+
+	// wallets: null as null | Record<string, WalletThing>,
+	// Record<PROVIDER_ID, {
+	// 	client: BaseClient,
+	// 	accounts: any,
+	// 	connect: () => {}
+	// }>,
 
 	clients: clientsState,
 	clientsR: clientsReactive,
@@ -72,6 +90,40 @@ export const setAsActiveAccount = (acct: Account) => {
 	nccState.stored.activeAccount = acct;
 };
 
+const objectMap = <T extends Record<string, any>, R>(obj: T, fn: (v: T[string], k: string, i: number) => R) =>
+// const objectMap = <T extends Record<string, any>, R>(obj: T, fn: (v: T[string], k: string, i: number) => {}): Record<T[string], R> =>
+// const objectMap = <T extends Record<string, any>>(obj: T, fn: (v: T[string], k: string, i: number) => {}) =>
+// const objectMap = (obj: object, fn: any) =>
+	Object.fromEntries(
+		Object.entries(obj).map(
+			([k, v], i) => [k, fn(v, k, i)]
+		)
+	) // as Record<string, R>;
+
+// helper
+const look = <T>(x: T) => readonly(computed(() => x));
+
+// const look = <T>(x: T) => {
+// 	return readonly(computed(() => x));
+
+// 	// if (typeof x == 'function') {
+// 	// 	return readonly(computed(() => x()))
+// 	// } else {
+
+// 	// }
+// };
+
+// const look = <T>(x: T) => {
+// 	// let inner = () => x
+// 	// let f = (() => x).bind(this);
+// 	let f = () => x;
+// 	let c = computed(f);
+// 	let r = readonly(c);
+// 	return r;
+// };
+
+
+
 // TODO support arg for partial/specific providers
 // export const initClients = async (providers: SupportedProviders) => {
 export const initClients = async () => {
@@ -87,16 +139,66 @@ export const initClients = async () => {
 	if (rps) {
 		nccState.clientsR.inited = rps;
 
-		// for (let [k, c] of Object.entries(rps)) {
-		// 	c.computeAccounts();
-		// }
+		let clients = rps;
+
+		// .wallets init
+		if (nccState.wallets == null) nccState.wallets = {};
+
+		for (let k in clients) {
+			let c = clients[k];
+			nccState.wallets[k] = {
+				client: c,
+				// aProperty: 'skeet', // yes! ts catches err this way
+				// accounts: look( getAccountsByProvider(c.metadata.id) ), // works all around
+				accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
+				connect: () => c.connect(() => { }),
+			};
+		}
+
+		// simpler than computed approach
+		// nccState.wallets = objectMap(rps, c => {
+		// 	let w: WalletThing = {
+		// 		client: c,
+		// 		// aProperty: 'skeet', // yes! ts catches err this way
+		// 		// accounts: look( getAccountsByProvider(c.metadata.id) ), // works all around
+		// 		accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
+		// 		connect: () => c.connect(() => { }),
+		// 	};
+		// 	return w;
+		// });
+
+		// most desired approach
+		// nccState.wallets = objectMap(rps, c => {
+		// 	let w: WalletThing = {
+		// 		client: c,
+		// 		// aProperty: 'skeet', // yes! ts catches err this way
+		// 		accounts: look(getAccountsByProvider(c.metadata.id)), // works all around
+		// 		connect: () => c.connect(() => { }),
+		// 	};
+		// 	return w
+		// });
+
+		// let wallets: Record<string, WalletThing> = objectMap(rps, c => {
+		// 	return {
+		// 		client: c,
+		// 		aProperty: 'skeet',
+		// 		// accounts: [],
+		// 		// accounts: getAccountsByProvider(c.metadata.id),
+		// 		// accounts: computed(() => getAccountsByProvider(c.metadata.id)), // nope
+		// 		// accounts: readonly(getAccountsByProvider(c.metadata.id)), // is readonly, but not reactive, requires calling getAc..
+		// 		// accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
+		// 		accounts: look(getAccountsByProvider(c.metadata.id)), // works all around
+		// 		connect: () => c.connect(() => { }),
+		// 	}
+		// });
+		// nccState.wallets = wallets;
+
 	}
 
 	return rps;
 };
 
 export const getAccountsByProvider = (id: PROVIDER_ID) => {
-	// return connectedAccounts.filter((account) => account.providerId === id);
 	return nccState.stored.connectedAccounts.filter((account) => account.providerId === id);
 };
 
