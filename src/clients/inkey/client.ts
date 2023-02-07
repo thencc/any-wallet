@@ -138,7 +138,7 @@ class InkeyWalletClient extends BaseWallet {
 	}
 
 	async reconnect(): Promise<Wallet | null> {
-		console.log('inkey reconnect')
+		// console.log('inkey reconnect')
 		return null;
 
 		// const accounts = this.client.accounts;

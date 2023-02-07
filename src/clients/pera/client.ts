@@ -60,7 +60,7 @@ class PeraWalletClient extends BaseWallet {
 
       const PeraWalletConnect =
         clientStatic || (await import("@perawallet/connect")).PeraWalletConnect;
-      console.log('PeraWalletConnect', PeraWalletConnect);
+      // console.log('PeraWalletConnect', PeraWalletConnect);
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);

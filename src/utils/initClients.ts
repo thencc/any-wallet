@@ -7,7 +7,7 @@ import { PROVIDER_ID, WalletClient, Network, Account, Wallet } from "../types";
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
 
-import { computed, reactive, readonly, Ref, DeepReadonly } from '@vue/reactivity';
+import { computed, reactive, readonly, Ref, DeepReadonly, toRaw } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wow... this only works in built vue projs, not w vite dev server...)
 
@@ -32,6 +32,7 @@ type WalletThing = {
 }
 
 export const nccState = reactive({
+	count: 0, // temp dev, remove later
 	rps: null as any,
 	// isAuthed: false, // per session, just use .activeAcct is not null
 	activeAddress: '',
@@ -197,7 +198,11 @@ export const initClients = async (
 				connect: async () => await c.connect(() => { }), // arg is onDisconnect
 				disconnect: async () => {
 					removeAccountsByClient(c.metadata.id);
-					await c.disconnect();
+					try {
+						await c.disconnect();
+					} catch(e) {
+						console.warn(e);
+					}
 				},
 				reconnect: async () => await c.reconnect(() => { }),
 				setAsActiveWallet: () => {
@@ -279,13 +284,18 @@ export const getAccountsByProvider = (id: PROVIDER_ID) => {
 
 const removeAccountsByClient = (id: PROVIDER_ID) => {
 	console.log('removeAccountsByClient', id);
-	// nullify active acct if its being removed (FYI this has to come first)
-	let acctsToRemove = nccState.stored.connectedAccounts.filter(
-		(account) => account.providerId == id
-	);
-	for (let acct of acctsToRemove) {
-		if (nccState.stored.activeAccount == acct) {
-			nccState.stored.activeAccount = null; // how to unset activeAccount
+
+	if (nccState.stored.activeAccount) {
+		// nullify active acct if its being removed (FYI this has to come first)
+		let acctsToRemove = nccState.stored.connectedAccounts.filter(
+			(account) => account.providerId == id
+		);
+		for (let acct of acctsToRemove) {
+			if (acct.address == nccState.stored.activeAccount.address &&
+				acct.providerId == nccState.stored.activeAccount.providerId) {
+				nccState.stored.activeAccount = null; // unsets activeAccount
+				break;
+			}
 		}
 	}
 
@@ -361,6 +371,8 @@ watch(
 watch(
 	() => nccState.stored.activeAccount,
 	(acct) => {
+		// console.log('lib activeAccount changed:', acct);
+
 		// update helpful top level prop
 		let activeAddress = '';
 		let activeClientId: null | PROVIDER_ID = null;
