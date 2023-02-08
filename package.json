@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -24,13 +24,14 @@
 		"link-pnpm": "pnpm link --global",
 		"link-ic": "pnpm link @thencc/inkey-client-js --global",
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
-		"build": "tsup --config=tsup.config.ts"
+		"build": "tsup --config=tsup.config.ts",
+		"publish": "npm publish --access public --tag beta --greater-version-only"
 	},
 	"dependencies": {
 		"@vue-reactivity/watch": "^0.2.0",
 		"@vue/reactivity": "^3.2.45"
 	},
-	"peerDependencies": {
+	"optionalDependencies": {
 		"@thencc/inkey-client-js": "^0.0.2",
 		"@perawallet/connect": "^1.1.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
@@ -38,6 +39,9 @@
 		"buffer": "^6.0.3"
 	},
 	"devDependencies": {
+		"@thencc/inkey-client-js": "^0.0.2",
+		"@perawallet/connect": "^1.1.0",
+		"@randlabs/myalgo-connect": "^1.4.2",
 		"tsup": "^6.5.0",
 		"typescript": "^4.9.3"
 	}
