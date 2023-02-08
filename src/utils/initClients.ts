@@ -1,6 +1,6 @@
 import { initializeProviders, NodeConfig } from "./initializeProviders";
 import { reconnectProviders } from "./reconnectProviders";
-import { appStateProxy } from "src/state";
+// import { appStateProxy } from "src/state";
 
 import { PROVIDER_ID, WalletClient, Network, Account, Wallet } from "../types";
 
@@ -8,10 +8,10 @@ export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
 
 import { computed, reactive, readonly, Ref, DeepReadonly, toRaw } from '@vue/reactivity';
+
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wow... this only works in built vue projs, not w vite dev server...)
-
-import { clientsComputed, clientsReactive, clientsState } from "./stateee/clients";
+// export const watch = watch;
 
 import BaseClient from "src/clients/base/base";
 
@@ -48,9 +48,9 @@ export const nccState = reactive({
 	// 	connect: () => {}
 	// }>,
 
-	clients: clientsState,
-	clientsR: clientsReactive,
-	clientsC: clientsComputed,
+	// clients: clientsState,
+	// clientsR: clientsReactive,
+	// clientsC: clientsComputed,
 
 	// objs?
 	// clients: {
@@ -148,6 +148,7 @@ export const initClients = async (
 
 	let ips: SupportedProviders;
 
+	// TODO support a mix of some clients w custom config + some w defaults
 
 	if (!providers) {
 		ips = await initializeProviders(
@@ -162,7 +163,7 @@ export const initClients = async (
 			algosdkStatic,
 		);
 	} else {
-		console.log('handle incoming configed client');
+		// console.log('handle incoming configed clients');
 		ips = providers;
 	}
 	console.log('ips', ips);
@@ -181,7 +182,7 @@ export const initClients = async (
 	nccState.rps = rps;
 
 	if (rps) {
-		nccState.clientsR.inited = rps;
+		// nccState.clientsR.inited = rps;
 
 		let clients = rps;
 

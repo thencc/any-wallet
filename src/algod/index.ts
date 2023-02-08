@@ -8,8 +8,20 @@ import {
 
 export const getAlgosdk = async () => {
   // TODO do we need crypto-js too?
-  (window as any).Buffer = (await import('buffer')).Buffer; // usage is always in the browser so this is needed
-  return (await import("algosdk")).default;
+
+  try {
+    // (window as any).Buffer = (await import('buffer')).Buffer; // usage is always in the browser so this is needed
+    const buff = await import('buffer');
+    console.log('buff (dynamic import)', buff);
+    (window as any).Buffer = buff.default.Buffer; // usage is always in the browser so this is needed
+
+    return (await import("algosdk")).default;
+  } catch(e) {
+    // console.warn('err w dynamic algosdk/buffer imports');
+    console.warn(e);
+    throw new Error('err w dynamic algosdk/buffer imports');
+  }
+
 };
 
 export const getAlgodClient = async (
@@ -36,7 +48,11 @@ export default class Algod {
   }
 
   static async init(algodOptions?: AlgodClientOptions) {
+    console.log('doing Algod init');
+
     const algosdk = await getAlgosdk();
+    console.log('algosdk', algosdk);
+
     const algodClient = await getAlgodClient(algosdk, algodOptions);
 
     return new Algod(algosdk, algodClient);

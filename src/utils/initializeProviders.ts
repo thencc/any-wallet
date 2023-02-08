@@ -7,7 +7,7 @@ import {
   DEFAULT_NODE_PORT,
   DEFAULT_NETWORK,
 } from "../constants";
-import { appStateProxy } from "src/state";
+// import { appStateProxy } from "src/state";
 
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
@@ -85,11 +85,11 @@ export const initializeProviders = async (
     }
   }
 
-  appStateProxy.state.initializedProviders = initializedProviders;
-  console.log('initializedProviders', initializedProviders);
+  // appStateProxy.state.initializedProviders = initializedProviders;
+  // console.log('initializedProviders', initializedProviders);
 
-  console.log('initedClients', initedClients);
-  appStateProxy.state.initedClients = initedClients;
+  // console.log('initedClients', initedClients);
+  // appStateProxy.state.initedClients = initedClients;
 
 
   /**

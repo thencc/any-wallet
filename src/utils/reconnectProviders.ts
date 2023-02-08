@@ -19,7 +19,7 @@ export const reconnectProviders = async (providers: SupportedProviders) => {
         c.reconnect(c.disconnect);
         awaitedClients[cId] = c;
       } else {
-        console.error('no client for:', cId);
+        console.error('no client found for:', cId, '. is the pkg installed?');
       }
     }
 

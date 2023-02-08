@@ -64,6 +64,7 @@ class InkeyWalletClient extends BaseWallet {
 		network = DEFAULT_NETWORK,
 	}: InitParams) {
 		try {
+			console.log('init started');
 
 			// TODO fix this
 			// make this inkey client be able to init twice (other clients work ok)
@@ -78,12 +79,20 @@ class InkeyWalletClient extends BaseWallet {
 
 			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js"))
 				.createClient(inkeyOptions);
+			console.log('inkeyClient (in inkey/client.ts)', inkeyClient);
 
 			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
+			console.log('algosdk', algosdk);
+
 			const algodClient = await getAlgodClient(algosdk, algodOptions);
+			console.log('algodClient', algodClient);
+
+			console.log('network', network);
 
 			return new InkeyWalletClient({
 				client: inkeyClient,
+				// algosdk: undefined,
+				// algodClient: undefined,
 				algosdk: algosdk,
 				algodClient: algodClient,
 				network
@@ -106,8 +115,14 @@ class InkeyWalletClient extends BaseWallet {
 	async connect() {
 		console.log('doConnect');
 
+		console.log('this.metadata check', this.metadata);
+
 		const inkeyAccounts = await this.client.connect();
 		console.log('inkeyAccounts', inkeyAccounts);
+
+		if (!inkeyAccounts) {
+			throw new Error('no inkeyAccounts');
+		}
 
 		const accounts = inkeyAccounts.map(a => {
 			return {

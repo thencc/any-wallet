@@ -23,10 +23,10 @@
 			</div>
 		</div>
 
-		<p>keys of initialized clients (computed):</p>
+		<!-- <p>keys of initialized clients (computed):</p>
 		<p>
 			{{ nccState.clientsC.initedClientKeys }}
-		</p>
+		</p> -->
 
 		<p>clients loop</p>
 		<div v-for="(p, k) of nccState.wallets">
@@ -42,6 +42,7 @@
 			</select>
 		</div>
 
+		<br />
 		<button @click="doTxnSimpleAlgJs">
 			doTxnSimpleAlgJs
 		</button>
@@ -61,29 +62,65 @@ import {
 // import { watch } from '@vue-reactivity/watch'; // works
 
 // TODO put w3h in algonaut
+// import {
+// 	// initClients,
+// 	// nccState,
+// 	// signTransactions,
+
+// 	// PROVIDER_ID,
+// 	// inkey, // client for configing
+// 	// myalgo, // client
+// 	// watch, // sometimes works, seriously.
+// } from '@thencc/web3-wallet-handler';
+
+// import * as w3h from '@thencc/web3-wallet-handler';
+
+// works
+// import { Algonaut, utils, initClients } from '@thencc/algonautjs';
+
+// const w3h = {} as any;
+
 import {
-	initClients,
-	nccState,
-	signTransactions,
+	Algonaut,
+	utils,
+	// web3yo,
 
-	PROVIDER_ID,
-	inkey, // client for configing
-	myalgo, // client
-	watch, // sometimes works, seriously.
-} from '@thencc/web3-wallet-handler';
+	// w3h stuff
+	w3h,
+	// initClients,
+	// nccState,
+	// signTransactions,
+	// PROVIDER_ID,
+	// inkey, // client for configing
+	// myalgo, // client
+	// watch, // sometimes works, seriously.
+} from '@thencc/algonautjs';
 
-type ClientsTypeObj = Awaited<ReturnType<typeof initClients>>;
 
-console.log('nccState', nccState);
+// const w3h = web3yo();
+console.log('w3h', w3h);
 
-import { Algonaut, utils } from '@thencc/algonautjs';
-const algonaut = new Algonaut({
-	BASE_SERVER: 'https://testnet-api.algonode.cloud',
-	INDEX_SERVER: '',
-	API_TOKEN: { 'accept': 'application/json' },
-	PORT:'',
-	LEDGER: 'testnet',
-});
+const initClients = w3h.initClients;
+const nccState = w3h.nccState;
+const signTransactions = w3h.signTransactions;
+// type PROVIDER_ID = w3h.PROVIDER_ID;
+const inkey = w3h.inkey;
+const myalgo = w3h.myalgo;
+const pera = w3h.pera;
+const watch = w3h.watch;
+
+// type ClientsTypeObj = Awaited<ReturnType<typeof initClients>>;
+// console.log('nccState', nccState);
+
+// import { createClient } from '@thencc/inkey-client-js';
+
+// const algonaut = new Algonaut({
+// 	BASE_SERVER: 'https://testnet-api.algonode.cloud',
+// 	INDEX_SERVER: '',
+// 	API_TOKEN: { 'accept': 'application/json' },
+// 	PORT:'',
+// 	LEDGER: 'testnet',
+// });
 
 export default defineComponent({
 	data() {
@@ -98,9 +135,9 @@ export default defineComponent({
 	},
 	methods: {
 		async init() {
-			algonaut.checkStatus().then(h => {
-				console.log('h', h);
-			});
+			// algonaut.checkStatus().then(h => {
+			// 	console.log('h', h);
+			// });
 
 			this.doInitializeProviders();
 
@@ -158,17 +195,31 @@ export default defineComponent({
 
 			// empty arr inits all minus kmd
 			const providersToInit = [
-				// PROVIDER_ID.INKEY,
-				// PROVIDER_ID.MYALGO,
-			] as PROVIDER_ID[];
+				w3h.PROVIDER_ID.INKEY,
+				w3h.PROVIDER_ID.MYALGO,
+				// w3h.PROVIDER_ID.PERA,
+			// ] as PROVIDER_ID[];
+			] as w3h.PROVIDER_ID[];
+			// ] as any[];
+
+			// const inkeyClient = await createClient({
+			// 	src: 'https://inkey-staging.web.app'
+			// });
+			// console.log('inkeyClient', inkeyClient);
 
 			const enabledClients = {
-				[PROVIDER_ID.INKEY]: inkey.init({
+				// [PROVIDER_ID.INKEY]: inkey.init({
+				[w3h.PROVIDER_ID.INKEY]: inkey.init({
 					clientOptions: {
-						iFrameUrl: 'http://localhost:5200',
+						// iFrameUrl: 'http://localhost:5200',
+						iFrameUrl: 'https://inkey-staging.web.app',
+						// iFrameUrl: 'https://inkey-staging--pr133-refactor-for-inkey-c-nz9xfhhh.web.app',
 					},
+					// clientOptions: undefined,
+					// clientStatic: inkeyClient,
 				}),
-				[PROVIDER_ID.MYALGO]: myalgo.init({}),
+				[w3h.PROVIDER_ID.MYALGO]: myalgo.init({}),
+				[w3h.PROVIDER_ID.PERA]: pera.init({}),
 			};
 
 			// const rps = await initClients(providersToInit);
@@ -213,21 +264,25 @@ export default defineComponent({
 				return;
 			}
 
-			const txn = await algonaut.atomicSendAlgo({
-				amount: 1000,
-				to: addr,
-				from: addr // .from needed IF algonaut doesnt have this.account populated
-			});
-			console.log('txn', txn);
 
-			const txnArr = txn.transaction.toByte();
+			// const txn = await algonaut.atomicSendAlgo({
+			// 	amount: 1000,
+			// 	to: addr,
+			// 	from: addr // .from needed IF algonaut doesnt have this.account populated
+			// });
+			// console.log('txn', txn);
 
-			try {
-				let res = await signTransactions([txnArr]);
-				console.log('res', res);
-			} catch(e) {
-				console.warn(e);
-			}
+			// const txnArr = txn.transaction.toByte();
+
+			// try {
+			// 	let res = await signTransactions([txnArr]);
+			// 	console.log('res', res);
+			// } catch(e) {
+			// 	console.warn(e);
+			// }
+
+
+
 
 			// 	const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
 			// 	console.log('groupedTxn', groupedTxn);

@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -9,6 +9,11 @@
 	"types": "dist/index.d.ts",
 	"browser": {
 		".": "dist/index.iife.js"
+	},
+	"exports": {
+		"types": "./dist/index.d.ts",
+		"import": "./dist/index.esm.js",
+		"require": "./dist/index.cjs.js"
 	},
 	"files": [
 		"dist/*",
@@ -23,15 +28,14 @@
 	},
 	"dependencies": {
 		"@vue-reactivity/watch": "^0.2.0",
-		"@vue/reactivity": "^3.2.45",
-		"buffer": "^6.0.3",
-		"valtio": "^1.8.2"
+		"@vue/reactivity": "^3.2.45"
 	},
 	"peerDependencies": {
+		"@thencc/inkey-client-js": "^0.0.2",
 		"@perawallet/connect": "^1.1.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.1",
-		"algosdk": "^1.24.1"
+		"algosdk": "^1.24.1",
+		"buffer": "^6.0.3"
 	},
 	"devDependencies": {
 		"tsup": "^6.5.0",

@@ -29,20 +29,21 @@ export const clientsComputed = readonly(reactive(({
 	}),
 
 	// hydrated clients (aka wallets...)
-	fullClients: computed(() => {
-		//
-		return objectMap(clientsReactive.inited, (c: any) => {
-			// console.log('c', c);
+	// fullClients: computed(() => {
+	// 	//
+	// 	return objectMap(clientsReactive.inited, (c: any) => {
+	// 		console.log('c', c);
 
-			return {
-				// ...c, // loses class methods this way, treats as an obj
-				client: c,
-				accounts: getAccountsByProvider(c.metadata.id),
-				andSomeState: 'bewm',
-				connect: () => c.connect() // works but eh
-			};
-		});
-	}),
+	// 		return {
+	// 			// ...c, // loses class methods this way, treats as an obj
+	// 			client: c,
+	// 			accounts: getAccountsByProvider(c.metadata.id),
+	// 			andSomeState: 'bewm',
+	// 			connect: () => c.connect() // works but eh
+	// 		};
+	// 	});
+	// }),
+
 // }));
 })));
 
