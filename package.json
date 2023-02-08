@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -35,14 +35,14 @@
 	"optionalDependencies": {
 		"@perawallet/connect": "^1.1.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.2",
-		"algosdk": "^1.24.1",
-		"buffer": "^6.0.3"
+		"@thencc/inkey-client-js": "^0.0.2"
 	},
 	"devDependencies": {
 		"@perawallet/connect": "^1.1.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.2",
+		"algosdk": "^2.1.0",
+		"buffer": "^6.0.3",
 		"tsup": "^6.5.0",
 		"typescript": "^4.9.3"
 	}
