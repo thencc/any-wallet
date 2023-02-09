@@ -80,8 +80,9 @@ class PeraWalletClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      console.error("Error initializing...", e);
-      return null;
+      throw new Error(`Error initializing... ${e}`);
+      // console.error("Error initializing...", e);
+      // return null;
     }
   }
 
