@@ -1,24 +1,19 @@
-import { build, defineConfig } from 'tsup';
+
+import { defineConfig } from 'tsup';
 import * as pkg from './package.json';
 
 export default defineConfig({
-	// entry: ['src/index.ts', "src/utils/buildSettings.ts"],
 	entry: ['src/index.ts'],
-	format: ['cjs', 'esm', 'iife'],
-	tsconfig: './tsconfig.json',
+	format: ['esm', 'cjs', 'iife'],
 	dts: true, // requires typescript peer dep
 	clean: true, // cleans outDir before build
+	tsconfig: './tsconfig.json',
 	outDir: './dist',
 
-	globalName: 'w3w3w',
+	globalName: 'w3w3w', // for iife, but really who will use this...
+
 	// legacyOutput: true,
 	// TODO use dir folders
-	outExtension({ format }) {
-		return {
-			js: `.${format}.js`,
-		}
-	},
-
 	// outExtension({ format }) {
 	// 	return {
 	// 		js: `.${format}.js`,
@@ -37,12 +32,3 @@ export default defineConfig({
 	// treeshake: true,
 	// sourcemap: true,
 });
-
-// let buildFile = await build({
-// 	entry: ['src/utils/buildSettings.ts'],
-// 	format: ['iife'],
-// 	dts: true,
-// 	clean: false,
-// });
-// console.log('buildFile');
-// console.log(buildFile);
