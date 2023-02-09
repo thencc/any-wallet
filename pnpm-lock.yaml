@@ -559,8 +559,8 @@ packages:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  /bundle-require/4.0.0_esbuild@0.17.6:
-    resolution: {integrity: sha512-5xjxGtR06579D7UcTBhcQO7Zg3A7ji5xuIUl7kNHSvVJ7/CmAs3bCosfYWNuD/Xm5k0jS9VFuPipSpm5S+ZlKw==}
+  /bundle-require/4.0.1_esbuild@0.17.6:
+    resolution: {integrity: sha512-9NQkRHlNdNpDBGmLpngF3EFDcwodhMUuLz9PaWYciVcQF9SE4LFjM2DB/xV1Li5JiuDMv7ZUWuC3rGbqR0MAXQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
       esbuild: '>=0.17'
@@ -1401,7 +1401,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      bundle-require: 4.0.0_esbuild@0.17.6
+      bundle-require: 4.0.1_esbuild@0.17.6
       cac: 6.7.14
       chokidar: 3.5.3
       debug: 4.3.4

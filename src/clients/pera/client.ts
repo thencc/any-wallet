@@ -56,6 +56,10 @@ class PeraWalletClient extends BaseWallet {
     network = DEFAULT_NETWORK,
   }: InitParams) {
     try {
+      if (typeof window == "undefined") {
+        throw new Error('Using a browser lib not in a browser...');
+      }
+
       (window as any).global = window; // necessary shim for pera
 
       const PeraWalletConnect =

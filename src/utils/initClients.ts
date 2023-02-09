@@ -15,6 +15,9 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wo
 
 import BaseClient from "src/clients/base/base";
 
+import * as pkg from '../../package.json';
+export const w3hOptionalDeps = Object.keys(pkg.optionalDependencies);
+
 type WalletThing = {
 	client: BaseClient;
 
@@ -347,7 +350,10 @@ const initLocalStorage = () => {
 		}
 	}
 }
-initLocalStorage(); // 1 time on page load
+if (typeof window !== "undefined") {
+	initLocalStorage(); // 1 time on page load
+}
+
 
 // save ".stored" to localstorage
 watch(

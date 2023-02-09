@@ -104,4 +104,9 @@ export const initializeProviders = async (
 };
 
 
-(window as any).initializeProviders = initializeProviders;
+
+// for iife
+if (typeof window !== "undefined") {
+  (window as any).initializeProviders = initializeProviders;
+}
+

@@ -1,19 +1,26 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.6",
+	"version": "0.0.16",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
-	"main": "dist/index.cjs.js",
 	"module": "dist/index.esm.js",
+	"main": "dist/index.cjs.js",
 	"types": "dist/index.d.ts",
-	"browser": {
-		".": "dist/index.iife.js"
-	},
+	"browser": "dist/index.iife.js",
 	"exports": {
-		"types": "./dist/index.d.ts",
-		"import": "./dist/index.esm.js",
-		"require": "./dist/index.cjs.js"
+		".": {
+			"import": "./dist/index.esm.js",
+			"require": "./dist/index.cjs.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./buildSettings": {
+			"types": "./dist/buildSettings.d.ts",
+			"import": "./dist/buildSettings.js",
+			"require": "./dist/buildSettings.cjs",
+			"default": "./dist/buildSettings.global.js"
+		},
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist/*",
@@ -25,7 +32,9 @@
 		"link-ic": "pnpm link @thencc/inkey-client-js --global",
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
 		"build": "tsup --config=tsup.config.ts",
-		"publish": "npm publish --access public --tag beta --greater-version-only"
+		"build:settings": "tsup --config=tsup-buildSettings.config.ts",
+		"publish:beta": "npm publish --access public --tag beta --greater-version-only",
+		"postinstall": "echo wearepostinstall"
 	},
 	"dependencies": {
 		"@vue-reactivity/watch": "^0.2.0",
@@ -38,9 +47,6 @@
 		"@thencc/inkey-client-js": "^0.0.2"
 	},
 	"devDependencies": {
-		"@perawallet/connect": "^1.1.0",
-		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.2",
 		"algosdk": "^2.1.0",
 		"buffer": "^6.0.3",
 		"tsup": "^6.5.0",
