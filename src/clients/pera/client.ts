@@ -62,9 +62,19 @@ class PeraWalletClient extends BaseWallet {
 
       (window as any).global = window; // necessary shim for pera
 
-      const PeraWalletConnect =
-        clientStatic || (await import("@perawallet/connect")).PeraWalletConnect;
+      // const PeraWalletConnect =
+      //   clientStatic || (await import("@perawallet/connect")).PeraWalletConnect;
       // console.log('PeraWalletConnect', PeraWalletConnect);
+
+      console.log('importing pera');
+      const peraLib = (await import("@perawallet/connect"));
+      console.log('peraLib', peraLib);
+      // const peraLibDefault = peraLib.default;
+      // console.log('peraLibDefault', peraLibDefault);
+
+      // FYI because pera's client is built to cjs, vite's optimize deps helper in the server acts differently than when it builds using rollup. solution: fallback to .default
+      const PeraWalletConnect = clientStatic || peraLib.PeraWalletConnect || peraLib.default.PeraWalletConnect;
+      console.log('PeraWalletConnect', PeraWalletConnect);
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);
@@ -72,6 +82,7 @@ class PeraWalletClient extends BaseWallet {
       const peraWallet = markRaw(new PeraWalletConnect({
         ...(clientOptions ? clientOptions : { shouldShowSignTxnToast: false }),
       }));
+      console.log('peraWallet', peraWallet);
 
       return new PeraWalletClient({
         client: peraWallet,
@@ -80,9 +91,9 @@ class PeraWalletClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      throw new Error(`Error initializing... ${e}`);
-      // console.error("Error initializing...", e);
-      // return null;
+      // throw new Error(`Error initializing... ${e}`);
+      console.error(`[${PROVIDER_ID.PERA}] Error initializing...`, e);
+      return null;
     }
   }
 

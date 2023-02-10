@@ -53,6 +53,8 @@ class MyAlgoWalletClient extends BaseWallet {
     try {
       const MyAlgoConnect =
         clientStatic || (await import("@randlabs/myalgo-connect")).default;
+      console.log('MyAlgoConnect', MyAlgoConnect);
+
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);
@@ -61,6 +63,7 @@ class MyAlgoWalletClient extends BaseWallet {
       const myAlgo = markRaw(new MyAlgoConnect({
         ...(clientOptions ? clientOptions : { disableLedgerNano: false }),
       }));
+      console.log('myAlgo', myAlgo);
 
       return new MyAlgoWalletClient({
         client: myAlgo,
@@ -69,9 +72,9 @@ class MyAlgoWalletClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      throw new Error(`Error initializing... ${e}`);
-      // console.error("Error initializing...", e);
-      // return null;
+      // throw new Error(`Error initializing... ${e}`);
+      console.error(`[${PROVIDER_ID.MYALGO}] Error initializing...`, e);
+      return null;
     }
   }
 

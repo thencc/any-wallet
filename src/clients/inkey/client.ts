@@ -16,7 +16,7 @@ import {
 import { InitParams, InkeyClientType, InkeyConfig, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
-import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
 
 // helpers
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
@@ -33,7 +33,6 @@ class InkeyWalletClient extends BaseWallet {
 	// client can be public because its exposed in clientside code anyway w the await obj value...
 	// possible MORE insecure that way. but honestly, this client api field shouldnt hold anything too secret anyway
 	client: InkeyClientType; // # means private field/method on a class
-	// client: InkeyClientType;
 	network: Network;
 
 	constructor({
@@ -44,7 +43,6 @@ class InkeyWalletClient extends BaseWallet {
 	}: InkeyWalletClientConstructor) {
 		super(algosdk, algodClient);
 		this.client = client; // TODO rename this to .api
-		// this.client = client;
 		this.network = network;
 	}
 
@@ -69,17 +67,20 @@ class InkeyWalletClient extends BaseWallet {
 			// TODO fix this
 			// make this inkey client be able to init twice (other clients work ok)
 
-			let inkeyOptions: undefined | InkeyConfig = undefined;
-			if (clientOptions) {
-				inkeyOptions = {
-					src: clientOptions.iFrameUrl,
-					align: clientOptions.align
-				}
-			}
+			const defaultInkeyConfig: InkeyConfig = {
+				src: 'https://inkey-staging.web.app', //
+				align: 'center',
+			};
+			clientOptions = clientOptions || defaultInkeyConfig;
 
-			const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js"))
-				.createClient(inkeyOptions);
-			console.log('inkeyClient (in inkey/client.ts)', inkeyClient);
+			let inkeyClient = clientStatic;
+			if (inkeyClient == undefined) {
+				// load it!
+				let inkeyLib = await import("@thencc/inkey-client-js");
+				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
+				inkeyClient = await inkeyLib.createClient(clientOptions);
+			}
+			console.log('inkeyClient', inkeyClient);
 
 			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
 			console.log('algosdk', algosdk);
@@ -87,38 +88,22 @@ class InkeyWalletClient extends BaseWallet {
 			const algodClient = await getAlgodClient(algosdk, algodOptions);
 			console.log('algodClient', algodClient);
 
-			console.log('network', network);
-
 			return new InkeyWalletClient({
 				client: inkeyClient,
-				// algosdk: undefined,
-				// algodClient: undefined,
 				algosdk: algosdk,
 				algodClient: algodClient,
 				network
 			});
-
-			// let inc = new InkeyWalletClient({
-			//   client: inkeyClient,
-			//   algosdk: algosdk,
-			//   algodClient: algodClient,
-			//   network
-			// });
-
-			// // return inkeyClient as any;
-			// return inc.client as any;
 		} catch (e) {
-			throw new Error(`Error initializing... ${e}`);
+			console.warn(`[${PROVIDER_ID.INKEY}] Error initializing...`, e);
+			return null;
 		}
 	}
 
 	async connect() {
 		console.log('doConnect');
-
-		console.log('this.metadata check', this.metadata);
-
 		const inkeyAccounts = await this.client.connect();
-		console.log('inkeyAccounts', inkeyAccounts);
+		// console.log('inkeyAccounts', inkeyAccounts);
 
 		if (!inkeyAccounts) {
 			throw new Error('no inkeyAccounts');
@@ -152,6 +137,7 @@ class InkeyWalletClient extends BaseWallet {
 		};
 	}
 
+	// TODO implement reconnect
 	async reconnect(): Promise<Wallet | null> {
 		// console.log('inkey reconnect')
 		return null;
@@ -178,7 +164,6 @@ class InkeyWalletClient extends BaseWallet {
 		} catch (e) {
 			console.warn((e as Error).message);
 		}
-
 		return;
 	}
 

@@ -11,6 +11,7 @@ export default defineConfig({
 	outDir: './dist',
 
 	globalName: 'w3w3w', // for iife, but really who will use this...
+	keepNames: true, // for dev
 
 	// legacyOutput: true,
 	// TODO use dir folders

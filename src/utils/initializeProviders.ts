@@ -9,8 +9,8 @@ import {
 } from "../constants";
 // import { appStateProxy } from "src/state";
 
-// export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
-export type SupportedProviders = { [x: string]: Promise<WalletClient> };
+export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
+// export type SupportedProviders = { [x: string]: Promise<WalletClient> };
 export type InitializedClients = { [x: string]: WalletClient };
 
 export type NodeConfig = {
