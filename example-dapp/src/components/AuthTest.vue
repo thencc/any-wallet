@@ -86,28 +86,29 @@ import {
 	// web3yo,
 
 	// w3h stuff
-	w3h,
-	// initClients,
-	// nccState,
-	// signTransactions,
-	// PROVIDER_ID,
-	// inkey, // client for configing
+	// w3h,
+	initClients,
+	nccState,
+	signTransactions,
+	PROVIDER_ID,
+	inkey, // client for configing
+	// pera,
 	// myalgo, // client
-	// watch, // sometimes works, seriously.
+	watch, // sometimes works, seriously.
 } from '@thencc/algonautjs';
 
 
 // const w3h = web3yo();
-console.log('w3h', w3h);
+// console.log('w3h', w3h);
 
-const initClients = w3h.initClients;
-const nccState = w3h.nccState;
-const signTransactions = w3h.signTransactions;
-// type PROVIDER_ID = w3h.PROVIDER_ID;
-const inkey = w3h.inkey;
-const myalgo = w3h.myalgo;
-const pera = w3h.pera;
-const watch = w3h.watch;
+// const initClients = w3h.initClients;
+// const nccState = w3h.nccState;
+// const signTransactions = w3h.signTransactions;
+// // type PROVIDER_ID = w3h.PROVIDER_ID;
+// const inkey = w3h.inkey;
+// const myalgo = w3h.myalgo;
+// const pera = w3h.pera;
+// const watch = w3h.watch;
 
 // type ClientsTypeObj = Awaited<ReturnType<typeof initClients>>;
 // console.log('nccState', nccState);
@@ -195,11 +196,11 @@ export default defineComponent({
 
 			// empty arr inits all minus kmd
 			const providersToInit = [
-				w3h.PROVIDER_ID.INKEY,
-				w3h.PROVIDER_ID.MYALGO,
-				// w3h.PROVIDER_ID.PERA,
-			// ] as PROVIDER_ID[];
-			] as w3h.PROVIDER_ID[];
+				PROVIDER_ID.INKEY,
+				PROVIDER_ID.MYALGO,
+				PROVIDER_ID.PERA,
+			] as PROVIDER_ID[];
+			// ] as w3h.PROVIDER_ID[];
 			// ] as any[];
 
 			// const inkeyClient = await createClient({
@@ -208,8 +209,8 @@ export default defineComponent({
 			// console.log('inkeyClient', inkeyClient);
 
 			const enabledClients = {
-				// [PROVIDER_ID.INKEY]: inkey.init({
-				[w3h.PROVIDER_ID.INKEY]: inkey.init({
+				[PROVIDER_ID.INKEY]: inkey.init({
+				// [w3h.PROVIDER_ID.INKEY]: inkey.init({
 					clientOptions: {
 						// iFrameUrl: 'http://localhost:5200',
 						iFrameUrl: 'https://inkey-staging.web.app',
@@ -218,8 +219,8 @@ export default defineComponent({
 					// clientOptions: undefined,
 					// clientStatic: inkeyClient,
 				}),
-				[w3h.PROVIDER_ID.MYALGO]: myalgo.init({}),
-				[w3h.PROVIDER_ID.PERA]: pera.init({}),
+				// [PROVIDER_ID.MYALGO]: myalgo.init({}),
+				// [PROVIDER_ID.PERA]: pera.init({}),
 			};
 
 			// const rps = await initClients(providersToInit);

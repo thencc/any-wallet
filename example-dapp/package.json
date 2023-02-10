@@ -7,12 +7,12 @@
 		"unlink-w3h": "pnpm unlink @thencc/web3-wallet-handler",
 		"link-algjs": "pnpm link @thencc/algonautjs --global",
 		"unlink-algjs": "pnpm unlink @thencc/algonautjs",
-		"dev": "vite --force",
+		"dev": "vite",
 		"build": "vue-tsc && vite build",
 		"site-preview": "vite preview"
 	},
 	"dependencies": {
-		"@thencc/algonautjs": "^0.2.5",
+		"@thencc/algonautjs": "^0.2.12",
 		"vue": "^3.2.41"
 	},
 	"devDependencies": {

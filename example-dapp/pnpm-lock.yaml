@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@thencc/algonautjs': ^0.2.5
+  '@thencc/algonautjs': ^0.2.12
   '@vitejs/plugin-vue': ^4.0.0
   typescript: ^4.6.4
   vite: ^4.1.1
@@ -9,7 +9,7 @@ specifiers:
   vue-tsc: ^1.0.24
 
 dependencies:
-  '@thencc/algonautjs': 0.2.5
+  '@thencc/algonautjs': 0.2.12
   vue: 3.2.47
 
 devDependencies:
@@ -306,11 +306,11 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/algonautjs/0.2.5:
-    resolution: {integrity: sha512-cc5L/h+LJz2kcfZs5WxiXJwhEfQBJbXFUAkHzZJBbjAdjmNoHh1/AEts4AryCg+IslywLGHMvahokmsNOVl63A==}
+  /@thencc/algonautjs/0.2.12:
+    resolution: {integrity: sha512-Yx76Iu6Tcb3caKEHGWYJytu9N1RhxLly877GpJ3Hk2yaGjcwMCPl4H202xrRmLouvdB9mZbcd0iLLA3wM2R46Q==}
     dependencies:
       '@json-rpc-tools/utils': 1.7.6
-      '@thencc/web3-wallet-handler': 0.0.5
+      '@thencc/web3-wallet-handler': 0.0.18_algosdk@1.24.1
       algosdk: 1.24.1
       base32-encode: 2.0.0
       buffer: 6.0.3
@@ -330,8 +330,9 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.5:
-    resolution: {integrity: sha512-OEh54h6pdmQtf8I1YObKvxHbx7fIEN00wKaozctbc3ynJ7Qr2nsUNe0yf31sT9EB9ec8aUDWlcAqDYoVuz+ugg==}
+  /@thencc/web3-wallet-handler/0.0.18_algosdk@1.24.1:
+    resolution: {integrity: sha512-fVkoJglYDQZs+LJYliwZazspPzTk3UfEQ+WUS6+p81W32bcFLvjLaYlrk6STqePgcWg1mxFOWVGPQhLaZOlYeQ==}
+    requiresBuild: true
     dependencies:
       '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
       '@vue/reactivity': 3.2.47
@@ -340,11 +341,9 @@ packages:
       '@perawallet/connect': 1.1.0_algosdk@1.24.1
       '@randlabs/myalgo-connect': 1.4.2
       '@thencc/inkey-client-js': 0.0.2
-      algosdk: 1.24.1
-      buffer: 6.0.3
     transitivePeerDependencies:
+      - algosdk
       - bufferutil
-      - encoding
       - utf-8-validate
     dev: false
 
