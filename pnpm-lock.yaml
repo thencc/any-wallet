@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@perawallet/connect': ^1.1.0
+  '@randlabs/msgpack-bigint': ^1.0.3
   '@randlabs/myalgo-connect': ^1.4.2
   '@thencc/inkey-client-js': ^0.0.2
   '@vue-reactivity/watch': ^0.2.0
@@ -13,6 +14,7 @@ specifiers:
   typescript: ^4.9.3
 
 dependencies:
+  '@randlabs/msgpack-bigint': 1.0.3
   '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
   '@vue/reactivity': 3.2.47
   '@vue/shared': 3.2.47
@@ -286,6 +288,12 @@ packages:
     resolution: {integrity: sha512-CzS0U8IFfXNK7QaJFE4pjbxDGfPjbXBEsEaCn9FN15F+ouSAEUQkva3Gl66hrkBZOGexKFEWMwUHIDKpZ2hfVg==}
     dev: false
     optional: true
+
+  /@randlabs/msgpack-bigint/1.0.3:
+    resolution: {integrity: sha512-Y+xMbz7rs812Von6xdVwKwL6GaEWqTPs+hKrpiZLnFA/oVZd8WxaDtbPLKKhy0Fzmb+1xZQOP0TaYABFelnNqQ==}
+    dependencies:
+      ieee754: 1.2.1
+    dev: false
 
   /@randlabs/myalgo-connect/1.4.2:
     resolution: {integrity: sha512-K9hEyUi7G8tqOp7kWIALJLVbGCByhilcy6123WfcorxWwiE1sbQupPyIU5f3YdQK6wMjBsyTWiLW52ZBMp7sXA==}

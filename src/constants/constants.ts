@@ -1,9 +1,10 @@
 import { Network } from "../types";
 
-export enum PROVIDER_ID {
+// TODO move these to pkgHelps / or a single constants file
+export enum CLIENT_ID {
   // KMD = "kmd",
   PERA = "pera",
-  MYALGO = "myalgo",
+  // MYALGO = "myalgo",
   INKEY = "inkey",
   // ALGOSIGNER = "algosigner",
   // DEFLY = "defly",

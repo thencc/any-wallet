@@ -1,5 +1,5 @@
 import type _algosdk from "algosdk";
-import { PROVIDER_ID } from "../../constants";
+import { CLIENT_ID } from "../../constants";
 import type { AlgodClientOptions, Network } from "../../types";
 
 export type WindowExtended = { AlgoSigner: AlgoSigner } & Window &
@@ -35,7 +35,7 @@ export type AlgoSigner = {
 
 export type AlgoSignerClientConstructor = {
   client: AlgoSigner;
-  id: PROVIDER_ID;
+  id: CLIENT_ID;
   algosdk: typeof _algosdk;
   algodClient: _algosdk.Algodv2;
   network: SupportedLedgers;

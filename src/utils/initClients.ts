@@ -2,7 +2,7 @@ import { initializeProviders, NodeConfig } from "./initializeProviders";
 import { reconnectProviders } from "./reconnectProviders";
 // import { appStateProxy } from "src/state";
 
-import { PROVIDER_ID, WalletClient, Network, Account, Wallet } from "../types";
+import { CLIENT_ID, WalletClient, Network, Account, Wallet } from "../types";
 
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type InitializedClients = { [x: string]: WalletClient };
@@ -10,7 +10,7 @@ export type InitializedClients = { [x: string]: WalletClient };
 import { computed, reactive, readonly, Ref, DeepReadonly, toRaw } from '@vue/reactivity';
 
 import { watch } from '@vue-reactivity/watch';
-export { watch } from '@vue-reactivity/watch'; // re-export for frontend use (wow... this only works in built vue projs, not w vite dev server...)
+export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 // export const watch = watch;
 
 import BaseClient from "src/clients/base/base";
@@ -39,13 +39,13 @@ export const nccState = reactive({
 	rps: null as any,
 	// isAuthed: false, // per session, just use .activeAcct is not null
 	activeAddress: '',
-	activeClientId: null as null | PROVIDER_ID,
+	activeClientId: null as null | CLIENT_ID,
 
 	// wallets: {} as any,
 	wallets: null as null | Record<string, WalletThing>,
 
 	// wallets: null as null | Record<string, WalletThing>,
-	// Record<PROVIDER_ID, {
+	// Record<CLIENT_ID, {
 	// 	client: BaseClient,
 	// 	accounts: any,
 	// 	connect: () => {}
@@ -143,15 +143,17 @@ import type algosdk from "algosdk";
 // TODO support arg for partial/specific providers
 // export const initClients = async (providers: SupportedProviders) => {
 export const initClients = async (
-	providers?: PROVIDER_ID[] | SupportedProviders,
+	providers?: CLIENT_ID[] | SupportedProviders,
+	// clientsToInit?: CLIENT_ID[] | SupportedProviders,
 	nodeConfig?: NodeConfig,
 	algosdkStatic?: typeof algosdk
 ) => {
 	console.log('initClients', providers, nodeConfig, algosdkStatic);
 
+	// TODO rename to
 	let ips: SupportedProviders;
 
-	// TODO support a mix of some clients w custom config + some w defaults
+	// TODO support a mix of some clients w custom config + some w defaults. ie, ['inkey']: true // uses defaults
 
 	if (!providers) {
 		ips = await initializeProviders(
@@ -192,7 +194,8 @@ export const initClients = async (
 		// .wallets init
 		if (nccState.wallets == null) nccState.wallets = {};
 
-		for (let id in clients) {
+		for (let cid in clients) {
+			let id = cid as CLIENT_ID;
 			let c = clients[id];
 			let w: WalletThing = {
 				client: c,
@@ -201,7 +204,7 @@ export const initClients = async (
 				// methods
 				connect: async () => await c.connect(() => { }), // arg is onDisconnect
 				disconnect: async () => {
-					removeAccountsByClient(c.metadata.id);
+					removeAccountsByClient(id);
 					try {
 						await c.disconnect();
 					} catch(e) {
@@ -211,7 +214,7 @@ export const initClients = async (
 				reconnect: async () => await c.reconnect(() => { }),
 				setAsActiveWallet: () => {
 					// console.log('setAsActiveWallet');
-					let accts = getAccountsByProvider(c.metadata.id);
+					let accts = getAccountsByProvider(id);
 					if (!accts) {
 						throw new Error('No accounts for this provider to set as active');
 					} else {
@@ -219,12 +222,12 @@ export const initClients = async (
 					}
 				},
 				removeAccounts() {
-					removeAccountsByClient(c.metadata.id);
+					removeAccountsByClient(id);
 				},
 
 				// readonlys
 				// accounts: look( getAccountsByProvider(c.metadata.id) ), // DESIRED, how? + why doesnt this wrapper work?
-				accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
+				accounts: readonly(computed(() => getAccountsByProvider(id))), // works all around
 				// COULD make the accts arr have methods like disconnect this acct
 				isActive: readonly(computed(() => {
 					return nccState.stored.activeAccount?.providerId === id
@@ -282,11 +285,11 @@ export const initClients = async (
 	return rps;
 };
 
-export const getAccountsByProvider = (id: PROVIDER_ID) => {
+export const getAccountsByProvider = (id: CLIENT_ID) => {
 	return nccState.stored.connectedAccounts.filter((account) => account.providerId === id);
 };
 
-const removeAccountsByClient = (id: PROVIDER_ID) => {
+const removeAccountsByClient = (id: CLIENT_ID) => {
 	console.log('removeAccountsByClient', id);
 
 	if (nccState.stored.activeAccount) {
@@ -382,7 +385,7 @@ watch(
 
 		// update helpful top level prop
 		let activeAddress = '';
-		let activeClientId: null | PROVIDER_ID = null;
+		let activeClientId: null | CLIENT_ID = null;
 		if (acct) {
 			activeAddress = acct.address;
 			activeClientId = acct.providerId;

@@ -6,7 +6,7 @@ import BaseWallet from "../base";
 import type _MyAlgoConnect from "@randlabs/myalgo-connect";
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, PROVIDER_ID } from "../../constants";
+import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
 import {
   TransactionsArray,
   DecodedTransaction,
@@ -36,7 +36,7 @@ class MyAlgoWalletClient extends BaseWallet {
 
   // static metadata = {
   metadata = {
-    id: PROVIDER_ID.MYALGO,
+    id: CLIENT_ID.MYALGO,
     chain: 'algorand',
     name: "MyAlgo",
     icon: ICON,
@@ -73,7 +73,7 @@ class MyAlgoWalletClient extends BaseWallet {
       });
     } catch (e) {
       // throw new Error(`Error initializing... ${e}`);
-      console.error(`[${PROVIDER_ID.MYALGO}] Error initializing...`, e);
+      console.error(`[${CLIENT_ID.MYALGO}] Error initializing...`, e);
       return null;
     }
   }

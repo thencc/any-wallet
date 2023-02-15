@@ -208,6 +208,29 @@ export default defineComponent({
 			// });
 			// console.log('inkeyClient', inkeyClient);
 
+			const inkeyClient: any = {};
+
+			// api to strive for
+			const clientsToInit = {
+				// [1] true imports lib async + uses default client config
+				'myalgo': true,
+
+				// object syntax
+				[PROVIDER_ID.PERA]: {
+					// [2] imports lib async + uses this config
+					config: {
+						network: 'testnet', // for example. used by algosigner for field in class. but inkey would pass to client gen func.
+						// src: '',
+						// + contains sdkConfig
+					},
+
+					// [3] pass an already initialized + configured sdk of this wallet
+					sdk: await inkeyClient.createClient({}),
+
+					// FYI can pass # 2 or 3 but not both.
+				}
+			};
+
 			const enabledClients = {
 				[PROVIDER_ID.INKEY]: inkey.init({
 				// [w3h.PROVIDER_ID.INKEY]: inkey.init({

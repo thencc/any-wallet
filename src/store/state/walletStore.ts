@@ -2,7 +2,7 @@ import { immer } from "zustand/middleware/immer";
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type { Account } from "../../types";
-import { PROVIDER_ID } from "../../constants";
+import { CLIENT_ID } from "../../constants";
 
 export const walletStoreSelector = (state: WalletStore) => ({
   accounts: state.accounts,
@@ -17,9 +17,9 @@ export type WalletStore = {
   accounts: Account[];
   activeAccount: Account | null;
   setActiveAccount: (account: Account) => void;
-  clearActiveAccount: (id: PROVIDER_ID) => void;
+  clearActiveAccount: (id: CLIENT_ID) => void;
   addAccounts: (accounts: Account[]) => void;
-  removeAccounts: (providerId: PROVIDER_ID) => void;
+  removeAccounts: (providerId: CLIENT_ID) => void;
 };
 
 export const useWalletStore = create<WalletStore>()(
@@ -33,7 +33,7 @@ export const useWalletStore = create<WalletStore>()(
             state.activeAccount = account;
           });
         },
-        clearActiveAccount: (id: PROVIDER_ID) => {
+        clearActiveAccount: (id: CLIENT_ID) => {
           set((state) => {
             if (id === state.activeAccount?.providerId)
               state.activeAccount = null;
@@ -59,7 +59,7 @@ export const useWalletStore = create<WalletStore>()(
             state.accounts = uniqueAccounts;
           });
         },
-        removeAccounts: (providerId: PROVIDER_ID) => {
+        removeAccounts: (providerId: CLIENT_ID) => {
           set((state) => {
             state.accounts = state.accounts.filter(
               (account) => account.providerId !== providerId

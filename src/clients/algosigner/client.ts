@@ -5,7 +5,7 @@
 import type _algosdk from "algosdk";
 import BaseWallet from "../base";
 import Algod, { getAlgodClient } from "../../algod";
-import { PROVIDER_ID, DEFAULT_NETWORK } from "../../constants";
+import { CLIENT_ID, DEFAULT_NETWORK } from "../../constants";
 import type {
   TransactionsArray,
   DecodedTransaction,
@@ -53,14 +53,18 @@ class AlgoSignerClient extends BaseWallet {
     this.network = network;
   }
 
+  // TODO move metadata to constants
   static metadata = {
-    id: PROVIDER_ID.ALGOSIGNER,
+    id: CLIENT_ID.ALGOSIGNER,
     name: "AlgoSigner",
+    // chain: 'algorand',
     icon: ICON,
-    isWalletConnect: false,
+    isWalletConnect: false, // TODO delete
   };
 
   static async init({
+    // TODO add clientConfig field w .network defaulting to mainnet + keep getNetwork map
+    clientConfig,
     algodOptions,
     algosdkStatic,
     network = DEFAULT_NETWORK,
@@ -78,7 +82,7 @@ class AlgoSignerClient extends BaseWallet {
       const algosigner = (window as WindowExtended).AlgoSigner as AlgoSigner;
 
       return new AlgoSignerClient({
-        id: PROVIDER_ID.ALGOSIGNER,
+        id: CLIENT_ID.ALGOSIGNER,
         client: algosigner,
         algosdk: algosdk,
         algodClient: algodClient,

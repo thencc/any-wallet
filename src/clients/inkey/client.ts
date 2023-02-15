@@ -2,24 +2,30 @@
  * Helpful resources:
  * https://github.com/thencc/inkey-client-js
  */
-import BaseWallet from "../base";
+import { BaseClient } from "../base";
 import type _algosdk from "algosdk";
-import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, PROVIDER_ID } from "../../constants";
+import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
+// import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
 import {
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	Network,
+	// Network,
 	Wallet,
 } from "../../types";
-import { InitParams, InkeyClientType, InkeyConfig, InkeyWalletClientConstructor } from "./types";
-import { ICON } from "./constants";
+import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from "./types";
+import { ICON, METADATA } from "./constants";
 
 import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
 
+// TODO switch all algosdk use to this + other nacl lib (<400kb)
+import msgpack from '@randlabs/msgpack-bigint';
+
 // helpers
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
+	if (typeof window == undefined) {
+		throw new Error('[inkey] cannot access window');
+	}
 	var binary = '';
 	var bytes = new Uint8Array(buffer);
 	var len = bytes.byteLength;
@@ -29,80 +35,85 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 	return window.btoa(binary);
 };
 
-class InkeyWalletClient extends BaseWallet {
-	// client can be public because its exposed in clientside code anyway w the await obj value...
-	// possible MORE insecure that way. but honestly, this client api field shouldnt hold anything too secret anyway
-	client: InkeyClientType; // # means private field/method on a class
-	network: Network;
+
+export class InkeyClient extends BaseClient {
+	sdk: InkeySdk; // # means private field/method on a class
+	// network: Network;
+
+	// static metadata = METADATA;
+	static readonly metadata = METADATA;
+	// metadata = METADATA;
+	// readonly metadata = METADATA;
 
 	constructor({
-		client,
-		algosdk,
-		algodClient,
-		network,
+		sdk: clientSdk,
+		// algosdk,
+		// algodClient,
+		// network,
 	}: InkeyWalletClientConstructor) {
-		super(algosdk, algodClient);
-		this.client = client; // TODO rename this to .api
-		this.network = network;
+		// super(algosdk, algodClient);
+		super();
+		// this.client = client; // TODO rename this to .api / .sdk
+		this.sdk = clientSdk;
+		// this.network = network;
 	}
 
-	metadata = {
-		id: PROVIDER_ID.INKEY,
-		chain: "algorand",
-		name: "Inkey Microwallet",
-		icon: ICON,
-		isWalletConnect: false, // TODO remove
-	};
-
-	static async init({
-		clientOptions,
-		algodOptions,
-		clientStatic,
-		algosdkStatic,
-		network = DEFAULT_NETWORK,
-	}: InitParams) {
+	// static async init(initParams?: InitParams) {
+	static async init(initParams?: InitParams) {
 		try {
-			console.log('init started');
+			console.log('[inkey] init started');
 
 			// TODO fix this
 			// make this inkey client be able to init twice (other clients work ok)
 
-			const defaultInkeyConfig: InkeyConfig = {
-				src: 'https://inkey-staging.web.app', //
-				align: 'center',
-			};
-			clientOptions = clientOptions || defaultInkeyConfig;
+			// a client sdk can be passed in pre-initialized. if so, use that
+			let clientSdk: InkeySdk;
+			if (initParams && initParams.sdk) {
+				clientSdk = initParams.sdk; // already init-ed sdk
+			} else {
 
-			let inkeyClient = clientStatic;
-			if (inkeyClient == undefined) {
-				// load it!
+				let clientOptions: SdkConfig;
+				const defaultInkeyConfig: SdkConfig = {
+					src: 'https://inkey-staging.web.app', //
+					align: 'center',
+				};
+				clientOptions = initParams?.config || defaultInkeyConfig;
+
+				// let clientGen = clientSdkStatic;
+				// if (clientSdkStatic == undefined) {
+				console.log('now load up the sdk');
+
 				let inkeyLib = await import("@thencc/inkey-client-js");
 				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
-				inkeyClient = await inkeyLib.createClient(clientOptions);
+				let createClientSdk = inkeyLib.createClient;
+				// }
+				console.log('createClientSdk', createClientSdk);
+				clientSdk = await createClientSdk(clientOptions);
 			}
-			console.log('inkeyClient', inkeyClient);
 
-			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-			console.log('algosdk', algosdk);
 
-			const algodClient = await getAlgodClient(algosdk, algodOptions);
-			console.log('algodClient', algodClient);
 
-			return new InkeyWalletClient({
-				client: inkeyClient,
-				algosdk: algosdk,
-				algodClient: algodClient,
-				network
+			// const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
+			// console.log('algosdk', algosdk);
+
+			// const algodClient = await getAlgodClient(algosdk, algodOptions);
+			// console.log('algodClient', algodClient);
+
+			return new InkeyClient({
+				sdk: clientSdk,
+				// algosdk: algosdk,
+				// algodClient: algodClient,
+				// network
 			});
 		} catch (e) {
-			console.warn(`[${PROVIDER_ID.INKEY}] Error initializing...`, e);
+			console.warn(`[${METADATA.id}] Error initializing...`, e);
 			return null;
 		}
 	}
 
 	async connect() {
 		console.log('doConnect');
-		const inkeyAccounts = await this.client.connect();
+		const inkeyAccounts = await this.sdk.connect();
 		// console.log('inkeyAccounts', inkeyAccounts);
 
 		if (!inkeyAccounts) {
@@ -118,13 +129,13 @@ class InkeyWalletClient extends BaseWallet {
 
 		if (accounts.length === 0) {
 			throw new Error(
-				`No accounts found for ${this.metadata.id}`
+				`No accounts found for ${METADATA.id}`
 			);
 		}
 
 		const mappedAccounts = accounts.map((account) => ({
 			...account,
-			providerId: this.metadata.id,
+			providerId: METADATA.id,
 		}));
 
 		// save accts to state (+ localstorage automatically)
@@ -132,7 +143,7 @@ class InkeyWalletClient extends BaseWallet {
 		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
-			...this.metadata,
+			...METADATA,
 			accounts: mappedAccounts,
 		};
 	}
@@ -141,26 +152,11 @@ class InkeyWalletClient extends BaseWallet {
 	async reconnect(): Promise<Wallet | null> {
 		// console.log('inkey reconnect')
 		return null;
-
-		// const accounts = this.client.accounts;
-
-		// if (!accounts) {
-		//   return null;
-		// }
-
-		// return {
-		//   ...InkeyWalletClient.metadata,
-		//   accounts: accounts.map((address: string, index: number) => ({
-		//     name: `Inkey Connect ${index + 1}`,
-		//     address,
-		//     providerId: InkeyWalletClient.metadata.id,
-		//   })),
-		// };
 	}
 
 	async disconnect() {
 		try {
-			await this.client.disconnect();
+			await this.sdk.disconnect();
 		} catch (e) {
 			console.warn((e as Error).message);
 		}
@@ -172,10 +168,16 @@ class InkeyWalletClient extends BaseWallet {
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
+		// TODO get this logic out of the algosdk dependencies lib. import just that for fraction of size.
 		const decodedTxns = transactions.map((txn) => {
-			return this.algosdk.decodeObj(txn);
+			// return this.algosdk.decodeObj(txn);
+			return msgpack.decode(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 		console.log('decodedTxns', decodedTxns);
+
+		const algosdk = await getAlgosdk();
+		console.log('getting algosdk... TODO optimize this!');
+
 
 		// Get the unsigned transactions.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
@@ -190,7 +192,8 @@ class InkeyWalletClient extends BaseWallet {
 
 			if (
 				!("txn" in txn) &&
-				connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+				// connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+				connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
 			) {
 				// added inkeyClient method to sign Uint8Array,
 				// option 2: convert Uint8Array txn to base64 str txn for inkey
@@ -210,7 +213,7 @@ class InkeyWalletClient extends BaseWallet {
 		const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
 		// console.log('txnsAsStrB64', txnsAsStrB64);
 
-		const result = await this.client.signTxns(txnsAsStrB64);
+		const result = await this.sdk.signTxns(txnsAsStrB64);
 		console.log('result', result);
 
 		if (!result.success) {
@@ -237,4 +240,4 @@ class InkeyWalletClient extends BaseWallet {
 
 }
 
-export default InkeyWalletClient;
+export default InkeyClient;

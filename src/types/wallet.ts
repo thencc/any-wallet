@@ -1,14 +1,14 @@
-import { PROVIDER_ID } from "../constants";
+import { CLIENT_ID } from "../constants";
 import type BaseWallet from "../clients/base";
 
 export interface Account {
-  providerId: PROVIDER_ID;
+  providerId: CLIENT_ID;
   name: string;
   address: string;
 }
 
 export type Provider = {
-  id: PROVIDER_ID;
+  id: CLIENT_ID;
   name: string;
   icon: string;
   isActive: boolean;
@@ -40,10 +40,10 @@ export type AccountInfo = {
 };
 
 export type WalletProvider = {
-  id: PROVIDER_ID;
+  id: CLIENT_ID;
   name: string;
   icon: string;
-  isWalletConnect: boolean;
+  // isWalletConnect: boolean; // should be a field of WalletConnectClient, not in the metadata
 };
 
 type ExtendValues<Type> = {
@@ -58,4 +58,4 @@ export type Wallet = ExtendValues<WalletProvider> & {
 
 export type WalletClient = BaseWallet;
 
-export { PROVIDER_ID };
+export { CLIENT_ID };

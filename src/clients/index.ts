@@ -1,7 +1,7 @@
-import { PROVIDER_ID } from "src/constants";
+import { CLIENT_ID } from "src/constants";
 
-import pera from "./pera";
-import myalgo from "./myalgo";
+// import pera from "./pera";
+// import myalgo from "./myalgo";
 import inkey from "./inkey";
 // import defly from "./defly";
 // import exodus from "./exodus";
@@ -10,27 +10,36 @@ import inkey from "./inkey";
 // import kmd from "./kmd";
 
 export {
-  pera,
-  myalgo,
-  inkey,
-  // defly,
-  // exodus,
-  // algosigner,
-  // walletconnect,
-  // kmd
+	// pera,
+	// myalgo,
+	inkey,
+	// defly,
+	// exodus,
+	// algosigner,
+	// walletconnect,
+	// kmd
 };
 
-export default {
-  [PROVIDER_ID.PERA]: pera,
-  [PROVIDER_ID.MYALGO]: myalgo,
-  [PROVIDER_ID.INKEY]: inkey,
 
-  // [pera.metadata.id]: pera,
-  // [myalgo.metadata.id]: myalgo,
-  // [inkey.metadata.id]: inkey,
-  // [defly.metadata.id]: defly,
-  // [exodus.metadata.id]: exodus,
-  // [algosigner.metadata.id]: algosigner,
-  // [walletconnect.metadata.id]: walletconnect,
-  // [kmd.metadata.id]: kmd,
+// import InkeyClient from "./inkey";
+
+// export {
+// 	// pera,
+// 	// myalgo,
+// 	InkeyClient,
+// 	// defly,
+// 	// exodus,
+// 	// algosigner,
+// 	// walletconnect,
+// 	// kmd
+// };
+
+// export const CLIENT_SDK_MAP = Object.freeze({
+// });
+export const CLIENT_SDK_MAP = {
+	// [CLIENT_ID.PERA]: pera,
+	// [CLIENT_ID.MYALGO]: myalgo,
+	// [CLIENT_ID.INKEY]: InkeyClient
 };
+
+export default CLIENT_SDK_MAP;

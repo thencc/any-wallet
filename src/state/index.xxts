@@ -7,13 +7,13 @@ const STORAGE_KEY = 'ncc-handy-wallet';
 
 
 import clientsUninited from "../clients";
-import { PROVIDER_ID, WalletClient } from 'src/types';
+import { CLIENT_ID, WalletClient } from 'src/types';
 import { SupportedProviders } from 'src/utils/initializeProviders';
 
 
 // const clients = allClients;
 
-const getClient = async (id?: PROVIDER_ID): Promise<WalletClient> => {
+const getClient = async (id?: CLIENT_ID): Promise<WalletClient> => {
 	console.log('getClient', id);
 
 	if (!id) throw new Error("Provier ID is missing.");
@@ -27,7 +27,7 @@ const getClient = async (id?: PROVIDER_ID): Promise<WalletClient> => {
 	return client;
 };
 
-const connect = async (id: PROVIDER_ID) => {
+const connect = async (id: CLIENT_ID) => {
 	try {
 		// await disconnectWCSessions(id);
 
@@ -57,8 +57,8 @@ const connect = async (id: PROVIDER_ID) => {
 // 	// console.log('clients', cs);
 
 
-// 	// const supportedClients = Object.keys(clients) as PROVIDER_ID[];
-// 	const supportedClients = Object.keys(clientsUninited) as PROVIDER_ID[];
+// 	// const supportedClients = Object.keys(clients) as CLIENT_ID[];
+// 	const supportedClients = Object.keys(clientsUninited) as CLIENT_ID[];
 // 	console.log('supportedClients', supportedClients);
 
 // 	const provs = supportedClients.map((id) => {

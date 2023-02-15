@@ -5,7 +5,7 @@
 import BaseWallet from "../base";
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, PROVIDER_ID } from "../../constants";
+import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
 import {
   TransactionsArray,
   DecodedTransaction,
@@ -13,7 +13,7 @@ import {
   Network,
   Wallet,
 } from "../../types";
-import { InitParams, InkeyClientType, InkeyWalletClientConstructor } from "./types";
+import { InitParams, InkeySdk, InkeyWalletClientConstructor } from "./types";
 import { ICON } from "./constants";
 
 // helpers
@@ -28,8 +28,8 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 };
 
 class InkeyWalletClient {
-  client!: InkeyClientType; // # means private field/method on a class
-  // client: InkeyClientType;
+  client!: InkeySdk; // # means private field/method on a class
+  // client: InkeySdk;
 
   network!: Network;
   algosdk!: typeof _algosdk;
@@ -62,7 +62,7 @@ class InkeyWalletClient {
 
 
   static metadata = {
-    id: PROVIDER_ID.INKEY,
+    id: CLIENT_ID.INKEY,
     chain: "algorand",
     name: "Inkey Microwallet",
     icon: ICON,

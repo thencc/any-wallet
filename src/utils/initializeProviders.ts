@@ -1,5 +1,5 @@
 import type algosdk from "algosdk";
-import { PROVIDER_ID, WalletClient, Network } from "../types";
+import { CLIENT_ID, WalletClient, Network } from "../types";
 import allClients from "../clients";
 import {
   DEFAULT_NODE_BASEURL,
@@ -7,6 +7,7 @@ import {
   DEFAULT_NODE_PORT,
   DEFAULT_NETWORK,
 } from "../constants";
+import { CLIENT_MAP } from "./pkgHelpers";
 // import { appStateProxy } from "src/state";
 
 export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
@@ -21,7 +22,7 @@ export type NodeConfig = {
 };
 
 export const initializeProviders = async (
-  providers?: PROVIDER_ID[],
+  providers?: CLIENT_ID[],
   nodeConfig?: NodeConfig,
   algosdkStatic?: typeof algosdk
 ) => {
@@ -38,17 +39,23 @@ export const initializeProviders = async (
   } = nodeConfig || {};
 
   if (!providers || providers.length === 0)
-    for (const [id, client] of Object.entries(allClients)) {
+    // for (const [id, client] of Object.entries(allClients)) {
+    for (const [id, cm] of Object.entries(CLIENT_MAP)) {
       if (id === "kmd") {
         continue;
       }
 
+      // initializedProviders[cm.id] = cm.client.init();
+      initializedProviders[id] = cm.client.init();
+
+      // initializedProviders[id] = client.init();
+
       // og
-      initializedProviders[id] = client.init({
-        network,
-        algodOptions: [nodeToken, nodeServer, nodePort],
-        algosdkStatic: algosdkStatic,
-      });
+      // initializedProviders[id] = client.init({
+      //   network,
+      //   algodOptions: [nodeToken, nodeServer, nodePort],
+      //   algosdkStatic: algosdkStatic,
+      // });
 
       // let inst = new client({});
       // console.log('inst', inst);
@@ -78,11 +85,15 @@ export const initializeProviders = async (
     for (const id of providers) {
       console.log('do init for prov:', id);
 
-      initializedProviders[id] = allClients[id].init({
-        network,
-        algodOptions: [nodeToken, nodeServer, nodePort],
-        algosdkStatic: algosdkStatic,
-      });
+      initializedProviders[id] = CLIENT_MAP[id].client.init(); // TBD do we need to call this .init here if just do .init and call + await in next bit?
+
+      // initializedProviders[id] = allClients[id].init();
+
+      // initializedProviders[id] = allClients[id].init({
+      //   network,
+      //   algodOptions: [nodeToken, nodeServer, nodePort],
+      //   algosdkStatic: algosdkStatic,
+      // });
     }
   }
 
@@ -106,8 +117,9 @@ export const initializeProviders = async (
 
 
 
+// TODO delete
 // for iife
-if (typeof window !== "undefined") {
-  (window as any).initializeProviders = initializeProviders;
-}
+// if (typeof window !== "undefined") {
+//   (window as any).initializeProviders = initializeProviders;
+// }
 

@@ -6,7 +6,7 @@ import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
 import type WalletConnect from "@walletconnect/client";
 import type { Wallet } from "../../types";
-import { PROVIDER_ID } from "../../constants";
+import { CLIENT_ID } from "../../constants";
 import BaseWallet from "../base";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import {
@@ -38,7 +38,7 @@ class WalletConnectClient extends BaseWallet {
   }
 
   static metadata = {
-    id: PROVIDER_ID.WALLETCONNECT,
+    id: CLIENT_ID.WALLETCONNECT,
     name: "WalletConnect",
     icon: ICON,
     isWalletConnect: true,
@@ -88,6 +88,7 @@ class WalletConnectClient extends BaseWallet {
   async connect(): Promise<Wallet> {
     let chainId = 416001;
 
+    // TODO move these to class fields set from clientOptions / clientConfig in init w defaults
     if (this.network === "betanet") {
       chainId = 416003;
     } else if (this.network === "testnet") {
