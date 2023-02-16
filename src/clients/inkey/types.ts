@@ -1,4 +1,5 @@
 import type { createClient } from "@thencc/inkey-client-js";
+import { CLIENT_ID } from "src/constants";
 // import type _algosdk from "algosdk";
 // import type { AlgodClientOptions, Network } from "../../types";
 
@@ -24,7 +25,17 @@ export type ClientConfig = SdkConfig;
 // 	network?: Network
 // };
 
+
+
+
 // either or
-export type InitParams =
-	| { config: ClientConfig; sdk?: never }
-	| { config?: never; sdk: InkeySdk }
+// export type InitParams =
+// 	| { config: ClientConfig; sdk?: never }
+// 	| { config?: never; sdk: InkeySdk }
+
+
+export type InitParams = {
+	// cId?: CLIENT_ID.INKEY;
+	config?: ClientConfig;
+	sdk?: InkeySdk;
+};

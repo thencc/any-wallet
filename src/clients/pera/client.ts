@@ -48,7 +48,7 @@ export class PeraClient extends BaseClient {
 
 	static metadata = METADATA;
 
-	static async init(initParams?: InitParams) {
+	static async init(initParams?: InitParams): Promise<PeraClient | null> {
 		try {
 			if (typeof window !== "undefined") {
 				(window as any).global = window; // necessary shim for pera

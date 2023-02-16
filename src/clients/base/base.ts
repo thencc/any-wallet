@@ -2,7 +2,7 @@ import type {
 	Wallet, // TODO remove this... / type it better
 } from "../../types";
 
-import type { ClientMetadata, ClientConstructorParams } from "./types";
+import type { ClientMetadata, ClientConstructorParams, ClientInitParams } from "./types";
 
 export abstract class BaseClient {
 	// abstract, meaning things this class will definitely have...
@@ -19,7 +19,7 @@ export abstract class BaseClient {
 	// ------------
 	// abstract init(x: any): Promise<any>;
 	// static init(p?: any): Promise<BaseClient | null>
-	static init: (p?: any) => Promise<BaseClient | null>;
+	static init: (cIP: ClientInitParams) => Promise<BaseClient | null>;
 	// abstract init: (p?: any) => Promise<BaseClient | null>;
 	// static init(p?: any): Promise<BaseClient | null>;
 

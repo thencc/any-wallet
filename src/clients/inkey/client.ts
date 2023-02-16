@@ -59,7 +59,7 @@ export class InkeyClient extends BaseClient {
 	}
 
 	// static async init(initParams?: InitParams) {
-	static async init(initParams?: InitParams) {
+	static async init(initParams?: InitParams): Promise<InkeyClient | null> {
 		try {
 			console.log('[inkey] init started');
 

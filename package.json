@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.27",
+	"version": "0.0.34",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
