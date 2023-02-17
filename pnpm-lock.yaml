@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@perawallet/connect': ^1.1.0
+  '@perawallet/connect': ^1.1.1
   '@randlabs/msgpack-bigint': ^1.0.3
   '@randlabs/myalgo-connect': ^1.4.2
   '@thencc/inkey-client-js': ^0.0.2
@@ -20,7 +20,7 @@ dependencies:
   '@vue/shared': 3.2.47
 
 optionalDependencies:
-  '@perawallet/connect': 1.1.0_algosdk@2.1.0
+  '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
   '@thencc/inkey-client-js': 0.0.2
 
@@ -265,8 +265,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@perawallet/connect/1.1.0_algosdk@2.1.0:
-    resolution: {integrity: sha512-bbXY0GE9MeOz4bf8Hp5P2hc0fIAQdKAEaBXKYl1RfFbAbYwUfTM6AbBRzBvsudZ7Dgz66rVNyQVrZFyRhF4Jxw==}
+  /@perawallet/connect/1.1.1_algosdk@2.1.0:
+    resolution: {integrity: sha512-1DRlJmJifjz0eA2xKfze7pGEBEu4DOOwdsuM3AEjIq67tmI1FT/wVd671bcbRsaJ+LJ3Q/r/ggL9lPnzC1nNnQ==}
     requiresBuild: true
     peerDependencies:
       algosdk: ^1.23.2

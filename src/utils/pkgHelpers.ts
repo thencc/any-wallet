@@ -13,7 +13,10 @@ import { CLIENT_ID } from '../types';
 // clients
 import { InkeyClient } from '../clients/inkey/client';
 import { PeraClient } from '../clients/pera/client';
+import { MyAlgoClient } from 'src/clients/myalgo/client';
 
+
+// perhaps there should be the below const map and a client_type_map for ts things
 export const CLIENT_MAP = {
 	[CLIENT_ID.PERA]: {
 		id: CLIENT_ID.PERA, // TODO remove? just use metadata.id ...?
@@ -27,6 +30,12 @@ export const CLIENT_MAP = {
 		pkg: '@thencc/inkey-client-js',
 		client: InkeyClient,
 		meta: InkeyClient.metadata,
+	},
+	[CLIENT_ID.MYALGO]: {
+		id: CLIENT_ID.MYALGO,
+		pkg: '@randlabs/myalgo-connect',
+		client: MyAlgoClient,
+		meta: MyAlgoClient.metadata,
 	},
 } as const; // "const" is helpful for object security + typing
 
@@ -42,3 +51,8 @@ export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_P
 	}
 	return pkgsToDisable;
 }
+
+
+// tests
+type ValueOf<T> = T[keyof T];
+type VF = ValueOf<typeof CLIENT_MAP>;

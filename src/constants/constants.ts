@@ -4,7 +4,7 @@ import { Network } from "../types";
 export enum CLIENT_ID {
   // KMD = "kmd",
   PERA = "pera",
-  // MYALGO = "myalgo",
+  MYALGO = "myalgo",
   INKEY = "inkey",
   // ALGOSIGNER = "algosigner",
   // DEFLY = "defly",

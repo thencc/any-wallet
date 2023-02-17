@@ -4,8 +4,7 @@
  */
 import { BaseClient } from "../base";
 import type _algosdk from "algosdk";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
-import type { PeraWalletConnect } from "@perawallet/connect";
+import { getAlgosdk } from "../../algod";
 import type {
 	Wallet,
 	TransactionsArray,
@@ -13,7 +12,6 @@ import type {
 	DecodedSignedTransaction,
 	Network,
 } from "../../types";
-import { CLIENT_ID, DEFAULT_NETWORK } from "../../constants";
 import { ICON, METADATA } from "./constants";
 import {
 	PeraTransaction,
@@ -24,41 +22,29 @@ import {
 } from "./types";
 
 import { markRaw } from "@vue/reactivity";
-import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
-	// client: PeraWalletConnect;
-	// network: Network;
 
 	constructor({
 		sdk: clientSdk, // inited
-		// client,
-		// algosdk,
-		// algodClient,
-		// network,
 	}: PeraWalletClientConstructor) {
-		super();
+		super(); // doesnt really do anything
 		this.sdk = clientSdk;
-
-		// super(algosdk, algodClient);
-		// this.client = client;
-		// this.network = network;
 	}
 
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams): Promise<PeraClient | null> {
+		console.log(`[${METADATA.id}] init started`);
+
 		try {
 			if (typeof window !== "undefined") {
-				(window as any).global = window; // necessary shim for pera
+				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
 			} else {
 				console.warn('Using a browser lib not in a browser...');
 			}
-
-			// const PeraWalletConnect =
-			//   clientStatic || (await import("@perawallet/connect")).PeraWalletConnect;
-			// console.log('PeraWalletConnect', PeraWalletConnect);
 
 			let clientSdk: PeraSdk;
 			if (initParams && initParams.sdk) {
@@ -74,66 +60,27 @@ export class PeraClient extends BaseClient {
 
 
 				let sdkLib = await import("@perawallet/connect");
-				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
 				let createClientSdk = sdkLib.PeraWalletConnect || sdkLib.default.PeraWalletConnect; // sometimes needs this shim
 				// FYI because pera's client is built to cjs, vite's optimize deps helper in the server acts differently than when it builds using rollup. solution: fallback to .default;
 
-
-				console.log('createClientSdk', createClientSdk);
+				// console.log('createClientSdk', createClientSdk);
 				clientSdk = new createClientSdk(sdkConfig);
-
 			}
 
-			// vue-r fix
-			clientSdk = markRaw(clientSdk);
-
-			// let peraClient = clientStatic;
-			// if (peraClient == undefined) {
-			// 	let peraLib = await import("@perawallet/connect");
-
-			// 	let clientGenerator =
-
-			// 	// use markRaw to not trigger vue-reactivity
-			// 	peraClient = markRaw(new clientGenerator({
-			// 			...(clientOptions ? clientOptions : { shouldShowSignTxnToast: false }),
-			// 		})) as unknown as PeraWalletConnect;
-			// }
-			// console.log('peraClient', peraClient);
-
-			// const peraWallet = markRaw(new PeraWalletConnect({
-			// 	...(clientOptions ? clientOptions : { shouldShowSignTxnToast: false }),
-			// }));
-			// console.log('peraWallet', peraWallet);
-
-
-			// console.log('importing pera');
-			// const peraLib = (await import("@perawallet/connect"));
-			// console.log('peraLib', peraLib);
-			// // const peraLibDefault = peraLib.default;
-			// // console.log('peraLibDefault', peraLibDefault);
-
-
-			// const PeraWalletConnect = clientStatic || peraLib.PeraWalletConnect || peraLib.default.PeraWalletConnect;
-			// console.log('PeraWalletConnect', PeraWalletConnect);
-
-			// const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-			// const algodClient = await getAlgodClient(algosdk, algodOptions);
+			clientSdk = markRaw(clientSdk); // vue-r fix
 
 			return new PeraClient({
 				sdk: clientSdk,
-				// client: peraWallet,
-				// algosdk,
-				// algodClient,
-				// network,
 			});
 		} catch (e) {
-			// throw new Error(`Error initializing... ${e}`);
 			console.error(`[${METADATA.id}] Error initializing...`, e);
 			return null;
 		}
 	}
 
 	async connect(onDisconnect: () => void): Promise<Wallet> {
+		console.log(`[${METADATA.id}] connect (in class)`);
+
 		const accounts = await this.sdk.connect();
 
 		this.sdk.connector?.on("disconnect", onDisconnect);
@@ -185,6 +132,7 @@ export class PeraClient extends BaseClient {
 		transactions: Uint8Array[]
 	) {
 
+		// TODO fix this:
 		const algosdk = await getAlgosdk();
 		console.log('getting algosdk... TODO optimize this!');
 
