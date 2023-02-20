@@ -4,7 +4,7 @@
  */
 import type MyAlgoConnect from "@randlabs/myalgo-connect";
 // import type _algosdk from "algosdk";
-import { AlgodClientOptions, Network } from "../../types";
+import { AlgodClientOptions, CLIENT_ID, Network } from "../../types";
 
 export type MyAlgoSdk = MyAlgoConnect;
 export type MyAlgoSdkCreator = typeof MyAlgoConnect; // for some clients this is a function, for others it is a class
@@ -24,12 +24,8 @@ export type SdkConfig = {
 };
 
 export type InitParams = {
+	// id: string; // unique
+	// id: CLIENT_ID;
 	config?: SdkConfig;
 	sdk?: MyAlgoSdk;
-
-	// clientOptions?: ClientOptions;
-	// algodOptions?: AlgodClientOptions;
-	// clientStatic?: typeof MyAlgoConnect;
-	// algosdkStatic?: typeof _algosdk;
-	// network?: Network;
 };

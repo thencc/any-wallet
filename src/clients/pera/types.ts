@@ -1,6 +1,7 @@
 import type _algosdk from "algosdk";
 import type { PeraWalletConnect } from "@perawallet/connect";
 import type { Transaction } from "algosdk";
+import { CLIENT_ID } from "src/constants";
 // import type { AlgodSdkConfig, Network } from "../../types";
 
 export type PeraSdk = PeraWalletConnect;
@@ -47,6 +48,14 @@ export type PeraWalletClientConstructor = {
 // };
 
 // either or
-export type InitParams =
-	| { config: SdkConfig; sdk?: never }
-	| { config?: never; sdk: PeraSdk }
+// export type InitParams =
+// 	| { config: SdkConfig; sdk?: never }
+// 	| { config?: never; sdk: PeraSdk }
+
+export type InitParams = {
+	// id: string; // unique
+	// id: CLIENT_ID; // is pera, but has to be this for simplicity
+
+	config?: SdkConfig;
+	sdk?: PeraSdk;
+};

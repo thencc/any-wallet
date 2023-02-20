@@ -8,6 +8,10 @@ export type ClientMetadata = {
 };
 
 export type ClientInitParams = {
+	id: CLIENT_ID;
+	// id: string;
+	// id: CLIENT_ID.INKEY | CLIENT_ID.PERA | CLIENT_ID.MYALGO;
+
 	config?: any; // sdk config for instance create
 	sdk?: any; // pre-inited sdk
 }

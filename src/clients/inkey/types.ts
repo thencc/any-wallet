@@ -35,7 +35,11 @@ export type ClientConfig = SdkConfig;
 
 
 export type InitParams = {
+	// id: string; // unique per (even if initing multiple instances of same client)
+	// id: CLIENT_ID.INKEY;
+	// id: CLIENT_ID;
 	// cId?: CLIENT_ID.INKEY;
+
 	config?: ClientConfig;
 	sdk?: InkeySdk;
 };

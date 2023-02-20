@@ -11,6 +11,7 @@ export enum CLIENT_ID {
   // EXODUS = "exodus",
   // WALLETCONNECT = "walletconnect",
 }
+// export const WALLET_ID = CLIENT_ID;
 
 export const DEFAULT_NETWORK: Network = "testnet"; // "mainnet";
 

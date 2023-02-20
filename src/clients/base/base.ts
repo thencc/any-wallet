@@ -19,6 +19,7 @@ export abstract class BaseClient {
 	// ------------
 	// abstract init(x: any): Promise<any>;
 	// static init(p?: any): Promise<BaseClient | null>
+	// static init: (cIP?: ClientInitParams) => Promise<BaseClient | null>;
 	static init: (cIP?: ClientInitParams) => Promise<BaseClient | null>;
 	// abstract init: (p?: any) => Promise<BaseClient | null>;
 	// static init(p?: any): Promise<BaseClient | null>;
