@@ -1,35 +1,11 @@
-import { initializeProviders, NodeConfig } from "./initializeProviders";
-import { reconnectProviders } from "./reconnectProviders";
-// import { appStateProxy } from "src/state";
-
 import { CLIENT_ID, WalletClient, Network, Account, Wallet, TheWalletType, WalletMap } from "../types";
-
-// export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
-export type SupportedProviders = { [x: string]: WalletClient | null };
-export type InitializedClients = { [x: string]: WalletClient };
-
-// export type ClientParams = {
-// 	config?: any; // sdk config for instance create
-// 	sdk?: any; // pre-inited sdk
-// }
 
 export type ClientsToInit = {
 	// [id in CLIENT_ID]?: boolean | ClientInitParams;
-
 	[CLIENT_ID.INKEY]?: boolean | InkeyInitParams;
 	[CLIENT_ID.PERA]?: boolean | PeraInitParams;
 	[CLIENT_ID.MYALGO]?: boolean | MyAlgoInitParams;
-
-	// [x]: boolean | PeraInitParams;
-
-	// [cId: string]: boolean | undefined;
-
-	// [CLIENT_ID.PERA]?: boolean;
-
-
-	// [INPUT_BLUR]: boolean;
 };
-
 
 export type WalletInitParamsMap = {
 	[CLIENT_ID.PERA]?: boolean | {
@@ -54,58 +30,39 @@ import { computed, reactive, readonly, Ref, DeepReadonly, toRaw, ShallowReactive
 
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
-// export const watch = watch;
-
-import BaseClient from "src/clients/base/base";
 
 import * as pkg from '../../package.json';
 export const w3hOptionalDeps = Object.keys(pkg.optionalDependencies);
 
-type WalletThing = {
-	client: BaseClient;
+import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
 
-	// methods
-	connect: () => Promise<Wallet>;
-	disconnect: () => Promise<void>;
-	reconnect: () => Promise<Wallet | null>;
-	setAsActiveWallet: () => void;
-	removeAccounts: () => void;
+// init params
+import { InitParams as InkeyInitParams } from "src/clients/inkey/types";
+import { InitParams as PeraInitParams } from "src/clients/pera/types";
+import { InitParams as MyAlgoInitParams } from "src/clients/myalgo/types";
 
-	// look, dont touch
-	accounts: DeepReadonly<Ref<Account[]>>;
-	isActive: DeepReadonly<Ref<boolean>>;
-	isConnected: DeepReadonly<Ref<boolean>>;
-}
-
-// type ClientInst0 = InstanceType<typeof CLIENT_MAP[CLIENT_ID]['client']>; // works
-// type ClientInst1 = PeraClient | InkeyClient | MyAlgoClient;
-// type ClientInst2 = |
-// 	typeof PeraClient |
-// 	typeof InkeyClient |
-// 	typeof MyAlgoClient;
-
-type WalletTTT = ReturnType<typeof createWallet>;
-// type WalletTTT = {
-// 	id: CLIENT_ID;
-// 	client: null | ClientInst0;
-
-// };
-
+// TODO make WALLET_PARAMS_DEFAULTS map ?
+const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
+	[CLIENT_ID.PERA]: true,
+	[CLIENT_ID.INKEY]: true,
+	[CLIENT_ID.MYALGO]: true,
+};
 
 export const nccState = reactive({
 	count: 0, // temp dev, remove later
-	rps: null as any,
-	// isAuthed: false, // per session, just use .activeAcct is not null
 	activeAddress: '',
 	activeClientId: null as null | CLIENT_ID,
 
-	// wallets: {} as any,
-	wallets: null as null | Record<string, WalletThing>,
-
-	// wallets2: {} as any,
-	// wallets2: null as null | Record<CLIENT_ID, WalletTTT>,
 	wallets2: null as null | WalletMap,
 
+	// part to store in localstorage/ls (DONT put Maps or Sets or Functions in here...)
+	stored: {
+		version: 0, // for future schema changes, can translate old structs to new
+		connectedAccounts: [] as Account[],
+		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
+	},
+
+	// computeds
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
 		if (!nccState.wallets2) {
@@ -121,121 +78,7 @@ export const nccState = reactive({
 		return someWalletIsSigning;
 	})),
 
-	// wallets: null as null | Record<string, WalletThing>,
-	// Record<CLIENT_ID, {
-	// 	client: BaseClient,
-	// 	accounts: any,
-	// 	connect: () => {}
-	// }>,
-
-	// clients: clientsState,
-	// clientsR: clientsReactive,
-	// clientsC: clientsComputed,
-
-	// objs?
-	// clients: {
-	// 	all: [], //
-	// 	enabled: null as any, // defaults to all,
-	// 	inited: null as any, // .client is awaited + initialized
-	// 	// withState: null as any, // has .isConnected .isActive etc
-	// 	withState: computed(() => {
-	// 		// return {}
-	// 		return nccState.clients;
-	// 	})
-	// },
-
-	// part to store in localstorage/ls (DONT put Maps or Sets or Functions in here...)
-	stored: {
-		version: 0, // for future schema changes, can translate old structs to new
-		connectedAccounts: [] as Account[],
-		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
-	},
-
 });
-
-export const addConnectedAccounts = (accounts: Account[]) => {
-	console.log('addConnectedAccounts', accounts);
-
-	// fast, but allows dups...
-	// nccState.stored.connectedAccounts = [
-	// 	...nccState.stored.connectedAccounts,
-	// 	...accounts
-	// ];
-
-	for (let newAcct of accounts) {
-
-		let exists = false;
-		for (let existingAcct of nccState.stored.connectedAccounts) {
-			if (newAcct.providerId == existingAcct.providerId &&
-				newAcct.address == existingAcct.address) {
-				exists = true;
-			}
-		}
-
-		if (!exists) {
-			nccState.stored.connectedAccounts.push(newAcct);
-		}
-	}
-};
-
-export const setAsActiveAccount = (acct: Account) => {
-	console.log('setAsActiveAccount', acct);
-	nccState.stored.activeAccount = acct;
-};
-
-const objectMap = <T extends Record<string, any>, R>(obj: T, fn: (v: T[string], k: string, i: number) => R) =>
-// const objectMap = <T extends Record<string, any>, R>(obj: T, fn: (v: T[string], k: string, i: number) => {}): Record<T[string], R> =>
-// const objectMap = <T extends Record<string, any>>(obj: T, fn: (v: T[string], k: string, i: number) => {}) =>
-// const objectMap = (obj: object, fn: any) =>
-	Object.fromEntries(
-		Object.entries(obj).map(
-			([k, v], i) => [k, fn(v, k, i)]
-		)
-	) // as Record<string, R>;
-
-// helper
-const look = <T>(x: T) => readonly(computed(() => x));
-
-// const look = <T>(x: T) => {
-// 	return readonly(computed(() => x));
-
-// 	// if (typeof x == 'function') {
-// 	// 	return readonly(computed(() => x()))
-// 	// } else {
-
-// 	// }
-// };
-
-// const look = <T>(x: T) => {
-// 	// let inner = () => x
-// 	// let f = (() => x).bind(this);
-// 	let f = () => x;
-// 	let c = computed(f);
-// 	let r = readonly(c);
-// 	return r;
-// };
-
-import type algosdk from "algosdk";
-import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
-import CLIENT_SDK_MAP from "src/clients";
-import { ClientInitParams } from "src/clients/base/types";
-import InkeyClient from "src/clients/inkey";
-import PeraClient from "src/clients/pera/client";
-import MyAlgoClient from "src/clients/myalgo/client";
-
-
-// init params
-import { InitParams as InkeyInitParams } from "src/clients/inkey/types";
-import { InitParams as PeraInitParams } from "src/clients/pera/types";
-import { InitParams as MyAlgoInitParams } from "src/clients/myalgo/types";
-
-// TODO make WALLET_PARAMS_DEFAULTS map ?
-const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
-	[CLIENT_ID.PERA]: true,
-	[CLIENT_ID.INKEY]: true,
-	[CLIENT_ID.MYALGO]: true,
-};
-
 
 export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(id: T, ip?: IP) => {
 // export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(ip: IP) => {
@@ -412,200 +255,11 @@ export const enableWallets = (
 	return nccState.wallets2;
 };
 
-// TODO support arg for partial/specific providers
-// export const initClients = async (providers: SupportedProviders) => {
-export const initClients = async (
-	// providers?: CLIENT_ID[] | SupportedProviders,
-	userClientsToInit?: ClientsToInit,
-	nodeConfig?: NodeConfig,
-	algosdkStatic?: typeof algosdk
-) => {
-	console.log('initClients', userClientsToInit, nodeConfig, algosdkStatic);
-
-	// let clientsToInit: ClientsToInit = userClientsToInit || CLIENT_MAP;
-
-	// TODO rename to
-	let ips: SupportedProviders = {};
-
-	// TODO big deal!!! should NOT await the static inits until the user taps the connect button? thus waiting to load the client's sdk until they actually request for it?
-	// perhaps every class method can have await this.isReady() function that calls this.loadClientSdk in case its not, then continued
-
-	if (!userClientsToInit) {
-		console.log('default to init them all! + use the default configs');
-
-		for (let [cid, cm] of Object.entries(CLIENT_MAP)) {
-			ips[cid] = await cm.client.init() as any;
-		}
-
-	} else {
-		for (let [cid, uConfig] of Object.entries(userClientsToInit)) {
-			let id = cid as CLIENT_ID;
-
-			if (typeof uConfig == 'object' && (
-				uConfig.config || uConfig.sdk
-			)) {
-				// ips[cid] = CLIENT_MAP[id].client.init(uConfig);
-				ips[cid] = await CLIENT_MAP[id].client.init(uConfig as any) as any;
-			} else if (uConfig == true) {
-				// ips[cid] = await CLIENT_MAP[id].client.init() as any;
-				ips[cid] = await CLIENT_MAP[id].client.init() as any;
-			} else {
-				// } else if (uConfig == false) {
-				// catches if uConfig == false OR uConfig is passed a bad/empty config obj
-				// skip it
-			}
-
-		}
-
-		// ips = await initializeProviders(
-		// 	providers,
-		// 	nodeConfig,
-		// 	algosdkStatic,
-		// );
-	}
-
-	console.log('ips', ips);
-
-	// if (!providers) {
-	// 	ips = await initializeProviders(
-	// 		undefined, // providers,
-	// 		nodeConfig,
-	// 		algosdkStatic,
-	// 	);
-	// } else if (Array.isArray(providers)) {
-	// 	ips = await initializeProviders(
-	// 		providers,
-	// 		nodeConfig,
-	// 		algosdkStatic,
-	// 	);
-	// } else {
-	// 	// console.log('handle incoming configed clients');
-	// 	ips = providers;
-	// }
-	// console.log('ips', ips);
-
-	// og
-	// let ips = await initializeProviders(
-	// 	providers,
-	// 	nodeConfig,
-	// 	algosdkStatic,
-	// );
-	// console.log('ips', ips);
-
-	// let rps = await reconnectProviders(ips);
-	// console.log('rps', rps);
-	let rps = ips;
-
-	nccState.rps = rps;
-
-	if (rps) {
-		// nccState.clientsR.inited = rps;
-
-		let clients = rps;
-
-		// .wallets init
-		if (nccState.wallets == null) nccState.wallets = {};
-
-		for (let cid in clients) {
-			let id = cid as CLIENT_ID;
-			let c = clients[id];
-
-			if (c !== null) {
-				let w: WalletThing = {
-					client: c,
-					// aProperty: 'skeet', // yes! ts catches err this way
-
-					// methods
-					connect: async () => await c!.connect(() => { }), // arg is onDisconnect
-					disconnect: async () => {
-						removeAccountsByClient(id);
-						try {
-							await c!.disconnect();
-						} catch (e) {
-							console.warn(e);
-						}
-					},
-					reconnect: async () => await c!.reconnect(() => { }),
-					setAsActiveWallet: () => {
-						// console.log('setAsActiveWallet');
-						let accts = getAccountsByProvider(id);
-						if (!accts) {
-							throw new Error('No accounts for this provider to set as active');
-						} else {
-							nccState.stored.activeAccount = accts[0];
-						}
-					},
-					removeAccounts() {
-						removeAccountsByClient(id);
-					},
-
-					// readonlys
-					// accounts: look( getAccountsByProvider(c.metadata.id) ), // DESIRED, how? + why doesnt this wrapper work?
-					accounts: readonly(computed(() => getAccountsByProvider(id))), // works all around
-					// COULD make the accts arr have methods like disconnect this acct
-					isActive: readonly(computed(() => {
-						return nccState.stored.activeAccount?.providerId === id
-					})),
-					isConnected: readonly(computed(() => {
-						return nccState.stored.connectedAccounts.some(
-							(accounts) => accounts.providerId === id
-						);
-					})),
-
-				};
-				nccState.wallets[id] = w;
-			}
-
-		}
-
-		// simpler than computed approach
-		// nccState.wallets = objectMap(rps, c => {
-		// 	let w: WalletThing = {
-		// 		client: c,
-		// 		// aProperty: 'skeet', // yes! ts catches err this way
-		// 		// accounts: look( getAccountsByProvider(c.metadata.id) ), // works all around
-		// 		accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
-		// 		connect: () => c.connect(() => { }),
-		// 	};
-		// 	return w;
-		// });
-
-		// most desired approach
-		// nccState.wallets = objectMap(rps, c => {
-		// 	let w: WalletThing = {
-		// 		client: c,
-		// 		// aProperty: 'skeet', // yes! ts catches err this way
-		// 		accounts: look(getAccountsByProvider(c.metadata.id)), // works all around
-		// 		connect: () => c.connect(() => { }),
-		// 	};
-		// 	return w
-		// });
-
-		// let wallets: Record<string, WalletThing> = objectMap(rps, c => {
-		// 	return {
-		// 		client: c,
-		// 		aProperty: 'skeet',
-		// 		// accounts: [],
-		// 		// accounts: getAccountsByProvider(c.metadata.id),
-		// 		// accounts: computed(() => getAccountsByProvider(c.metadata.id)), // nope
-		// 		// accounts: readonly(getAccountsByProvider(c.metadata.id)), // is readonly, but not reactive, requires calling getAc..
-		// 		// accounts: readonly(computed(() => getAccountsByProvider(c.metadata.id))), // works all around
-		// 		accounts: look(getAccountsByProvider(c.metadata.id)), // works all around
-		// 		connect: () => c.connect(() => { }),
-		// 	}
-		// });
-		// nccState.wallets = wallets;
-
-	}
-
-	return rps;
-};
-
 export const getAccountsByProvider = (id: CLIENT_ID) => {
 	return nccState.stored.connectedAccounts.filter((account) => account.providerId === id);
 };
 
-const removeAccountsByClient = (id: CLIENT_ID) => {
+export const removeAccountsByClient = (id: CLIENT_ID) => {
 	console.log('removeAccountsByClient', id);
 
 	if (nccState.stored.activeAccount) {
@@ -629,12 +283,39 @@ const removeAccountsByClient = (id: CLIENT_ID) => {
 	nccState.stored.connectedAccounts = acctsToKeep;
 };
 
+export const addConnectedAccounts = (accounts: Account[]) => {
+	console.log('addConnectedAccounts', accounts);
+
+	// fast, but allows dups...
+	// nccState.stored.connectedAccounts = [
+	// 	...nccState.stored.connectedAccounts,
+	// 	...accounts
+	// ];
+
+	for (let newAcct of accounts) {
+
+		let exists = false;
+		for (let existingAcct of nccState.stored.connectedAccounts) {
+			if (newAcct.providerId == existingAcct.providerId &&
+				newAcct.address == existingAcct.address) {
+				exists = true;
+			}
+		}
+
+		if (!exists) {
+			nccState.stored.connectedAccounts.push(newAcct);
+		}
+	}
+};
+
+export const setAsActiveAccount = (acct: Account) => {
+	console.log('setAsActiveAccount', acct);
+	nccState.stored.activeAccount = acct;
+};
+
 export const signTransactions = async (txns: Uint8Array[]) => {
 	console.log('signTransactions', txns);
 
-	if (!nccState.wallets) {
-		throw new Error('No wallets initialized');
-	}
 	if (!nccState.wallets2) {
 		throw new Error('No wallets2 initialized');
 	}
@@ -645,21 +326,22 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 		throw new Error('No active account');
 	}
 
-	let activeW = nccState.wallets2[nccState.activeClientId];
-	activeW.signing = true;
+	let activeWallet = nccState.wallets2[nccState.activeClientId];
+	activeWallet.signing = true;
 	let txnsSigned =
-		await activeW.client
+		await activeWallet.client
 		.signTransactions(
 			[nccState.activeAddress],
 			txns
 		);
 	console.log('txnsSigned', txnsSigned);
-	activeW.signing = false;
+	activeWallet.signing = false;
 
 	return txnsSigned;
 };
 
 
+// ls TODO move to another file...
 const lsKey = 'w3h';
 const initLocalStorage = () => {
 	console.log('initLocalStorage');
@@ -746,19 +428,3 @@ watch(
 		deep: true
 	}
 );
-
-
-// testing it works
-// const enabledClients: ClientsToInit = {
-// 	// [CLIENT_ID.INKEY]: true as true,
-// 	[CLIENT_ID.INKEY]: {
-// 		config: {
-// 			src: '123',
-// 			// aligner: 123
-// 		},
-// 		// sdk:
-// 	},
-
-
-// 	[CLIENT_ID.PERA]: true
-// };
