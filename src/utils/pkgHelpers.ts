@@ -39,6 +39,29 @@ export const CLIENT_MAP = {
 	},
 } as const; // "const" is helpful for object security + typing
 
+
+export type CLIENT_MAP_TYPES = {
+	[CLIENT_ID.PERA]: {
+		id: CLIENT_ID.PERA, // TODO remove? just use metadata.id ...?
+		pkg: '@perawallet/connect',
+		client: PeraClient,
+		meta: typeof PeraClient.metadata,
+	},
+	// TODO consider moving pkg name to each client's metadata + making constants off of those
+	[CLIENT_ID.INKEY]: {
+		id: CLIENT_ID.INKEY,
+		pkg: '@thencc/inkey-client-js',
+		client: InkeyClient,
+		meta: typeof InkeyClient.metadata,
+	},
+	[CLIENT_ID.MYALGO]: {
+		id: CLIENT_ID.MYALGO,
+		pkg: '@randlabs/myalgo-connect',
+		client: MyAlgoClient,
+		meta: typeof MyAlgoClient.metadata,
+	},
+};
+
 // export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.id); // as keyof CLIENT_MAP;
 // export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id); // as keyof CLIENT_MAP;
 export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id); // as keyof CLIENT_MAP;

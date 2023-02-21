@@ -2,7 +2,7 @@ import { initializeProviders, NodeConfig } from "./initializeProviders";
 import { reconnectProviders } from "./reconnectProviders";
 // import { appStateProxy } from "src/state";
 
-import { CLIENT_ID, WalletClient, Network, Account, Wallet } from "../types";
+import { CLIENT_ID, WalletClient, Network, Account, Wallet, TheWalletType, WalletMap } from "../types";
 
 // export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 export type SupportedProviders = { [x: string]: WalletClient | null };
@@ -50,7 +50,7 @@ export type WalletInitParamsMap = {
 }
 
 
-import { computed, reactive, readonly, Ref, DeepReadonly, toRaw } from '@vue/reactivity';
+import { computed, reactive, readonly, Ref, DeepReadonly, toRaw, ShallowReactive } from '@vue/reactivity';
 
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
@@ -77,6 +77,21 @@ type WalletThing = {
 	isConnected: DeepReadonly<Ref<boolean>>;
 }
 
+// type ClientInst0 = InstanceType<typeof CLIENT_MAP[CLIENT_ID]['client']>; // works
+// type ClientInst1 = PeraClient | InkeyClient | MyAlgoClient;
+// type ClientInst2 = |
+// 	typeof PeraClient |
+// 	typeof InkeyClient |
+// 	typeof MyAlgoClient;
+
+type WalletTTT = ReturnType<typeof createWallet>;
+// type WalletTTT = {
+// 	id: CLIENT_ID;
+// 	client: null | ClientInst0;
+
+// };
+
+
 export const nccState = reactive({
 	count: 0, // temp dev, remove later
 	rps: null as any,
@@ -87,7 +102,24 @@ export const nccState = reactive({
 	// wallets: {} as any,
 	wallets: null as null | Record<string, WalletThing>,
 
-	wallets2: {} as any,
+	// wallets2: {} as any,
+	// wallets2: null as null | Record<CLIENT_ID, WalletTTT>,
+	wallets2: null as null | WalletMap,
+
+	isSigning: readonly(computed(() => {
+		let someWalletIsSigning = false;
+		if (!nccState.wallets2) {
+			// pass
+		} else {
+			for (let [k, w] of Object.entries(nccState.wallets2)) {
+				if (w.signing) {
+					someWalletIsSigning = true;
+					break;
+				}
+			}
+		}
+		return someWalletIsSigning;
+	})),
 
 	// wallets: null as null | Record<string, WalletThing>,
 	// Record<CLIENT_ID, {
@@ -184,11 +216,12 @@ const look = <T>(x: T) => readonly(computed(() => x));
 // };
 
 import type algosdk from "algosdk";
-import { CLIENT_MAP } from "./pkgHelpers";
+import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
 import CLIENT_SDK_MAP from "src/clients";
 import { ClientInitParams } from "src/clients/base/types";
 import InkeyClient from "src/clients/inkey";
 import PeraClient from "src/clients/pera/client";
+import MyAlgoClient from "src/clients/myalgo/client";
 
 
 // init params
@@ -196,6 +229,7 @@ import { InitParams as InkeyInitParams } from "src/clients/inkey/types";
 import { InitParams as PeraInitParams } from "src/clients/pera/types";
 import { InitParams as MyAlgoInitParams } from "src/clients/myalgo/types";
 
+// TODO make WALLET_PARAMS_DEFAULTS map ?
 const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
 	[CLIENT_ID.PERA]: true,
 	[CLIENT_ID.INKEY]: true,
@@ -208,7 +242,8 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 
 	// type CliTT = InstanceType<typeof CLIENT_MAP[T]['client']>; // works but tooltip is gross
 	// type ClientInst = InstanceType<typeof CLIENT_MAP[typeof id]['client']>; // works
-	type ClientInst = InstanceType<typeof CLIENT_MAP[T]['client']>; // works
+	// type ClientInst = InstanceType<typeof CLIENT_MAP[T]['client']>; // works
+	type ClientInst = CLIENT_MAP_TYPES[T];
 	// TODO make + use a type map?
 
 	let w = reactive({
@@ -222,10 +257,6 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 		// TODO rename these to loading + loaded ?
 		inited: false, // client
 		initing: false, // client + sdk
-
-		// TODO add these:
-		loading: false, // or is initing for explanitory?
-		loaded: false, // sdk
 		signing: false,
 
 
@@ -282,7 +313,8 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 
 			removeAccountsByClient(id);
 			try {
-				await w.client!.disconnect();
+				// TODO fix as any
+				await (w.client as any)!.disconnect();
 			} catch (e) {
 				console.warn(e);
 			}
@@ -311,6 +343,7 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 		isActive: readonly(computed(() => {
 			return nccState.stored.activeAccount?.providerId === id
 		})),
+		// as unknown as Readonly<boolean>,
 		isConnected: readonly(computed(() => {
 			return nccState.stored.connectedAccounts.some(
 				(accounts) => accounts.providerId === id
@@ -327,7 +360,7 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 			etc: '...',
 		}),
 		thecomputer: readonly(computed(() => 'essentially a readonly FIELD, not an object!')),
-	});
+	}) as unknown as TheWalletType; // simple but loose shim
 	return w;
 };
 
@@ -335,6 +368,12 @@ export const enableWallets = (
 	walletsToEnable: WalletInitParamsMap = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
 	console.log('enableWallets started');
+
+	if (nccState.wallets2 !== null) {
+		console.warn('enableWallets called while some wallets were already initialized');
+	} else {
+		nccState.wallets2 = {} as WalletMap;
+	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
 		let wId = wKey as CLIENT_ID; // could just be a unique id for double initing.but why
@@ -350,9 +389,6 @@ export const enableWallets = (
 			if (wInitParams.id) {
 				cId = wInitParams.id;
 			}
-
-			// let wip = wInitParams as Required<typeof wInitParams>; // TODO should just make .id required but this is fast for now
-			// let w = createWallet(cId, wip);
 
 			let w = createWallet(cId, wInitParams);
 			nccState.wallets2[wId] = w;
@@ -371,93 +407,7 @@ export const enableWallets = (
 			// 	nccState.wallets2[id] = w;
 			// }
 		}
-
-		// if (typeof wInitParams == 'object') {
-		// 	if (wInitParams.id !== undefined) {
-		// 		id = wInitParams.id;
-		// 	} else {
-		// 		wInitParams.id = id;
-		// 	}
-
-		// 	let wip = wInitParams;
-
-		// 	// if (wInitParams.id == undefined) {
-		// 	// 	// id = wInitParams.id;
-		// 	// 	// wInitParams.id = id;
-		// 	// }
-		// }
-
-
-
-
-		// else if (typeof wInitParams == 'boolean' && wInitParams == true) {
-		// 	wInitParams = {
-		// 		id: id,
-		// 	}; // this means init w defaults
-		// }
-
-		// if (typeof wInitParams == 'object') {
-		// 	wInitParams.
-		// }
-
-
-
-
-		/*
-		// it's synchronis!
-		// branch wallet gen this way so it works w types
-		if (id == CLIENT_ID.INKEY) {
-
-			// TODO if has initParams, use those + assume the .id from initParams OR default to the obj key?
-			// smarter....
-			// let w = createWallet(id, initParams);
-			// wInitParams
-			let ip = wInitParams as WalletInitParamsMap[typeof id];
-			if (ip && typeof ip == 'object' && ip.id !== undefined) {
-				let w = createWallet(id, ip);
-			}
-
-
-			nccState.wallets2[id] = w;
-		} else if (id == CLIENT_ID.PERA) {
-			let w = createWallet(id);
-			nccState.wallets2[id] = w;
-		} else if (id == CLIENT_ID.MYALGO) {
-			let w = createWallet(id);
-			nccState.wallets2[id] = w;
-		}
-		*/
-
 	}
-
-	/*
-	// for (let [cid, cm] of Object.entries(CLIENT_MAP)) {
-	// 	ips[cid] = await cm.client.init() as any;
-	// }
-
-
-	// TODO enable defaults to all
-	let clientIds = Object.keys(walletsToEnable);
-
-	for (let cid of clientIds) {
-		console.log('cid', cid);
-		let id = cid as CLIENT_ID;
-
-		// it's synchronis!
-		// branch wallet gen this way so it works w types
-		if (id == CLIENT_ID.INKEY) {
-			let w = createWallet(id);
-			nccState.wallets2[id] = w;
-		} else if (id == CLIENT_ID.PERA) {
-			let w = createWallet(id);
-			nccState.wallets2[id] = w;
-		} else if (id == CLIENT_ID.MYALGO) {
-			let w = createWallet(id);
-			nccState.wallets2[id] = w;
-		}
-
-	}
-	*/
 
 	return nccState.wallets2;
 };
@@ -685,6 +635,9 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	if (!nccState.wallets) {
 		throw new Error('No wallets initialized');
 	}
+	if (!nccState.wallets2) {
+		throw new Error('No wallets2 initialized');
+	}
 	if (!nccState.activeClientId) {
 		throw new Error('No active wallet');
 	}
@@ -692,13 +645,16 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 		throw new Error('No active account');
 	}
 
-	let txnsSigned = await nccState
-		.wallets[nccState.activeClientId]
-		.client.signTransactions(
+	let activeW = nccState.wallets2[nccState.activeClientId];
+	activeW.signing = true;
+	let txnsSigned =
+		await activeW.client
+		.signTransactions(
 			[nccState.activeAddress],
 			txns
 		);
 	console.log('txnsSigned', txnsSigned);
+	activeW.signing = false;
 
 	return txnsSigned;
 };
