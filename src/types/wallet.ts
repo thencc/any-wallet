@@ -1,7 +1,7 @@
 import { CLIENT_ID } from "../constants";
-import type BaseWallet from "../clients/base";
 import { CLIENT_MAP_TYPES } from "src/utils";
 import { Ref } from "@vue/reactivity";
+import { BaseClient } from "../clients/base";
 
 export interface Account {
 	providerId: CLIENT_ID;
@@ -58,17 +58,25 @@ export type Wallet = ExtendValues<WalletProvider> & {
 	accounts: Account[];
 };
 
-export type WalletClient = BaseWallet;
+export type WalletClient = BaseClient;
 
 export { CLIENT_ID };
 
 // import type { CLIENT_MAP_TYPES } from "src/utils";
 // type ClientInst<T> = CLIENT_MAP_TYPES[T];
 
-export type TheWalletType = {
+export type ClientType<T extends CLIENT_ID = CLIENT_ID> = CLIENT_MAP_TYPES[T]['client'];
+
+export type TheWalletType<T extends CLIENT_ID = CLIENT_ID> = {
 	// vars
-	id: CLIENT_ID;
-	client: null | any;
+	// id: CLIENT_ID;
+	id: T;
+	// client: null | any;
+	client: null | BaseClient; // all clients share some of the same fields/methods, inner implementations vary tho
+	// client: null | BaseWallet;
+	// client: null | ClientType<T>;
+	// client: null | ClientType<T> | BaseWallet;
+	// client: null | CLIENT_MAP_TYPES[T]['client'];
 	inited: boolean;
 	initing: boolean;
 	signing: boolean;
@@ -77,7 +85,7 @@ export type TheWalletType = {
 	isReady: () => Promise<true>;
 	connect: () => Promise<void>;
 	disconnect: () => Promise<void>;
-	recconnect: () => Promise<void>;
+	reconnect: () => Promise<void>;
 	setAsActiveWallet: () => void;
 	removeAccounts: () => void;
 
@@ -87,4 +95,4 @@ export type TheWalletType = {
 	isConnected: Readonly<boolean>;
 }
 
-export type WalletMap = Record<CLIENT_ID, TheWalletType>;
+export type WalletMap = Record<CLIENT_ID, TheWalletType<CLIENT_ID>>;

@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@thencc/algonautjs": "^0.2.12",
+		"@thencc/web3-wallet-handler": "^0.0.40",
 		"vue": "^3.2.41"
 	},
 	"devDependencies": {

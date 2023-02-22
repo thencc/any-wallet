@@ -29,7 +29,7 @@
 		</p> -->
 
 		<p>clients loop</p>
-		<div v-for="(p, k) of nccState.wallets">
+		<div v-for="(p, k) of nccState.wallets2">
 			<span>{{k}}</span>
 			<button @click="doAnyConnect(p)" :disabled="!!(p.isConnected)">connect</button>
 			<button @click="doAnyDisconnect(p)" :disabled="!(p.isConnected)">disconnect</button>
@@ -62,16 +62,19 @@ import {
 // import { watch } from '@vue-reactivity/watch'; // works
 
 // TODO put w3h in algonaut
-// import {
-// 	// initClients,
-// 	// nccState,
-// 	// signTransactions,
+import {
+	// initClients,
+	nccState,
+	signTransactions,
 
-// 	// PROVIDER_ID,
-// 	// inkey, // client for configing
-// 	// myalgo, // client
-// 	// watch, // sometimes works, seriously.
-// } from '@thencc/web3-wallet-handler';
+	enableWallets,
+
+	// CLIENT_ID,
+	CLIENT_ID,
+	inkey, // client for configing
+	myalgo, // client
+	watch, // sometimes works, seriously.
+} from '@thencc/web3-wallet-handler';
 
 // import * as w3h from '@thencc/web3-wallet-handler';
 
@@ -85,16 +88,19 @@ import {
 	utils,
 	// web3yo,
 
+	// myalgo, // client
 	// w3h stuff
 	// w3h,
+	/*
 	initClients,
 	nccState,
 	signTransactions,
-	PROVIDER_ID,
+	CLIENT_ID,
 	inkey, // client for configing
 	// pera,
 	// myalgo, // client
 	watch, // sometimes works, seriously.
+	*/
 } from '@thencc/algonautjs';
 
 
@@ -104,7 +110,7 @@ import {
 // const initClients = w3h.initClients;
 // const nccState = w3h.nccState;
 // const signTransactions = w3h.signTransactions;
-// // type PROVIDER_ID = w3h.PROVIDER_ID;
+// // type CLIENT_ID = w3h.CLIENT_ID;
 // const inkey = w3h.inkey;
 // const myalgo = w3h.myalgo;
 // const pera = w3h.pera;
@@ -162,9 +168,9 @@ export default defineComponent({
 			);
 
 			watch(
-				() => this.nccState.wallets,
+				() => this.nccState.wallets2,
 				(w) => {
-					console.log('wallets changed:', w);
+					console.log('wallets2 changed:', w);
 					this.$forceUpdate(); // re-render <template>
 				},
 				{
@@ -196,11 +202,11 @@ export default defineComponent({
 
 			// empty arr inits all minus kmd
 			const providersToInit = [
-				PROVIDER_ID.INKEY,
-				PROVIDER_ID.MYALGO,
-				PROVIDER_ID.PERA,
-			] as PROVIDER_ID[];
-			// ] as w3h.PROVIDER_ID[];
+				CLIENT_ID.INKEY,
+				CLIENT_ID.MYALGO,
+				CLIENT_ID.PERA,
+			] as CLIENT_ID[];
+			// ] as w3h.CLIENT_ID[];
 			// ] as any[];
 
 			// const inkeyClient = await createClient({
@@ -216,7 +222,7 @@ export default defineComponent({
 				'myalgo': true,
 
 				// object syntax
-				[PROVIDER_ID.PERA]: {
+				[CLIENT_ID.PERA]: {
 					// [2] imports lib async + uses this config
 					config: {
 						network: 'testnet', // for example. used by algosigner for field in class. but inkey would pass to client gen func.
@@ -225,31 +231,27 @@ export default defineComponent({
 					},
 
 					// [3] pass an already initialized + configured sdk of this wallet
-					sdk: await inkeyClient.createClient({}),
+					// sdk: await inkeyClient.createClient({}),
 
 					// FYI can pass # 2 or 3 but not both.
 				}
 			};
 
-			const enabledClients = {
-				[PROVIDER_ID.INKEY]: inkey.init({
-				// [w3h.PROVIDER_ID.INKEY]: inkey.init({
-					clientOptions: {
-						// iFrameUrl: 'http://localhost:5200',
-						iFrameUrl: 'https://inkey-staging.web.app',
-						// iFrameUrl: 'https://inkey-staging--pr133-refactor-for-inkey-c-nz9xfhhh.web.app',
+			const toEnable = {
+				[CLIENT_ID.INKEY]: {
+					config: {
+						src: 'https://inkey-staging.web.app#testing'
 					},
-					// clientOptions: undefined,
-					// clientStatic: inkeyClient,
-				}),
-				// [PROVIDER_ID.MYALGO]: myalgo.init({}),
-				// [PROVIDER_ID.PERA]: pera.init({}),
+					// sdk: inkeyClient
+				},
+
+				// [CLIENT_ID.MYALGO]: myalgo.init({}),
+				// [CLIENT_ID.PERA]: pera.init({}),
+				[CLIENT_ID.PERA]: true,
 			};
 
-			// const rps = await initClients(providersToInit);
-			const rps = await initClients(enabledClients);
+			const rps = enableWallets(toEnable);
 			console.log('rps', rps);
-
 		},
 
 		getAddrFromAccount(a: any) {

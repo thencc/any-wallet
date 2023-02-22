@@ -1,3 +1,3 @@
-import myalgo from "./client";
+import { MyAlgoClient } from "./client";
 
-export default myalgo;
+export default MyAlgoClient;

@@ -1,11 +1,11 @@
-import { CLIENT_ID, WalletClient, Network, Account, Wallet, TheWalletType, WalletMap } from "../types";
+import { computed, reactive, readonly, Ref, DeepReadonly, toRaw, ShallowReactive, toRefs } from '@vue/reactivity';
+import { watch } from '@vue-reactivity/watch';
+export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 
-export type ClientsToInit = {
-	// [id in CLIENT_ID]?: boolean | ClientInitParams;
-	[CLIENT_ID.INKEY]?: boolean | InkeyInitParams;
-	[CLIENT_ID.PERA]?: boolean | PeraInitParams;
-	[CLIENT_ID.MYALGO]?: boolean | MyAlgoInitParams;
-};
+
+import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
+
+import { CLIENT_ID, WalletClient, Network, Account, Wallet, TheWalletType, WalletMap, ClientType } from "../types";
 
 export type WalletInitParamsMap = {
 	[CLIENT_ID.PERA]?: boolean | {
@@ -25,69 +25,20 @@ export type WalletInitParamsMap = {
 	};
 }
 
-
-import { computed, reactive, readonly, Ref, DeepReadonly, toRaw, ShallowReactive } from '@vue/reactivity';
-
-import { watch } from '@vue-reactivity/watch';
-export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
-
-import * as pkg from '../../package.json';
-export const w3hOptionalDeps = Object.keys(pkg.optionalDependencies);
-
-import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
-
 // init params
 import { InitParams as InkeyInitParams } from "src/clients/inkey/types";
 import { InitParams as PeraInitParams } from "src/clients/pera/types";
 import { InitParams as MyAlgoInitParams } from "src/clients/myalgo/types";
 
-// TODO make WALLET_PARAMS_DEFAULTS map ?
+// TODO make WALLET_PARAMS_DEFAULTS map ? w actual values, like src etc etc or let client class code handle this?
 const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
 	[CLIENT_ID.PERA]: true,
 	[CLIENT_ID.INKEY]: true,
 	[CLIENT_ID.MYALGO]: true,
 };
 
-export const nccState = reactive({
-	count: 0, // temp dev, remove later
-	activeAddress: '',
-	activeClientId: null as null | CLIENT_ID,
-
-	wallets2: null as null | WalletMap,
-
-	// part to store in localstorage/ls (DONT put Maps or Sets or Functions in here...)
-	stored: {
-		version: 0, // for future schema changes, can translate old structs to new
-		connectedAccounts: [] as Account[],
-		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
-	},
-
-	// computeds
-	isSigning: readonly(computed(() => {
-		let someWalletIsSigning = false;
-		if (!nccState.wallets2) {
-			// pass
-		} else {
-			for (let [k, w] of Object.entries(nccState.wallets2)) {
-				if (w.signing) {
-					someWalletIsSigning = true;
-					break;
-				}
-			}
-		}
-		return someWalletIsSigning;
-	})),
-
-});
-
-export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(id: T, ip?: IP) => {
-// export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(ip: IP) => {
-
-	// type CliTT = InstanceType<typeof CLIENT_MAP[T]['client']>; // works but tooltip is gross
-	// type ClientInst = InstanceType<typeof CLIENT_MAP[typeof id]['client']>; // works
-	// type ClientInst = InstanceType<typeof CLIENT_MAP[T]['client']>; // works
-	type ClientInst = CLIENT_MAP_TYPES[T];
-	// TODO make + use a type map?
+// has to come before the state
+export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap[T]>(id: T, ip?: IP) => {
 
 	let w = reactive({
 		id: id,
@@ -95,7 +46,9 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 		// TODO make field for initParams so we know how it was inited later in case thats helpful
 
 		// client: null as null | CliMapper[T],
-		client: null as null | ClientInst,
+		// client: null as null | ClientInst,
+		client: null as null | TheWalletType<T>['client'],
+		// client: null as null | ClientType<T>,
 
 		// TODO rename these to loading + loaded ?
 		inited: false, // client
@@ -110,19 +63,13 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 				return true;
 			} else {
 				console.log('do client.init');
-
 				w.initing = true;
-				// TODO!!! add clientConfig params or use default
-				// w.client = await CLIENT_MAP[id].client.init(); // loads client sdk
-				// w.client = await CLIENT_MAP[id].client.init() as any; // loads client sdk
 
 				if (typeof ip == 'object' && (
 					ip.config || ip.sdk
 				)) {
-					// ips[cid] = CLIENT_MAP[id].client.init(uConfig);
 					w.client = await CLIENT_MAP[id].client.init(ip as any) as any;
 				} else if (ip == true) {
-					// ips[cid] = await CLIENT_MAP[id].client.init() as any;
 					w.client = await CLIENT_MAP[id].client.init() as any;
 				} else {
 					// catches for false or wrong init obj (or should wrong obj init it w defaults?)
@@ -131,8 +78,8 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 					console.warn('bad/incomplete init params for wallet:', id);
 				}
 
-				w.inited = true; // success, flip it! TODO also FIX inkey to just handle re-inits like all the other wallets. instead of framebus not ready err
 				w.initing = false;
+				w.inited = true; // success, flip it! TODO also FIX inkey to just handle re-inits like all the other wallets. instead of framebus not ready err
 				return true;
 			}
 		},
@@ -140,31 +87,25 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 		// methods
 		connect: async () => {
 			console.log(`[${id}] connect (in r obj)`);
-
-			// check is ready (modularize this!)
-			// if (w.inited == false) {
-			// 	w.initing = true;
-			// 	w.client = await CLIENT_MAP['inkey'].client.init(); // loads client sdk
-			// 	w.initing = false;
-			// }
 			await w.isReady();
-			//
-			await (w.client as any)!.connect(() => { }); // TODO fix type
-		}, // arg is onDisconnect
+
+			// arg is onDisconnect
+			await w.client!.connect(() => { });
+		},
 		disconnect: async () => {
 			await w.isReady();
 
 			removeAccountsByClient(id);
+
 			try {
-				// TODO fix as any
-				await (w.client as any)!.disconnect();
+				await w.client!.disconnect();
 			} catch (e) {
 				console.warn(e);
 			}
 		},
 		reconnect: async () => {
 			await w.isReady();
-			await (w.client as any)!.reconnect(() => { }); // TODO fix
+			await w.client!.reconnect(() => { });
 		},
 		setAsActiveWallet: () => {
 			// console.log('setAsActiveWallet');
@@ -203,19 +144,72 @@ export const createWallet = <T extends CLIENT_ID, IP extends ClientsToInit[T]>(i
 			etc: '...',
 		}),
 		thecomputer: readonly(computed(() => 'essentially a readonly FIELD, not an object!')),
-	}) as unknown as TheWalletType; // simple but loose shim
+	}); // simple but loose shim
+	// }) as unknown as TheWalletType; // simple but loose shim
 	return w;
 };
+
+export const nccState = reactive({
+	count: 0, // temp dev, remove later
+	activeAddress: '',
+	activeWalletId: null as null | CLIENT_ID,
+	activeWallet: null as null | TheWalletType, // should be a computed...
+
+	wallets: null as null | WalletMap,
+
+	// TODO idea... delete?
+	enabledWallets: {},
+	// allWallets: {
+	// 	...toRefs(nccStateComputed),
+	// },
+
+	// part to store in localstorage/ls (DONT put Maps or Sets or Functions in here...)
+	stored: {
+		version: 0, // for future schema changes, can translate old structs to new
+		connectedAccounts: [] as Account[],
+		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
+	},
+
+	// computeds
+	isSigning: readonly(computed(() => {
+		let someWalletIsSigning = false;
+		if (!nccState.wallets) {
+			// pass
+		} else {
+			for (let [k, w] of Object.entries(nccState.wallets)) {
+				if (w.signing) {
+					someWalletIsSigning = true;
+					break;
+				}
+			}
+		}
+		return someWalletIsSigning;
+	})),
+
+});
+
+// test - can combine 2 reactive objs here
+// ...allWallets always exists then enableWallets just sets the initParams field and the rest is magic.
+export const nccStateBaseState = reactive({
+	allWallets: {
+		inkey: createWallet(CLIENT_ID.INKEY),
+		pera: createWallet(CLIENT_ID.PERA),
+	},
+});
+export const nccStateCombined = reactive({
+	...toRefs(nccState),
+	...toRefs(nccStateBaseState)
+});
 
 export const enableWallets = (
 	walletsToEnable: WalletInitParamsMap = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
 	console.log('enableWallets started');
 
-	if (nccState.wallets2 !== null) {
+	if (nccState.wallets !== null) {
 		console.warn('enableWallets called while some wallets were already initialized');
 	} else {
-		nccState.wallets2 = {} as WalletMap;
+		nccState.wallets = {} as WalletMap;
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
@@ -225,7 +219,7 @@ export const enableWallets = (
 		if (typeof wInitParams == 'boolean') {
 			if (wInitParams == true) {
 				let w = createWallet(wId, wInitParams); // ip is true
-				nccState.wallets2[wId] = w;
+				nccState.wallets[wId] = w;
 			}
 		} else if (typeof wInitParams == 'object') {
 			let cId = wId;
@@ -234,25 +228,25 @@ export const enableWallets = (
 			}
 
 			let w = createWallet(cId, wInitParams);
-			nccState.wallets2[wId] = w;
+			nccState.wallets[wId] = w;
 
 			// could... branch on types for even more ts autocomplete but....
 			// // it's synchronis!
 			// // branch wallet gen this way so it works w types
-			// if (id == CLIENT_ID.INKEY) {
-			// 	let w = createWallet(id, wInitParams);
-			// 	nccState.wallets2[id] = w;
+			// if (wId == CLIENT_ID.INKEY) {
+			// 	let w = createWallet(wId, wInitParams);
+			// 	nccState.wallets[wId] = w;
 			// } else if (id == CLIENT_ID.PERA) {
 			// 	let w = createWallet(id, wInitParams);
-			// 	nccState.wallets2[id] = w;
+			// 	nccState.wallets[id] = w;
 			// } else if (id == CLIENT_ID.MYALGO) {
 			// 	let w = createWallet(id);
-			// 	nccState.wallets2[id] = w;
+			// 	nccState.wallets[id] = w;
 			// }
 		}
 	}
 
-	return nccState.wallets2;
+	return nccState.wallets;
 };
 
 export const getAccountsByProvider = (id: CLIENT_ID) => {
@@ -316,26 +310,31 @@ export const setAsActiveAccount = (acct: Account) => {
 export const signTransactions = async (txns: Uint8Array[]) => {
 	console.log('signTransactions', txns);
 
-	if (!nccState.wallets2) {
-		throw new Error('No wallets2 initialized');
+	if (!nccState.wallets) {
+		throw new Error('No wallets initialized');
 	}
-	if (!nccState.activeClientId) {
+	if (!nccState.activeWalletId) {
 		throw new Error('No active wallet');
 	}
 	if (!nccState.activeAddress) {
 		throw new Error('No active account');
 	}
 
-	let activeWallet = nccState.wallets2[nccState.activeClientId];
+	let activeWallet = nccState.wallets[nccState.activeWalletId];
+	if (activeWallet.client == null) {
+		await activeWallet.isReady(); // handles .initing state var
+	}
+
+	// sign it!
 	activeWallet.signing = true;
 	let txnsSigned =
-		await activeWallet.client
+		await activeWallet.client! // is defined after awaiting isReady
 		.signTransactions(
 			[nccState.activeAddress],
 			txns
 		);
-	console.log('txnsSigned', txnsSigned);
 	activeWallet.signing = false;
+	console.log('txnsSigned', txnsSigned);
 
 	return txnsSigned;
 };
@@ -389,13 +388,16 @@ watch(
 
 		// update helpful top level prop
 		let activeAddress = '';
-		let activeClientId: null | CLIENT_ID = null;
+		let activeWalletId: null | CLIENT_ID = null;
+		let activeWallet: null | TheWalletType = null;
 		if (acct) {
 			activeAddress = acct.address;
-			activeClientId = acct.providerId;
+			activeWalletId = acct.providerId;
+			activeWallet = nccState.wallets ? nccState.wallets[acct.providerId] || null : null;
 		}
 		nccState.activeAddress = activeAddress;
-		nccState.activeClientId = activeClientId;
+		nccState.activeWalletId = activeWalletId;
+		nccState.activeWallet = activeWallet;
 	},
 	{
 		deep: true,
