@@ -4,7 +4,7 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 
 
 import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
-
+import { BaseClient } from 'src/clients/base';
 import { CLIENT_ID, WalletClient, Network, Account, Wallet, TheWalletType, WalletMap, ClientType } from "../types";
 
 export type WalletInitParamsMap = {
@@ -37,6 +37,9 @@ const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
 	[CLIENT_ID.MYALGO]: true,
 };
 
+// test
+import { nccStateBaseState } from './state2';
+
 // has to come before the state
 export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap[T]>(id: T, ip?: IP) => {
 
@@ -47,10 +50,12 @@ export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap
 
 		// client: null as null | CliMapper[T],
 		// client: null as null | ClientInst,
-		client: null as null | TheWalletType<T>['client'],
+		// client: null as null | TheWalletType<T>['client'],
+		client: null as null | BaseClient,
 		// client: null as null | ClientType<T>,
 
 		// TODO rename these to loading + loaded ?
+		initParams: true as boolean | IP,
 		inited: false, // client
 		initing: false, // client + sdk
 		signing: false,
@@ -68,6 +73,11 @@ export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap
 				if (typeof ip == 'object' && (
 					ip.config || ip.sdk
 				)) {
+
+					// if (id == CLIENT_ID.INKEY) {
+					// 	w.client = await InkeyClient.init(ip as any);
+					// }
+
 					w.client = await CLIENT_MAP[id].client.init(ip as any) as any;
 				} else if (ip == true) {
 					w.client = await CLIENT_MAP[id].client.init() as any;
@@ -121,18 +131,37 @@ export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap
 		},
 
 		// readonlys
-		// accounts: look( getAccountsByProvider(c.metadata.id) ), // DESIRED, how? + why doesnt this wrapper work?
-		accounts: readonly(computed(() => getAccountsByProvider(id))), // works all around
+
+
+		// get isActive() {
+		// 	return readonly(computed(() => {
+		// 		return nccState.stored.activeAccount?.providerId === id
+		// 	}))
+		// },
+
+
+		// // accounts: look( getAccountsByProvider(c.metadata.id) ), // DESIRED, how? + why doesnt this wrapper work?
+		// accounts: readonly(computed(() => getAccountsByProvider(id))), // works all around
 		// COULD make the accts arr have methods like disconnect this acct
-		isActive: readonly(computed(() => {
-			return nccState.stored.activeAccount?.providerId === id
-		})),
+		// isActive: readonly(computed(() => {
+		// 	return nccState.stored.activeAccount?.providerId === id
+		// })),
 		// as unknown as Readonly<boolean>,
-		isConnected: readonly(computed(() => {
-			return nccState.stored.connectedAccounts.some(
-				(accounts) => accounts.providerId === id
-			);
-		})),
+		// isConnected: readonly(computed(() => {
+		// 	return nccState.stored.connectedAccounts.some(
+		// 		(accounts) => accounts.providerId === id
+		// 	);
+		// })),
+		// isConnected: readonly(computed(() => {
+		// 	return nccState.stored.connectedAccounts.some(
+		// 		(accounts) => accounts.providerId === id
+		// 	);
+		// })),
+
+		// get testGet() {
+		// 	this.
+		// 	return 'it got!';
+		// },
 
 
 		// TODO add initParams to readonly+computed field
@@ -149,6 +178,113 @@ export const createWallet = <T extends CLIENT_ID, IP extends WalletInitParamsMap
 	return w;
 };
 
+const quickCreateW = (id: CLIENT_ID, ip: boolean | { config: any, sdk: any } = true) => {
+	let w = reactive({
+		id: id,
+		client: null as null | BaseClient,
+		initParams: true as boolean | any,
+		inited: false, // client
+		initing: false, // client + sdk
+		signing: false,
+
+
+		isReady: async (): Promise<true> => {
+			console.log('isReady');
+
+			if (w.inited) {
+				return true;
+			} else {
+				console.log('do client.init');
+				w.initing = true;
+
+				if (typeof ip == 'object' && (
+					ip.config || ip.sdk
+				)) {
+
+					// if (id == CLIENT_ID.INKEY) {
+					// 	w.client = await InkeyClient.init(ip as any);
+					// }
+
+					w.client = await CLIENT_MAP[id].client.init(ip as any) as any;
+				} else if (ip == true) {
+					w.client = await CLIENT_MAP[id].client.init() as any;
+				} else {
+					// catches for false or wrong init obj (or should wrong obj init it w defaults?)
+					// skip it
+					// TODO show err
+					console.warn('bad/incomplete init params for wallet:', id);
+				}
+
+				w.initing = false;
+				w.inited = true; // success, flip it! TODO also FIX inkey to just handle re-inits like all the other wallets. instead of framebus not ready err
+				return true;
+			}
+		},
+
+		// methods
+		connect: async () => {
+			console.log(`[${id}] connect (in r obj)`);
+			await w.isReady();
+
+			// arg is onDisconnect
+			await w.client!.connect(() => { });
+		},
+		disconnect: async () => {
+			await w.isReady();
+
+			removeAccountsByClient(id as CLIENT_ID);
+
+			try {
+				await w.client!.disconnect();
+			} catch (e) {
+				console.warn(e);
+			}
+		},
+		reconnect: async () => {
+			await w.isReady();
+			await w.client!.reconnect(() => { });
+		},
+		setAsActiveWallet: () => {
+			// console.log('setAsActiveWallet');
+			let accts = getAccountsByProvider(id as CLIENT_ID);
+			if (!accts) {
+				throw new Error('No accounts for this provider to set as active');
+			} else {
+				nccState.stored.activeAccount = accts[0];
+			}
+		},
+		removeAccounts: () => {
+			removeAccountsByClient(id as CLIENT_ID);
+		},
+
+
+
+		// computeds
+		get accounts() {
+			return readonly(computed(() => getAccountsByProvider(id)))
+		},
+		get isActive() {
+			// TODO fully test omitting this readonly wrapper
+			// return readonly(computed(() => {
+			// 	return nccState.stored.activeAccount?.providerId === id
+			// }))
+			return computed(() => {
+				return nccState.stored.activeAccount?.providerId === id
+			})
+		},
+		get isConnected() {
+			return readonly(computed(() => {
+				return nccState.stored.connectedAccounts.some(
+					(accounts) => accounts.providerId === id
+					// (accounts) => accounts.providerId === this.id
+				);
+			}));
+		},
+
+	});
+	return w;
+}
+
 export const nccState = reactive({
 	count: 0, // temp dev, remove later
 	activeAddress: '',
@@ -157,8 +293,75 @@ export const nccState = reactive({
 
 	wallets: null as null | WalletMap,
 
+	allWallets2: {
+		...nccStateBaseState.allWallets,
+
+
+		// inkey: {
+		// 	...nccStateBaseState.allWallets.inkey,
+
+		// 	get isConnected() {
+
+		// 		return readonly(computed(() => {
+		// 			return nccState.stored.connectedAccounts.some(
+		// 				// (accounts) => accounts.providerId === id
+		// 				(accounts) => accounts.providerId === 'inkey'
+		// 			);
+		// 		}));
+		// 	},
+		// }
+	},
+
+	wallets3: {
+		[CLIENT_ID.PERA]: quickCreateW(CLIENT_ID.PERA),
+		[CLIENT_ID.INKEY]: quickCreateW(CLIENT_ID.INKEY),
+		[CLIENT_ID.MYALGO]: quickCreateW(CLIENT_ID.MYALGO),
+
+
+		// [CLIENT_ID.INKEY]: {
+		// 	id: 'inkey',
+		// 	client: null as null | BaseClient,
+		// 	initParams: true as boolean | any,
+
+		// 	get isConnected() {
+		// 		return readonly(computed(() => {
+		// 			return nccState.stored.connectedAccounts.some(
+		// 				// (accounts) => accounts.providerId === id
+		// 				(accounts) => accounts.providerId === this.id
+		// 			);
+		// 		}));
+		// 	},
+		// 	// get isConnected() {
+		// 	// 	return readonly(computed(() => {
+		// 	// 		return nccState.stored.connectedAccounts.some(
+		// 	// 			// (accounts) => accounts.providerId === id
+		// 	// 			(accounts) => accounts.providerId === 'inkey'
+		// 	// 		);
+		// 	// 	}));
+		// 	// },
+		// }
+	},
+
+	get inkeyIsConnected() {
+
+		return readonly(computed(() => {
+			return nccState.stored.connectedAccounts.some(
+				// (accounts) => accounts.providerId === id
+				(accounts) => accounts.providerId === 'inkey'
+			);
+		}));
+
+		// this works IF your in the same obj
+		// return readonly(computed(() => {
+		// 	return this.stored.connectedAccounts.some(
+		// 		// (accounts) => accounts.providerId === id
+		// 		(accounts) => accounts.providerId === 'inkey'
+		// 	);
+		// }));
+	},
+
 	// TODO idea... delete?
-	enabledWallets: {},
+	enabledWallets: null as null | WalletMap,
 	// allWallets: {
 	// 	...toRefs(nccStateComputed),
 	// },
@@ -171,31 +374,37 @@ export const nccState = reactive({
 	},
 
 	// computeds
-	isSigning: readonly(computed(() => {
-		let someWalletIsSigning = false;
-		if (!nccState.wallets) {
-			// pass
-		} else {
-			for (let [k, w] of Object.entries(nccState.wallets)) {
-				if (w.signing) {
-					someWalletIsSigning = true;
-					break;
-				}
-			}
-		}
-		return someWalletIsSigning;
-	})),
+	// TODO re-enable
+	// isSigning: readonly(computed(() => {
+	// 	let someWalletIsSigning = false;
+	// 	if (!nccState.wallets) {
+	// 		// pass
+	// 	} else {
+	// 		for (let [k, w] of Object.entries(nccState.wallets)) {
+	// 			if (w.signing) {
+	// 				someWalletIsSigning = true;
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// 	return someWalletIsSigning;
+	// })),
 
 });
 
 // test - can combine 2 reactive objs here
 // ...allWallets always exists then enableWallets just sets the initParams field and the rest is magic.
-export const nccStateBaseState = reactive({
-	allWallets: {
-		inkey: createWallet(CLIENT_ID.INKEY),
-		pera: createWallet(CLIENT_ID.PERA),
-	},
-});
+// export const nccStateBaseState = reactive({
+// 	allWallets: {
+// 		// inkey: createWallet(CLIENT_ID.INKEY),
+// 		// pera: createWallet(CLIENT_ID.PERA),
+// 		// myalgo: createWallet(CLIENT_ID.MYALGO),
+
+// 		[CLIENT_ID.INKEY]: createWallet(CLIENT_ID.INKEY),
+// 		// [CLIENT_ID.PERA]: createWallet(CLIENT_ID.PERA),
+// 		// [CLIENT_ID.MYALGO]: createWallet(CLIENT_ID.MYALGO),
+// 	},
+// });
 export const nccStateCombined = reactive({
 	...toRefs(nccState),
 	...toRefs(nccStateBaseState)
@@ -206,10 +415,10 @@ export const enableWallets = (
 ) => {
 	console.log('enableWallets started');
 
-	if (nccState.wallets !== null) {
+	if (nccState.enabledWallets !== null) {
 		console.warn('enableWallets called while some wallets were already initialized');
 	} else {
-		nccState.wallets = {} as WalletMap;
+		nccState.enabledWallets = {} as WalletMap;
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
@@ -218,36 +427,73 @@ export const enableWallets = (
 		// simplest catch first
 		if (typeof wInitParams == 'boolean') {
 			if (wInitParams == true) {
-				let w = createWallet(wId, wInitParams); // ip is true
-				nccState.wallets[wId] = w;
+				// initparamas = true so uses defaults
+				nccState.wallets3[wId].initParams = wInitParams;
+				nccState.enabledWallets[wId] = nccState.wallets3[wId];
 			}
 		} else if (typeof wInitParams == 'object') {
-			let cId = wId;
-			if (wInitParams.id) {
-				cId = wInitParams.id;
-			}
-
-			let w = createWallet(cId, wInitParams);
-			nccState.wallets[wId] = w;
-
-			// could... branch on types for even more ts autocomplete but....
-			// // it's synchronis!
-			// // branch wallet gen this way so it works w types
-			// if (wId == CLIENT_ID.INKEY) {
-			// 	let w = createWallet(wId, wInitParams);
-			// 	nccState.wallets[wId] = w;
-			// } else if (id == CLIENT_ID.PERA) {
-			// 	let w = createWallet(id, wInitParams);
-			// 	nccState.wallets[id] = w;
-			// } else if (id == CLIENT_ID.MYALGO) {
-			// 	let w = createWallet(id);
-			// 	nccState.wallets[id] = w;
+			// let cId = wId;
+			// if (wInitParams.id) {
+			// 	cId = wInitParams.id;
 			// }
+
+			nccState.wallets3[wId].initParams = wInitParams;
+			nccState.enabledWallets[wId] = nccState.wallets3[wId];
 		}
 	}
 
-	return nccState.wallets;
+	return nccState.enabledWallets;
 };
+
+
+
+// export const enableWallets = (
+// 	walletsToEnable: WalletInitParamsMap = DEFAULT_WALLETS_TO_ENABLE,
+// ) => {
+// 	console.log('enableWallets started');
+
+// 	if (nccState.wallets !== null) {
+// 		console.warn('enableWallets called while some wallets were already initialized');
+// 	} else {
+// 		nccState.wallets = {} as WalletMap;
+// 	}
+
+// 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
+// 		let wId = wKey as CLIENT_ID; // could just be a unique id for double initing.but why
+
+// 		// simplest catch first
+// 		if (typeof wInitParams == 'boolean') {
+// 			if (wInitParams == true) {
+// 				let w = createWallet(wId, wInitParams); // ip is true
+// 				nccState.wallets[wId] = w;
+// 			}
+// 		} else if (typeof wInitParams == 'object') {
+// 			let cId = wId;
+// 			if (wInitParams.id) {
+// 				cId = wInitParams.id;
+// 			}
+
+// 			let w = createWallet(cId, wInitParams);
+// 			nccState.wallets[wId] = w;
+
+// 			// could... branch on types for even more ts autocomplete but....
+// 			// // it's synchronis!
+// 			// // branch wallet gen this way so it works w types
+// 			// if (wId == CLIENT_ID.INKEY) {
+// 			// 	let w = createWallet(wId, wInitParams);
+// 			// 	nccState.wallets[wId] = w;
+// 			// } else if (id == CLIENT_ID.PERA) {
+// 			// 	let w = createWallet(id, wInitParams);
+// 			// 	nccState.wallets[id] = w;
+// 			// } else if (id == CLIENT_ID.MYALGO) {
+// 			// 	let w = createWallet(id);
+// 			// 	nccState.wallets[id] = w;
+// 			// }
+// 		}
+// 	}
+
+// 	return nccState.wallets;
+// };
 
 export const getAccountsByProvider = (id: CLIENT_ID) => {
 	return nccState.stored.connectedAccounts.filter((account) => account.providerId === id);
