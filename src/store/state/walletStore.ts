@@ -2,7 +2,7 @@ import { immer } from "zustand/middleware/immer";
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type { Account } from "../../types";
-import { WALLET_ID } from "../../constants";
+import { WALLET_ID } from "src/wallets/constants";
 
 export const walletStoreSelector = (state: WalletStore) => ({
   accounts: state.accounts,

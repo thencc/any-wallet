@@ -1,4 +1,4 @@
-import type { WALLET_ID } from "../../constants";
+import { WALLET_ID } from "src/wallets/constants";
 
 export type ClientMetadata = {
 	id: WALLET_ID; // unique

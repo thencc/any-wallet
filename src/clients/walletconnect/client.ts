@@ -6,7 +6,7 @@ import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
 import type WalletConnect from "@walletconnect/client";
 import type { Wallet } from "../../types";
-import { WALLET_ID } from "../../constants";
+import { WALLET_ID } from "src/wallets/constants";
 import BaseWallet from "../base";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import {

@@ -1,4 +1,4 @@
-import { WALLET_ID } from "../constants";
+import { WALLET_ID } from "src/wallets/constants";
 
 export interface Account {
 	providerId: WALLET_ID;
@@ -54,5 +54,3 @@ type ExtendValues<Type> = {
 export type Wallet = ExtendValues<WalletProvider> & {
 	accounts: Account[];
 };
-
-export { WALLET_ID };

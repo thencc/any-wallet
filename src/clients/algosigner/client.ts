@@ -3,16 +3,15 @@
  * https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
  */
 import { Buffer } from "buffer"; // TODO remove this
+import { getAlgosdk } from "../../algod"; // TODO remove this
 import { BaseClient } from "../base";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
-import { WALLET_ID, DEFAULT_NETWORK } from "../../constants";
 import type {
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Network,
 } from "../../types";
-import { ICON, METADATA } from "./constants";
+import { METADATA } from "./constants";
 import type {
 	WindowExtended,
 	AlgoSignerTransaction,
@@ -21,7 +20,7 @@ import type {
 	InitParams,
 	AlgoSignerSdk,
 } from "./types";
-import { addConnectedAccounts, setAsActiveAccount } from "src/utils/initClients";
+import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
 
 // maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {

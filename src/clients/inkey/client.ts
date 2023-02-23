@@ -15,7 +15,7 @@ import {
 import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from "./types";
 import { ICON, METADATA } from "./constants";
 
-import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
 
 // TODO switch all algosdk use to this + other nacl lib (<400kb)
 import msgpack from '@randlabs/msgpack-bigint';

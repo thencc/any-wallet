@@ -1,4 +1,4 @@
-import { WALLET_ID } from "src/constants";
+import { WALLET_ID } from "src/wallets/constants";
 
 import pera from "./pera";
 import myalgo from "./myalgo";

@@ -22,7 +22,7 @@ import {
 } from "./types";
 
 import { markRaw } from "@vue/reactivity";
-import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;

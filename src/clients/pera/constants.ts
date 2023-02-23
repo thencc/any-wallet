@@ -1,4 +1,4 @@
-import { WALLET_ID } from "src/constants";
+import { WALLET_ID } from "src/wallets/constants";
 
 export const ICON =
   "data:image/svg+xml;base64," +

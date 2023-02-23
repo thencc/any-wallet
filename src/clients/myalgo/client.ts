@@ -6,7 +6,6 @@ import { BaseClient } from "../base";
 import type _MyAlgoConnect from "@randlabs/myalgo-connect";
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk
-import { WALLET_ID } from "../../constants";
 import {
 	TransactionsArray,
 	DecodedTransaction,
@@ -17,7 +16,7 @@ import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from "./typ
 import { ICON, METADATA } from "./constants";
 
 import { markRaw } from "@vue/reactivity";
-import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;
@@ -64,7 +63,7 @@ export class MyAlgoClient extends BaseClient {
 			});
 		} catch (e) {
 			// throw new Error(`Error initializing... ${e}`);
-			console.error(`[${WALLET_ID.MYALGO}] Error initializing...`, e);
+			console.error(`[${METADATA.id}] Error initializing...`, e);
 			return null;
 		}
 	}

@@ -3,4 +3,4 @@
 // export { initClients, AnyWalletState, addConnectedAccounts, setAsActiveAccount, watch, signTransactions } from './initClients';
 
 export * from './initClients';
-export * from './pkgHelpers';
+// export * from './pkgHelpers';
