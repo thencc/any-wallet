@@ -4,7 +4,7 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // 
 import { isBrowser } from '../utils/index';
 import { startWatchers } from './watchers';
 
-import { WalletType, WalletsObj, ALL_WALLETS } from "src/wallets"; // wallet bits
+import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from "src/wallets"; // wallet bits
 import type { Account } from 'src/types';
 
 export const AnyWalletState = reactive({
@@ -31,17 +31,21 @@ export const AnyWalletState = reactive({
 		}
 		return a;
 	})),
-	get activeWalletId() {
-		return computed(() => {
-			return AnyWalletState.stored.activeAccount?.providerId || null;
-		})
-	},
+	// get activeWalletId() {
+	// 	return computed(() => {
+	// 		return AnyWalletState.stored.activeAccount?.providerId || null;
+	// 	})
+	// },
 	// activeAddress: readonly(computed(() => {
 	// 	return AnyWalletLS.activeAccount?.address || '';
 	// })),
-	// activeWalletId: readonly(computed(() => {
-	// 	return AnyWalletState.activeAccount?.providerId || null;
-	// })),
+	activeWalletId: readonly(computed(() => {
+		let aWId: null | WALLET_ID = null;
+		if (AnyWalletState.stored.activeAccount) {
+			aWId = AnyWalletState.stored.activeAccount.providerId as unknown as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+		}
+		return aWId;
+	})),
 
 	// get activeWallet() {
 	// 	return computed(() => {
@@ -54,25 +58,25 @@ export const AnyWalletState = reactive({
 	// 	}); // as unknown as null | WalletType; // this type assertion is needed to help w max inferred type size exceeded
 	// },
 
-	get activeWallet() {
-		return readonly(computed(() => {
-			let aW: null | WalletType = null;
-			if (AnyWalletState.activeWalletId !== null &&
-				AnyWalletState.enabledWallets !== null) {
-				aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] || null;
-			}
-			return aW;
-		})) as unknown as null | WalletType; // this type assertion is needed to help w max inferred type size exceeded
-	},
+	// get activeWallet() {
+	// 	return readonly(computed(() => {
+	// 		let aW: null | WalletType = null;
+	// 		if (AnyWalletState.activeWalletId !== null &&
+	// 			AnyWalletState.enabledWallets !== null) {
+	// 			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] || null;
+	// 		}
+	// 		return aW;
+	// 	})) as unknown as null | WalletType; // this type assertion is needed to help w max inferred type size exceeded
+	// },
 
-	// activeWallet: readonly(computed(() => {
-	// 	let aW: null | WalletType = null;
-	// 	if (AnyWalletState.activeWalletId !== null &&
-	// 		AnyWalletState.enabledWallets !== null) {
-	// 		aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] || null;
-	// 	}
-	// 	return aW;
-	// })) as unknown as null | WalletType,
+	activeWallet: readonly(computed(() => {
+		let aW: undefined | WalletType = undefined;
+		if (AnyWalletState.activeWalletId !== null &&
+			AnyWalletState.enabledWallets !== null) {
+			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
+		}
+		return aW;
+	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
 
 
 	isSigning: readonly(computed(() => {
