@@ -6,6 +6,7 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 
 import { CLIENT_MAP, CLIENT_MAP_TYPES } from './pkgHelpers';
 import { CLIENT_ID, Account } from '../types';
+export type ClientType<T extends CLIENT_ID> = CLIENT_MAP_TYPES[T]['client'];
 
 import type { BaseClient } from 'src/clients/base';
 
@@ -15,7 +16,6 @@ import { InitParams as PeraInitParams } from 'src/clients/pera/types';
 import { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
 
 export type WalletType<T extends CLIENT_ID = CLIENT_ID> = ReturnType<typeof quickCreateW<CLIENT_MAP_TYPES[T]['client'], T>>;
-export type ClientType<T extends CLIENT_ID> = CLIENT_MAP_TYPES[T]['client'];
 
 export type WalletsObj = {
 	[CLIENT_ID.PERA]: WalletType<CLIENT_ID.PERA>;
@@ -48,10 +48,10 @@ const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
 	[CLIENT_ID.MYALGO]: true,
 };
 
-const quickCreateW = <WalClient extends BaseClient = BaseClient, WALLET_ID extends CLIENT_ID = CLIENT_ID>(id: CLIENT_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
+const quickCreateW = <WalClient extends BaseClient = BaseClient, W_ID extends CLIENT_ID = CLIENT_ID>(id: CLIENT_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
 	let w = reactive({
 		// === wallet state ===
-		id: id, // as WALLET_ID,
+		id: id, // as W_ID,
 		client: null as null | WalClient,
 		initParams: ip,
 		inited: false, // client
@@ -72,7 +72,6 @@ const quickCreateW = <WalClient extends BaseClient = BaseClient, WALLET_ID exten
 				if (typeof ip == 'object' && (
 					ip.config || ip.sdk
 				)) {
-
 					w.client = await CLIENT_MAP[id].client.init(ip) as any;
 				} else if (ip == true) {
 					w.client = await CLIENT_MAP[id].client.init() as any;
