@@ -1,17 +1,17 @@
-// import { CLIENT_ID } from "../types";
+// import { WALLET_ID } from "../types";
 // import { CLIENT_IDS } from '../utils/pkgHelpers';
 
 // // type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
-// // type SupportedProviders = { [x in CLIENT_ID]?: Promise<WalletClient | null> };
+// // type SupportedProviders = { [x in WALLET_ID]?: Promise<WalletClient | null> };
 // // type InitedClients = { [x: string]: WalletClient };
 
-// // type InitedClients = { [x in CLIENT_ID]?: NonNullable<WalletClient>};
+// // type InitedClients = { [x in WALLET_ID]?: NonNullable<WalletClient>};
 
-// // type InitedClients = { [x in CLIENT_ID]?: WalletClient };
+// // type InitedClients = { [x in WALLET_ID]?: WalletClient };
 // // type InitedClients = Record<typeof CLIENT_IDS[number], WalletClient>;
-// // type InitedClients = Record<[CLIENT_ID]?, WalletClient>;
+// // type InitedClients = Record<[WALLET_ID]?, WalletClient>;
 // // type InitedClients = {
-// //   [CLIENT_ID.INKEY]?: WalletClient
+// //   [WALLET_ID.INKEY]?: WalletClient
 // // };
 // // type InitedClients = {
 // //   pera?: BaseClient;
@@ -33,7 +33,7 @@
 
 //     // TODO make this promise.All instead of stopping on each and awaiting (faster)
 //     for (let cId in providers) {
-//       let ccid = cId as CLIENT_ID; // TODO try and fix casting here
+//       let ccid = cId as WALLET_ID; // TODO try and fix casting here
 //       let c = await providers[ccid];
 
 //       if (c) {

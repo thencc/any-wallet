@@ -7,7 +7,7 @@ const STORAGE_KEY = 'ncc-handy-wallet';
 
 
 import allClients from "../clients";
-import { CLIENT_ID, WalletClient } from 'src/types';
+import { WALLET_ID, WalletClient } from 'src/types';
 
 
 
@@ -43,12 +43,12 @@ const appState = {
 			console.log('clients', cs);
 
 
-			const supportedClients = Object.keys(clients) as CLIENT_ID[];
+			const supportedClients = Object.keys(clients) as WALLET_ID[];
 			console.log('supportedClients', supportedClients);
 
 
 
-			const getClient = async (id?: CLIENT_ID): Promise<WalletClient> => {
+			const getClient = async (id?: WALLET_ID): Promise<WalletClient> => {
 				console.log('getClient', id);
 
 				if (!id) throw new Error("Provier ID is missing.");
@@ -60,7 +60,7 @@ const appState = {
 				return client;
 			};
 
-			const connect = async (id: CLIENT_ID) => {
+			const connect = async (id: WALLET_ID) => {
 				try {
 					// await disconnectWCSessions(id);
 

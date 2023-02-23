@@ -5,50 +5,58 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 // TODO move imports to seperate client + wallet trees
 
 import { CLIENT_MAP, CLIENT_MAP_TYPES } from './pkgHelpers';
-import { CLIENT_ID, Account } from '../types';
-export type ClientType<T extends CLIENT_ID> = CLIENT_MAP_TYPES[T]['client'];
+import { WALLET_ID, Account } from '../types';
+export type ClientType<T extends WALLET_ID> = CLIENT_MAP_TYPES[T]['client'];
 
 import type { BaseClient } from 'src/clients/base';
 
 // init params
-import { InitParams as InkeyInitParams } from 'src/clients/inkey/types';
 import { InitParams as PeraInitParams } from 'src/clients/pera/types';
+import { InitParams as InkeyInitParams } from 'src/clients/inkey/types';
 import { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
+import { InitParams as AlgoSignerInitParams } from 'src/clients/algosigner/types';
 
-export type WalletType<T extends CLIENT_ID = CLIENT_ID> = ReturnType<typeof quickCreateW<CLIENT_MAP_TYPES[T]['client'], T>>;
+export type WalletType<T extends WALLET_ID = WALLET_ID> = ReturnType<typeof quickCreateW<CLIENT_MAP_TYPES[T]['client'], T>>;
 
 export type WalletsObj = {
-	[CLIENT_ID.PERA]: WalletType<CLIENT_ID.PERA>;
-	[CLIENT_ID.INKEY]: WalletType<CLIENT_ID.INKEY>;
-	[CLIENT_ID.MYALGO]: WalletType<CLIENT_ID.MYALGO>;
+	[WALLET_ID.PERA]?: WalletType<WALLET_ID.PERA>;
+	[WALLET_ID.INKEY]?: WalletType<WALLET_ID.INKEY>;
+	[WALLET_ID.MYALGO]?: WalletType<WALLET_ID.MYALGO>;
+	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
 }
 
 export type WalletInitParamsObj = {
-	[CLIENT_ID.PERA]?: boolean | {
-		id?: CLIENT_ID.PERA;
+	[WALLET_ID.PERA]?: boolean | {
+		id?: WALLET_ID.PERA;
 		config?: PeraInitParams['config'];
 		sdk?: PeraInitParams['sdk'];
 	};
-	[CLIENT_ID.INKEY]?: boolean | {
-		id?: CLIENT_ID.INKEY;
+	[WALLET_ID.INKEY]?: boolean | {
+		id?: WALLET_ID.INKEY;
 		config?: InkeyInitParams['config'];
 		sdk?: InkeyInitParams['sdk'];
 	};
-	[CLIENT_ID.MYALGO]?: boolean | {
-		id?: CLIENT_ID.MYALGO;
+	[WALLET_ID.MYALGO]?: boolean | {
+		id?: WALLET_ID.MYALGO;
 		config?: MyAlgoInitParams['config'];
 		sdk?: MyAlgoInitParams['sdk'];
+	};
+	[WALLET_ID.ALGOSIGNER]?: boolean | {
+		id?: WALLET_ID.ALGOSIGNER;
+		config?: AlgoSignerInitParams['config'];
+		sdk?: AlgoSignerInitParams['sdk'];
 	};
 }
 
 // TODO make WALLET_PARAMS_DEFAULTS map ? w actual values, like src etc etc or let client class code handle this?
 const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
-	[CLIENT_ID.PERA]: true,
-	[CLIENT_ID.INKEY]: true,
-	[CLIENT_ID.MYALGO]: true,
+	[WALLET_ID.PERA]: true,
+	[WALLET_ID.INKEY]: true,
+	[WALLET_ID.MYALGO]: true,
+	[WALLET_ID.ALGOSIGNER]: true,
 };
 
-const quickCreateW = <WalClient extends BaseClient = BaseClient, W_ID extends CLIENT_ID = CLIENT_ID>(id: CLIENT_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
+const quickCreateW = <WalClient extends BaseClient = BaseClient, W_ID extends WALLET_ID = WALLET_ID>(id: WALLET_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
 	let w = reactive({
 		// === wallet state ===
 		id: id, // as W_ID,
@@ -159,15 +167,16 @@ const quickCreateW = <WalClient extends BaseClient = BaseClient, W_ID extends CL
 }
 
 const ALL_WALLETS: WalletsObj = {
-	[CLIENT_ID.PERA]: quickCreateW<ClientType<CLIENT_ID.PERA>>(CLIENT_ID.PERA),
-	[CLIENT_ID.INKEY]: quickCreateW<ClientType<CLIENT_ID.INKEY>>(CLIENT_ID.INKEY),
-	[CLIENT_ID.MYALGO]: quickCreateW<ClientType<CLIENT_ID.MYALGO>>(CLIENT_ID.MYALGO),
+	[WALLET_ID.PERA]: quickCreateW<ClientType<WALLET_ID.PERA>>(WALLET_ID.PERA),
+	[WALLET_ID.INKEY]: quickCreateW<ClientType<WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+	[WALLET_ID.MYALGO]: quickCreateW<ClientType<WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+	[WALLET_ID.ALGOSIGNER]: quickCreateW<ClientType<WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
 	// test: '123'; // break, as it should
 };
 
 export const AnyWalletState = reactive({
 	activeAddress: '',
-	activeWalletId: null as null | CLIENT_ID,
+	activeWalletId: null as null | WALLET_ID,
 	activeWallet: null as null | WalletType, // should be a computed...
 
 	allWallets: ALL_WALLETS,
@@ -210,9 +219,9 @@ export const enableWallets = (
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
-		let wId = wKey as CLIENT_ID; // could just be a unique id for double initing.but why
+		let wId = wKey as WALLET_ID; // could just be a unique id for double initing.but why
 
-		AnyWalletState.allWallets[wId].initParams = wInitParams;
+		AnyWalletState.allWallets[wId]!.initParams = wInitParams;
 		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any;
 
 		/*
@@ -233,11 +242,11 @@ export const enableWallets = (
 	return AnyWalletState.enabledWallets;
 };
 
-export const getAccountsByProvider = (id: CLIENT_ID) => {
+export const getAccountsByProvider = (id: WALLET_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.providerId === id);
 };
 
-export const removeAccountsByClient = (id: CLIENT_ID) => {
+export const removeAccountsByClient = (id: WALLET_ID) => {
 	console.log('removeAccountsByClient', id);
 
 	if (AnyWalletState.stored.activeAccount) {
@@ -305,6 +314,9 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	}
 
 	let activeWallet = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
+	if (!activeWallet) {
+		throw new Error('No active wallet... shouldnt happen.');
+	}
 	if (activeWallet.inited == false || activeWallet.client == null) {
 		await activeWallet.isReady(); // handles .initing state var
 	}
@@ -372,7 +384,7 @@ watch(
 
 		// update helpful top level prop
 		let activeAddress = '';
-		let activeWalletId: null | CLIENT_ID = null;
+		let activeWalletId: null | WALLET_ID = null;
 		let activeWallet: null | WalletType = null;
 		if (acct) {
 			activeAddress = acct.address;

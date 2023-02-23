@@ -6,7 +6,7 @@ import { BaseClient } from "../base";
 import type _MyAlgoConnect from "@randlabs/myalgo-connect";
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk
-import { CLIENT_ID } from "../../constants";
+import { WALLET_ID } from "../../constants";
 import {
 	TransactionsArray,
 	DecodedTransaction,
@@ -64,7 +64,7 @@ export class MyAlgoClient extends BaseClient {
 			});
 		} catch (e) {
 			// throw new Error(`Error initializing... ${e}`);
-			console.error(`[${CLIENT_ID.MYALGO}] Error initializing...`, e);
+			console.error(`[${WALLET_ID.MYALGO}] Error initializing...`, e);
 			return null;
 		}
 	}

@@ -1,5 +1,5 @@
 // import type algosdk from "algosdk";
-// import { CLIENT_ID, WalletClient, Network } from "../types";
+// import { WALLET_ID, WalletClient, Network } from "../types";
 // import allClients from "../clients";
 // import {
 //   DEFAULT_NODE_BASEURL,
@@ -22,7 +22,7 @@
 // };
 
 // export const initializeProviders = async (
-//   providers?: CLIENT_ID[],
+//   providers?: WALLET_ID[],
 //   nodeConfig?: NodeConfig,
 //   algosdkStatic?: typeof algosdk
 // ) => {

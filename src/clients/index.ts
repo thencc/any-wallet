@@ -1,4 +1,4 @@
-import { CLIENT_ID } from "src/constants";
+import { WALLET_ID } from "src/constants";
 
 import pera from "./pera";
 import myalgo from "./myalgo";
@@ -37,9 +37,9 @@ export {
 // export const CLIENT_SDK_MAP = Object.freeze({
 // });
 export const CLIENT_SDK_MAP = {
-	// [CLIENT_ID.PERA]: pera,
-	// [CLIENT_ID.MYALGO]: myalgo,
-	// [CLIENT_ID.INKEY]: InkeyClient
+	// [WALLET_ID.PERA]: pera,
+	// [WALLET_ID.MYALGO]: myalgo,
+	// [WALLET_ID.INKEY]: InkeyClient
 };
 
 export default CLIENT_SDK_MAP;

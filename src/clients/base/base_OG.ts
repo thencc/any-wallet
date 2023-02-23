@@ -1,5 +1,5 @@
 import type _algosdk from "algosdk";
-import { CLIENT_ID } from "../../constants";
+import { WALLET_ID } from "../../constants";
 import type {
   Asset,
   Wallet,
@@ -37,7 +37,7 @@ class PreBaseClient {
   keepWCAlive: HTMLAudioElement;
 
   // static metadata: {
-  //   id: CLIENT_ID;
+  //   id: WALLET_ID;
   //   chain: string; // 'algorand'
   //   name: string;
   //   icon: string;
@@ -53,7 +53,7 @@ class PreBaseClient {
     // this provider AND which account of this p?
   };
 
-  // getAccountsByProvider(id: CLIENT_ID) {
+  // getAccountsByProvider(id: WALLET_ID) {
   //   return connectedAccounts.filter((account) => account.providerId === id);
   // };
 
@@ -238,14 +238,14 @@ abstract class BaseClient extends PreBaseClient {
   // keepWCAlive: HTMLAudioElement;
 
   // static metadata: {
-  //   id: CLIENT_ID;
+  //   id: WALLET_ID;
   //   chain: string; // 'algorand'
   //   name: string;
   //   icon: string;
   //   isWalletConnect: boolean; // TODO delete
   // };
   abstract metadata: {
-    id: CLIENT_ID;
+    id: WALLET_ID;
     chain: string; // 'algorand'
     name: string;
     icon: string;

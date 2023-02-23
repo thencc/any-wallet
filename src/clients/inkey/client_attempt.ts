@@ -5,7 +5,7 @@
 import BaseWallet from "../base";
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
+import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
 import {
   TransactionsArray,
   DecodedTransaction,
@@ -62,7 +62,7 @@ class InkeyWalletClient {
 
 
   static metadata = {
-    id: CLIENT_ID.INKEY,
+    id: WALLET_ID.INKEY,
     chain: "algorand",
     name: "Inkey Microwallet",
     icon: ICON,

@@ -2,247 +2,191 @@
  * Helpful resources:
  * https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
  */
-import type _algosdk from "algosdk";
-import BaseWallet from "../base";
-import Algod, { getAlgodClient } from "../../algod";
-import { CLIENT_ID, DEFAULT_NETWORK } from "../../constants";
+import { Buffer } from "buffer"; // TODO remove this
+import { BaseClient } from "../base";
+import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
+import { WALLET_ID, DEFAULT_NETWORK } from "../../constants";
 import type {
-  TransactionsArray,
-  DecodedTransaction,
-  DecodedSignedTransaction,
-  Network,
+	TransactionsArray,
+	DecodedTransaction,
+	DecodedSignedTransaction,
+	Network,
 } from "../../types";
-import { ICON } from "./constants";
+import { ICON, METADATA } from "./constants";
 import type {
-  WindowExtended,
-  AlgoSignerTransaction,
-  SupportedLedgers,
-  AlgoSigner,
-  AlgoSignerClientConstructor,
-  InitParams,
+	WindowExtended,
+	AlgoSignerTransaction,
+	SupportedLedgers,
+	AlgoSignerClientConstructor,
+	InitParams,
+	AlgoSignerSdk,
 } from "./types";
+import { addConnectedAccounts, setAsActiveAccount } from "src/utils/initClients";
 
+// maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {
-  if (network === "betanet") {
-    return "BetaNet";
-  }
+	if (network === "betanet") {
+		return "BetaNet";
+	}
 
-  if (network === "testnet") {
-    return "TestNet";
-  }
+	if (network === "testnet") {
+		return "TestNet";
+	}
 
-  if (network === "mainnet") {
-    return "MainNet";
-  }
+	if (network === "mainnet") {
+		return "MainNet";
+	}
 
-  return network;
+	return network;
 };
 
-class AlgoSignerClient extends BaseWallet {
-  #client: AlgoSigner;
-  network: Network;
+export class AlgoSignerClient extends BaseClient {
+	sdk: AlgoSignerSdk;
+	network: Network;
 
-  constructor({
-    client,
-    algosdk,
-    algodClient,
-    network,
-  }: AlgoSignerClientConstructor) {
-    super(algosdk, algodClient);
-    this.#client = client;
-    this.network = network;
-  }
+	constructor({
+		sdk: clientSdk,
+		network,
+	}: AlgoSignerClientConstructor) {
+		super();
+		this.sdk = clientSdk;
+		this.network = network;
+	}
 
-  // TODO move metadata to constants
-  static metadata = {
-    id: CLIENT_ID.ALGOSIGNER,
-    name: "AlgoSigner",
-    // chain: 'algorand',
-    icon: ICON,
-    isWalletConnect: false, // TODO delete
-  };
+	static metadata = METADATA;
 
-  static async init({
-    // TODO add clientConfig field w .network defaulting to mainnet + keep getNetwork map
-    clientConfig,
-    algodOptions,
-    algosdkStatic,
-    network = DEFAULT_NETWORK,
-  }: InitParams) {
-    try {
-      if (
-        typeof window == "undefined" ||
-        (window as WindowExtended).AlgoSigner === undefined
-      ) {
-        throw new Error("AlgoSigner is not available.");
-      }
+	static async init(initParams?: InitParams) {
+		console.log(`[${METADATA.id}] init started`);
 
-      const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-      const algodClient = await getAlgodClient(algosdk, algodOptions);
-      const algosigner = (window as WindowExtended).AlgoSigner as AlgoSigner;
+		try {
+			if (
+				typeof window == "undefined" ||
+				(window as WindowExtended).AlgoSigner === undefined
+			) {
+				throw new Error("AlgoSigner is not available.");
+			}
 
-      return new AlgoSignerClient({
-        id: CLIENT_ID.ALGOSIGNER,
-        client: algosigner,
-        algosdk: algosdk,
-        algodClient: algodClient,
-        network,
-      });
-    } catch (e) {
-      console.error("Error initializing...", e);
-      return null;
-    }
-  }
+			const clientSdk: AlgoSignerSdk = (window as WindowExtended).AlgoSigner;
 
-  async connect() {
-    await this.#client.connect();
+			let network: Network = 'mainnet'; // default
+			if (initParams?.config?.network) {
+				if (initParams.config.network == 'mainnet' ||
+					initParams.config.network == 'testnet' ||
+					initParams.config.network == 'betanet') {
+					network = initParams.config.network;
+				} else {
+					// invalid network, keeps w default
+					console.warn(`invalid network in ${METADATA.id} config`);
+				}
+			}
 
-    const accounts = await this.#client.accounts({
-      ledger: getNetwork(this.network),
-    });
+			return new AlgoSignerClient({
+				sdk: clientSdk,
+				network,
+			});
+		} catch (e) {
+			console.error("Error initializing...", e);
+			return null;
+		}
+	}
 
-    if (accounts.length === 0) {
-      throw new Error(`No accounts found for ${AlgoSignerClient.metadata.id}`);
-    }
+	async connect() {
+		await this.sdk.connect();
 
-    const mappedAccounts = accounts.map(({ address }, index) => ({
-      name: `AlgoSigner ${index + 1}`,
-      address,
-      providerId: AlgoSignerClient.metadata.id,
-    }));
+		const accounts = await this.sdk.accounts({
+			ledger: getNetwork(this.network),
+		});
 
-    return {
-      ...AlgoSignerClient.metadata,
-      accounts: mappedAccounts,
-    };
-  }
+		if (accounts.length === 0) {
+			throw new Error(`No accounts found for ${METADATA.id}`);
+		}
 
-  async reconnect(onDisconnect: () => void) {
-    if (
-      window === undefined ||
-      (window as WindowExtended).AlgoSigner === undefined
-    ) {
-      onDisconnect();
-    }
+		const mappedAccounts = accounts.map(({ address }, index) => ({
+			name: `AlgoSigner ${index + 1}`,
+			address,
+			providerId: METADATA.id,
+		}));
 
-    return null;
-  }
+		// save to state
+		addConnectedAccounts(mappedAccounts);
+		setAsActiveAccount(mappedAccounts[0]);
 
-  async disconnect() {
-    return;
-  }
+		return {
+			...METADATA,
+			accounts: mappedAccounts,
+		};
+	}
 
-  async signTransactions(
-    connectedAccounts: string[],
-    transactions: Uint8Array[]
-  ) {
-    // Decode the transactions to access their properties.
-    const decodedTxns = transactions.map((txn) => {
-      return this.algosdk.decodeObj(txn);
-    }) as Array<DecodedTransaction | DecodedSignedTransaction>;
+	async reconnect(onDisconnect: () => void) {
+		if (
+			window === undefined ||
+			(window as WindowExtended).AlgoSigner === undefined
+		) {
+			onDisconnect();
+		}
 
-    // Marshal the transactions,
-    // and add the signers property if they shouldn't be signed.
-    const txnsToSign = decodedTxns.reduce<AlgoSignerTransaction[]>(
-      (acc, txn, i) => {
-        const txnObj: AlgoSignerTransaction = {
-          txn: this.#client.encoding.msgpackToBase64(transactions[i]),
-        };
+		return null;
+	}
 
-        if (
-          "txn" in txn ||
-          !connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
-        ) {
-          txnObj.txn = this.#client.encoding.msgpackToBase64(
-            this.algosdk.decodeSignedTransaction(transactions[i]).txn.toByte()
-          );
-          txnObj.signers = [];
-        }
+	async disconnect() {
+		return;
+	}
 
-        acc.push(txnObj);
+	async signTransactions(
+		connectedAccounts: string[],
+		transactions: Uint8Array[]
+	) {
 
-        return acc;
-      },
-      []
-    );
+		// TODO fix this:
+		const algosdk = await getAlgosdk();
+		console.log('getting algosdk... TODO optimize this!');
 
-    // Sign them with the client.
-    const result = await this.#client.signTxn(txnsToSign);
+		// Decode the transactions to access their properties.
+		const decodedTxns = transactions.map((txn) => {
+			return algosdk.decodeObj(txn);
+		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-    // Join the newly signed transactions with the original group of transactions.
-    const signedTxns = result.reduce<Uint8Array[]>((acc, txn, i) => {
-      if (txn) {
-        acc.push(new Uint8Array(Buffer.from(txn.blob, "base64")));
-      } else {
-        acc.push(transactions[i]);
-      }
+		// Marshal the transactions,
+		// and add the signers property if they shouldn't be signed.
+		const txnsToSign = decodedTxns.reduce<AlgoSignerTransaction[]>(
+			(acc, txn, i) => {
+				const txnObj: AlgoSignerTransaction = {
+					txn: this.sdk.encoding.msgpackToBase64(transactions[i]),
+				};
 
-      return acc;
-    }, []);
+				if (
+					"txn" in txn ||
+					!connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
+				) {
+					txnObj.txn = this.sdk.encoding.msgpackToBase64(
+						algosdk.decodeSignedTransaction(transactions[i]).txn.toByte()
+					);
+					txnObj.signers = [];
+				}
 
-    return signedTxns;
-  }
+				acc.push(txnObj);
 
-  /** @deprecated */
-  formatTransactionsArray(
-    transactions: TransactionsArray
-  ): AlgoSignerTransaction[] {
-    const formattedTransactions = transactions.map(([type, txn]) => {
-      const formattedTxn: AlgoSignerTransaction = {
-        txn: txn[1],
-      };
+				return acc;
+			},
+			[]
+		);
 
-      if (type === "s") {
-        formattedTxn.signers = [];
-        const decoded = this.algosdk.decodeSignedTransaction(
-          new Uint8Array(Buffer.from(txn, "base64"))
-        );
-        formattedTxn.txn = this.#client.encoding.msgpackToBase64(
-          decoded.txn.toByte()
-        );
-      } else {
-        const decoded = this.algosdk.decodeUnsignedTransaction(
-          Buffer.from(txn, "base64")
-        );
-        formattedTxn.txn = this.#client.encoding.msgpackToBase64(
-          decoded.toByte()
-        );
-      }
+		// Sign them with the client.
+		const result = await this.sdk.signTxn(txnsToSign);
 
-      return formattedTxn;
-    });
+		// Join the newly signed transactions with the original group of transactions.
+		const signedTxns = result.reduce<Uint8Array[]>((acc, txn, i) => {
+			if (txn) {
+				acc.push(new Uint8Array(Buffer.from(txn.blob, "base64")));
+			} else {
+				acc.push(transactions[i]);
+			}
 
-    return formattedTransactions;
-  }
+			return acc;
+		}, []);
 
-  /** @deprecated */
-  async signEncodedTransactions(transactions: TransactionsArray) {
-    const transactionsToSign = this.formatTransactionsArray(transactions);
-    const result = await this.#client.signTxn(transactionsToSign);
-
-    if (!result) {
-      throw new Error("Signing failed.");
-    }
-
-    const signedRawTransactions = result.reduce(
-      (signedTxns: Uint8Array[], txn, currentIndex) => {
-        if (txn) {
-          signedTxns.push(new Uint8Array(Buffer.from(txn.blob, "base64")));
-        }
-
-        if (txn === null) {
-          signedTxns.push(
-            new Uint8Array(Buffer.from(transactions[currentIndex][1], "base64"))
-          );
-        }
-
-        return signedTxns;
-      },
-      []
-    );
-
-    return signedRawTransactions;
-  }
+		return signedTxns;
+	}
 }
 
 export default AlgoSignerClient;

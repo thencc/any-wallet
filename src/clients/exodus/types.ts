@@ -1,4 +1,4 @@
-import { CLIENT_ID } from "../../constants";
+import { WALLET_ID } from "../../constants";
 import type _algosdk from "algosdk";
 import type { AlgodClientOptions, Network } from "../../types";
 
@@ -26,7 +26,7 @@ export type Exodus = {
 
 export type ExodusClientConstructor = {
   client: Exodus;
-  id: CLIENT_ID;
+  id: WALLET_ID;
   algosdk: typeof _algosdk;
   algodClient: _algosdk.Algodv2;
   onlyIfTrusted: boolean;

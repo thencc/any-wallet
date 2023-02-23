@@ -5,7 +5,7 @@
 import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
 import type { Wallet } from "../../types";
-import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
+import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
 import BaseWallet from "../base";
 import { TransactionsArray } from "../../types";
 import type { DeflyWalletConnect } from "@blockshake/defly-connect";
@@ -37,7 +37,7 @@ class DeflyWalletClient extends BaseWallet {
   }
 
   static metadata = {
-    id: CLIENT_ID.DEFLY,
+    id: WALLET_ID.DEFLY,
     name: "Defly",
     icon: ICON,
     isWalletConnect: true,

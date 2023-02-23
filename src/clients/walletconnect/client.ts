@@ -6,7 +6,7 @@ import type _algosdk from "algosdk";
 import Algod, { getAlgodClient } from "../../algod";
 import type WalletConnect from "@walletconnect/client";
 import type { Wallet } from "../../types";
-import { CLIENT_ID } from "../../constants";
+import { WALLET_ID } from "../../constants";
 import BaseWallet from "../base";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import {
@@ -38,7 +38,7 @@ class WalletConnectClient extends BaseWallet {
   }
 
   static metadata = {
-    id: CLIENT_ID.WALLETCONNECT,
+    id: WALLET_ID.WALLETCONNECT,
     name: "WalletConnect",
     icon: ICON,
     isWalletConnect: true,

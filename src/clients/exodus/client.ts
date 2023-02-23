@@ -5,7 +5,7 @@
 import type _algosdk from "algosdk";
 import BaseWallet from "../base";
 import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
+import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
 import type {
   TransactionsArray,
   DecodedTransaction,
@@ -39,7 +39,7 @@ class ExodusClient extends BaseWallet {
   }
 
   static metadata = {
-    id: CLIENT_ID.EXODUS,
+    id: WALLET_ID.EXODUS,
     name: "Exodus",
     icon: ICON,
     isWalletConnect: false,
@@ -64,7 +64,7 @@ class ExodusClient extends BaseWallet {
       const exodus = (window as WindowExtended).exodus.algorand as Exodus;
 
       return new ExodusClient({
-        id: CLIENT_ID.EXODUS,
+        id: WALLET_ID.EXODUS,
         client: exodus,
         algosdk: algosdk,
         algodClient: algodClient,
