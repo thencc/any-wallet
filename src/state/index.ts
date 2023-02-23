@@ -4,7 +4,7 @@ export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // 
 import { isBrowser } from '../utils/index';
 import { startWatchers } from './watchers';
 
-import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from "src/wallets"; // wallet bits
+import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
 
 export const AnyWalletState = reactive({
@@ -19,11 +19,6 @@ export const AnyWalletState = reactive({
 	},
 
 	// computeds
-	// get activeAddress() {
-	// 	return readonly(computed(() => {
-	// 		return AnyWalletState.stored.activeAccount?.address || ''; // empty string means no active addr
-	// 	}))
-	// },
 	activeAddress: readonly(computed(() => {
 		let a = '';
 		if (AnyWalletState.stored.activeAccount) {
@@ -31,14 +26,6 @@ export const AnyWalletState = reactive({
 		}
 		return a;
 	})),
-	// get activeWalletId() {
-	// 	return computed(() => {
-	// 		return AnyWalletState.stored.activeAccount?.providerId || null;
-	// 	})
-	// },
-	// activeAddress: readonly(computed(() => {
-	// 	return AnyWalletLS.activeAccount?.address || '';
-	// })),
 	activeWalletId: readonly(computed(() => {
 		let aWId: null | WALLET_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
@@ -46,29 +33,6 @@ export const AnyWalletState = reactive({
 		}
 		return aWId;
 	})),
-
-	// get activeWallet() {
-	// 	return computed(() => {
-	// 		let aW: null | WalletType = null;
-	// 		if (AnyWalletState.activeWalletId !== null &&
-	// 			AnyWalletState.enabledWallets !== null) {
-	// 			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] || null;
-	// 		}
-	// 		return aW;
-	// 	}); // as unknown as null | WalletType; // this type assertion is needed to help w max inferred type size exceeded
-	// },
-
-	// get activeWallet() {
-	// 	return readonly(computed(() => {
-	// 		let aW: null | WalletType = null;
-	// 		if (AnyWalletState.activeWalletId !== null &&
-	// 			AnyWalletState.enabledWallets !== null) {
-	// 			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] || null;
-	// 		}
-	// 		return aW;
-	// 	})) as unknown as null | WalletType; // this type assertion is needed to help w max inferred type size exceeded
-	// },
-
 	activeWallet: readonly(computed(() => {
 		let aW: undefined | WalletType = undefined;
 		if (AnyWalletState.activeWalletId !== null &&
@@ -77,8 +41,6 @@ export const AnyWalletState = reactive({
 		}
 		return aW;
 	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
-
-
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
 		if (!AnyWalletState.enabledWallets) {
@@ -93,22 +55,7 @@ export const AnyWalletState = reactive({
 		}
 		return someWalletIsSigning;
 	})),
-	// get activeAddress() {
-	// 	return readonly(computed(() => {
-	// 		return AnyWalletState.stored.activeAccount?.address || ''; // empty string means no active addr
-	// 	}))
-	// },
-
-
-	// activeWalletId: readonly(computed(() => {
-	// 	if (!!(AnyWalletState)) {
-	// 		return AnyWalletState.activeAccount?.providerId || null;
-	// 	}
-	// 	return null;
-	// })),
-
 });
-
 
 // if browser, do the browser-specific stuff (localstorage, etc). this built file has to be able to run thru bundlers down the line like esbuild/rollup
 if (isBrowser()) {
@@ -116,7 +63,6 @@ if (isBrowser()) {
 	// FYI: watchers MUST be started AFTER the state inits
 	startWatchers();
 }
-
 
 // TODO figure out how to let client user define their own onChange handler. use setOnChange( userFun ) ?
 /**
