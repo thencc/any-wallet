@@ -1,13 +1,20 @@
-import { computed, reactive, readonly, Ref, DeepReadonly, toRaw, ShallowReactive, toRefs } from '@vue/reactivity';
+import { computed, reactive, readonly } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use
 
+// TODO move imports to seperate client + wallet trees
 
-import { CLIENT_MAP, CLIENT_MAP_TYPES } from "./pkgHelpers";
-import { BaseClient } from 'src/clients/base';
-import { CLIENT_ID, Account } from "../types";
+import { CLIENT_MAP, CLIENT_MAP_TYPES } from './pkgHelpers';
+import { CLIENT_ID, Account } from '../types';
 
-export type WalletType<T extends CLIENT_ID> = ReturnType<typeof quickCreateW<CLIENT_MAP_TYPES[T]['client'], T>>;
+import type { BaseClient } from 'src/clients/base';
+
+// init params
+import { InitParams as InkeyInitParams } from 'src/clients/inkey/types';
+import { InitParams as PeraInitParams } from 'src/clients/pera/types';
+import { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
+
+export type WalletType<T extends CLIENT_ID = CLIENT_ID> = ReturnType<typeof quickCreateW<CLIENT_MAP_TYPES[T]['client'], T>>;
 export type ClientType<T extends CLIENT_ID> = CLIENT_MAP_TYPES[T]['client'];
 
 export type WalletsObj = {
@@ -16,7 +23,7 @@ export type WalletsObj = {
 	[CLIENT_ID.MYALGO]: WalletType<CLIENT_ID.MYALGO>;
 }
 
-export type WalletInitParamsMap = {
+export type WalletInitParamsObj = {
 	[CLIENT_ID.PERA]?: boolean | {
 		id?: CLIENT_ID.PERA;
 		config?: PeraInitParams['config'];
@@ -34,19 +41,14 @@ export type WalletInitParamsMap = {
 	};
 }
 
-// init params
-import { InitParams as InkeyInitParams } from "src/clients/inkey/types";
-import { InitParams as PeraInitParams } from "src/clients/pera/types";
-import { InitParams as MyAlgoInitParams } from "src/clients/myalgo/types";
-
 // TODO make WALLET_PARAMS_DEFAULTS map ? w actual values, like src etc etc or let client class code handle this?
-const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsMap = {
+const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
 	[CLIENT_ID.PERA]: true,
 	[CLIENT_ID.INKEY]: true,
 	[CLIENT_ID.MYALGO]: true,
 };
 
-const quickCreateW = <WalClient extends BaseClient, WALLET_ID extends CLIENT_ID = CLIENT_ID,>(id: CLIENT_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
+const quickCreateW = <WalClient extends BaseClient = BaseClient, WALLET_ID extends CLIENT_ID = CLIENT_ID>(id: CLIENT_ID, ip: boolean | { config?: any, sdk?: any } = true) => {
 	let w = reactive({
 		// === wallet state ===
 		id: id, // as WALLET_ID,
@@ -167,7 +169,7 @@ const ALL_WALLETS: WalletsObj = {
 export const AnyWalletState = reactive({
 	activeAddress: '',
 	activeWalletId: null as null | CLIENT_ID,
-	activeWallet: null as null | WalletType<CLIENT_ID>, // should be a computed...
+	activeWallet: null as null | WalletType, // should be a computed...
 
 	allWallets: ALL_WALLETS,
 	enabledWallets: null as null | WalletsObj, // .wallets (should it be renamed this?)
@@ -180,7 +182,6 @@ export const AnyWalletState = reactive({
 	},
 
 	// computeds
-	// TODO re-enable
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
 		if (!AnyWalletState.enabledWallets) {
@@ -199,7 +200,7 @@ export const AnyWalletState = reactive({
 });
 
 export const enableWallets = (
-	walletsToEnable: WalletInitParamsMap = DEFAULT_WALLETS_TO_ENABLE,
+	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
 	console.log('enableWallets started');
 
@@ -340,12 +341,12 @@ const initLocalStorage = () => {
 		}
 	}
 }
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
 	initLocalStorage(); // 1 time on page load
 }
 
 
-// save ".stored" to localstorage
+// save '.stored' to localstorage
 watch(
 	() => AnyWalletState.stored,
 	() => {
@@ -373,7 +374,7 @@ watch(
 		// update helpful top level prop
 		let activeAddress = '';
 		let activeWalletId: null | CLIENT_ID = null;
-		let activeWallet: null | WalletType<CLIENT_ID> = null;
+		let activeWallet: null | WalletType = null;
 		if (acct) {
 			activeAddress = acct.address;
 			activeWalletId = acct.providerId;
