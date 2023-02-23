@@ -6,6 +6,11 @@ export * from "./utils";
 export * from "./types";
 export * from "./clients";
 
+//
+export * from './wallets';
+export * from './clientsNEW';
+export * from './state';
+
 // import { appStateProxy } from './state/index';
 
 // export const handyWallet = {

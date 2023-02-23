@@ -1,9 +1,9 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.';
-import { CLIENT_MAP } from 'src/clientsNEW';
-import { AnyWalletState } from 'src/utils/initClients';
+import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.'; // wallets
+import { CLIENT_MAP } from 'src/clientsNEW'; // clients
+import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
 import { BaseClient } from "src/clients/base";

@@ -2,5 +2,5 @@
 // export { reconnectProviders } from "./reconnectProviders";
 // export { initClients, AnyWalletState, addConnectedAccounts, setAsActiveAccount, watch, signTransactions } from './initClients';
 
-export * from './initClients';
+export * from '../state';
 // export * from './pkgHelpers';

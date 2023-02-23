@@ -2,10 +2,22 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // TODO figure out how to export just the state change handler, not this who func
 
-import { Account } from '../types';
-
 // wallet things
-import { ALL_WALLETS, WALLET_ID, WalletType, WalletsObj } from "src/wallets";
+import { WALLET_ID, WalletType, WalletsObj, createWallet } from "src/wallets";
+
+
+import { AnyWalletLS, lsKey } from './localStored';
+import { ClientType } from 'src/clientsNEW';
+
+
+export const ALL_WALLETS: WalletsObj = {
+	[WALLET_ID.PERA]: createWallet<ClientType<WALLET_ID.PERA>>(WALLET_ID.PERA),
+	[WALLET_ID.INKEY]: createWallet<ClientType<WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+	[WALLET_ID.MYALGO]: createWallet<ClientType<WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+	// test: '123'; // breaks, as it should
+};
+
 
 export const AnyWalletState = reactive({
 	activeAddress: '',
@@ -16,11 +28,7 @@ export const AnyWalletState = reactive({
 	enabledWallets: null as null | WalletsObj, // .wallets (should it be renamed this?)
 
 	// part to store in localstorage/ls (DONT put Maps or Sets or Functions in here...)
-	stored: {
-		version: 0, // for future schema changes, can translate old structs to new
-		connectedAccounts: [] as Account[],
-		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
-	},
+	stored: AnyWalletLS,
 
 	// computeds
 	isSigning: readonly(computed(() => {
@@ -42,33 +50,14 @@ export const AnyWalletState = reactive({
 
 
 
-// ls TODO move to another file...
-const lsKey = 'w3h';
-const initLocalStorage = () => {
-	console.log('initLocalStorage');
-	// recall local storage object (1 time on load!)
-	let onLoadLStor = localStorage.getItem(lsKey);
-	if (onLoadLStor) {
-		try {
-			let onLoadLStorObj = JSON.parse(onLoadLStor);
-			// console.log('onLoadLStorObj', onLoadLStorObj);
-			AnyWalletState.stored = onLoadLStorObj;
-		} catch (e) {
-			console.warn('bad sLocalStorage parse');
-		}
-	}
-}
-if (typeof window !== 'undefined') {
-	initLocalStorage(); // 1 time on page load
-}
-
-
+/*
+// const lsKey = 'w3h';
 // save '.stored' to localstorage
 watch(
 	() => AnyWalletState.stored,
 	() => {
 		// console.log('save me!', AnyWalletState.stored);
-		localStorage.setItem(lsKey, JSON.stringify(AnyWalletState.stored) );
+		localStorage.setItem(lsKey, JSON.stringify(AnyWalletState.stored));
 
 
 		// update helpful top level prop
@@ -83,6 +72,7 @@ watch(
 	}
 );
 
+// this has to come AFTER the main state obj (not in the ls file)
 watch(
 	() => AnyWalletState.stored.activeAccount,
 	(acct) => {
@@ -106,6 +96,10 @@ watch(
 		immediate: true
 	}
 );
+*/
+
+
+
 
 // TODO figure out how to let client user define their own onChange handler. use setOnChange( userFun ) ?
 /**
