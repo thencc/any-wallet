@@ -4,7 +4,7 @@
  */
 import { BaseClient } from "../base";
 import type _algosdk from "algosdk";
-import { getAlgosdk } from "../../algod";
+import { getAlgosdk } from "../../algod"; // TODO remove this, dont depend on algosdk
 import type {
 	Wallet,
 	TransactionsArray,

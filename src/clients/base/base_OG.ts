@@ -15,7 +15,7 @@ import { audio } from "../../media/audio"; // TODO remove + move to client speci
 // TODO can we remove buffer from w3h and just keep it in algjs?
 import { Buffer } from 'buffer';
 
-import { nccState } from "src/utils";
+import { AnyWalletState } from "src/utils";
 
 const getIsIOS = () => {
   if (typeof window !== "undefined") {
@@ -256,7 +256,7 @@ abstract class BaseClient extends PreBaseClient {
   // accounts = [] as Account[];
   // computeAccounts() {
   //   console.log('computeAccounts');
-  //   let accts = nccState.stored.connectedAccounts.filter((account) => account.providerId === this.metadata.id);
+  //   let accts = AnyWalletState.stored.connectedAccounts.filter((account) => account.providerId === this.metadata.id);
   //   this.accounts = accts;
   // };
 

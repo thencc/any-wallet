@@ -5,8 +5,8 @@
 import { BaseClient } from "../base";
 import type _MyAlgoConnect from "@randlabs/myalgo-connect";
 import type _algosdk from "algosdk";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
-import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
+import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk
+import { CLIENT_ID } from "../../constants";
 import {
 	TransactionsArray,
 	DecodedTransaction,
@@ -17,7 +17,7 @@ import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from "./typ
 import { ICON, METADATA } from "./constants";
 
 import { markRaw } from "@vue/reactivity";
-import { nccState, addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
+import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;

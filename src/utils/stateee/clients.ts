@@ -9,7 +9,7 @@ export const clientsReactive = reactive({
 	// withState: null as any, // has .isConnected .isActive etc
 	// withState: computed(() => {
 	// 	// return {}
-	// 	return nccState.clients;
+	// 	return AnyWalletState.clients;
 	// })
 
 });

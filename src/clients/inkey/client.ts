@@ -4,8 +4,7 @@
  */
 import { BaseClient } from "../base";
 import type _algosdk from "algosdk";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod";
-// import { DEFAULT_NETWORK, CLIENT_ID } from "../../constants";
+import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk requirement
 import {
 	TransactionsArray,
 	DecodedTransaction,
@@ -21,7 +20,7 @@ import { addConnectedAccounts, setAsActiveAccount } from "../../utils/index";
 // TODO switch all algosdk use to this + other nacl lib (<400kb)
 import msgpack from '@randlabs/msgpack-bigint';
 
-// helpers
+// helpers TODO remove this / move it to algonaut pkg
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 	if (typeof window == undefined) {
 		throw new Error('[inkey] cannot access window');
@@ -37,28 +36,17 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 
 
 export class InkeyClient extends BaseClient {
-	sdk: InkeySdk; // # means private field/method on a class
-	// network: Network;
+	sdk: InkeySdk;
 
-	// static metadata = METADATA;
 	static readonly metadata = METADATA;
-	// metadata = METADATA;
-	// readonly metadata = METADATA;
 
 	constructor({
 		sdk: clientSdk,
-		// algosdk,
-		// algodClient,
-		// network,
 	}: InkeyWalletClientConstructor) {
-		// super(algosdk, algodClient);
 		super();
-		// this.client = client; // TODO rename this to .api / .sdk
 		this.sdk = clientSdk;
-		// this.network = network;
 	}
 
-	// static async init(initParams?: InitParams) {
 	static async init(initParams?: InitParams): Promise<InkeyClient | null> {
 		try {
 			console.log('[inkey] init started');
@@ -91,19 +79,8 @@ export class InkeyClient extends BaseClient {
 				clientSdk = await createClientSdk(clientOptions);
 			}
 
-
-
-			// const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-			// console.log('algosdk', algosdk);
-
-			// const algodClient = await getAlgodClient(algosdk, algodOptions);
-			// console.log('algodClient', algodClient);
-
 			return new InkeyClient({
 				sdk: clientSdk,
-				// algosdk: algosdk,
-				// algodClient: algodClient,
-				// network
 			});
 		} catch (e) {
 			console.warn(`[${METADATA.id}] Error initializing...`, e);
