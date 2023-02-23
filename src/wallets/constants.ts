@@ -1,5 +1,7 @@
-import { createWallet, WalletInitParamsObj, WalletsObj } from ".";
-import { ClientType } from "src/clientsNEW";
+import type { ClientType } from "src/clientsNEW";
+
+import type { WalletInitParamsObj, WalletsObj } from "./types";
+import { createWallet } from './actions'; // needs to be AFTER the types import
 
 export enum WALLET_ID {
 	// KMD = "kmd",

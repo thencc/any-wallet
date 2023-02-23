@@ -1,14 +1,15 @@
 // wallets
-import { createWallet, WALLET_ID } from '.';
+import { WALLET_ID } from './constants';
+import type { createWallet } from './actions'; // AFTER the constants import
 
 // clients
-import { ClientType } from 'src/clientsNEW';
+import type { ClientType } from 'src/clientsNEW';
 
 // init params
-import { InitParams as PeraInitParams } from 'src/clients/pera/types';
-import { InitParams as InkeyInitParams } from 'src/clients/inkey/types';
-import { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
-import { InitParams as AlgoSignerInitParams } from 'src/clients/algosigner/types';
+import type { InitParams as PeraInitParams } from 'src/clients/pera/types';
+import type { InitParams as InkeyInitParams } from 'src/clients/inkey/types';
+import type { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
+import type { InitParams as AlgoSignerInitParams } from 'src/clients/algosigner/types';
 
 
 export type WalletInitParamsObj = {
@@ -42,4 +43,3 @@ export type WalletsObj = {
 	[WALLET_ID.MYALGO]?: WalletType<WALLET_ID.MYALGO>;
 	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
 };
-
