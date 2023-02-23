@@ -10,7 +10,6 @@ import { BaseClient } from "src/clients/base";
 import { ClientInitParams } from "src/clients/base/types";
 import { Account } from 'src/types/wallet';
 
-
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({
 		// === wallet state ===
@@ -152,6 +151,14 @@ export const enableWallets = (
 		}
 		*/
 	}
+
+	// now that the wallets have been enabled, set activeWallet if possible
+	// if (AnyWalletState.activeWalletId) {
+	// 	let aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
+	// 	if (aW) {
+	// 		AnyWalletState.activeWallet = aW;
+	// 	}
+	// }
 
 	return AnyWalletState.enabledWallets;
 };
