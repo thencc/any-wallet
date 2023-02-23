@@ -6,8 +6,8 @@ import { CLIENT_MAP } from 'src/clientsNEW'; // clients
 import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
-import { BaseClient } from "src/clients/base";
-import { ClientInitParams } from "src/clients/base/types";
+import { BaseClient } from 'src/clients/base';
+import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/wallet';
 
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {

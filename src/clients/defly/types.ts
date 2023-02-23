@@ -1,7 +1,7 @@
-import type { Transaction } from "algosdk";
-import type { AlgodClientOptions, Network } from "../../types";
-import type { DeflyWalletConnect } from "@blockshake/defly-connect";
-import type _algosdk from "algosdk";
+import type { Transaction } from 'algosdk';
+import type { AlgodClientOptions, Network } from '../../types';
+import type { DeflyWalletConnect } from '@blockshake/defly-connect';
+import type _algosdk from 'algosdk';
 
 export type ClientOptions = {
   bridge?: string;

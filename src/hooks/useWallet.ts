@@ -1,11 +1,11 @@
-import { useMemo, useContext } from "react";
-import type algosdk from "algosdk";
-import { getAlgosdk } from "../algod";
-import { useWalletStore, walletStoreSelector } from "../store/index";
-import { WALLET_ID, TransactionsArray, WalletClient } from "../types";
-import { ClientContext } from "../store/state/clientStore";
-import allClients from "../clients";
-import shallow from "zustand/shallow";
+import { useMemo, useContext } from 'react';
+import type algosdk from 'algosdk';
+import { getAlgosdk } from '../algod';
+import { useWalletStore, walletStoreSelector } from '../store/index';
+import { WALLET_ID, TransactionsArray, WalletClient } from '../types';
+import { ClientContext } from '../store/state/clientStore';
+import allClients from '../clients';
+import shallow from 'zustand/shallow';
 
 export { WALLET_ID };
 
@@ -56,11 +56,11 @@ export default function useWallet() {
   }, [clients, connectedAccounts, connectedActiveAccounts, activeAccount]);
 
   const getClient = async (id?: WALLET_ID): Promise<WalletClient> => {
-    if (!id) throw new Error("Provier ID is missing.");
+    if (!id) throw new Error('Provier ID is missing.');
 
     const client = await clients?.[id];
 
-    if (!client) throw new Error("Client not found for ID");
+    if (!client) throw new Error('Client not found for ID');
 
     return client;
   };
@@ -114,7 +114,7 @@ export default function useWallet() {
       const walletInfo = await walletClient?.connect(() => disconnect(id));
 
       if (!walletInfo || !walletInfo.accounts.length) {
-        throw new Error("Failed to connect " + id);
+        throw new Error('Failed to connect ' + id);
       }
 
       _setActiveAccount(walletInfo.accounts[0]);
@@ -165,7 +165,7 @@ export default function useWallet() {
     const walletClient = await getClient(activeAccount?.providerId);
 
     if (!walletClient || !activeAccount?.address) {
-      throw new Error("No wallet found.");
+      throw new Error('No wallet found.');
     }
 
     const signedTransactions = await walletClient.signTransactions(
@@ -203,7 +203,7 @@ export default function useWallet() {
   };
 
   const getAccountInfo = async () => {
-    if (!activeAccount) throw new Error("No selected account.");
+    if (!activeAccount) throw new Error('No selected account.');
 
     const walletClient = await getClient(activeAccount.providerId);
 
@@ -219,7 +219,7 @@ export default function useWallet() {
   };
 
   const getAssets = async () => {
-    if (!activeAccount) throw new Error("No selected account.");
+    if (!activeAccount) throw new Error('No selected account.');
 
     const walletClient = await getClient(activeAccount.providerId);
 

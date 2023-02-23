@@ -1,5 +1,5 @@
-import { PeraWalletConnect } from "@perawallet/connect";
-import type { Transaction } from "algosdk";
+import { PeraWalletConnect } from '@perawallet/connect';
+import type { Transaction } from 'algosdk';
 
 export type PeraSdk = Omit<PeraWalletConnect, 'connector'> & { connector: any };
 export type PeraSdkCreator = typeof PeraWalletConnect; // for some clients this is a function, for others it is a class

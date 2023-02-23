@@ -1,7 +1,7 @@
-import type algosdk from "algosdk"; // TODO remove this
+import type algosdk from 'algosdk'; // TODO remove this
 export type AlgodClientOptions = ConstructorParameters<typeof algosdk.Algodv2>;
 
-export type Network = "betanet" | "testnet" | "mainnet" | string;
+export type Network = 'betanet' | 'testnet' | 'mainnet' | string;
 
 export type Txn = {
   apaa: Uint8Array;
@@ -18,9 +18,9 @@ export type Txn = {
 };
 
 export type ConfirmedTxn = {
-  "confirmed-round": number;
-  "global-state-delta": Record<string, unknown>[];
-  "pool-error": string;
+  'confirmed-round': number;
+  'global-state-delta': Record<string, unknown>[];
+  'pool-error': string;
   txn: {
     sig: Uint8Array;
     txn: Txn;
@@ -28,13 +28,13 @@ export type ConfirmedTxn = {
 };
 
 export type TxnType =
-  | "pay"
-  | "keyreg"
-  | "acfg"
-  | "axfer"
-  | "afrz"
-  | "appl"
-  | "stpf";
+  | 'pay'
+  | 'keyreg'
+  | 'acfg'
+  | 'axfer'
+  | 'afrz'
+  | 'appl'
+  | 'stpf';
 
 export type DecodedTransaction = {
   amt: number;

@@ -2,21 +2,21 @@
  * Helpful resources:
  * https://github.com/randlabs/myalgo-connect
  */
-import { BaseClient } from "../base";
-import type _MyAlgoConnect from "@randlabs/myalgo-connect";
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk
+import { BaseClient } from '../base';
+import type _MyAlgoConnect from '@randlabs/myalgo-connect';
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient, getAlgosdk } from '../../algod'; // TODO remove algosdk
 import {
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Network,
-} from "../../types";
-import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from "./types";
-import { ICON, METADATA } from "./constants";
+} from '../../types';
+import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './types';
+import { ICON, METADATA } from './constants';
 
-import { markRaw } from "@vue/reactivity";
-import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
+import { markRaw } from '@vue/reactivity';
+import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;
@@ -49,7 +49,7 @@ export class MyAlgoClient extends BaseClient {
 
 
 				// TODO programatically get this pkg name to from CLIENT_MAP ?
-				let sdkLib = await import("@randlabs/myalgo-connect");
+				let sdkLib = await import('@randlabs/myalgo-connect');
 				let createClientSdk = sdkLib.default;
 
 				console.log('createClientSdk', createClientSdk);
@@ -120,8 +120,8 @@ export class MyAlgoClient extends BaseClient {
 			// add it to the arrays of transactions to be signed.
 
 			if (
-				!("txn" in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
+				!('txn' in txn) &&
+				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
 			) {
 				acc.push(transactions[i]);
 			}
@@ -134,7 +134,7 @@ export class MyAlgoClient extends BaseClient {
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			if (!("txn" in txn)) {
+			if (!('txn' in txn)) {
 				const signedByUser = result.shift()?.blob;
 				signedByUser && acc.push(signedByUser);
 			} else {

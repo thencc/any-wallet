@@ -1,4 +1,4 @@
-import type MyAlgoConnect from "@randlabs/myalgo-connect";
+import type MyAlgoConnect from '@randlabs/myalgo-connect';
 
 export type MyAlgoSdk = MyAlgoConnect;
 export type MyAlgoSdkCreator = typeof MyAlgoConnect; // for some clients this is a function, for others it is a class

@@ -34,7 +34,7 @@
 // 		client: AlgoSignerClient,
 // 		meta: AlgoSignerClient.metadata, // use constant var?
 // 	},
-// } as const; // "const" is helpful for object security + typing
+// } as const; // 'const' is helpful for object security + typing
 
 // // TODO rename?
 // export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id) as WALLET_ID[];

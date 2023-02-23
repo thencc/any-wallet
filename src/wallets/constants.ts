@@ -1,18 +1,18 @@
-import type { ClientType } from "src/clientsNEW";
+import type { ClientType } from 'src/clientsNEW';
 
-import type { WalletInitParamsObj, WalletsObj } from "./types";
+import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
 export enum WALLET_ID {
-	// KMD = "kmd",
-	PERA = "pera",
-	MYALGO = "myalgo",
-	INKEY = "inkey",
-	ALGOSIGNER = "algosigner",
-	// DEFLY = "defly",
-	// EXODUS = "exodus",
-	// WALLETCONNECT = "walletconnect",
-	// LOCAL = "local" // TODO
+	// KMD = 'kmd',
+	PERA = 'pera',
+	MYALGO = 'myalgo',
+	INKEY = 'inkey',
+	ALGOSIGNER = 'algosigner',
+	// DEFLY = 'defly',
+	// EXODUS = 'exodus',
+	// WALLETCONNECT = 'walletconnect',
+	// LOCAL = 'local' // TODO
 }
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {

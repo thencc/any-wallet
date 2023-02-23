@@ -2,25 +2,25 @@
  * Helpful resources:
  * https://developer.algorand.org/docs/get-details/walletconnect/
  */
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient } from "../../algod";
-import type WalletConnect from "@walletconnect/client";
-import type { Wallet } from "../../types";
-import { WALLET_ID } from "src/wallets/constants";
-import BaseWallet from "../base";
-import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient } from '../../algod';
+import type WalletConnect from '@walletconnect/client';
+import type { Wallet } from '../../types';
+import { WALLET_ID } from 'src/wallets/constants';
+import BaseWallet from '../base';
+import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import {
   TransactionsArray,
   DecodedTransaction,
   DecodedSignedTransaction,
   Network,
-} from "../../types";
-import { DEFAULT_NETWORK, ICON } from "./constants";
+} from '../../types';
+import { DEFAULT_NETWORK, ICON } from './constants';
 import {
   WalletConnectClientConstructor,
   InitParams,
   WalletConnectTransaction,
-} from "./types";
+} from './types';
 
 class WalletConnectClient extends BaseWallet {
   #client: WalletConnect;
@@ -39,7 +39,7 @@ class WalletConnectClient extends BaseWallet {
 
   static metadata = {
     id: WALLET_ID.WALLETCONNECT,
-    name: "WalletConnect",
+    name: 'WalletConnect',
     icon: ICON,
     isWalletConnect: true,
   };
@@ -54,16 +54,16 @@ class WalletConnectClient extends BaseWallet {
   }: InitParams) {
     try {
       const WalletConnect =
-        clientStatic || (await import("@walletconnect/client")).default;
+        clientStatic || (await import('@walletconnect/client')).default;
       const QRCodeModal =
         modalStatic ||
-        (await import("algorand-walletconnect-qrcode-modal")).default;
+        (await import('algorand-walletconnect-qrcode-modal')).default;
 
       const walletConnect = new WalletConnect({
         ...(clientOptions
           ? clientOptions
           : {
-              bridge: "https://bridge.walletconnect.org",
+              bridge: 'https://bridge.walletconnect.org',
               qrcodeModal: QRCodeModal,
             }),
       });
@@ -80,7 +80,7 @@ class WalletConnectClient extends BaseWallet {
 
       return new WalletConnectClient(initWallet);
     } catch (e) {
-      console.error("Error initializing...", e);
+      console.error('Error initializing...', e);
       return null;
     }
   }
@@ -89,9 +89,9 @@ class WalletConnectClient extends BaseWallet {
     let chainId = 416001;
 
     // TODO move these to class fields set from clientOptions / clientConfig in init w defaults
-    if (this.network === "betanet") {
+    if (this.network === 'betanet') {
       chainId = 416003;
-    } else if (this.network === "testnet") {
+    } else if (this.network === 'testnet') {
       chainId = 416002;
     }
 
@@ -100,7 +100,7 @@ class WalletConnectClient extends BaseWallet {
     }
 
     return new Promise((resolve, reject) => {
-      this.#client.on("connect", (error, payload) => {
+      this.#client.on('connect', (error, payload) => {
         if (error) {
           reject(error);
         }
@@ -117,7 +117,7 @@ class WalletConnectClient extends BaseWallet {
         });
       });
 
-      this.#client.on("session_update", (error, payload) => {
+      this.#client.on('session_update', (error, payload) => {
         if (error) {
           reject(error);
         }
@@ -161,7 +161,7 @@ class WalletConnectClient extends BaseWallet {
     try {
       await this.#client.killSession();
     } catch (e) {
-      console.error("Error disconnecting", e);
+      console.error('Error disconnecting', e);
     }
   }
 
@@ -179,15 +179,15 @@ class WalletConnectClient extends BaseWallet {
     const txnsToSign = decodedTxns.reduce<WalletConnectTransaction[]>(
       (acc, txn, i) => {
         if (
-          !("txn" in txn) &&
-          connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+          !('txn' in txn) &&
+          connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
         ) {
           acc.push({
-            txn: Buffer.from(transactions[i]).toString("base64"),
+            txn: Buffer.from(transactions[i]).toString('base64'),
           });
         } else {
           acc.push({
-            txn: Buffer.from(transactions[i]).toString("base64"),
+            txn: Buffer.from(transactions[i]).toString('base64'),
             signers: [],
           });
         }
@@ -198,7 +198,7 @@ class WalletConnectClient extends BaseWallet {
     );
 
     const requestParams = [txnsToSign];
-    const request = formatJsonRpcRequest("algo_signTxn", requestParams);
+    const request = formatJsonRpcRequest('algo_signTxn', requestParams);
 
     // Play an audio file to keep Wallet Connect's web socket open on iOS
     // when the user goes into background mode.
@@ -214,7 +214,7 @@ class WalletConnectClient extends BaseWallet {
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = result.reduce((signedTxns: Uint8Array[], txn, i) => {
       if (txn) {
-        signedTxns.push(new Uint8Array(Buffer.from(txn, "base64")));
+        signedTxns.push(new Uint8Array(Buffer.from(txn, 'base64')));
       }
 
       if (txn === null) {
@@ -236,14 +236,14 @@ class WalletConnectClient extends BaseWallet {
         txn: txn[1],
       };
 
-      if (txn[0] === "s") {
+      if (txn[0] === 's') {
         const decodedTxn = this.algosdk.decodeSignedTransaction(
-          new Uint8Array(Buffer.from(txn[1], "base64"))
+          new Uint8Array(Buffer.from(txn[1], 'base64'))
         );
 
         formattedTxn.txn = Buffer.from(
           this.algosdk.encodeUnsignedTransaction(decodedTxn.txn)
-        ).toString("base64");
+        ).toString('base64');
 
         formattedTxn.signers = [];
       }
@@ -258,7 +258,7 @@ class WalletConnectClient extends BaseWallet {
   async signEncodedTransactions(transactions: TransactionsArray) {
     const transactionsToSign = this.formatTransactionsArray(transactions);
     const requestParams = [transactionsToSign];
-    const request = formatJsonRpcRequest("algo_signTxn", requestParams);
+    const request = formatJsonRpcRequest('algo_signTxn', requestParams);
 
     this.keepWCAliveStart();
 
@@ -271,12 +271,12 @@ class WalletConnectClient extends BaseWallet {
     const signedRawTransactions = result.reduce(
       (signedTxns: Uint8Array[], txn, currentIndex) => {
         if (txn) {
-          signedTxns.push(new Uint8Array(Buffer.from(txn, "base64")));
+          signedTxns.push(new Uint8Array(Buffer.from(txn, 'base64')));
         }
 
         if (txn === null) {
           signedTxns.push(
-            new Uint8Array(Buffer.from(transactions[currentIndex][1], "base64"))
+            new Uint8Array(Buffer.from(transactions[currentIndex][1], 'base64'))
           );
         }
 

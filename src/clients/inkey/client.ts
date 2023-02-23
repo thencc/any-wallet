@@ -2,20 +2,20 @@
  * Helpful resources:
  * https://github.com/thencc/inkey-client-js
  */
-import { BaseClient } from "../base";
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient, getAlgosdk } from "../../algod"; // TODO remove algosdk requirement
+import { BaseClient } from '../base';
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient, getAlgosdk } from '../../algod'; // TODO remove algosdk requirement
 import {
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	// Network,
 	Wallet,
-} from "../../types";
-import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from "./types";
-import { ICON, METADATA } from "./constants";
+} from '../../types';
+import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from './types';
+import { ICON, METADATA } from './constants';
 
-import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
+import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 // TODO switch all algosdk use to this + other nacl lib (<400kb)
 import msgpack from '@randlabs/msgpack-bigint';
@@ -71,7 +71,7 @@ export class InkeyClient extends BaseClient {
 				// if (clientSdkStatic == undefined) {
 				console.log('now load up the sdk');
 
-				let inkeyLib = await import("@thencc/inkey-client-js");
+				let inkeyLib = await import('@thencc/inkey-client-js');
 				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
 				let createClientSdk = inkeyLib.createClient;
 				// }
@@ -168,9 +168,9 @@ export class InkeyClient extends BaseClient {
 			});
 
 			if (
-				!("txn" in txn) &&
-				// connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
-				connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
+				!('txn' in txn) &&
+				// connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
 			) {
 				// added inkeyClient method to sign Uint8Array,
 				// option 2: convert Uint8Array txn to base64 str txn for inkey
@@ -203,7 +203,7 @@ export class InkeyClient extends BaseClient {
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			if (!("txn" in txn)) {
+			if (!('txn' in txn)) {
 				const signedByUser = returnedTxns.shift();
 				signedByUser && acc.push(signedByUser);
 			} else {

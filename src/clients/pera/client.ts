@@ -2,27 +2,27 @@
  * Helpful resources:
  * https://github.com/perawallet/connect
  */
-import { BaseClient } from "../base";
-import type _algosdk from "algosdk";
-import { getAlgosdk } from "../../algod"; // TODO remove this, dont depend on algosdk
+import { BaseClient } from '../base';
+import type _algosdk from 'algosdk';
+import { getAlgosdk } from '../../algod'; // TODO remove this, dont depend on algosdk
 import type {
 	Wallet,
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Network,
-} from "../../types";
-import { ICON, METADATA } from "./constants";
+} from '../../types';
+import { ICON, METADATA } from './constants';
 import {
 	PeraTransaction,
 	PeraWalletClientConstructor,
 	InitParams,
 	PeraSdk,
 	SdkConfig,
-} from "./types";
+} from './types';
 
-import { markRaw } from "@vue/reactivity";
-import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
+import { markRaw } from '@vue/reactivity';
+import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
@@ -40,7 +40,7 @@ export class PeraClient extends BaseClient {
 		console.log(`[${METADATA.id}] init started`);
 
 		try {
-			if (typeof window !== "undefined") {
+			if (typeof window !== 'undefined') {
 				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
 			} else {
 				console.warn('Using a browser lib not in a browser...');
@@ -59,7 +59,7 @@ export class PeraClient extends BaseClient {
 				sdkConfig = initParams?.config || defaultConfig;
 
 
-				let sdkLib = await import("@perawallet/connect");
+				let sdkLib = await import('@perawallet/connect');
 				let createClientSdk = sdkLib.PeraWalletConnect || sdkLib.default.PeraWalletConnect; // sometimes needs this shim
 				// FYI because pera's client is built to cjs, vite's optimize deps helper in the server acts differently than when it builds using rollup. solution: fallback to .default;
 
@@ -83,7 +83,7 @@ export class PeraClient extends BaseClient {
 
 		const accounts = await this.sdk.connect();
 
-		this.sdk.connector?.on("disconnect", onDisconnect);
+		this.sdk.connector?.on('disconnect', onDisconnect);
 
 		if (accounts.length === 0) {
 			throw new Error(`No accounts found for ${METADATA.id}`);
@@ -107,7 +107,7 @@ export class PeraClient extends BaseClient {
 
 	async reconnect(onDisconnect: () => void) {
 		const accounts = await this.sdk.reconnectSession().catch(console.info);
-		this.sdk.connector?.on("disconnect", onDisconnect);
+		this.sdk.connector?.on('disconnect', onDisconnect);
 
 		if (!accounts) {
 			return null;
@@ -145,8 +145,8 @@ export class PeraClient extends BaseClient {
 		// and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {
 			if (
-				!("txn" in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
+				!('txn' in txn) &&
+				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
 			) {
 				acc.push({
 					txn: algosdk.decodeUnsignedTransaction(transactions[i]),
@@ -166,7 +166,7 @@ export class PeraClient extends BaseClient {
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			if (!("txn" in txn)) {
+			if (!('txn' in txn)) {
 				const signedByUser = result.shift();
 				signedByUser && acc.push(signedByUser);
 			} else {

@@ -1,5 +1,5 @@
-import type _algosdk from "algosdk";
-import type { Network } from "../../types";
+import type _algosdk from 'algosdk';
+import type { Network } from '../../types';
 
 export type WindowExtended = { AlgoSigner: AlgoSignerSdk } & Window &
 	typeof globalThis;
@@ -30,7 +30,7 @@ export type AlgoSignerTransaction = {
 	multisig?: string; // address of a multisig wallet to sign with
 };
 
-export type SupportedLedgers = "MainNet" | "TestNet" | "BetaNet" | string;
+export type SupportedLedgers = 'MainNet' | 'TestNet' | 'BetaNet' | string;
 
 export type AlgoSignerClientConstructor = {
 	sdk: AlgoSignerSdk;

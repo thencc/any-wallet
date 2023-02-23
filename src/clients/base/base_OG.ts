@@ -1,5 +1,5 @@
-import type _algosdk from "algosdk";
-import { WALLET_ID } from "src/wallets/constants";
+import type _algosdk from 'algosdk';
+import { WALLET_ID } from 'src/wallets/constants';
 import type {
   Asset,
   Wallet,
@@ -9,16 +9,16 @@ import type {
   TransactionsArray,
   TxnInfo,
   Account,
-} from "../../types";
-import { audio } from "../../media/audio"; // TODO remove + move to client specific code
+} from '../../types';
+import { audio } from '../../media/audio'; // TODO remove + move to client specific code
 
 // TODO can we remove buffer from w3h and just keep it in algjs?
 import { Buffer } from 'buffer';
 
-import { AnyWalletState } from "src/utils";
+import { AnyWalletState } from 'src/utils';
 
 const getIsIOS = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     return (
       /iPad|iPhone|iPod/.test(navigator?.userAgent) &&
       !(window as any)?.MSStream
@@ -85,7 +85,7 @@ class PreBaseClient {
     const accountInfo = await this.algodClient.accountInformation(address).do();
 
     if (!accountInfo) {
-      throw new Error("Unable to get account information");
+      throw new Error('Unable to get account information');
     }
 
     return accountInfo as AccountInfo;
@@ -95,7 +95,7 @@ class PreBaseClient {
     const accountInfo = await this.algodClient.accountInformation(address).do();
 
     if (!accountInfo || accountInfo.assets === undefined) {
-      throw new Error("Unable to get account assets");
+      throw new Error('Unable to get account assets');
     }
 
     return accountInfo.assets as Asset[];
@@ -114,17 +114,17 @@ class PreBaseClient {
   decodeTransaction = (txn: string, isSigned: boolean) => {
     return isSigned
       ? this.algosdk.decodeSignedTransaction(
-        new Uint8Array(Buffer.from(txn, "base64"))
+        new Uint8Array(Buffer.from(txn, 'base64'))
       ).txn
       : this.algosdk.decodeUnsignedTransaction(
-        new Uint8Array(Buffer.from(txn, "base64"))
+        new Uint8Array(Buffer.from(txn, 'base64'))
       );
   };
 
   logEncodedTransaction(txn: string, isSigned: boolean) {
     const txnObj = this.decodeTransaction(txn, isSigned);
 
-    console.log("TRANSACTION", {
+    console.log('TRANSACTION', {
       isSigned,
       from: txnObj.from && this.algosdk.encodeAddress(txnObj.from.publicKey),
       to: txnObj.to && this.algosdk.encodeAddress(txnObj.to.publicKey),
@@ -148,15 +148,15 @@ class PreBaseClient {
 
     const decodedGroup = transactions.reduce(
       (acc: TxnInfo[], [type, txn], index) => {
-        if (type === "u") {
+        if (type === 'u') {
           const decodedTxn = this.decodeTransaction(txn, false);
           const from = decodedTxn.from
             ? this.algosdk.encodeAddress(decodedTxn.from.publicKey)
-            : "";
+            : '';
           const to = decodedTxn.to
             ? this.algosdk.encodeAddress(decodedTxn.to.publicKey)
-            : "";
-          const type = (decodedTxn.type as TxnType) || "";
+            : '';
+          const type = (decodedTxn.type as TxnType) || '';
           const amount = Number(decodedTxn.amount) || 0; // convert from bigint to number
 
           const txnObj = {
@@ -175,7 +175,7 @@ class PreBaseClient {
       },
       []
     );
-    return groupBy(decodedGroup, "from");
+    return groupBy(decodedGroup, 'from');
   }
 
   async sendRawTransactions(
@@ -187,7 +187,7 @@ class PreBaseClient {
       .do();
 
     if (!sentTransaction) {
-      throw new Error("Transaction failed.");
+      throw new Error('Transaction failed.');
     }
 
     const decodedTxn = this.algosdk.decodeSignedTransaction(transactions[0]);
@@ -302,7 +302,7 @@ abstract class BaseClient extends PreBaseClient {
     const accountInfo = await this.algodClient.accountInformation(address).do();
 
     if (!accountInfo) {
-      throw new Error("Unable to get account information");
+      throw new Error('Unable to get account information');
     }
 
     return accountInfo as AccountInfo;
@@ -312,7 +312,7 @@ abstract class BaseClient extends PreBaseClient {
     const accountInfo = await this.algodClient.accountInformation(address).do();
 
     if (!accountInfo || accountInfo.assets === undefined) {
-      throw new Error("Unable to get account assets");
+      throw new Error('Unable to get account assets');
     }
 
     return accountInfo.assets as Asset[];
@@ -331,17 +331,17 @@ abstract class BaseClient extends PreBaseClient {
   decodeTransaction = (txn: string, isSigned: boolean) => {
     return isSigned
       ? this.algosdk.decodeSignedTransaction(
-        new Uint8Array(Buffer.from(txn, "base64"))
+        new Uint8Array(Buffer.from(txn, 'base64'))
       ).txn
       : this.algosdk.decodeUnsignedTransaction(
-        new Uint8Array(Buffer.from(txn, "base64"))
+        new Uint8Array(Buffer.from(txn, 'base64'))
       );
   };
 
   logEncodedTransaction(txn: string, isSigned: boolean) {
     const txnObj = this.decodeTransaction(txn, isSigned);
 
-    console.log("TRANSACTION", {
+    console.log('TRANSACTION', {
       isSigned,
       from: txnObj.from && this.algosdk.encodeAddress(txnObj.from.publicKey),
       to: txnObj.to && this.algosdk.encodeAddress(txnObj.to.publicKey),
@@ -365,15 +365,15 @@ abstract class BaseClient extends PreBaseClient {
 
     const decodedGroup = transactions.reduce(
       (acc: TxnInfo[], [type, txn], index) => {
-        if (type === "u") {
+        if (type === 'u') {
           const decodedTxn = this.decodeTransaction(txn, false);
           const from = decodedTxn.from
             ? this.algosdk.encodeAddress(decodedTxn.from.publicKey)
-            : "";
+            : '';
           const to = decodedTxn.to
             ? this.algosdk.encodeAddress(decodedTxn.to.publicKey)
-            : "";
-          const type = (decodedTxn.type as TxnType) || "";
+            : '';
+          const type = (decodedTxn.type as TxnType) || '';
           const amount = Number(decodedTxn.amount) || 0; // convert from bigint to number
 
           const txnObj = {
@@ -392,7 +392,7 @@ abstract class BaseClient extends PreBaseClient {
       },
       []
     );
-    return groupBy(decodedGroup, "from");
+    return groupBy(decodedGroup, 'from');
   }
 
   async sendRawTransactions(
@@ -404,7 +404,7 @@ abstract class BaseClient extends PreBaseClient {
       .do();
 
     if (!sentTransaction) {
-      throw new Error("Transaction failed.");
+      throw new Error('Transaction failed.');
     }
 
     const decodedTxn = this.algosdk.decodeSignedTransaction(transactions[0]);

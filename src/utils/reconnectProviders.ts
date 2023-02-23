@@ -1,4 +1,4 @@
-// import { WALLET_ID } from "../types";
+// import { WALLET_ID } from '../types';
 // import { CLIENT_IDS } from '../utils/pkgHelpers';
 
 // // type SupportedProviders = { [x: string]: Promise<WalletClient | null> };

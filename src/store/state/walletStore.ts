@@ -1,8 +1,8 @@
-import { immer } from "zustand/middleware/immer";
-import create from "zustand";
-import { devtools, persist } from "zustand/middleware";
-import type { Account } from "../../types";
-import { WALLET_ID } from "src/wallets/constants";
+import { immer } from 'zustand/middleware/immer';
+import create from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import type { Account } from '../../types';
+import { WALLET_ID } from 'src/wallets/constants';
 
 export const walletStoreSelector = (state: WalletStore) => ({
   accounts: state.accounts,
@@ -68,7 +68,7 @@ export const useWalletStore = create<WalletStore>()(
         },
       })),
       {
-        name: "txnlab-use-wallet", // key in local storage
+        name: 'txnlab-use-wallet', // key in local storage
         version: 0, // increment to deprecate stored data
       }
     )

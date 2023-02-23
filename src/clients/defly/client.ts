@@ -2,24 +2,24 @@
  * Helpful resources:
  * https://github.com/blockshake-io/defly-connect
  */
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient } from "../../algod";
-import type { Wallet } from "../../types";
-import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
-import BaseWallet from "../base";
-import { TransactionsArray } from "../../types";
-import type { DeflyWalletConnect } from "@blockshake/defly-connect";
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient } from '../../algod';
+import type { Wallet } from '../../types';
+import { DEFAULT_NETWORK, WALLET_ID } from '../../constants';
+import BaseWallet from '../base';
+import { TransactionsArray } from '../../types';
+import type { DeflyWalletConnect } from '@blockshake/defly-connect';
 import type {
   DecodedTransaction,
   DecodedSignedTransaction,
   Network,
-} from "../../types";
-import { ICON } from "./constants";
+} from '../../types';
+import { ICON } from './constants';
 import {
   DeflyTransaction,
   InitParams,
   DeflyWalletClientConstructor,
-} from "./types";
+} from './types';
 
 class DeflyWalletClient extends BaseWallet {
   #client: DeflyWalletConnect;
@@ -38,7 +38,7 @@ class DeflyWalletClient extends BaseWallet {
 
   static metadata = {
     id: WALLET_ID.DEFLY,
-    name: "Defly",
+    name: 'Defly',
     icon: ICON,
     isWalletConnect: true,
   };
@@ -53,7 +53,7 @@ class DeflyWalletClient extends BaseWallet {
     try {
       const DeflyWalletConnect =
         clientStatic ||
-        (await import("@blockshake/defly-connect")).DeflyWalletConnect;
+        (await import('@blockshake/defly-connect')).DeflyWalletConnect;
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
       const algodClient = await getAlgodClient(algosdk, algodOptions);
@@ -69,7 +69,7 @@ class DeflyWalletClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      console.error("Error initializing...", e);
+      console.error('Error initializing...', e);
       return null;
     }
   }
@@ -77,7 +77,7 @@ class DeflyWalletClient extends BaseWallet {
   async connect(onDisconnect: () => void): Promise<Wallet> {
     const accounts = await this.#client.connect().catch(console.info);
 
-    this.#client.connector?.on("disconnect", onDisconnect);
+    this.#client.connector?.on('disconnect', onDisconnect);
 
     if (!accounts || accounts.length === 0) {
       throw new Error(`No accounts found for ${DeflyWalletClient.metadata.id}`);
@@ -97,7 +97,7 @@ class DeflyWalletClient extends BaseWallet {
 
   async reconnect(onDisconnect: () => void) {
     const accounts = await this.#client.reconnectSession().catch(console.info);
-    this.#client.connector?.on("disconnect", onDisconnect);
+    this.#client.connector?.on('disconnect', onDisconnect);
 
     if (!accounts) {
       return null;
@@ -130,8 +130,8 @@ class DeflyWalletClient extends BaseWallet {
     // and add the signers property if they shouldn't be signed.
     const txnsToSign = decodedTxns.reduce<DeflyTransaction[]>((acc, txn, i) => {
       if (
-        !("txn" in txn) &&
-        connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+        !('txn' in txn) &&
+        connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
       ) {
         acc.push({
           txn: this.algosdk.decodeUnsignedTransaction(transactions[i]),
@@ -151,7 +151,7 @@ class DeflyWalletClient extends BaseWallet {
 
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-      if (!("txn" in txn)) {
+      if (!('txn' in txn)) {
         const signedByUser = result.shift();
         signedByUser && acc.push(signedByUser);
       } else {
@@ -176,11 +176,11 @@ class DeflyWalletClient extends BaseWallet {
     let resultIndex = 0;
 
     for (const [type, txn] of transactions) {
-      if (type === "u") {
+      if (type === 'u') {
         signedTransactions.push(result[resultIndex]);
         resultIndex++;
       } else {
-        signedTransactions.push(new Uint8Array(Buffer.from(txn, "base64")));
+        signedTransactions.push(new Uint8Array(Buffer.from(txn, 'base64')));
       }
     }
 
@@ -192,17 +192,17 @@ class DeflyWalletClient extends BaseWallet {
     const formattedTransactions: DeflyTransaction[] = [];
 
     for (const [type, txn] of transactions) {
-      if (type === "s") {
+      if (type === 's') {
         formattedTransactions.push({
           ...this.algosdk.decodeSignedTransaction(
-            new Uint8Array(Buffer.from(txn, "base64"))
+            new Uint8Array(Buffer.from(txn, 'base64'))
           ),
           signers: [],
         });
       } else {
         formattedTransactions.push({
           txn: this.algosdk.decodeUnsignedTransaction(
-            new Uint8Array(Buffer.from(txn, "base64"))
+            new Uint8Array(Buffer.from(txn, 'base64'))
           ),
         });
       }

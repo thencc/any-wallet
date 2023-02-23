@@ -2,16 +2,16 @@
  * Helpful resources:
  * https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
  */
-import { Buffer } from "buffer"; // TODO remove this
-import { getAlgosdk } from "../../algod"; // TODO remove this
-import { BaseClient } from "../base";
+import { Buffer } from 'buffer'; // TODO remove this
+import { getAlgosdk } from '../../algod'; // TODO remove this
+import { BaseClient } from '../base';
 import type {
 	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Network,
-} from "../../types";
-import { METADATA } from "./constants";
+} from '../../types';
+import { METADATA } from './constants';
 import type {
 	WindowExtended,
 	AlgoSignerTransaction,
@@ -19,21 +19,21 @@ import type {
 	AlgoSignerClientConstructor,
 	InitParams,
 	AlgoSignerSdk,
-} from "./types";
-import { addConnectedAccounts, setAsActiveAccount } from "src/wallets";
+} from './types';
+import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 // maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {
-	if (network === "betanet") {
-		return "BetaNet";
+	if (network === 'betanet') {
+		return 'BetaNet';
 	}
 
-	if (network === "testnet") {
-		return "TestNet";
+	if (network === 'testnet') {
+		return 'TestNet';
 	}
 
-	if (network === "mainnet") {
-		return "MainNet";
+	if (network === 'mainnet') {
+		return 'MainNet';
 	}
 
 	return network;
@@ -59,10 +59,10 @@ export class AlgoSignerClient extends BaseClient {
 
 		try {
 			if (
-				typeof window == "undefined" ||
+				typeof window == 'undefined' ||
 				(window as WindowExtended).AlgoSigner === undefined
 			) {
-				throw new Error("AlgoSigner is not available.");
+				throw new Error('AlgoSigner is not available.');
 			}
 
 			const clientSdk: AlgoSignerSdk = (window as WindowExtended).AlgoSigner;
@@ -84,7 +84,7 @@ export class AlgoSignerClient extends BaseClient {
 				network,
 			});
 		} catch (e) {
-			console.error("Error initializing...", e);
+			console.error('Error initializing...', e);
 			return null;
 		}
 	}
@@ -154,8 +154,8 @@ export class AlgoSignerClient extends BaseClient {
 				};
 
 				if (
-					"txn" in txn ||
-					!connectedAccounts.includes(algosdk.encodeAddress(txn["snd"]))
+					'txn' in txn ||
+					!connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
 				) {
 					txnObj.txn = this.sdk.encoding.msgpackToBase64(
 						algosdk.decodeSignedTransaction(transactions[i]).txn.toByte()
@@ -176,7 +176,7 @@ export class AlgoSignerClient extends BaseClient {
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = result.reduce<Uint8Array[]>((acc, txn, i) => {
 			if (txn) {
-				acc.push(new Uint8Array(Buffer.from(txn.blob, "base64")));
+				acc.push(new Uint8Array(Buffer.from(txn.blob, 'base64')));
 			} else {
 				acc.push(transactions[i]);
 			}

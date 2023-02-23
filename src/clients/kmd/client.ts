@@ -1,15 +1,15 @@
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient } from "../../algod";
-import BaseWallet from "../base";
-import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
-import type { Account, Wallet, TransactionsArray, Network } from "../../types";
-import { ICON } from "./constants";
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient } from '../../algod';
+import BaseWallet from '../base';
+import { DEFAULT_NETWORK, WALLET_ID } from '../../constants';
+import type { Account, Wallet, TransactionsArray, Network } from '../../types';
+import { ICON } from './constants';
 import {
   InitParams,
   ListWalletResponse,
   InitWalletHandle,
   KMDWalletClientConstructor,
-} from "./types";
+} from './types';
 
 class KMDWalletClient extends BaseWallet {
   #client: _algosdk.Kmd;
@@ -34,13 +34,13 @@ class KMDWalletClient extends BaseWallet {
     this.#wallet = wallet;
     this.#password = password;
     this.id = id;
-    this.walletId = "";
+    this.walletId = '';
     this.network = network;
   }
 
   static metadata = {
     id: WALLET_ID.KMD,
-    name: "KMD",
+    name: 'KMD',
     icon: ICON,
     isWalletConnect: false,
   };
@@ -53,11 +53,11 @@ class KMDWalletClient extends BaseWallet {
   }: InitParams) {
     try {
       const {
-        token = "a".repeat(64),
-        host = "http://localhost",
-        port = "4002",
-        wallet = "",
-        password = "",
+        token = 'a'.repeat(64),
+        host = 'http://localhost',
+        port = '4002',
+        wallet = '',
+        password = '',
       } = clientOptions || {};
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
@@ -74,7 +74,7 @@ class KMDWalletClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      console.error("Error initializing...", e);
+      console.error('Error initializing...', e);
       return null;
     }
   }
@@ -106,8 +106,8 @@ class KMDWalletClient extends BaseWallet {
 
   async requestPassword(): Promise<string> {
     // TODO: store it locally?
-    const pw = prompt("gib password");
-    return pw ? pw : "";
+    const pw = prompt('gib password');
+    return pw ? pw : '';
   }
 
   async getWalletToken(walletId: string, password: string): Promise<string> {
@@ -124,7 +124,7 @@ class KMDWalletClient extends BaseWallet {
 
   async listWallets(): Promise<Record<string, string>> {
     const walletResponse = await this.#client.listWallets();
-    const walletList: Array<ListWalletResponse> = walletResponse["wallets"];
+    const walletList: Array<ListWalletResponse> = walletResponse['wallets'];
     const walletMap: Record<string, string> = {};
     for (const w of walletList) {
       walletMap[w.name] = w.id;
@@ -138,7 +138,7 @@ class KMDWalletClient extends BaseWallet {
   ): Promise<Array<Account>> {
     const walletMap = await this.listWallets();
 
-    if (!(wallet in walletMap)) throw Error("No wallet named: " + wallet);
+    if (!(wallet in walletMap)) throw Error('No wallet named: ' + wallet);
 
     this.walletId = walletMap[wallet];
 
@@ -147,7 +147,7 @@ class KMDWalletClient extends BaseWallet {
 
     // Fetch accounts and format them as lib expects
     const listResponse = await this.#client.listKeys(token);
-    const addresses: Array<string> = listResponse["addresses"];
+    const addresses: Array<string> = listResponse['addresses'];
     const mappedAccounts = addresses.map((address: string, index: number) => {
       return {
         name: `KMDWallet ${index + 1}`,
@@ -187,7 +187,7 @@ class KMDWalletClient extends BaseWallet {
       signedTxns.push(transactions[idx]);
 
       // Its already signed, skip it
-      if (!("snd" in dtxn)) continue;
+      if (!('snd' in dtxn)) continue;
       // Not to be signed by our signer, skip it
       if (!connectedAccounts.includes(this.algosdk.encodeAddress(dtxn.snd)))
         continue;
@@ -218,7 +218,7 @@ class KMDWalletClient extends BaseWallet {
   signEncodedTransactions(
     transactions: TransactionsArray
   ): Promise<Uint8Array[]> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 }
 

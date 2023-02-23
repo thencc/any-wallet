@@ -2,23 +2,23 @@
  * Helpful resources:
  * https://docs.exodus.com/api-reference/algorand-provider-api/
  */
-import type _algosdk from "algosdk";
-import BaseWallet from "../base";
-import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
+import type _algosdk from 'algosdk';
+import BaseWallet from '../base';
+import Algod, { getAlgodClient } from '../../algod';
+import { DEFAULT_NETWORK, WALLET_ID } from '../../constants';
 import type {
   TransactionsArray,
   DecodedTransaction,
   DecodedSignedTransaction,
   Network,
-} from "../../types";
-import { ICON } from "./constants";
+} from '../../types';
+import { ICON } from './constants';
 import {
   InitParams,
   WindowExtended,
   Exodus,
   ExodusClientConstructor,
-} from "./types";
+} from './types';
 
 class ExodusClient extends BaseWallet {
   #client: Exodus;
@@ -40,7 +40,7 @@ class ExodusClient extends BaseWallet {
 
   static metadata = {
     id: WALLET_ID.EXODUS,
-    name: "Exodus",
+    name: 'Exodus',
     icon: ICON,
     isWalletConnect: false,
   };
@@ -53,10 +53,10 @@ class ExodusClient extends BaseWallet {
   }: InitParams) {
     try {
       if (
-        typeof window == "undefined" ||
+        typeof window == 'undefined' ||
         (window as WindowExtended).exodus === undefined
       ) {
-        throw new Error("Exodus is not available.");
+        throw new Error('Exodus is not available.');
       }
 
       const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
@@ -72,7 +72,7 @@ class ExodusClient extends BaseWallet {
         network,
       });
     } catch (e) {
-      console.error("Error initializing...", e);
+      console.error('Error initializing...', e);
       return null;
     }
   }
@@ -130,8 +130,8 @@ class ExodusClient extends BaseWallet {
       // If the transaction isn't already signed and is to be sent from a connected account,
       // add it to the arrays of transactions to be signed.
       if (
-        !("txn" in txn) &&
-        connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+        !('txn' in txn) &&
+        connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
       ) {
         acc.push(transactions[i]);
       }
@@ -144,7 +144,7 @@ class ExodusClient extends BaseWallet {
 
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-      if (!("txn" in txn)) {
+      if (!('txn' in txn)) {
         const signedByUser = result.shift();
         signedByUser && acc.push(signedByUser);
       } else {
@@ -163,9 +163,9 @@ class ExodusClient extends BaseWallet {
     const signedRawTransactions: Uint8Array[] = [];
 
     for (const [type, txn] of transactions) {
-      if (type === "u") {
+      if (type === 'u') {
         const decoded = this.algosdk.decodeUnsignedTransaction(
-          Buffer.from(txn, "base64")
+          Buffer.from(txn, 'base64')
         );
         transactionsToSign.push(decoded.toByte());
       }
@@ -174,17 +174,17 @@ class ExodusClient extends BaseWallet {
     const result = await this.#client.signTransaction(transactionsToSign);
 
     if (!result) {
-      throw new Error("Signing failed.");
+      throw new Error('Signing failed.');
     }
 
     let resultIndex = 0;
 
     for (const [type, txn] of transactions) {
-      if (type === "u") {
+      if (type === 'u') {
         signedRawTransactions.push(result[resultIndex]);
         resultIndex++;
       } else {
-        signedRawTransactions.push(new Uint8Array(Buffer.from(txn, "base64")));
+        signedRawTransactions.push(new Uint8Array(Buffer.from(txn, 'base64')));
       }
     }
 

@@ -1,6 +1,6 @@
-import { TxnType } from "./node";
+import { TxnType } from './node';
 
-export type TransactionsArray = ["u" | "s", string][];
+export type TransactionsArray = ['u' | 's', string][];
 
 export type TxnInfo = {
   groupIndex: number;

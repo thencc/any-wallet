@@ -1,13 +1,13 @@
-import { WALLET_ID } from "src/wallets/constants";
+import { WALLET_ID } from 'src/wallets/constants';
 
-import pera from "./pera";
-import myalgo from "./myalgo";
-import inkey from "./inkey";
-// import defly from "./defly";
-// import exodus from "./exodus";
-// import algosigner from "./algosigner";
-// import walletconnect from "./walletconnect";
-// import kmd from "./kmd";
+import pera from './pera';
+import myalgo from './myalgo';
+import inkey from './inkey';
+// import defly from './defly';
+// import exodus from './exodus';
+// import algosigner from './algosigner';
+// import walletconnect from './walletconnect';
+// import kmd from './kmd';
 
 export {
 	pera,
@@ -21,7 +21,7 @@ export {
 };
 
 
-// import InkeyClient from "./inkey";
+// import InkeyClient from './inkey';
 
 // export {
 // 	// pera,

@@ -1,8 +1,8 @@
 import type {
 	Wallet, // TODO remove this... / type it better
-} from "../../types";
+} from '../../types';
 
-import type { ClientMetadata, ClientConstructorParams, ClientInitParams } from "./types";
+import type { ClientMetadata, ClientConstructorParams, ClientInitParams } from './types';
 
 export abstract class BaseClient {
 	// statics
@@ -12,7 +12,7 @@ export abstract class BaseClient {
 		console.log('params', params);
 	}
 
-	// "abstracts" means things this class has to definitely implement
+	// 'abstracts' means things this class has to definitely implement
 	abstract connect(onDisconnect: () => void): Promise<Wallet>;
 	abstract disconnect(): Promise<void>;
 	abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;

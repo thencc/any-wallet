@@ -1,4 +1,4 @@
-import baseClient from "./base";
+import baseClient from './base';
 export default baseClient;
 
 // TODO move to this approach

@@ -1,4 +1,4 @@
-import { WALLET_ID } from "src/wallets/constants";
+import { WALLET_ID } from 'src/wallets/constants';
 
 export interface Account {
 	providerId: WALLET_ID;
@@ -21,10 +21,10 @@ export type Provider = {
 
 export type Asset = {
 	amount: number;
-	"asset-id": number;
+	'asset-id': number;
 	creator: string;
-	"is-frozen": boolean;
-	"unit-name": string;
+	'is-frozen': boolean;
+	'unit-name': string;
 	name: string;
 };
 
@@ -35,7 +35,7 @@ export type AccountInfo = {
 	address: string;
 	amount: number;
 	assets: Asset[];
-	"min-balance": number;
+	'min-balance': number;
 };
 
 export type WalletProvider = {

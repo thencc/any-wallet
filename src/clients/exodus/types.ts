@@ -1,6 +1,6 @@
-import { WALLET_ID } from "src/wallets/constants";
-import type _algosdk from "algosdk";
-import type { AlgodClientOptions, Network } from "../../types";
+import { WALLET_ID } from 'src/wallets/constants';
+import type _algosdk from 'algosdk';
+import type { AlgodClientOptions, Network } from '../../types';
 
 export type ClientOptions = {
   onlyIfTrusted: boolean;

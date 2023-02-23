@@ -1,3 +1,3 @@
-import { InkeyClient } from "./client";
+import { InkeyClient } from './client';
 
 export default InkeyClient;

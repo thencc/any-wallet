@@ -1,14 +1,14 @@
-// import type algosdk from "algosdk";
-// import { WALLET_ID, WalletClient, Network } from "../types";
-// import allClients from "../clients";
+// import type algosdk from 'algosdk';
+// import { WALLET_ID, WalletClient, Network } from '../types';
+// import allClients from '../clients';
 // import {
 //   DEFAULT_NODE_BASEURL,
 //   DEFAULT_NODE_TOKEN,
 //   DEFAULT_NODE_PORT,
 //   DEFAULT_NETWORK,
-// } from "../constants";
-// import { CLIENT_MAP } from "./pkgHelpers";
-// // import { appStateProxy } from "src/state";
+// } from '../constants';
+// import { CLIENT_MAP } from './pkgHelpers';
+// // import { appStateProxy } from 'src/state';
 
 // export type SupportedProviders = { [x: string]: Promise<WalletClient | null> };
 // // export type SupportedProviders = { [x: string]: Promise<WalletClient> };
@@ -41,7 +41,7 @@
 //   if (!providers || providers.length === 0)
 //     // for (const [id, client] of Object.entries(allClients)) {
 //     for (const [id, cm] of Object.entries(CLIENT_MAP)) {
-//       if (id === "kmd") {
+//       if (id === 'kmd') {
 //         continue;
 //       }
 
@@ -119,7 +119,7 @@
 
 // // TODO delete
 // // for iife
-// // if (typeof window !== "undefined") {
+// // if (typeof window !== 'undefined') {
 // //   (window as any).initializeProviders = initializeProviders;
 // // }
 

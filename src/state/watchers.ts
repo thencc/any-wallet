@@ -1,6 +1,6 @@
 import { watch } from '@vue-reactivity/watch';
 import { isBrowser } from 'src/utils';
-import { AnyWalletState } from "./index";
+import { AnyWalletState } from './index';
 
 export const lsKey = 'AnyWallet';
 
@@ -42,28 +42,4 @@ export const startWatchers = () => {
 			deep: true
 		}
 	);
-
-	// watch(
-	// 	() => AnyWalletState.stored.activeAccount,
-	// 	(acct) => {
-	// 		// console.log('lib activeAccount changed:', acct);
-
-	// 		// update helpful top level prop
-	// 		// let activeAddress = '';
-	// 		// let activeWalletId: null | WALLET_ID = null;
-	// 		// let activeWallet: null | WalletType = null;
-	// 		// if (acct) {
-	// 		// 	activeAddress = acct.address;
-	// 		// 	activeWalletId = acct.providerId;
-	// 		// 	activeWallet = AnyWalletState.enabledWallets ? AnyWalletState.enabledWallets[acct.providerId] || null : null;
-	// 		// }
-	// 		// AnyWalletState.activeAddress = activeAddress;
-	// 		// AnyWalletState.activeWalletId = activeWalletId;
-	// 		// AnyWalletState.activeWallet = activeWallet;
-	// 	},
-	// 	{
-	// 		deep: true,
-	// 		immediate: true
-	// 	}
-	// );
 };

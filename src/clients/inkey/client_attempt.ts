@@ -2,19 +2,19 @@
  * Helpful resources:
  * https://github.com/thencc/inkey-client-js
  */
-import BaseWallet from "../base";
-import type _algosdk from "algosdk";
-import Algod, { getAlgodClient } from "../../algod";
-import { DEFAULT_NETWORK, WALLET_ID } from "../../constants";
+import BaseWallet from '../base';
+import type _algosdk from 'algosdk';
+import Algod, { getAlgodClient } from '../../algod';
+import { DEFAULT_NETWORK, WALLET_ID } from '../../constants';
 import {
   TransactionsArray,
   DecodedTransaction,
   DecodedSignedTransaction,
   Network,
   Wallet,
-} from "../../types";
-import { InitParams, InkeySdk, InkeyWalletClientConstructor } from "./types";
-import { ICON } from "./constants";
+} from '../../types';
+import { InitParams, InkeySdk, InkeyWalletClientConstructor } from './types';
+import { ICON } from './constants';
 
 // helpers
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
@@ -63,8 +63,8 @@ class InkeyWalletClient {
 
   static metadata = {
     id: WALLET_ID.INKEY,
-    chain: "algorand",
-    name: "Inkey Microwallet",
+    chain: 'algorand',
+    name: 'Inkey Microwallet',
     icon: ICON,
     isWalletConnect: false,
   };
@@ -78,7 +78,7 @@ class InkeyWalletClient {
   }: InitParams) {
     try {
 
-      const inkeyClient = clientStatic || await (await import("@thencc/inkey-client-js")).createClient({
+      const inkeyClient = clientStatic || await (await import('@thencc/inkey-client-js')).createClient({
         // src: clientOptions?.iFrameUrl
         // src: 'http://127.0.0.1:5200',
         src: 'http://localhost:5200',
@@ -198,8 +198,8 @@ class InkeyWalletClient {
       });
 
       if (
-        !("txn" in txn) &&
-        connectedAccounts.includes(this.algosdk.encodeAddress(txn["snd"]))
+        !('txn' in txn) &&
+        connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
       ) {
         // added inkeyClient method to sign Uint8Array,
         // option 2: convert Uint8Array txn to base64 str txn for inkey
@@ -232,7 +232,7 @@ class InkeyWalletClient {
 
     // Join the newly signed transactions with the original group of transactions.
     const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-      if (!("txn" in txn)) {
+      if (!('txn' in txn)) {
         const signedByUser = returnedTxns.shift();
         signedByUser && acc.push(signedByUser);
       } else {
