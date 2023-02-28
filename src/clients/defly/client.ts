@@ -2,214 +2,183 @@
  * Helpful resources:
  * https://github.com/blockshake-io/defly-connect
  */
-import type _algosdk from 'algosdk';
-import Algod, { getAlgodClient } from '../../algod';
+import { getAlgosdk } from '../../algod'; // DELETE
 import type { Wallet } from '../../types';
-import { DEFAULT_NETWORK, WALLET_ID } from '../../constants';
-import BaseWallet from '../base';
-import { TransactionsArray } from '../../types';
-import type { DeflyWalletConnect } from '@blockshake/defly-connect';
+import { BaseClient } from '../base';
 import type {
-  DecodedTransaction,
-  DecodedSignedTransaction,
-  Network,
+	DecodedTransaction,
+	DecodedSignedTransaction,
 } from '../../types';
-import { ICON } from './constants';
+import { METADATA } from './constants';
 import {
-  DeflyTransaction,
-  InitParams,
-  DeflyWalletClientConstructor,
+	DeflyTransaction,
+	InitParams,
+	DeflyWalletClientConstructor,
+	DeflySdk,
+	SdkConfig,
 } from './types';
+import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
-class DeflyWalletClient extends BaseWallet {
-  #client: DeflyWalletConnect;
-  network: Network;
+export class DeflyClient extends BaseClient {
+	sdk: DeflySdk;
 
-  constructor({
-    client,
-    algosdk,
-    algodClient,
-    network,
-  }: DeflyWalletClientConstructor) {
-    super(algosdk, algodClient);
-    this.#client = client;
-    this.network = network;
-  }
+	constructor({
+		sdk: clientSdk
+	}: DeflyWalletClientConstructor) {
+		super();
+		this.sdk = clientSdk;
+	}
 
-  static metadata = {
-    id: WALLET_ID.DEFLY,
-    name: 'Defly',
-    icon: ICON,
-    isWalletConnect: true,
-  };
+	static metadata = METADATA;
 
-  static async init({
-    clientOptions,
-    algodOptions,
-    clientStatic,
-    algosdkStatic,
-    network = DEFAULT_NETWORK,
-  }: InitParams) {
-    try {
-      const DeflyWalletConnect =
-        clientStatic ||
-        (await import('@blockshake/defly-connect')).DeflyWalletConnect;
+	static async init(initParams?: InitParams) {
+		try {
+			// necessary shim for lib that use walletconnect under the hood (pera, defly, wc)
+			if (typeof window !== 'undefined') {
+				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
+			} else {
+				console.warn('Using a browser lib not in a browser...');
+			}
 
-      const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-      const algodClient = await getAlgodClient(algosdk, algodOptions);
+			let clientSdk: DeflySdk;
+			if (initParams && initParams.sdk) {
+				clientSdk = initParams.sdk; // already init-ed sdk
+			} else {
+				// load sdk + init it
 
-      const deflyWallet = new DeflyWalletConnect({
-        ...(clientOptions ? clientOptions : { shouldShowSignTxnToast: false }),
-      });
+				let sdkConfig: SdkConfig;
+				const defaultConfig: SdkConfig = {
+					shouldShowSignTxnToast: false
+				};
+				sdkConfig = initParams?.config || defaultConfig;
 
-      return new DeflyWalletClient({
-        client: deflyWallet,
-        algosdk,
-        algodClient,
-        network,
-      });
-    } catch (e) {
-      console.error('Error initializing...', e);
-      return null;
-    }
-  }
+				// TODO get this pkg name from METADATA
+				let sdkLib = await import('@blockshake/defly-connect');
+				let createClientSdk = sdkLib.DeflyWalletConnect || sdkLib.default.DeflyWalletConnect; // sometimes needs this shim
 
-  async connect(onDisconnect: () => void): Promise<Wallet> {
-    const accounts = await this.#client.connect().catch(console.info);
+				// console.log('createClientSdk', createClientSdk);
+				clientSdk = new createClientSdk(sdkConfig);
+			}
 
-    this.#client.connector?.on('disconnect', onDisconnect);
+			return new DeflyClient({
+				sdk: clientSdk,
+			});
+		} catch (e) {
+			console.error('Error initializing...', e);
+			return null;
+		}
+	}
 
-    if (!accounts || accounts.length === 0) {
-      throw new Error(`No accounts found for ${DeflyWalletClient.metadata.id}`);
-    }
+	async connect(onDisconnect: () => void): Promise<Wallet> {
+		console.log(`${METADATA.id} connect`);
+		const accounts = await this.sdk.connect().catch(console.info);
 
-    const mappedAccounts = accounts.map((address: string, index: number) => ({
-      name: `Defly Wallet ${index + 1}`,
-      address,
-      providerId: DeflyWalletClient.metadata.id,
-    }));
+		// TODO might have to do same pera (any) shim for connector
+		this.sdk.connector.on('disconnect', onDisconnect);
 
-    return {
-      ...DeflyWalletClient.metadata,
-      accounts: mappedAccounts,
-    };
-  }
+		if (!accounts || accounts.length === 0) {
+			throw new Error(`No accounts found for ${METADATA.id}`);
+		}
 
-  async reconnect(onDisconnect: () => void) {
-    const accounts = await this.#client.reconnectSession().catch(console.info);
-    this.#client.connector?.on('disconnect', onDisconnect);
+		const mappedAccounts = accounts.map((address: string, index: number) => ({
+			name: `Defly Wallet ${index + 1}`,
+			address,
+			providerId: METADATA.id,
+		}));
 
-    if (!accounts) {
-      return null;
-    }
+		// save to state (do this in vue-r wallet object?)
+		addConnectedAccounts(mappedAccounts);
+		setAsActiveAccount(mappedAccounts[0]);
+		// this.postConnect(mappedAccounts); // base class call
 
-    return {
-      ...DeflyWalletClient.metadata,
-      accounts: accounts.map((address: string, index: number) => ({
-        name: `Defly Wallet ${index + 1}`,
-        address,
-        providerId: DeflyWalletClient.metadata.id,
-      })),
-    };
-  }
+		return {
+			...METADATA,
+			accounts: mappedAccounts,
+		};
+	}
 
-  async disconnect() {
-    await this.#client.disconnect();
-  }
+	async reconnect(onDisconnect: () => void) {
+		const accounts = await this.sdk.reconnectSession().catch(console.info);
+		this.sdk.connector?.on('disconnect', onDisconnect);
 
-  async signTransactions(
-    connectedAccounts: string[],
-    transactions: Uint8Array[]
-  ) {
-    // Decode the transactions to access their properties.
-    const decodedTxns = transactions.map((txn) => {
-      return this.algosdk.decodeObj(txn);
-    }) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		if (!accounts) {
+			return null;
+		}
 
-    // Marshal the transactions,
-    // and add the signers property if they shouldn't be signed.
-    const txnsToSign = decodedTxns.reduce<DeflyTransaction[]>((acc, txn, i) => {
-      if (
-        !('txn' in txn) &&
-        connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
-      ) {
-        acc.push({
-          txn: this.algosdk.decodeUnsignedTransaction(transactions[i]),
-        });
-      } else {
-        acc.push({
-          txn: this.algosdk.decodeSignedTransaction(transactions[i]).txn,
-          signers: [],
-        });
-      }
+		const mappedAccounts = accounts.map((address: string, index: number) => ({
+			name: `Defly Wallet ${index + 1}`,
+			address,
+			providerId: METADATA.id,
+		}));
 
-      return acc;
-    }, []);
+		// save to state
+		addConnectedAccounts(mappedAccounts);
+		setAsActiveAccount(mappedAccounts[0]);
 
-    // Sign them with the client.
-    const result = await this.#client.signTransaction([txnsToSign]);
+		return {
+			...METADATA,
+			accounts: accounts.map((address: string, index: number) => ({
+				name: `Defly Wallet ${index + 1}`,
+				address,
+				providerId: METADATA.id,
+			})),
+		};
+	}
 
-    // Join the newly signed transactions with the original group of transactions.
-    const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-      if (!('txn' in txn)) {
-        const signedByUser = result.shift();
-        signedByUser && acc.push(signedByUser);
-      } else {
-        acc.push(transactions[i]);
-      }
+	async disconnect() {
+		await this.sdk.disconnect();
+	}
 
-      return acc;
-    }, []);
+	async signTransactions(
+		connectedAccounts: string[],
+		transactions: Uint8Array[]
+	) {
+		// TODO fix this:
+		const algosdk = await getAlgosdk();
+		console.log('getting algosdk... TODO optimize this!');
 
-    return signedTxns;
-  }
+		// Decode the transactions to access their properties.
+		const decodedTxns = transactions.map((txn) => {
+			return algosdk.decodeObj(txn);
+		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-  /** @deprecated */
-  async signEncodedTransactions(transactions: TransactionsArray) {
-    const transactionsToSign = this.formatTransactionsArray(transactions);
-    const result: Uint8Array[] = await this.#client.signTransaction([
-      transactionsToSign,
-    ]);
+		// Marshal the transactions,
+		// and add the signers property if they shouldn't be signed.
+		const txnsToSign = decodedTxns.reduce<DeflyTransaction[]>((acc, txn, i) => {
+			if (
+				!('txn' in txn) &&
+				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+			) {
+				acc.push({
+					txn: algosdk.decodeUnsignedTransaction(transactions[i]),
+				});
+			} else {
+				acc.push({
+					txn: algosdk.decodeSignedTransaction(transactions[i]).txn,
+					signers: [],
+				});
+			}
 
-    const signedTransactions: Uint8Array[] = [];
+			return acc;
+		}, []);
 
-    let resultIndex = 0;
+		// Sign them with the client.
+		const result = await this.sdk.signTransaction([txnsToSign]);
 
-    for (const [type, txn] of transactions) {
-      if (type === 'u') {
-        signedTransactions.push(result[resultIndex]);
-        resultIndex++;
-      } else {
-        signedTransactions.push(new Uint8Array(Buffer.from(txn, 'base64')));
-      }
-    }
+		// Join the newly signed transactions with the original group of transactions.
+		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
+			if (!('txn' in txn)) {
+				const signedByUser = result.shift();
+				signedByUser && acc.push(signedByUser);
+			} else {
+				acc.push(transactions[i]);
+			}
 
-    return signedTransactions;
-  }
+			return acc;
+		}, []);
 
-  /** @deprecated */
-  formatTransactionsArray(transactions: TransactionsArray) {
-    const formattedTransactions: DeflyTransaction[] = [];
-
-    for (const [type, txn] of transactions) {
-      if (type === 's') {
-        formattedTransactions.push({
-          ...this.algosdk.decodeSignedTransaction(
-            new Uint8Array(Buffer.from(txn, 'base64'))
-          ),
-          signers: [],
-        });
-      } else {
-        formattedTransactions.push({
-          txn: this.algosdk.decodeUnsignedTransaction(
-            new Uint8Array(Buffer.from(txn, 'base64'))
-          ),
-        });
-      }
-    }
-
-    return formattedTransactions;
-  }
+		return signedTxns;
+	}
 }
 
-export default DeflyWalletClient;
+export default DeflyClient;

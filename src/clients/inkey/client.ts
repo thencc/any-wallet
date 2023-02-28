@@ -38,7 +38,7 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 export class InkeyClient extends BaseClient {
 	sdk: InkeySdk;
 
-	static readonly metadata = METADATA;
+	static metadata = METADATA;
 
 	constructor({
 		sdk: clientSdk,

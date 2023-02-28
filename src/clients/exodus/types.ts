@@ -2,16 +2,7 @@ import { WALLET_ID } from 'src/wallets/constants';
 import type _algosdk from 'algosdk';
 import type { AlgodClientOptions, Network } from '../../types';
 
-export type ClientOptions = {
-  onlyIfTrusted: boolean;
-};
-
-export type WindowExtended = { exodus: { algorand: Exodus } } & Window &
-  typeof globalThis;
-
-export type Bytes = Readonly<Uint8Array>;
-
-export type Exodus = {
+export type ExodusSdk = {
   isConnected: boolean;
   address: string | null;
   connect: ({ onlyIfTrusted }: { onlyIfTrusted: boolean }) => Promise<{
@@ -24,18 +15,21 @@ export type Exodus = {
   signTransaction(transactions: Bytes[]): Promise<Bytes[]>;
 };
 
-export type ExodusClientConstructor = {
-  client: Exodus;
-  id: WALLET_ID;
-  algosdk: typeof _algosdk;
-  algodClient: _algosdk.Algodv2;
+export type SdkConfig = {
   onlyIfTrusted: boolean;
-  network: Network;
+};
+
+export type WindowExtended = { exodus: { algorand: ExodusSdk } } & Window &
+  typeof globalThis;
+
+export type Bytes = Readonly<Uint8Array>;
+
+export type ExodusClientConstructor = {
+  sdk: ExodusSdk;
+  onlyIfTrusted: boolean;
 };
 
 export type InitParams = {
-  clientOptions?: ClientOptions;
-  algodOptions?: AlgodClientOptions;
-  algosdkStatic?: typeof _algosdk;
-  network?: Network;
+  config?: SdkConfig;
+  sdk?: ExodusSdk;
 };

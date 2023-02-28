@@ -3,16 +3,13 @@
  * https://github.com/perawallet/connect
  */
 import { BaseClient } from '../base';
-import type _algosdk from 'algosdk';
 import { getAlgosdk } from '../../algod'; // TODO remove this, dont depend on algosdk
 import type {
 	Wallet,
-	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	Network,
 } from '../../types';
-import { ICON, METADATA } from './constants';
+import { METADATA } from './constants';
 import {
 	PeraTransaction,
 	PeraWalletClientConstructor,
@@ -40,6 +37,7 @@ export class PeraClient extends BaseClient {
 		console.log(`[${METADATA.id}] init started`);
 
 		try {
+			// shim for client that use walletconnect under the hood
 			if (typeof window !== 'undefined') {
 				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
 			} else {
@@ -57,7 +55,6 @@ export class PeraClient extends BaseClient {
 					shouldShowSignTxnToast: false
 				};
 				sdkConfig = initParams?.config || defaultConfig;
-
 
 				let sdkLib = await import('@perawallet/connect');
 				let createClientSdk = sdkLib.PeraWalletConnect || sdkLib.default.PeraWalletConnect; // sometimes needs this shim
@@ -90,7 +87,7 @@ export class PeraClient extends BaseClient {
 		}
 
 		const mappedAccounts = accounts.map((address: string, index: number) => ({
-			name: `Pera ${index + 1}`,
+			name: `Pera Wallet ${index + 1}`,
 			address,
 			providerId: METADATA.id,
 		}));

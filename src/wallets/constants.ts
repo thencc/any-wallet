@@ -9,8 +9,8 @@ export enum WALLET_ID {
 	MYALGO = 'myalgo',
 	INKEY = 'inkey',
 	ALGOSIGNER = 'algosigner',
-	// DEFLY = 'defly',
-	// EXODUS = 'exodus',
+	EXODUS = 'exodus',
+	DEFLY = 'defly',
 	// WALLETCONNECT = 'walletconnect',
 	// LOCAL = 'local' // TODO
 }
@@ -20,6 +20,8 @@ export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
 	[WALLET_ID.INKEY]: true,
 	[WALLET_ID.MYALGO]: true,
 	[WALLET_ID.ALGOSIGNER]: true,
+	[WALLET_ID.EXODUS]: true,
+	[WALLET_ID.DEFLY]: true,
 };
 
 export const ALL_WALLETS: WalletsObj = {
@@ -27,5 +29,7 @@ export const ALL_WALLETS: WalletsObj = {
 	[WALLET_ID.INKEY]: createWallet<ClientType<WALLET_ID.INKEY>>(WALLET_ID.INKEY),
 	[WALLET_ID.MYALGO]: createWallet<ClientType<WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
 	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+	[WALLET_ID.EXODUS]: createWallet<ClientType<WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+	[WALLET_ID.DEFLY]: createWallet<ClientType<WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
 	// test: '123'; // breaks, as it should
 };

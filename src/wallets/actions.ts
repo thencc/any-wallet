@@ -31,6 +31,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				console.log('do client.init');
 				w.initing = true;
 
+				// TODO add (ip = array) ? simply: ['pera', 'inkey'] etc
+
 				if (typeof ip == 'object' && (
 					ip.config || ip.sdk
 				)) {
@@ -55,12 +57,15 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 
 			// arg is onDisconnect
 			await w.client!.connect(() => { });
+
+			// if it gets past .connect, it worked, so saved the returned accts + set one as active
+			// saveAccounts
+			// setAsActive
 		},
 		disconnect: async () => {
-			await w.isReady();
-
 			removeAccountsByClient(id);
 
+			await w.isReady();
 			try {
 				await w.client!.disconnect();
 			} catch (e) {

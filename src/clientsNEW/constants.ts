@@ -5,43 +5,57 @@ import { PeraClient } from 'src/clients/pera/client';
 import { InkeyClient } from 'src/clients/inkey/client';
 import { MyAlgoClient } from 'src/clients/myalgo/client';
 import { AlgoSignerClient } from 'src/clients/algosigner/client';
+import { ExodusClient } from 'src/clients/exodus/client';
+import { DeflyClient } from 'src/clients/defly/client';
 
 export const CLIENT_MAP = {
 	[WALLET_ID.PERA]: {
-		id: WALLET_ID.PERA, // TODO remove? just use metadata.id ...?
-		pkg: '@perawallet/connect',
+		// id: WALLET_ID.PERA, // TODO remove? just use metadata.id ...?
+		// pkg: '@perawallet/connect',
 		client: PeraClient,
-		meta: PeraClient.metadata, // TODO remove? this too
+		// meta: PeraClient.metadata, // TODO remove? this too
 	},
 	// TODO consider moving pkg name to each client's metadata + making constants off of those
 	[WALLET_ID.INKEY]: {
-		id: WALLET_ID.INKEY,
-		pkg: '@thencc/inkey-client-js',
+		// id: WALLET_ID.INKEY,
+		// pkg: '@thencc/inkey-client-js',
 		client: InkeyClient,
-		meta: InkeyClient.metadata,
+		// meta: InkeyClient.metadata,
 	},
 	[WALLET_ID.MYALGO]: {
-		id: WALLET_ID.MYALGO,
-		pkg: '@randlabs/myalgo-connect',
+		// id: WALLET_ID.MYALGO,
+		// pkg: '@randlabs/myalgo-connect',
 		client: MyAlgoClient,
-		meta: MyAlgoClient.metadata,
+		// meta: MyAlgoClient.metadata,
 	},
 	[WALLET_ID.ALGOSIGNER]: {
-		id: WALLET_ID.ALGOSIGNER,
-		pkg: '', // DOESNT EXIST, its a chrome ext
+		// id: WALLET_ID.ALGOSIGNER,
+		// pkg: '', // DOESNT EXIST, its a chrome ext
 		client: AlgoSignerClient,
-		meta: AlgoSignerClient.metadata, // use constant var?
+		// meta: AlgoSignerClient.metadata, // use constant var?
+	},
+	[WALLET_ID.EXODUS]: {
+		// id: WALLET_ID.EXODUS,
+		// pkg: '', // DOESNT EXIST, its a chrome ext
+		client: ExodusClient,
+		// meta: ExodusClient.metadata, // use constant var?
+	},
+	[WALLET_ID.DEFLY]: {
+		// id: WALLET_ID.DEFLY,
+		// pkg: '@blockshake/defly-connect',
+		client: DeflyClient,
+		// meta: DeflyClient.metadata, // use constant var?
 	},
 } as const; // 'const' is helpful for object security + typing
 
 // TODO rename? use wallet_ids?
 export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id) as WALLET_ID[];
-export const CLIENT_PKGS = Object.values(CLIENT_MAP).map(c => c.pkg).filter(p => p !== '');
+export const CLIENT_PKGS = Object.values(CLIENT_MAP).map(c => c.client.metadata.pkg).filter(p => p !== '');
 
 export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_PKGS => {
 	let pkgsToDisable: typeof CLIENT_PKGS = [];
 	for (let id of idsToDisable) {
-		pkgsToDisable.push(CLIENT_MAP[id]['pkg']);
+		pkgsToDisable.push(CLIENT_MAP[id].client.metadata.pkg);
 	}
 	return pkgsToDisable;
 }

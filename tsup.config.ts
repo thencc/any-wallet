@@ -4,13 +4,17 @@ import * as pkg from './package.json';
 
 export default defineConfig({
 	entry: ['src/index.ts'],
-	format: ['esm', 'cjs', 'iife'],
+	format: ['esm', 'cjs' ],
 	dts: true, // requires typescript peer dep
 	clean: true, // cleans outDir before build
 	tsconfig: './tsconfig.json',
 	outDir: './dist',
 
-	globalName: 'w3w3w', // for iife, but really who will use this...
+	// iife / global build
+	// if doing this, add tp pkg.json
+	// 		"browser": "dist/index.global.js",
+	// add "iife" to format field like: ['esm', 'cjs', 'iife']
+	// globalName: 'w3w3w', // for iife, but really who will use this...
 	keepNames: true, // for dev
 
 	// legacyOutput: true,

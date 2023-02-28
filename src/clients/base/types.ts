@@ -5,6 +5,7 @@ export type ClientMetadata = {
 	name: string; // readable
 	icon: string; // b64 str (png/svg)
 	chain: string; // 'algorand'
+	pkg: string;
 };
 
 export type ClientInitParams = {

@@ -9,4 +9,5 @@ export const METADATA = {
 	chain: 'algorand',
 	name: 'AlgoSigner',
 	icon: ICON,
+	pkg: '', // DOESNT EXIST, its a chrome ext
 };

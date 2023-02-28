@@ -9,4 +9,5 @@ export const METADATA = {
 	chain: 'algorand',
 	name: 'MyAlgo',
 	icon: ICON,
+	pkg: '@randlabs/myalgo-connect',
 };
