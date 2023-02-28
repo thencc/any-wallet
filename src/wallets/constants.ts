@@ -1,19 +1,18 @@
 import type { ClientType } from 'src/clients';
-
 import type { Network } from 'src/types/node';
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
 export enum WALLET_ID {
-	// KMD = 'kmd', // nope
 	PERA = 'pera',
-	MYALGO = 'myalgo',
 	INKEY = 'inkey',
+	MYALGO = 'myalgo',
 	ALGOSIGNER = 'algosigner',
 	EXODUS = 'exodus',
 	DEFLY = 'defly',
-	// WALLETCONNECT = 'walletconnect', // willnotfix
 	MNEMONIC = 'mnemonic',
+	// KMD = 'kmd', // nope
+	// WALLETCONNECT = 'walletconnect', // willnotfix
 };
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
@@ -34,7 +33,6 @@ export const ALL_WALLETS: WalletsObj = {
 	[WALLET_ID.EXODUS]: createWallet<ClientType<WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
 	[WALLET_ID.DEFLY]: createWallet<ClientType<WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
 	[WALLET_ID.MNEMONIC]: createWallet<ClientType<WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
-	// test: '123'; // breaks, as it should
 } as const; // helps w security
 
 // algod configs (not used)
