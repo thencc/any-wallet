@@ -18,7 +18,6 @@ import {
 	ExodusSdk,
 	ExodusClientConstructor,
 } from './types';
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class ExodusClient extends BaseClient {
 	sdk: ExodusSdk;
@@ -107,10 +106,6 @@ export class ExodusClient extends BaseClient {
 				providerId: METADATA.id,
 			},
 		];
-
-		// save to state
-		addConnectedAccounts(accounts);
-		setAsActiveAccount(accounts[0]);
 
 		return {
 			...METADATA,

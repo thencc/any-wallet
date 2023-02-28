@@ -17,7 +17,6 @@ import {
 	DeflySdk,
 	SdkConfig,
 } from './types';
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class DeflyClient extends BaseClient {
 	sdk: DeflySdk;
@@ -86,11 +85,6 @@ export class DeflyClient extends BaseClient {
 			providerId: METADATA.id,
 		}));
 
-		// save to state (do this in vue-r wallet object?)
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
-		// this.postConnect(mappedAccounts); // base class call
-
 		return {
 			...METADATA,
 			accounts: mappedAccounts,
@@ -104,16 +98,6 @@ export class DeflyClient extends BaseClient {
 		if (!accounts) {
 			return null;
 		}
-
-		const mappedAccounts = accounts.map((address: string, index: number) => ({
-			name: `Defly Wallet ${index + 1}`,
-			address,
-			providerId: METADATA.id,
-		}));
-
-		// save to state
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...METADATA,

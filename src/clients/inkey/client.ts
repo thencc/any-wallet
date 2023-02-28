@@ -15,8 +15,6 @@ import {
 import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from './types';
 import { ICON, METADATA } from './constants';
 
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
-
 // TODO switch all algosdk use to this + other nacl lib (<400kb)
 import msgpack from '@randlabs/msgpack-bigint';
 
@@ -114,10 +112,6 @@ export class InkeyClient extends BaseClient {
 			...account,
 			providerId: METADATA.id,
 		}));
-
-		// save accts to state (+ localstorage automatically)
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...METADATA,

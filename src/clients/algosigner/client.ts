@@ -20,7 +20,6 @@ import type {
 	InitParams,
 	AlgoSignerSdk,
 } from './types';
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 // maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {
@@ -105,10 +104,6 @@ export class AlgoSignerClient extends BaseClient {
 			address,
 			providerId: METADATA.id,
 		}));
-
-		// save to state
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...METADATA,

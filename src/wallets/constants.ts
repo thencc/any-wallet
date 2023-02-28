@@ -4,7 +4,7 @@ import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
 export enum WALLET_ID {
-	// KMD = 'kmd',
+	// KMD = 'kmd', // nope
 	PERA = 'pera',
 	MYALGO = 'myalgo',
 	INKEY = 'inkey',
@@ -12,7 +12,7 @@ export enum WALLET_ID {
 	EXODUS = 'exodus',
 	DEFLY = 'defly',
 	// WALLETCONNECT = 'walletconnect',
-	// LOCAL = 'local' // TODO
+	// MNEMONIC = 'mnemonic' // TODO -- copy from use-wallet repo
 }
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
@@ -32,4 +32,4 @@ export const ALL_WALLETS: WalletsObj = {
 	[WALLET_ID.EXODUS]: createWallet<ClientType<WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
 	[WALLET_ID.DEFLY]: createWallet<ClientType<WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
 	// test: '123'; // breaks, as it should
-};
+} as const; // helps w security

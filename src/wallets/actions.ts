@@ -56,11 +56,11 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			await w.isReady();
 
 			// arg is onDisconnect
-			await w.client!.connect(() => { });
+			let { accounts } = await w.client!.connect(() => { });
 
 			// if it gets past .connect, it worked, so saved the returned accts + set one as active
-			// saveAccounts
-			// setAsActive
+			addConnectedAccounts(accounts);
+			setAsActiveAccount(accounts[0]);
 		},
 		disconnect: async () => {
 			removeAccountsByClient(id);

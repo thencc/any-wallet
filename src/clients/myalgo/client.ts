@@ -16,7 +16,6 @@ import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './typ
 import { ICON, METADATA } from './constants';
 
 import { markRaw } from '@vue/reactivity';
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;
@@ -81,10 +80,6 @@ export class MyAlgoClient extends BaseClient {
 			...account,
 			providerId: METADATA.id,
 		}));
-
-		// save to state
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...METADATA,

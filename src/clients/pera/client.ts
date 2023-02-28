@@ -19,7 +19,6 @@ import {
 } from './types';
 
 import { markRaw } from '@vue/reactivity';
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
@@ -91,10 +90,6 @@ export class PeraClient extends BaseClient {
 			address,
 			providerId: METADATA.id,
 		}));
-
-		// save to state
-		addConnectedAccounts(mappedAccounts);
-		setAsActiveAccount(mappedAccounts[0]);
 
 		return {
 			...METADATA,

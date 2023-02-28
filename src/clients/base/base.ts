@@ -1,6 +1,4 @@
-import { addConnectedAccounts, setAsActiveAccount } from 'src/wallets';
 import type {
-	Account,
 	Wallet, // TODO remove this... / type it better
 } from '../../types';
 
@@ -30,18 +28,6 @@ export abstract class BaseClient {
 		console.log('setAsActiveAccount - TODO');
 		// this.metadata ... do things. only works if metadata is abstract (but that breaks CLIENT_MAP)
 	}
-
-	// test
-	// postConnect(accounts: Account[]) {
-	// 	// console.log(`[${BaseClient.metadata.id}] postConnect`);
-	// 	// do sets
-
-	// 	// if you need access to metadata things...
-	// 	// BaseClient.metadata.id
-
-	// 	addConnectedAccounts(accounts);
-	// 	setAsActiveAccount(accounts[0]);
-	// }
 
 }
 
