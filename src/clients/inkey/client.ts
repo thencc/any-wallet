@@ -3,17 +3,14 @@
  * https://github.com/thencc/inkey-client-js
  */
 import { BaseClient } from '../base';
-import type _algosdk from 'algosdk';
-import Algod, { getAlgodClient, getAlgosdk } from '../../algod'; // TODO remove algosdk requirement
+import { getAlgosdk } from '../../algod'; // TODO remove algosdk requirement
 import {
-	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	// Network,
 	Wallet,
 } from '../../types';
-import { InitParams, InkeySdk, SdkConfig, InkeySdkCreator, InkeyWalletClientConstructor } from './types';
-import { ICON, METADATA } from './constants';
+import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
+import { METADATA } from './constants';
 
 // TODO switch all algosdk use to this + other nacl lib (<400kb)
 import msgpack from '@randlabs/msgpack-bigint';

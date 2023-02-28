@@ -2,7 +2,7 @@ import { WALLET_ID } from 'src/wallets/constants';
 
 import pera from './pera';
 import myalgo from './myalgo';
-import inkey from './inkey';
+// import inkey from './inkey';
 // import defly from './defly';
 // import exodus from './exodus';
 // import algosigner from './algosigner';
@@ -12,7 +12,7 @@ import inkey from './inkey';
 export {
 	pera,
 	myalgo,
-	inkey,
+	// inkey,
 	// defly,
 	// exodus,
 	// algosigner,

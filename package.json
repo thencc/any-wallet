@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.94",
+	"version": "0.0.95",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -41,6 +41,9 @@
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.2"
+	},
+	"peerDependencies": {
+		"algosdk": "^1.23.2 || ^2.1.0"
 	},
 	"devDependencies": {
 		"algosdk": "^2.1.0",

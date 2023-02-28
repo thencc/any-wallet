@@ -3,7 +3,6 @@
  * https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
  */
 import { Buffer } from 'buffer'; // TODO remove this
-import { getAlgosdk } from '../../algod'; // TODO remove this
 import { BaseClient } from '../base';
 import type {
 	TransactionsArray,
@@ -20,6 +19,7 @@ import type {
 	InitParams,
 	AlgoSignerSdk,
 } from './types';
+import { decodeObj, decodeSignedTransaction, encodeAddress } from 'algosdk';
 
 // maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {
@@ -130,18 +130,12 @@ export class AlgoSignerClient extends BaseClient {
 		connectedAccounts: string[],
 		transactions: Uint8Array[]
 	) {
-
-		// TODO fix this:
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
-			return algosdk.decodeObj(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-		// Marshal the transactions,
-		// and add the signers property if they shouldn't be signed.
+		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<AlgoSignerTransaction[]>(
 			(acc, txn, i) => {
 				const txnObj: AlgoSignerTransaction = {
@@ -150,10 +144,10 @@ export class AlgoSignerClient extends BaseClient {
 
 				if (
 					'txn' in txn ||
-					!connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+					!connectedAccounts.includes(encodeAddress(txn['snd']))
 				) {
 					txnObj.txn = this.sdk.encoding.msgpackToBase64(
-						algosdk.decodeSignedTransaction(transactions[i]).txn.toByte()
+						decodeSignedTransaction(transactions[i]).txn.toByte()
 					);
 					txnObj.signers = [];
 				}

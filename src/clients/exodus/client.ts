@@ -3,13 +3,9 @@
  * https://docs.exodus.com/api-reference/algorand-provider-api/
  */
 import { BaseClient } from '../base';
-import { getAlgosdk } from '../../algod'; // TODO get rid of this
-import { markRaw } from '@vue/reactivity';
 import type {
-	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	Network,
 } from '../../types';
 import { METADATA } from './constants';
 import {
@@ -18,6 +14,8 @@ import {
 	ExodusSdk,
 	ExodusClientConstructor,
 } from './types';
+import { markRaw } from '@vue/reactivity';
+import { decodeObj, encodeAddress } from 'algosdk';
 
 export class ExodusClient extends BaseClient {
 	sdk: ExodusSdk;
@@ -40,8 +38,19 @@ export class ExodusClient extends BaseClient {
 				typeof window == 'undefined' ||
 				(window as WindowExtended).exodus === undefined
 			) {
-				throw new Error('Exodus is not available.');
+				throw new Error('Exodus is not available. Do you have the browser extension installed?');
 			}
+
+			// .sdk NOTE since exodus uses js proxys also
+			/**
+			 * do proxy shim.
+			 * 1. call window.exodus.algorand.disconnect()
+			 * 2. set this.sdk as window.exodus.algorand.valueOf() // with markRaw
+			 *
+			 * OR
+			 *
+			 * just use full window.e.a... every time (not proxy)
+			 */
 
 			let clientSdk = (window as WindowExtended).exodus.algorand; // as ExodusSdk;
 			console.log('exo clientSdk 9', clientSdk);
@@ -134,13 +143,9 @@ export class ExodusClient extends BaseClient {
 		connectedAccounts: string[],
 		transactions: Array<Uint8Array>
 	) {
-		// TODO fix this:
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
-			return algosdk.decodeObj(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
 		// Get the unsigned transactions.
@@ -149,7 +154,7 @@ export class ExodusClient extends BaseClient {
 			// add it to the arrays of transactions to be signed.
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push(transactions[i]);
 			}

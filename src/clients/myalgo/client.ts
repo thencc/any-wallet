@@ -3,19 +3,15 @@
  * https://github.com/randlabs/myalgo-connect
  */
 import { BaseClient } from '../base';
-import type _MyAlgoConnect from '@randlabs/myalgo-connect';
-import type _algosdk from 'algosdk';
-import Algod, { getAlgodClient, getAlgosdk } from '../../algod'; // TODO remove algosdk
 import {
-	TransactionsArray,
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	Network,
 } from '../../types';
 import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './types';
-import { ICON, METADATA } from './constants';
+import { METADATA } from './constants';
 
 import { markRaw } from '@vue/reactivity';
+import { decodeObj, encodeAddress } from 'algosdk';
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;
@@ -99,14 +95,9 @@ export class MyAlgoClient extends BaseClient {
 		connectedAccounts: string[],
 		transactions: Uint8Array[]
 	) {
-
-		// TODO fix this:
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
-			return algosdk.decodeObj(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
 		// Get the unsigned transactions.
@@ -116,7 +107,7 @@ export class MyAlgoClient extends BaseClient {
 
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push(transactions[i]);
 			}

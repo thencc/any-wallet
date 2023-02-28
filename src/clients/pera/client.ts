@@ -3,7 +3,6 @@
  * https://github.com/perawallet/connect
  */
 import { BaseClient } from '../base';
-import { getAlgosdk } from '../../algod'; // TODO remove this, dont depend on algosdk
 import type {
 	Wallet,
 	DecodedTransaction,
@@ -19,6 +18,8 @@ import {
 } from './types';
 
 import { markRaw } from '@vue/reactivity';
+// single imports
+import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
@@ -123,29 +124,22 @@ export class PeraClient extends BaseClient {
 		connectedAccounts: string[],
 		transactions: Uint8Array[]
 	) {
-
-		// TODO fix this:
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
-		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
-			return algosdk.decodeObj(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-		// Marshal the transactions,
-		// and add the signers property if they shouldn't be signed.
+		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push({
-					txn: algosdk.decodeUnsignedTransaction(transactions[i]),
+					txn: decodeUnsignedTransaction(transactions[i]),
 				});
 			} else {
 				acc.push({
-					txn: algosdk.decodeSignedTransaction(transactions[i]).txn,
+					txn: decodeSignedTransaction(transactions[i]).txn,
 					signers: [],
 				});
 			}

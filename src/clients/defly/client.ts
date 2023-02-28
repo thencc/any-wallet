@@ -2,8 +2,6 @@
  * Helpful resources:
  * https://github.com/blockshake-io/defly-connect
  */
-import { getAlgosdk } from '../../algod'; // DELETE
-import type { Wallet } from '../../types';
 import { BaseClient } from '../base';
 import type {
 	DecodedTransaction,
@@ -17,6 +15,8 @@ import {
 	DeflySdk,
 	SdkConfig,
 } from './types';
+import type { Wallet } from '../../types';
+import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 
 export class DeflyClient extends BaseClient {
 	sdk: DeflySdk;
@@ -117,13 +117,9 @@ export class DeflyClient extends BaseClient {
 		connectedAccounts: string[],
 		transactions: Uint8Array[]
 	) {
-		// TODO fix this:
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
-			return algosdk.decodeObj(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
 		// Marshal the transactions,
@@ -131,14 +127,14 @@ export class DeflyClient extends BaseClient {
 		const txnsToSign = decodedTxns.reduce<DeflyTransaction[]>((acc, txn, i) => {
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push({
-					txn: algosdk.decodeUnsignedTransaction(transactions[i]),
+					txn: decodeUnsignedTransaction(transactions[i]),
 				});
 			} else {
 				acc.push({
-					txn: algosdk.decodeSignedTransaction(transactions[i]).txn,
+					txn: decodeSignedTransaction(transactions[i]).txn,
 					signers: [],
 				});
 			}
