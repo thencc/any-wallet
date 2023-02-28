@@ -2,14 +2,13 @@
 import { computed, reactive, readonly } from '@vue/reactivity';
 
 import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.'; // wallets
-// import { CLIENT_MAP } from 'src/clientsNEW'; // clients
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
 import { BaseClient } from 'src/clients/base';
 import { ClientInitParams } from 'src/clients/base/types';
-import { Account } from 'src/types/wallet';
+import { Account } from 'src/types/shared';
 
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({

@@ -1,5 +1,4 @@
-export * from '../state';
-
+//
 export function isBrowser() {
 	let pass = false;
 	if (typeof window !== undefined && typeof window == 'object') {

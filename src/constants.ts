@@ -1,4 +1,4 @@
-import { Network } from '../types';
+import { Network } from './types';
 
 // algod configs
 export const DEFAULT_NETWORK: Network = 'testnet'; // 'mainnet';

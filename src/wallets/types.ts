@@ -3,7 +3,6 @@ import { WALLET_ID } from './constants';
 import type { createWallet } from './actions'; // AFTER the constants import
 
 // clients
-// import type { ClientType } from 'src/clientsNEW';
 import type { ClientType } from 'src/clients/types';
 
 // init params

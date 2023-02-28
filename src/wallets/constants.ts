@@ -1,4 +1,3 @@
-// import type { ClientType } from 'src/clientsNEW';
 import type { ClientType } from 'src/clients';
 
 import type { WalletInitParamsObj, WalletsObj } from './types';
