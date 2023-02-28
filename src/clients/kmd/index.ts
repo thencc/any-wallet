@@ -1,3 +1,1 @@
-import kmd from './client';
-
-export default kmd;
+export * from './client';

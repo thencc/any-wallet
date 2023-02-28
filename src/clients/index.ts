@@ -7,7 +7,8 @@ export * from './base';
 export * from './defly';
 export * from './exodus';
 export * from './inkey';
-// export * from './kmd';
+// export * from './kmd'; // if someone wants this, PR
 export * from './myalgo';
 export * from './pera';
-// export * from './walletconnect';
+// export * from './walletconnect'; // willnotfix
+export * from './mnemonic';

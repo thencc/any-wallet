@@ -2,291 +2,237 @@
  * Helpful resources:
  * https://developer.algorand.org/docs/get-details/walletconnect/
  */
-import type _algosdk from 'algosdk';
-import Algod, { getAlgodClient } from '../../algod';
-import type WalletConnect from '@walletconnect/client';
-import type { Wallet } from '../../types';
-import { WALLET_ID } from 'src/wallets/constants';
-import BaseWallet from '../base';
-import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
-import {
-  TransactionsArray,
-  DecodedTransaction,
-  DecodedSignedTransaction,
-  Network,
-} from '../../types';
-import { DEFAULT_NETWORK, ICON } from './constants';
-import {
-  WalletConnectClientConstructor,
-  InitParams,
-  WalletConnectTransaction,
-} from './types';
+// import type _algosdk from 'algosdk';
+// import Algod, { getAlgodClient } from '../../algod';
+// // import type WalletConnect from '@walletconnect/client';
+// import type { Wallet } from '../../types';
+// import { WALLET_ID } from 'src/wallets/constants';
+// import { BaseClient } from '../base';
+// import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
+// import {
+// 	TransactionsArray,
+// 	DecodedTransaction,
+// 	DecodedSignedTransaction,
+// 	Network,
+// } from '../../types';
+// import { ICON } from './constants';
+// import {
+// 	WalletConnectClientConstructor,
+// 	InitParams,
+// 	WalletConnectTransaction,
+// } from './types';
+// import { DEFAULT_NETWORK } from 'src/constants';
 
-class WalletConnectClient extends BaseWallet {
-  #client: WalletConnect;
-  network: Network;
 
-  constructor({
-    client,
-    algosdk,
-    algodClient,
-    network,
-  }: WalletConnectClientConstructor) {
-    super(algosdk, algodClient);
-    this.#client = client;
-    this.network = network;
-  }
+// function netToChainId(network: Network) {
+// 	let chainId = 416001; // mainnet
+// 	if (network === 'betanet') {
+// 		chainId = 416003;
+// 	} else if (network === 'testnet') {
+// 		chainId = 416002;
+// 	}
+// 	return chainId;
+// }
 
-  static metadata = {
-    id: WALLET_ID.WALLETCONNECT,
-    name: 'WalletConnect',
-    icon: ICON,
-    isWalletConnect: true,
-  };
 
-  static async init({
-    clientOptions,
-    algodOptions,
-    clientStatic,
-    modalStatic,
-    algosdkStatic,
-    network = DEFAULT_NETWORK,
-  }: InitParams) {
-    try {
-      const WalletConnect =
-        clientStatic || (await import('@walletconnect/client')).default;
-      const QRCodeModal =
-        modalStatic ||
-        (await import('algorand-walletconnect-qrcode-modal')).default;
+// export class WalletConnectClient extends BaseClient {
+// 	sdk: WalletConnect;
+// 	network: Network;
 
-      const walletConnect = new WalletConnect({
-        ...(clientOptions
-          ? clientOptions
-          : {
-              bridge: 'https://bridge.walletconnect.org',
-              qrcodeModal: QRCodeModal,
-            }),
-      });
+// 	constructor({
+// 		client,
+// 		algosdk,
+// 		algodClient,
+// 		network,
+// 	}: WalletConnectClientConstructor) {
+// 		super(algosdk, algodClient);
+// 		this.#client = client;
+// 		this.network = network;
+// 	}
 
-      const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
-      const algodClient = await getAlgodClient(algosdk, algodOptions);
+// 	static metadata = {
+// 		id: WALLET_ID.WALLETCONNECT,
+// 		name: 'WalletConnect',
+// 		icon: ICON,
+// 		isWalletConnect: true,
+// 	};
 
-      const initWallet: WalletConnectClientConstructor = {
-        client: walletConnect,
-        algosdk: algosdk,
-        algodClient: algodClient,
-        network,
-      };
+// 	static async init({
+// 		clientOptions,
+// 		algodOptions,
+// 		clientStatic,
+// 		modalStatic,
+// 		algosdkStatic,
+// 		network = DEFAULT_NETWORK,
+// 	}: InitParams) {
+// 		try {
+// 			const WalletConnect =
+// 				clientStatic || (await import('@walletconnect/client')).default;
+// 			const QRCodeModal =
+// 				modalStatic ||
+// 				(await import('algorand-walletconnect-qrcode-modal')).default;
 
-      return new WalletConnectClient(initWallet);
-    } catch (e) {
-      console.error('Error initializing...', e);
-      return null;
-    }
-  }
+// 			const walletConnect = new WalletConnect({
+// 				...(clientOptions
+// 					? clientOptions
+// 					: {
+// 							bridge: 'https://bridge.walletconnect.org',
+// 							qrcodeModal: QRCodeModal,
+// 						}),
+// 			});
 
-  async connect(): Promise<Wallet> {
-    let chainId = 416001;
+// 			const algosdk = algosdkStatic || (await Algod.init(algodOptions)).algosdk;
+// 			const algodClient = await getAlgodClient(algosdk, algodOptions);
 
-    // TODO move these to class fields set from clientOptions / clientConfig in init w defaults
-    if (this.network === 'betanet') {
-      chainId = 416003;
-    } else if (this.network === 'testnet') {
-      chainId = 416002;
-    }
+// 			const initWallet: WalletConnectClientConstructor = {
+// 				client: walletConnect,
+// 				algosdk: algosdk,
+// 				algodClient: algodClient,
+// 				network,
+// 			};
 
-    if (!this.#client.connected) {
-      await this.#client.createSession({ chainId });
-    }
+// 			return new WalletConnectClient(initWallet);
+// 		} catch (e) {
+// 			console.error('Error initializing...', e);
+// 			return null;
+// 		}
+// 	}
 
-    return new Promise((resolve, reject) => {
-      this.#client.on('connect', (error, payload) => {
-        if (error) {
-          reject(error);
-        }
+// 	async connect(): Promise<Wallet> {
+// 		let chainId = netToChainId(this.network);
 
-        const { accounts } = payload.params[0];
+// 		if (!this.#client.connected) {
+// 			await this.#client.createSession({ chainId });
+// 		}
 
-        resolve({
-          ...WalletConnectClient.metadata,
-          accounts: accounts.map((address: string, index: number) => ({
-            name: `Wallet Connect ${index + 1}`,
-            address,
-            walletId: WalletConnectClient.metadata.id,
-          })),
-        });
-      });
+// 		return new Promise((resolve, reject) => {
+// 			this.#client.on('connect', (error, payload) => {
+// 				if (error) {
+// 					reject(error);
+// 				}
 
-      this.#client.on('session_update', (error, payload) => {
-        if (error) {
-          reject(error);
-        }
+// 				const { accounts } = payload.params[0];
 
-        const { accounts } = payload.params[0];
+// 				resolve({
+// 					...WalletConnectClient.metadata,
+// 					accounts: accounts.map((address: string, index: number) => ({
+// 						name: `Wallet Connect ${index + 1}`,
+// 						address,
+// 						walletId: WalletConnectClient.metadata.id,
+// 					})),
+// 				});
+// 			});
 
-        resolve({
-          ...WalletConnectClient.metadata,
-          accounts: accounts.map((address: string, index: number) => ({
-            name: `Wallet Connect ${index + 1}`,
-            address,
-            walletId: WalletConnectClient.metadata.id,
-          })),
-        });
-      });
-    });
-  }
+// 			this.#client.on('session_update', (error, payload) => {
+// 				if (error) {
+// 					reject(error);
+// 				}
 
-  async reconnect() {
-    const accounts = this.#client.accounts;
+// 				const { accounts } = payload.params[0];
 
-    if (!accounts) {
-      return null;
-    }
+// 				resolve({
+// 					...WalletConnectClient.metadata,
+// 					accounts: accounts.map((address: string, index: number) => ({
+// 						name: `Wallet Connect ${index + 1}`,
+// 						address,
+// 						walletId: WalletConnectClient.metadata.id,
+// 					})),
+// 				});
+// 			});
+// 		});
+// 	}
 
-    return {
-      ...WalletConnectClient.metadata,
-      accounts: accounts.map((address: string, index: number) => ({
-        name: `Wallet Connect ${index + 1}`,
-        address,
-        walletId: WalletConnectClient.metadata.id,
-      })),
-    };
-  }
+// 	async reconnect() {
+// 		const accounts = this.#client.accounts;
 
-  check() {
-    return this.#client.connected;
-  }
+// 		if (!accounts) {
+// 			return null;
+// 		}
 
-  async disconnect() {
-    try {
-      await this.#client.killSession();
-    } catch (e) {
-      console.error('Error disconnecting', e);
-    }
-  }
+// 		return {
+// 			...WalletConnectClient.metadata,
+// 			accounts: accounts.map((address: string, index: number) => ({
+// 				name: `Wallet Connect ${index + 1}`,
+// 				address,
+// 				walletId: WalletConnectClient.metadata.id,
+// 			})),
+// 		};
+// 	}
 
-  async signTransactions(
-    connectedAccounts: string[],
-    transactions: Uint8Array[]
-  ) {
-    // Decode the transactions to access their properties.
-    const decodedTxns = transactions.map((txn) => {
-      return this.algosdk.decodeObj(txn);
-    }) as Array<DecodedTransaction | DecodedSignedTransaction>;
+// 	check() {
+// 		return this.#client.connected;
+// 	}
 
-    // Marshal the transactions,
-    // and add the signers property if they shouldn't be signed.
-    const txnsToSign = decodedTxns.reduce<WalletConnectTransaction[]>(
-      (acc, txn, i) => {
-        if (
-          !('txn' in txn) &&
-          connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
-        ) {
-          acc.push({
-            txn: Buffer.from(transactions[i]).toString('base64'),
-          });
-        } else {
-          acc.push({
-            txn: Buffer.from(transactions[i]).toString('base64'),
-            signers: [],
-          });
-        }
+// 	async disconnect() {
+// 		try {
+// 			await this.#client.killSession();
+// 		} catch (e) {
+// 			console.error('Error disconnecting', e);
+// 		}
+// 	}
 
-        return acc;
-      },
-      []
-    );
+// 	async signTransactions(
+// 		connectedAccounts: string[],
+// 		transactions: Uint8Array[]
+// 	) {
+// 		// Decode the transactions to access their properties.
+// 		const decodedTxns = transactions.map((txn) => {
+// 			return this.algosdk.decodeObj(txn);
+// 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-    const requestParams = [txnsToSign];
-    const request = formatJsonRpcRequest('algo_signTxn', requestParams);
+// 		// Marshal the transactions,
+// 		// and add the signers property if they shouldn't be signed.
+// 		const txnsToSign = decodedTxns.reduce<WalletConnectTransaction[]>(
+// 			(acc, txn, i) => {
+// 				if (
+// 					!('txn' in txn) &&
+// 					connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
+// 				) {
+// 					acc.push({
+// 						txn: Buffer.from(transactions[i]).toString('base64'),
+// 					});
+// 				} else {
+// 					acc.push({
+// 						txn: Buffer.from(transactions[i]).toString('base64'),
+// 						signers: [],
+// 					});
+// 				}
 
-    // Play an audio file to keep Wallet Connect's web socket open on iOS
-    // when the user goes into background mode.
-    this.keepWCAliveStart();
+// 				return acc;
+// 			},
+// 			[]
+// 		);
 
-    // Sign them with the client.
-    const result: Array<string | null> = await this.#client.sendCustomRequest(
-      request
-    );
+// 		const requestParams = [txnsToSign];
+// 		const request = formatJsonRpcRequest('algo_signTxn', requestParams);
 
-    this.keepWCAliveStop();
+// 		// Play an audio file to keep Wallet Connect's web socket open on iOS
+// 		// when the user goes into background mode.
+// 		this.keepWCAliveStart();
 
-    // Join the newly signed transactions with the original group of transactions.
-    const signedTxns = result.reduce((signedTxns: Uint8Array[], txn, i) => {
-      if (txn) {
-        signedTxns.push(new Uint8Array(Buffer.from(txn, 'base64')));
-      }
+// 		// Sign them with the client.
+// 		const result: Array<string | null> = await this.#client.sendCustomRequest(
+// 			request
+// 		);
 
-      if (txn === null) {
-        signedTxns.push(transactions[i]);
-      }
+// 		this.keepWCAliveStop();
 
-      return signedTxns;
-    }, []);
+// 		// Join the newly signed transactions with the original group of transactions.
+// 		const signedTxns = result.reduce((signedTxns: Uint8Array[], txn, i) => {
+// 			if (txn) {
+// 				signedTxns.push(new Uint8Array(Buffer.from(txn, 'base64')));
+// 			}
 
-    return signedTxns;
-  }
+// 			if (txn === null) {
+// 				signedTxns.push(transactions[i]);
+// 			}
 
-  /** @deprecarted */
-  formatTransactionsArray(
-    transactions: TransactionsArray
-  ): WalletConnectTransaction[] {
-    const formattedTransactions = transactions.map((txn) => {
-      const formattedTxn: WalletConnectTransaction = {
-        txn: txn[1],
-      };
+// 			return signedTxns;
+// 		}, []);
 
-      if (txn[0] === 's') {
-        const decodedTxn = this.algosdk.decodeSignedTransaction(
-          new Uint8Array(Buffer.from(txn[1], 'base64'))
-        );
+// 		return signedTxns;
+// 	}
+// }
 
-        formattedTxn.txn = Buffer.from(
-          this.algosdk.encodeUnsignedTransaction(decodedTxn.txn)
-        ).toString('base64');
-
-        formattedTxn.signers = [];
-      }
-
-      return formattedTxn;
-    });
-
-    return formattedTransactions;
-  }
-
-  /** @deprecated */
-  async signEncodedTransactions(transactions: TransactionsArray) {
-    const transactionsToSign = this.formatTransactionsArray(transactions);
-    const requestParams = [transactionsToSign];
-    const request = formatJsonRpcRequest('algo_signTxn', requestParams);
-
-    this.keepWCAliveStart();
-
-    const result: Array<string | null> = await this.#client.sendCustomRequest(
-      request
-    );
-
-    this.keepWCAliveStop();
-
-    const signedRawTransactions = result.reduce(
-      (signedTxns: Uint8Array[], txn, currentIndex) => {
-        if (txn) {
-          signedTxns.push(new Uint8Array(Buffer.from(txn, 'base64')));
-        }
-
-        if (txn === null) {
-          signedTxns.push(
-            new Uint8Array(Buffer.from(transactions[currentIndex][1], 'base64'))
-          );
-        }
-
-        return signedTxns;
-      },
-      []
-    );
-
-    return signedRawTransactions;
-  }
-}
-
-export default WalletConnectClient;
+// export default WalletConnectClient;
+export const WCClient = null; // this is deprecated...
