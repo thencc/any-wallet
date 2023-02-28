@@ -21,8 +21,6 @@ export class MnemonicClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams) {
-		console.log(`${METADATA.id} init started`);
-
 		try {
 			let clientSdk: undefined | MnemonicSdk = undefined;
 

@@ -10,6 +10,7 @@ import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 
+// FYI ip/initParams arg isnt really used anymore w new code design
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({
 		// === wallet state ===
@@ -19,7 +20,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		inited: false, // client
 		initing: false, // client + sdk
 		signing: false,
-
 
 		// === methods ===
 		isReady: async (): Promise<true> => {
@@ -31,12 +31,10 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				console.log('do client.init');
 				w.initing = true;
 
-				// TODO add (ip = array) ? simply: ['pera', 'inkey'] etc
-
-				if (typeof ip == 'object' && (
-					ip.config || ip.sdk
+				if (typeof w.initParams == 'object' && (
+					w.initParams.config || w.initParams.sdk
 				)) {
-					w.client = await CLIENT_MAP[id].client.init(ip) as any;
+					w.client = await CLIENT_MAP[id].client.init(w.initParams) as any;
 				} else if (ip == true) {
 					w.client = await CLIENT_MAP[id].client.init() as any;
 				} else {
@@ -126,6 +124,8 @@ export const enableWallets = (
 	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
 	console.log('enableWallets started');
+
+	// TODO add (walletsToEnable = array) ? simply: ['pera', 'inkey'] etc
 
 	if (AnyWalletState.enabledWallets !== null) {
 		console.warn('enableWallets called while some wallets were already initialized');
