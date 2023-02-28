@@ -45,11 +45,11 @@ export type WalletInitParamsObj = {
 		config?: DeflyInitParams['config'];
 		sdk?: DeflyInitParams['sdk'];
 	};
-	// [WALLET_ID.MNEMONIC]?: boolean | {
-	// 	id?: WALLET_ID.MNEMONIC;
-	// 	config?: MnemonicInitParams['config'];
-	// 	sdk?: MnemonicInitParams['sdk'];
-	// };
+	[WALLET_ID.MNEMONIC]?: boolean | {
+		id?: WALLET_ID.MNEMONIC;
+		config?: MnemonicInitParams['config'];
+		sdk?: MnemonicInitParams['sdk'];
+	};
 };
 
 export type WalletType<T extends WALLET_ID = WALLET_ID> = ReturnType<typeof createWallet<ClientType<T>>>;
@@ -61,5 +61,5 @@ export type WalletsObj = {
 	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
 	[WALLET_ID.EXODUS]?: WalletType<WALLET_ID.EXODUS>;
 	[WALLET_ID.DEFLY]?: WalletType<WALLET_ID.DEFLY>;
-	// [WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
+	[WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
 };

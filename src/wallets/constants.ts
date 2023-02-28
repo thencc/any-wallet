@@ -12,7 +12,7 @@ export enum WALLET_ID {
 	EXODUS = 'exodus',
 	DEFLY = 'defly',
 	// WALLETCONNECT = 'walletconnect', // willnotfix
-	// MNEMONIC = 'mnemonic',
+	MNEMONIC = 'mnemonic',
 };
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
@@ -32,6 +32,6 @@ export const ALL_WALLETS: WalletsObj = {
 	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
 	[WALLET_ID.EXODUS]: createWallet<ClientType<WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
 	[WALLET_ID.DEFLY]: createWallet<ClientType<WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-	// [WALLET_ID.MNEMONIC]: createWallet<ClientType<WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+	[WALLET_ID.MNEMONIC]: createWallet<ClientType<WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 	// test: '123'; // breaks, as it should
 } as const; // helps w security

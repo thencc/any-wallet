@@ -7,7 +7,7 @@ import { MyAlgoClient } from 'src/clients/myalgo/client';
 import { AlgoSignerClient } from 'src/clients/algosigner/client';
 import { ExodusClient } from 'src/clients/exodus/client';
 import { DeflyClient } from 'src/clients/defly/client';
-// import { MnemonicClient } from 'src/clients/mnemonic/client';
+import { MnemonicClient } from 'src/clients/mnemonic/client';
 
 export const CLIENT_MAP = {
 	[WALLET_ID.PERA]: {
@@ -28,9 +28,9 @@ export const CLIENT_MAP = {
 	[WALLET_ID.DEFLY]: {
 		client: DeflyClient,
 	},
-	// [WALLET_ID.MNEMONIC]: {
-	// 	client: MnemonicClient,
-	// },
+	[WALLET_ID.MNEMONIC]: {
+		client: MnemonicClient,
+	},
 } as const; // 'const' is helpful for object security + typing
 
 export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id) as WALLET_ID[];
