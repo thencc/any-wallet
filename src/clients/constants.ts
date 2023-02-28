@@ -10,41 +10,22 @@ import { DeflyClient } from 'src/clients/defly/client';
 
 export const CLIENT_MAP = {
 	[WALLET_ID.PERA]: {
-		// id: WALLET_ID.PERA, // TODO remove? just use metadata.id ...?
-		// pkg: '@perawallet/connect',
 		client: PeraClient,
-		// meta: PeraClient.metadata, // TODO remove? this too
 	},
-	// TODO consider moving pkg name to each client's metadata + making constants off of those
 	[WALLET_ID.INKEY]: {
-		// id: WALLET_ID.INKEY,
-		// pkg: '@thencc/inkey-client-js',
 		client: InkeyClient,
-		// meta: InkeyClient.metadata,
 	},
 	[WALLET_ID.MYALGO]: {
-		// id: WALLET_ID.MYALGO,
-		// pkg: '@randlabs/myalgo-connect',
 		client: MyAlgoClient,
-		// meta: MyAlgoClient.metadata,
 	},
 	[WALLET_ID.ALGOSIGNER]: {
-		// id: WALLET_ID.ALGOSIGNER,
-		// pkg: '', // DOESNT EXIST, its a chrome ext
 		client: AlgoSignerClient,
-		// meta: AlgoSignerClient.metadata, // use constant var?
 	},
 	[WALLET_ID.EXODUS]: {
-		// id: WALLET_ID.EXODUS,
-		// pkg: '', // DOESNT EXIST, its a chrome ext
 		client: ExodusClient,
-		// meta: ExodusClient.metadata, // use constant var?
 	},
 	[WALLET_ID.DEFLY]: {
-		// id: WALLET_ID.DEFLY,
-		// pkg: '@blockshake/defly-connect',
 		client: DeflyClient,
-		// meta: DeflyClient.metadata, // use constant var?
 	},
 } as const; // 'const' is helpful for object security + typing
 
@@ -58,4 +39,4 @@ export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_P
 		pkgsToDisable.push(CLIENT_MAP[id].client.metadata.pkg);
 	}
 	return pkgsToDisable;
-}
+};

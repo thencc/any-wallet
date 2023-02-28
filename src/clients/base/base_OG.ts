@@ -54,7 +54,7 @@ class PreBaseClient {
   };
 
   // getAccountsByProvider(id: WALLET_ID) {
-  //   return connectedAccounts.filter((account) => account.providerId === id);
+  //   return connectedAccounts.filter((account) => account.walletId === id);
   // };
 
   // abstract init(x: any): Promise<any>;
@@ -256,7 +256,7 @@ abstract class BaseClient extends PreBaseClient {
   // accounts = [] as Account[];
   // computeAccounts() {
   //   console.log('computeAccounts');
-  //   let accts = AnyWalletState.stored.connectedAccounts.filter((account) => account.providerId === this.metadata.id);
+  //   let accts = AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === this.metadata.id);
   //   this.accounts = accts;
   // };
 

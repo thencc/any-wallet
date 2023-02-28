@@ -1,5 +1,7 @@
+export * from './constants';
+export * from './types';
 
-// re-exports
+// client re-exports
 export * from './algosigner';
 export * from './base';
 export * from './defly';

@@ -8,7 +8,7 @@ export * from './clients';
 
 //
 export * from './wallets';
-export * from './clientsNEW';
+// export * from './clientsNEW';
 export * from './state';
 
 // import { appStateProxy } from './state/index';

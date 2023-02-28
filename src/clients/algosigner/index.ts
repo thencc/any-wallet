@@ -1,3 +1,1 @@
-import algosigner from './client';
-
-export default algosigner;
+export * from './client';

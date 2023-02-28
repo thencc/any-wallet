@@ -29,7 +29,7 @@ export const AnyWalletState = reactive({
 	activeWalletId: readonly(computed(() => {
 		let aWId: null | WALLET_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.providerId as unknown as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+			aWId = AnyWalletState.stored.activeAccount.walletId as unknown as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
 		}
 		return aWId;
 	})),

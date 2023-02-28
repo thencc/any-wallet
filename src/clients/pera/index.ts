@@ -1,3 +1,1 @@
-import pera from './client';
-
-export default pera;
+export * from './client';

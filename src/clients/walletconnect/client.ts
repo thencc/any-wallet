@@ -112,7 +112,7 @@ class WalletConnectClient extends BaseWallet {
           accounts: accounts.map((address: string, index: number) => ({
             name: `Wallet Connect ${index + 1}`,
             address,
-            providerId: WalletConnectClient.metadata.id,
+            walletId: WalletConnectClient.metadata.id,
           })),
         });
       });
@@ -129,7 +129,7 @@ class WalletConnectClient extends BaseWallet {
           accounts: accounts.map((address: string, index: number) => ({
             name: `Wallet Connect ${index + 1}`,
             address,
-            providerId: WalletConnectClient.metadata.id,
+            walletId: WalletConnectClient.metadata.id,
           })),
         });
       });
@@ -148,7 +148,7 @@ class WalletConnectClient extends BaseWallet {
       accounts: accounts.map((address: string, index: number) => ({
         name: `Wallet Connect ${index + 1}`,
         address,
-        providerId: WalletConnectClient.metadata.id,
+        walletId: WalletConnectClient.metadata.id,
       })),
     };
   }

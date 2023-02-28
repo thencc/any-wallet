@@ -1,3 +1,1 @@
-import exodus from './client';
-
-export default exodus;
+export * from './client';

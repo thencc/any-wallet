@@ -152,7 +152,7 @@ class KMDWalletClient extends BaseWallet {
       return {
         name: `KMDWallet ${index + 1}`,
         address,
-        providerId: KMDWalletClient.metadata.id,
+        walletId: KMDWalletClient.metadata.id,
       };
     });
 

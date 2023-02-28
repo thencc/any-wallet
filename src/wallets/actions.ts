@@ -2,7 +2,8 @@
 import { computed, reactive, readonly } from '@vue/reactivity';
 
 import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.'; // wallets
-import { CLIENT_MAP } from 'src/clientsNEW'; // clients
+// import { CLIENT_MAP } from 'src/clientsNEW'; // clients
+import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
@@ -96,17 +97,17 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		get isActive() {
 			// TODO fully test omitting this readonly wrapper
 			// return readonly(computed(() => {
-			// 	return AnyWalletState.stored.activeAccount?.providerId === id
+			// 	return AnyWalletState.stored.activeAccount?.walletId === id
 			// }))
 			return computed(() => {
-				return AnyWalletState.stored.activeAccount?.providerId === id
+				return AnyWalletState.stored.activeAccount?.walletId === id
 			})
 		},
 		get isConnected() {
 			return readonly(computed(() => {
 				return AnyWalletState.stored.connectedAccounts.some(
-					(accounts) => accounts.providerId === id
-					// (accounts) => accounts.providerId === this.id
+					(accounts) => accounts.walletId === id
+					// (accounts) => accounts.walletId === this.id
 				);
 			}));
 		},
@@ -115,8 +116,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		// isConnected: () => {
 		// 	return readonly(computed(() => {
 		// 		return AnyWalletState.stored.connectedAccounts.some(
-		// 			(accounts) => accounts.providerId === id
-		// 			// (accounts) => accounts.providerId === this.id
+		// 			(accounts) => accounts.walletId === id
+		// 			// (accounts) => accounts.walletId === this.id
 		// 		);
 		// 	}));
 		// },
@@ -169,7 +170,7 @@ export const enableWallets = (
 };
 
 export const getAccountsByProvider = (id: WALLET_ID) => {
-	return AnyWalletState.stored.connectedAccounts.filter((account) => account.providerId === id);
+	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
 
 export const removeAccountsByClient = (id: WALLET_ID) => {
@@ -178,11 +179,11 @@ export const removeAccountsByClient = (id: WALLET_ID) => {
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
-			(account) => account.providerId == id
+			(account) => account.walletId == id
 		);
 		for (let acct of acctsToRemove) {
 			if (acct.address == AnyWalletState.stored.activeAccount.address &&
-				acct.providerId == AnyWalletState.stored.activeAccount.providerId) {
+				acct.walletId == AnyWalletState.stored.activeAccount.walletId) {
 				AnyWalletState.stored.activeAccount = null; // unsets activeAccount
 				break;
 			}
@@ -191,7 +192,7 @@ export const removeAccountsByClient = (id: WALLET_ID) => {
 
 	// remove this client's accts
 	let acctsToKeep = AnyWalletState.stored.connectedAccounts.filter(
-		(account) => account.providerId !== id
+		(account) => account.walletId !== id
 	);
 	AnyWalletState.stored.connectedAccounts = acctsToKeep;
 };
@@ -209,7 +210,7 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 
 		let exists = false;
 		for (let existingAcct of AnyWalletState.stored.connectedAccounts) {
-			if (newAcct.providerId == existingAcct.providerId &&
+			if (newAcct.walletId == existingAcct.walletId &&
 				newAcct.address == existingAcct.address) {
 				exists = true;
 			}

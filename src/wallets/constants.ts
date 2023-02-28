@@ -1,4 +1,5 @@
-import type { ClientType } from 'src/clientsNEW';
+// import type { ClientType } from 'src/clientsNEW';
+import type { ClientType } from 'src/clients';
 
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
@@ -13,7 +14,7 @@ export enum WALLET_ID {
 	DEFLY = 'defly',
 	// WALLETCONNECT = 'walletconnect',
 	// MNEMONIC = 'mnemonic' // TODO -- copy from use-wallet repo
-}
+};
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
 	[WALLET_ID.PERA]: true,
