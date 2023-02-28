@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.95",
+	"version": "0.0.96",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -31,7 +31,6 @@
 		"postinstall": "echo wearepostinstall"
 	},
 	"dependencies": {
-		"@randlabs/msgpack-bigint": "^1.0.3",
 		"@vue-reactivity/watch": "^0.2.0",
 		"@vue/reactivity": "^3.2.45",
 		"@vue/shared": "^3.2.47"

@@ -3,7 +3,6 @@
  * https://github.com/thencc/inkey-client-js
  */
 import { BaseClient } from '../base';
-import { getAlgosdk } from '../../algod'; // TODO remove algosdk requirement
 import {
 	DecodedTransaction,
 	DecodedSignedTransaction,
@@ -11,9 +10,7 @@ import {
 } from '../../types';
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
 import { METADATA } from './constants';
-
-// TODO switch all algosdk use to this + other nacl lib (<400kb)
-import msgpack from '@randlabs/msgpack-bigint';
+import { decodeObj, encodeAddress } from 'algosdk';
 
 // helpers TODO remove this / move it to algonaut pkg
 export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
@@ -136,16 +133,9 @@ export class InkeyClient extends BaseClient {
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
-		// TODO get this logic out of the algosdk dependencies lib. import just that for fraction of size.
 		const decodedTxns = transactions.map((txn) => {
-			// return this.algosdk.decodeObj(txn);
-			return msgpack.decode(txn);
+			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
-		console.log('decodedTxns', decodedTxns);
-
-		const algosdk = await getAlgosdk();
-		console.log('getting algosdk... TODO optimize this!');
-
 
 		// Get the unsigned transactions.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
@@ -161,7 +151,7 @@ export class InkeyClient extends BaseClient {
 			if (
 				!('txn' in txn) &&
 				// connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
-				connectedAccounts.includes(algosdk.encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
 				// added inkeyClient method to sign Uint8Array,
 				// option 2: convert Uint8Array txn to base64 str txn for inkey
