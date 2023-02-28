@@ -6,14 +6,14 @@ import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
-import { BaseClient } from 'src/clients/base';
+import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({
 		// === wallet state ===
-		id: id, // as W_ID,
+		id: id,
 		client: null as null | WalClient,
 		initParams: ip,
 		inited: false, // client
@@ -94,10 +94,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			return readonly(computed(() => getAccountsByProvider(id)))
 		},
 		get isActive() {
-			// TODO fully test omitting this readonly wrapper
-			// return readonly(computed(() => {
-			// 	return AnyWalletState.stored.activeAccount?.walletId === id
-			// }))
 			return computed(() => {
 				return AnyWalletState.stored.activeAccount?.walletId === id
 			})
@@ -112,6 +108,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		},
 
 		// or is this a better design? (it also works)
+		// i believe the below approach is better for vue dev tools inspect
 		// isConnected: () => {
 		// 	return readonly(computed(() => {
 		// 		return AnyWalletState.stored.connectedAccounts.some(
@@ -156,14 +153,6 @@ export const enableWallets = (
 		}
 		*/
 	}
-
-	// now that the wallets have been enabled, set activeWallet if possible
-	// if (AnyWalletState.activeWalletId) {
-	// 	let aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
-	// 	if (aW) {
-	// 		AnyWalletState.activeWallet = aW;
-	// 	}
-	// }
 
 	return AnyWalletState.enabledWallets;
 };

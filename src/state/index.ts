@@ -1,7 +1,7 @@
 import { computed, reactive, readonly } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // TODO figure out how to export just the state change handler, not this who func
-import { isBrowser } from '../utils/index';
+import { isBrowser } from '../utils';
 import { startWatchers } from './watchers';
 
 import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits

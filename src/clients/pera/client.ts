@@ -2,7 +2,7 @@
  * Helpful resources:
  * https://github.com/perawallet/connect
  */
-import { BaseClient } from '../base';
+import { BaseClient } from '../base/client';
 import type {
 	Wallet,
 	DecodedTransaction,

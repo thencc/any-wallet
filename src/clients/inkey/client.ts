@@ -2,7 +2,7 @@
  * Helpful resources:
  * https://github.com/thencc/inkey-client-js
  */
-import { BaseClient } from '../base';
+import { BaseClient } from '../base/client';
 import {
 	DecodedTransaction,
 	DecodedSignedTransaction,

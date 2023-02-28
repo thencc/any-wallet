@@ -2,7 +2,7 @@
  * Helpful resources:
  * https://github.com/blockshake-io/defly-connect
  */
-import { BaseClient } from '../base';
+import { BaseClient } from '../base/client';
 import type {
 	DecodedTransaction,
 	DecodedSignedTransaction,

@@ -3,7 +3,7 @@
  * https://github.com/PureStake/algosigner/blob/develop/docs/dApp-integration.md
  */
 import { Buffer } from 'buffer'; // TODO remove this
-import { BaseClient } from '../base';
+import { BaseClient } from '../base/client';
 import type {
 	TransactionsArray,
 	DecodedTransaction,

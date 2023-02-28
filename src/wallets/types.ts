@@ -3,7 +3,7 @@ import { WALLET_ID } from './constants';
 import type { createWallet } from './actions'; // AFTER the constants import
 
 // clients
-import type { ClientType } from 'src/clients/types';
+import type { ClientType } from 'src/clients';
 
 // init params
 import type { InitParams as PeraInitParams } from 'src/clients/pera/types';
@@ -12,6 +12,7 @@ import type { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
 import type { InitParams as AlgoSignerInitParams } from 'src/clients/algosigner/types';
 import type { InitParams as ExodusInitParams } from 'src/clients/exodus/types';
 import type { InitParams as DeflyInitParams } from 'src/clients/defly/types';
+import type { InitParams as MnemonicInitParams } from 'src/clients/mnemonic/types';
 
 export type WalletInitParamsObj = {
 	[WALLET_ID.PERA]?: boolean | {
@@ -44,6 +45,11 @@ export type WalletInitParamsObj = {
 		config?: DeflyInitParams['config'];
 		sdk?: DeflyInitParams['sdk'];
 	};
+	[WALLET_ID.MNEMONIC]?: boolean | {
+		id?: WALLET_ID.MNEMONIC;
+		config?: MnemonicInitParams['config'];
+		sdk?: MnemonicInitParams['sdk'];
+	};
 };
 
 export type WalletType<T extends WALLET_ID = WALLET_ID> = ReturnType<typeof createWallet<ClientType<T>>>;
@@ -55,4 +61,5 @@ export type WalletsObj = {
 	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
 	[WALLET_ID.EXODUS]?: WalletType<WALLET_ID.EXODUS>;
 	[WALLET_ID.DEFLY]?: WalletType<WALLET_ID.DEFLY>;
+	[WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
 };
