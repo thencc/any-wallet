@@ -6,7 +6,7 @@ import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
 // other TODO sort
-import { BaseClient } from 'src/clients/base';
+import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 

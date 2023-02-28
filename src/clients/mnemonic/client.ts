@@ -1,27 +1,21 @@
 // insecure wallet approach for fast development
-import { BaseClient } from '../base';
-import type { Wallet, TransactionsArray, Network, DecodedTransaction, DecodedSignedTransaction } from '../../types';
-import { ICON, METADATA } from './constants';
-import { InitParams, MnemonicSdk, MnemonicWalletClientConstructor } from './types';
-import { DEFAULT_NETWORK } from 'src/constants';
+import { BaseClient } from '../base/client';
+import type { Wallet, DecodedTransaction, DecodedSignedTransaction } from '../../types';
+import { METADATA } from './constants';
+import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
 import { decodeObj, encodeAddress, mnemonicToSecretKey, Transaction } from 'algosdk';
 import { isBrowser } from 'src/utils';
 
 export class MnemonicClient extends BaseClient {
-	// sdk: MnemonicSdk;
-	sdk: any | undefined | MnemonicSdk = {};
-	// network: Network;
+	// sdk IS the algo Account in this client
+	sdk: undefined | MnemonicSdk = undefined; // aka Account
 
 	constructor({
-		// sdk: clientSdk,
-		// network,
-	}: MnemonicWalletClientConstructor) {
-		console.log('MnemonicClient const.');
-
+		sdk: clientSdk,
+	}: MnemonicClientConstructor) {
 		super();
-		// this.sdk = clientSdk;
-		// this.network = network;
+		this.sdk = clientSdk;
 	}
 
 	static metadata = METADATA;
@@ -30,44 +24,28 @@ export class MnemonicClient extends BaseClient {
 		console.log(`${METADATA.id} init started`);
 
 		try {
-			// let clientSdk: MnemonicSdk;
+			let clientSdk: undefined | MnemonicSdk = undefined;
 
-			// if (initParams && initParams.sdk) {
-			// 	clientSdk = initParams.sdk; // already init-ed sdk
-			// } else {
-			// 	// load sdk + init it
-
-			// 	let sdkConfig: MnemonicSdk;
-			// 	const defaultConfig: SdkConfig = {
-			// 		shouldShowSignTxnToast: false
-			// 	};
-			// 	sdkConfig = initParams?.config || defaultConfig;
-
-			// 	let sdkLib = await import('algosdk');
-			// 	let createClientSdk = sdkLib.PeraWalletConnect || sdkLib.default.PeraWalletConnect; // sometimes needs this shim
-			// 	// FYI because pera's client is built to cjs, vite's optimize deps helper in the server acts differently than when it builds using rollup. solution: fallback to .default;
-
-			// 	// console.log('createClientSdk', createClientSdk);
-			// 	clientSdk = new createClientSdk(sdkConfig);
-			// }
-
-			// clientSdk = markRaw(clientSdk); // vue-r fix
+			// can intake:
+			// 1. a algosdk.Account via ip.sdk
+			// 2. OR a mnemonic from ip.config
+			// 3. html prompt input (default)
+			if (initParams && initParams.sdk) {
+				clientSdk = initParams.sdk; // already init-ed sdk/acct
+			} else {
+				// get mnemonic from config arg or will prompt in ui later
+				if (initParams && initParams.config) {
+					if (initParams.config.mnemonic) {
+						let mn = initParams.config.mnemonic;
+						let acct = mnemonicToSecretKey(mn);
+						clientSdk = acct;
+					}
+				}
+			}
 
 			return new MnemonicClient({
-				// sdk: clientSdk
+				sdk: clientSdk
 			});
-
-			// const algosdk = initParams?.sdk || (await Algod.init(algodOptions)).algosdk;
-			// // const algodClient = await getAlgodClient(algosdk, algodOptions);
-			// // console.log(network, algodClient);
-
-			// return new MnemonicWalletClient({
-			// 	metadata: MnemonicWalletClient.metadata,
-			// 	id: PROVIDER_ID.MNEMONIC,
-			// 	algosdk: algosdk,
-			// 	algodClient: algodClient,
-			// 	network,
-			// });
 		} catch (e) {
 			console.error('Error initializing...', e);
 			return null;
@@ -75,21 +53,24 @@ export class MnemonicClient extends BaseClient {
 	}
 
 	async connect(): Promise<Wallet> {
-		const mnemonic = await this.requestMnemonic();
+		if (this.sdk == undefined) {
+			const mnemonic = await this.requestMnemonic();
 
-		if (!mnemonic) {
-			this.sdk = undefined;
-			throw new Error('Mnemonic passphrase is required');
+			if (!mnemonic) {
+				this.sdk = undefined;
+				throw new Error('Mnemonic passphrase is required');
+			}
+
+			let acct = mnemonicToSecretKey(mnemonic);
+			this.sdk = acct;
 		}
-
-		this.sdk = mnemonicToSecretKey(mnemonic);
 
 		return {
 			...METADATA,
 			accounts: [
 				{
-					name: `MnemonicWallet 1`,
-					address: this.sdk.addr,
+					name: `Mnemonic Wallet 1`,
+					address: this.sdk!.addr,
 					walletId: METADATA.id,
 				},
 			],
@@ -106,10 +87,9 @@ export class MnemonicClient extends BaseClient {
 	}
 
 	async requestMnemonic(): Promise<string> {
-		console.log('requestMnemonic started');
 		if (isBrowser()) {
 			// TODO: store it locally?
-			const pass = prompt('enter mnemonic passphrase, 25 words');
+			const pass = prompt('Enter mnemonic passphrase (25 words)');
 			return pass ? pass : '';
 		} else {
 			throw new Error('Not used in a browser')
@@ -123,15 +103,10 @@ export class MnemonicClient extends BaseClient {
 		returnGroup = true
 	): Promise<Uint8Array[]> {
 		if (!this.sdk) {
-			throw new Error('Client not connected');
+			throw new Error('Client has no account');
 		}
 
 		// Decode the transactions to access their properties.
-		// const decodedTxns = transactions.map((txn) => {
-		// 	return decodeObj(txn);
-		// }) as Array<
-		// 	_algosdk.EncodedTransaction | _algosdk.EncodedSignedTransaction
-		// >;
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;

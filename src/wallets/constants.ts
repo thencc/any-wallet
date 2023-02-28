@@ -1,5 +1,6 @@
 import type { ClientType } from 'src/clients';
 
+import type { Network } from 'src/types/node';
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
@@ -35,3 +36,11 @@ export const ALL_WALLETS: WalletsObj = {
 	[WALLET_ID.MNEMONIC]: createWallet<ClientType<WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 	// test: '123'; // breaks, as it should
 } as const; // helps w security
+
+// algod configs (not used)
+export const DEFAULT_NETWORK: Network = 'testnet'; // 'mainnet';
+export const DEFAULT_NODE_TOKEN = '';
+export const DEFAULT_NODE_PORT = '';
+export const DEFAULT_NODE_BASEURL = 'https://testnet-api.algonode.cloud';
+// https://testnet-api.algonode.cloud
+// https://mainnet-api.algonode.cloud

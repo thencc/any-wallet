@@ -2,7 +2,7 @@
  * Helpful resources:
  * https://docs.exodus.com/api-reference/algorand-provider-api/
  */
-import { BaseClient } from '../base';
+import { BaseClient } from '../base/client';
 import type {
 	DecodedTransaction,
 	DecodedSignedTransaction,

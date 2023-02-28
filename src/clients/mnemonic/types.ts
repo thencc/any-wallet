@@ -1,37 +1,14 @@
-import type _algosdk from "algosdk";
-import type { Network } from "../../types";
+import type { Account } from "algosdk";
 
-export type MnemonicSdk = _algosdk.Account;
+export type MnemonicSdk = Account;
 
 export type SdkConfig = {
-	wallet: string;
-	password: string;
-	host: string;
-	token: string;
-	port: string;
+	mnemonic?: string; // for hardcoding 25 word mn passphrase
 };
 
-// export interface InitWalletHandle {
-// 	wallet_handle_token: string;
-// 	message?: string;
-// 	error?: boolean;
-// }
-
-export type MnemonicWalletClientConstructor = {
-	// metadata: Metadata;
-	// id: PROVIDER_ID;
-	// algosdk: typeof _algosdk;
-	// algodClient: _algosdk.Algodv2;
-	// sdk: MnemonicSdk;
-	// network: Network;
+export type MnemonicClientConstructor = {
+	sdk?: MnemonicSdk;
 };
-
-// export type InitParams = {
-// 	clientOptions?: ClientOptions;
-// 	algodOptions?: AlgodClientOptions;
-// 	algosdkStatic?: typeof _algosdk;
-// 	network?: Network;
-// };
 
 export type InitParams = {
 	config?: SdkConfig;
