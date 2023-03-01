@@ -53,17 +53,7 @@ export class ExodusClient extends BaseClient {
 			 */
 
 			let clientSdk = (window as WindowExtended).exodus.algorand; // as ExodusSdk;
-			console.log('exo clientSdk 9', clientSdk);
-			console.log({...clientSdk});
-
-			clientSdk = clientSdk.valueOf() as ExodusSdk; // vue-r fix
-			console.log('exo clientSdk 1', clientSdk);
-			console.log({ ...clientSdk });
-
-			clientSdk = markRaw(clientSdk.valueOf() as ExodusSdk); // vue-r fix
-			console.log('exo clientSdk 2', clientSdk);
-			console.log({ ...clientSdk });
-
+			// console.log('clientSdk', clientSdk);
 
 			let onlyIfTrusted = false;
 			if (initParams?.config?.onlyIfTrusted) {
@@ -84,25 +74,15 @@ export class ExodusClient extends BaseClient {
 		let address = '';
 
 		try {
-			const { address: addr } = await this.sdk.connect({
+			const { address: addr } = await (window as any).exodus.algorand.connect({
 				onlyIfTrusted: this.onlyIfTrusted,
 			});
-			console.log('addr', addr);
-
+			// console.log('addr', addr);
 			address = addr;
-		} catch(e) {
-			console.log('catch exo err 1');
-			console.log(e);
-
-
-			const { address: addr2 } = await (window as any).exodus.algorand.connect({
-				onlyIfTrusted: this.onlyIfTrusted,
-			});
-			console.log('addr2', addr2);
-
-			address = addr2;
+		} catch (e) {
+			console.warn('err w exodus connect');
+			throw e;
 		}
-
 
 		if (!address) {
 			throw new Error(`No accounts found for ${METADATA.id}`);
@@ -135,27 +115,40 @@ export class ExodusClient extends BaseClient {
 	}
 
 	async disconnect() {
-		this.sdk.disconnect();
+		// this.sdk.disconnect();
+		(window as WindowExtended).exodus.algorand.disconnect();
 		return;
 	}
 
 	async signTransactions(
 		connectedAccounts: string[],
-		transactions: Array<Uint8Array>
+		transactions: Array<Uint8Array>,
+		indexesToSign?: number[],
+		returnGroup = true
 	) {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
+		const signedIndexes: number[] = [];
+
 		// Get the unsigned transactions.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			// If the transaction isn't already signed and is to be sent from a connected account,
+			const isSigned = "txn" in txn;
+
+			// If the indexes to be signed is specified
 			// add it to the arrays of transactions to be signed.
-			if (
-				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd']))
+			if (indexesToSign && indexesToSign.length && indexesToSign.includes(i)) {
+				signedIndexes.push(i);
+				acc.push(transactions[i]);
+				// If the transaction isn't already signed and is to be sent from a connected account,
+				// add it to the arrays of transactions to be signed
+			} else if (
+				!isSigned &&
+				connectedAccounts.includes(encodeAddress(txn["snd"]))
 			) {
+				signedIndexes.push(i);
 				acc.push(transactions[i]);
 			}
 
@@ -163,14 +156,14 @@ export class ExodusClient extends BaseClient {
 		}, []);
 
 		// Sign them with the client.
-		const result = await this.sdk.signTransaction(txnsToSign);
+		const result = await (window as WindowExtended).exodus.algorand.signTransaction(txnsToSign);
 
 		// Join the newly signed transactions with the original group of transactions.
-		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			if (!('txn' in txn)) {
+		const signedTxns = transactions.reduce<Uint8Array[]>((acc, txn, i) => {
+			if (signedIndexes.includes(i)) {
 				const signedByUser = result.shift();
 				signedByUser && acc.push(signedByUser);
-			} else {
+			} else if (returnGroup) {
 				acc.push(transactions[i]);
 			}
 

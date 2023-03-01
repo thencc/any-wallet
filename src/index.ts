@@ -1,4 +1,4 @@
-// FYI import order matters
+// FYI import order matters (TODO add eslint plugin to help w this)
 export * from './utils';
 export * from './state';
 export * from './types';
