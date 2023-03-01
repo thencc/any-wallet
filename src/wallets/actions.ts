@@ -1,7 +1,7 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.'; // wallets
+import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
@@ -15,6 +15,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	let w = reactive({
 		// === wallet state ===
 		id: id,
+		metadata: CLIENT_MAP[id].client.metadata,
 		client: null as null | WalClient,
 		initParams: ip,
 		inited: false, // client
@@ -137,7 +138,7 @@ export const enableWallets = (
 		let wId = wKey as WALLET_ID; // could just be a unique id for double initing.but why
 
 		AnyWalletState.allWallets[wId]!.initParams = wInitParams;
-		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any;
+		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any; // WalletType<WALLET_ID>; // any;
 
 		/*
 		// simplest catch first
@@ -219,7 +220,7 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	console.log('signTransactions', txns);
 
 	if (!AnyWalletState.enabledWallets) {
-		throw new Error('No wallets enabled');
+		throw new Error('No wallets enabled, call enableWallets() first');
 	}
 	if (!AnyWalletState.activeWalletId) {
 		throw new Error('No active wallet');

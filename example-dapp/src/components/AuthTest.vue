@@ -1,49 +1,47 @@
 <template>
 	<div class="auth-test-container">
 		<p>
-			AuthTest
+			AnyWallet testbed
 		</p>
 
 		<p>
-			<button @click="doInitializeProviders">doInitializeProviders</button>
+			<button @click="doEnableWallets">doEnableWallets</button>
 		</p>
 
 		<div>
-			<p>active acct</p>
-			<div v-if="nccState.stored.activeAccount">
+			<p>active acct:</p>
+			<div v-if="AnyWalletState.stored.activeAccount">
 				<p>
-					<span style="font-weight: bold;">{{ nccState.stored.activeAccount.providerId }}</span>:
-					<span>{{ nccState.stored.activeAccount.name }}</span>
+					<span style="font-weight: bold;">{{ AnyWalletState.stored.activeAccount.walletId }}</span>:
+					<span>{{ AnyWalletState.stored.activeAccount.name }}</span>
 				</p>
-				<!-- <p style="font-family: monospace;">{{ nccState.stored.activeAccount.address }}</p> -->
-				<p style="font-family: monospace;">{{ nccState.activeAddress }}</p>
+				<p style="font-family: monospace;">{{ AnyWalletState.activeAddress }}</p>
 			</div>
 			<div v-else>
 				none
 			</div>
 		</div>
 
-		<!-- <p>keys of initialized clients (computed):</p>
-		<p>
-			{{ nccState.clientsC.initedClientKeys }}
-		</p> -->
+		<p>enabled wallets:</p>
+		<div v-for="(p, k) of AnyWalletState.enabledWallets">
+			<template v-if="p">
+				<!-- <img :src="p.client?.metadata.icon" alt="" style="width: 40px; height: 40px;"> -->
+				<span>{{ k }}</span>
+				<button @click="p.connect()" :disabled="!!(p.isConnected)">connect</button>
+				<button @click="p.disconnect()" :disabled="!(p.isConnected)">disconnect</button>
+				<button @click="p.setAsActiveWallet()" :disabled="!(p.isConnected && !p.isActive)">set as active</button>
+				<span>{{ p.initing ? '(loading)' : '' }}</span>
 
-		<p>clients loop</p>
-		<div v-for="(p, k) of nccState.wallets2">
-			<span>{{k}}</span>
-			<button @click="doAnyConnect(p)" :disabled="!!(p.isConnected)">connect</button>
-			<button @click="doAnyDisconnect(p)" :disabled="!(p.isConnected)">disconnect</button>
-			<button @click="p.setAsActiveWallet()" :disabled="!(p.isConnected && !p.isActive)">set as active</button>
-
-			<select v-model="selectedAddrFromDropdown" style="width: 100px;" :name="`w_${k}_select`" id="" @change="activeAddrChanged(selectedAddrFromDropdown)">
-				<option v-for="a of p.accounts" :value="a">
-					{{ getAddrFromAccount(a) }}
-				</option>
-			</select>
+				<select v-model="selectedAddrFromDropdown" style="width: 100px;" :name="`w_${k}_select`" id="" @change="activeAddrChanged(selectedAddrFromDropdown)">
+					<option v-for="a of p.accounts" :value="a">
+						{{ getAddrFromAccount(a) }}
+					</option>
+				</select>
+			</template>
 		</div>
 
 		<br />
-		<button @click="doTxnSimpleAlgJs">
+		<button @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.enabledWallets !== null)">
 			doTxnSimpleAlgJs
 		</button>
 
@@ -61,79 +59,33 @@ import {
 } from 'vue';
 // import { watch } from '@vue-reactivity/watch'; // works
 
-// TODO put w3h in algonaut
 import {
-	// initClients,
-	nccState,
+	AnyWalletState,
 	signTransactions,
-
 	enableWallets,
-
-	// CLIENT_ID,
-	CLIENT_ID,
-	inkey, // client for configing
-	myalgo, // client
-	watch, // sometimes works, seriously.
+	WALLET_ID,
+	watch,
 } from '@thencc/web3-wallet-handler';
 
-// import * as w3h from '@thencc/web3-wallet-handler';
-
-// works
-// import { Algonaut, utils, initClients } from '@thencc/algonautjs';
-
-// const w3h = {} as any;
 
 import {
 	Algonaut,
 	utils,
-	// web3yo,
-
-	// myalgo, // client
-	// w3h stuff
-	// w3h,
-	/*
-	initClients,
-	nccState,
-	signTransactions,
-	CLIENT_ID,
-	inkey, // client for configing
-	// pera,
-	// myalgo, // client
-	watch, // sometimes works, seriously.
-	*/
 } from '@thencc/algonautjs';
 
-
-// const w3h = web3yo();
-// console.log('w3h', w3h);
-
-// const initClients = w3h.initClients;
-// const nccState = w3h.nccState;
-// const signTransactions = w3h.signTransactions;
-// // type CLIENT_ID = w3h.CLIENT_ID;
-// const inkey = w3h.inkey;
-// const myalgo = w3h.myalgo;
-// const pera = w3h.pera;
-// const watch = w3h.watch;
-
-// type ClientsTypeObj = Awaited<ReturnType<typeof initClients>>;
-// console.log('nccState', nccState);
-
-// import { createClient } from '@thencc/inkey-client-js';
-
-// const algonaut = new Algonaut({
-// 	BASE_SERVER: 'https://testnet-api.algonode.cloud',
-// 	INDEX_SERVER: '',
-// 	API_TOKEN: { 'accept': 'application/json' },
-// 	PORT:'',
-// 	LEDGER: 'testnet',
-// });
+const algonaut = new Algonaut({
+	BASE_SERVER: 'https://testnet-api.algonode.cloud',
+	INDEX_SERVER: '',
+	API_TOKEN: { 'accept': 'application/json' },
+	PORT:'',
+	LEDGER: 'testnet',
+});
 
 export default defineComponent({
 	data() {
 		return {
-			nccState,
-			selectedAddrFromDropdown: nccState.stored.activeAccount
+			AnyWalletState,
+			selectedAddrFromDropdown: AnyWalletState.stored.activeAccount
 		}
 	},
 	mounted() {
@@ -146,19 +98,16 @@ export default defineComponent({
 			// 	console.log('h', h);
 			// });
 
-			this.doInitializeProviders();
+			// this.doEnableWallets();
 
 			// works IF watcher comes from @vue-r/watch
 			watch(
-				() => this.nccState.stored.activeAccount,
-				// () => this.nccState.ls,
+				() => AnyWalletState.stored.activeAccount,
 				(acct) => {
-					console.log('(in v comp) activeAccount changed:', this.nccState.stored.activeAccount);
-					// console.log('(in v comp) ls changed:', this.nccState.ls);
+					console.log('(in v comp) activeAccount changed:', acct);
 
 					// for ui
 					this.selectedAddrFromDropdown = acct;
-
 					this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
 				},
 				{
@@ -168,9 +117,8 @@ export default defineComponent({
 			);
 
 			watch(
-				() => this.nccState.wallets2,
-				(w) => {
-					console.log('wallets2 changed:', w);
+				() => AnyWalletState.enabledWallets,
+				(ew) => {
 					this.$forceUpdate(); // re-render <template>
 				},
 				{
@@ -179,79 +127,31 @@ export default defineComponent({
 				}
 			);
 
-			// watch(
-			// 	() => nccState.count,
-			// 	(c) => {
-			// 		console.log('count changed:', c);
-			// 		this.$forceUpdate(); // re-render <template>
-			// 	},
-			// 	{
-			// 		deep: true,
-			// 		immediate: true
-			// 	}
-			// );
-
-			//
-			// setInterval(() => {
-			// 	nccState.count++;
-			// }, 2 * 1000);
-
 		},
 
-		async doInitializeProviders() {
+		doEnableWallets() {
+			console.log('doEnableWallets');
 
-			// empty arr inits all minus kmd
-			const providersToInit = [
-				CLIENT_ID.INKEY,
-				CLIENT_ID.MYALGO,
-				CLIENT_ID.PERA,
-			] as CLIENT_ID[];
-			// ] as w3h.CLIENT_ID[];
-			// ] as any[];
-
-			// const inkeyClient = await createClient({
-			// 	src: 'https://inkey-staging.web.app'
-			// });
-			// console.log('inkeyClient', inkeyClient);
-
-			const inkeyClient: any = {};
-
-			// api to strive for
-			const clientsToInit = {
-				// [1] true imports lib async + uses default client config
-				'myalgo': true,
-
-				// object syntax
-				[CLIENT_ID.PERA]: {
-					// [2] imports lib async + uses this config
+			let wallets = enableWallets({
+				[WALLET_ID.INKEY]: {
+					id: WALLET_ID.INKEY,
 					config: {
-						network: 'testnet', // for example. used by algosigner for field in class. but inkey would pass to client gen func.
-						// src: '',
-						// + contains sdkConfig
-					},
-
-					// [3] pass an already initialized + configured sdk of this wallet
-					// sdk: await inkeyClient.createClient({}),
-
-					// FYI can pass # 2 or 3 but not both.
-				}
-			};
-
-			const toEnable = {
-				[CLIENT_ID.INKEY]: {
-					config: {
-						src: 'https://inkey-staging.web.app#testing'
-					},
-					// sdk: inkeyClient
+						src: 'https://inkey-staging.web.app#123'
+					}
 				},
-
-				// [CLIENT_ID.MYALGO]: myalgo.init({}),
-				// [CLIENT_ID.PERA]: pera.init({}),
-				[CLIENT_ID.PERA]: true,
-			};
-
-			const rps = enableWallets(toEnable);
-			console.log('rps', rps);
+				// [WALLET_ID.INKEY]: true, // simply accept the defaults
+				[WALLET_ID.PERA]: true,
+				[WALLET_ID.MYALGO]: true,
+				[WALLET_ID.ALGOSIGNER]: true,
+				[WALLET_ID.EXODUS]: true,
+				[WALLET_ID.DEFLY]: true,
+				[WALLET_ID.MNEMONIC]: {
+					config: {
+						mnemonic: 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend'
+					}
+				},
+			});
+			console.log('wallets', wallets);
 		},
 
 		getAddrFromAccount(a: any) {
@@ -260,56 +160,36 @@ export default defineComponent({
 
 		activeAddrChanged(x: any) {
 			console.log('activeAddrChanged', x);
-			this.nccState.stored.activeAccount = x;
-		},
-
-		// async doAnyConnect(p: BaseClient ) {
-		async doAnyConnect(p: any) {
-			console.log('doAnyConnect', p);
-
-			// this.nccState.wallets?.inkey.accounts.push('test')
-
-			// let connectRes = await p.client.connect();
-			let connectRes = await p.connect();
-			console.log('connectRes', connectRes);
-		},
-		async doAnyDisconnect(p: any) {
-			console.log('doAnyDisconnect', p);
-
-			let disconnectRes = await p.disconnect();
-			console.log('disconnectRes', disconnectRes);
+			AnyWalletState.stored.activeAccount = x;
 		},
 
 		async doTxnSimpleAlgJs() {
 			console.log('doTxnSimpleAlgJs');
 
-			let addr = this.nccState.activeAddress;
+			let addr = AnyWalletState.activeAddress;
 
 			if (!addr) {
 				alert('no .to address provided');
 				return;
 			}
 
+			const txn = await algonaut.atomicSendAlgo({
+				amount: 1000,
+				to: addr,
+				from: addr // .from needed IF algonaut doesnt have this.account populated
+			});
+			console.log('txn', txn);
 
-			// const txn = await algonaut.atomicSendAlgo({
-			// 	amount: 1000,
-			// 	to: addr,
-			// 	from: addr // .from needed IF algonaut doesnt have this.account populated
-			// });
-			// console.log('txn', txn);
+			const txnArr = txn.transaction.toByte();
 
-			// const txnArr = txn.transaction.toByte();
+			try {
+				let res = await signTransactions([txnArr]);
+				console.log('res', res);
+			} catch(e) {
+				console.warn(e);
+			}
 
-			// try {
-			// 	let res = await signTransactions([txnArr]);
-			// 	console.log('res', res);
-			// } catch(e) {
-			// 	console.warn(e);
-			// }
-
-
-
-
+			// send it!
 			// 	const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
 			// 	console.log('groupedTxn', groupedTxn);
 			// 	console.log('id: ', groupedTxn.txId);

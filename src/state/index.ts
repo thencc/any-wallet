@@ -19,12 +19,13 @@ export const AnyWalletState = reactive({
 	},
 
 	// computeds
+	/*
 	activeAddress: readonly(computed(() => {
 		let a = '';
 		if (AnyWalletState.stored.activeAccount) {
 			a = AnyWalletState.stored.activeAccount.address;
 		}
-		return a;
+		return a; // as string;
 	})),
 	activeWalletId: readonly(computed(() => {
 		let aWId: null | WALLET_ID = null;
@@ -55,6 +56,7 @@ export const AnyWalletState = reactive({
 		}
 		return someWalletIsSigning;
 	})),
+	*/
 });
 
 // if browser, do the browser-specific stuff (localstorage, etc). this built file has to be able to run thru bundlers down the line like esbuild/rollup
