@@ -1,7 +1,7 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj } from '.'; // wallets
+import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
@@ -11,35 +11,35 @@ import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 
 // FYI ip/initParams arg isnt really used anymore w new code design
+// TODO remove WalClient + ip (even smaller build size)
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({
 		// === wallet state ===
 		id: id,
-		client: null as null | WalClient,
+		metadata: CLIENT_MAP[id].client.metadata,
+		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does...
 		initParams: ip,
 		inited: false, // client
 		initing: false, // client + sdk
 		signing: false,
+		connecting: false,
 
 		// === methods ===
 		isReady: async (): Promise<true> => {
-			console.log('isReady');
-
 			if (w.inited) {
 				return true;
 			} else {
-				console.log('do client.init');
 				w.initing = true;
 
 				if (typeof w.initParams == 'object' && (
 					w.initParams.config || w.initParams.sdk
 				)) {
-					w.client = await CLIENT_MAP[id].client.init(w.initParams) as any;
+					w.client = await CLIENT_MAP[id].client.init(w.initParams);
 				} else if (ip == true) {
-					w.client = await CLIENT_MAP[id].client.init() as any;
+					w.client = await CLIENT_MAP[id].client.init();
 				} else {
-					// catches for false or wrong init obj (or should wrong obj init it w defaults?)
 					// skip it
+					// catches here for false or wrong init obj (or should wrong obj init it w defaults?)
 					// TODO show err
 					console.warn('bad/incomplete init params for wallet:', id);
 				}
@@ -50,11 +50,12 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		connect: async () => {
-			console.log(`[${id}] connect (in r obj)`);
 			await w.isReady();
 
+			w.connecting = true;
 			// arg is onDisconnect
 			let { accounts } = await w.client!.connect(() => { });
+			w.connecting = false;
 
 			// if it gets past .connect, it worked, so saved the returned accts + set one as active
 			addConnectedAccounts(accounts);
@@ -105,7 +106,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}));
 		},
 
-		// or is this a better design? (it also works)
+		// or is this a better design? (it also works) -- this is only better for vue dev tools, both work
 		// i believe the below approach is better for vue dev tools inspect
 		// isConnected: () => {
 		// 	return readonly(computed(() => {
@@ -134,24 +135,9 @@ export const enableWallets = (
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
-		let wId = wKey as WALLET_ID; // could just be a unique id for double initing.but why
-
-		AnyWalletState.allWallets[wId]!.initParams = wInitParams;
-		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any;
-
-		/*
-		// simplest catch first
-		if (typeof wInitParams == 'boolean') {
-			if (wInitParams == true) {
-				// initparamas = true so uses defaults
-				AnyWalletState.allWallets[wId].initParams = wInitParams;
-				AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any; // just assume we know what we are doing... easier than a long if check
-			}
-		} else if (typeof wInitParams == 'object') {
-			AnyWalletState.allWallets[wId].initParams = wInitParams;
-			AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId] as any;
-		}
-		*/
+		let wId = wKey as WALLET_ID; // could just be a unique id for double initing but why
+		AnyWalletState.allWallets[wId]!.initParams = wInitParams; // ? should allWallets even be in global state?
+		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId];
 	}
 
 	return AnyWalletState.enabledWallets;
@@ -162,7 +148,7 @@ export const getAccountsByProvider = (id: WALLET_ID) => {
 };
 
 export const removeAccountsByClient = (id: WALLET_ID) => {
-	console.log('removeAccountsByClient', id);
+	// console.log('removeAccountsByClient', id);
 
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
@@ -186,7 +172,7 @@ export const removeAccountsByClient = (id: WALLET_ID) => {
 };
 
 export const addConnectedAccounts = (accounts: Account[]) => {
-	console.log('addConnectedAccounts', accounts);
+	// console.log('addConnectedAccounts', accounts);
 
 	// fast, but allows dups...
 	// AnyWalletState.stored.connectedAccounts = [
@@ -211,7 +197,7 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 };
 
 export const setAsActiveAccount = (acct: Account) => {
-	console.log('setAsActiveAccount', acct);
+	// console.log('setAsActiveAccount', acct);
 	AnyWalletState.stored.activeAccount = acct;
 };
 
@@ -219,7 +205,7 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	console.log('signTransactions', txns);
 
 	if (!AnyWalletState.enabledWallets) {
-		throw new Error('No wallets enabled');
+		throw new Error('No wallets enabled, call enableWallets() first');
 	}
 	if (!AnyWalletState.activeWalletId) {
 		throw new Error('No active wallet');
@@ -245,7 +231,7 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 				txns
 			);
 	activeWallet.signing = false;
-	console.log('txnsSigned', txnsSigned);
+	// console.log('txnsSigned', txnsSigned);
 
 	return txnsSigned;
 };

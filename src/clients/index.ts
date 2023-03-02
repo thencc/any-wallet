@@ -1,6 +1,5 @@
 import { WALLET_ID } from 'src/wallets/constants';
 
-// clients
 import { PeraClient } from 'src/clients/pera/client';
 import { InkeyClient } from 'src/clients/inkey/client';
 import { MyAlgoClient } from 'src/clients/myalgo/client';
@@ -12,6 +11,7 @@ import { MnemonicClient } from 'src/clients/mnemonic/client';
 export const CLIENT_MAP = {
 	[WALLET_ID.PERA]: {
 		client: PeraClient,
+		// metadata: // ? TODO consider this approach
 	},
 	[WALLET_ID.INKEY]: {
 		client: InkeyClient,

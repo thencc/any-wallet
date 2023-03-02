@@ -54,8 +54,7 @@ export class AlgoSignerClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams) {
-		console.log(`[${METADATA.id}] init started`);
-
+		// console.log(`[${METADATA.id}] init started`);
 		try {
 			if (
 				typeof window == 'undefined' ||
@@ -176,5 +175,3 @@ export class AlgoSignerClient extends BaseClient {
 		return signedTxns;
 	}
 }
-
-export default AlgoSignerClient;

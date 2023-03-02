@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-import { CLIENT_ID, CLIENT_PKGS, excludeClients } from '@thencc/web3-wallet-handler';
+import { CLIENT_PKGS, excludeClients } from '@thencc/web3-wallet-handler';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,7 +16,6 @@ export default defineConfig({
 
 	build: {
 		minify: false,
-
 		rollupOptions: {
 			// THIS is how it works, but have to do the OPPOSITE of what you want
 			external: [

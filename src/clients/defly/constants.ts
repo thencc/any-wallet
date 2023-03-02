@@ -1,5 +1,5 @@
 import { WALLET_ID } from "src/wallets";
-import type { ClientMetadata } from 'src/clients/base';
+import type { ClientMetadata } from 'src/clients/base/types';
 
 export const ICON =
 	'data:image/svg+xml;base64,' +

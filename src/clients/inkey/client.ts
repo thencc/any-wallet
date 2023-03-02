@@ -41,7 +41,6 @@ export class InkeyClient extends BaseClient {
 
 	static async init(initParams?: InitParams): Promise<InkeyClient | null> {
 		try {
-			console.log('[inkey] init started');
 
 			// TODO fix this
 			// make this inkey client be able to init twice (other clients work ok)
@@ -59,15 +58,10 @@ export class InkeyClient extends BaseClient {
 				};
 				clientOptions = initParams?.config || defaultInkeyConfig;
 
-				// let clientGen = clientSdkStatic;
-				// if (clientSdkStatic == undefined) {
-				console.log('now load up the sdk');
-
 				let inkeyLib = await import('@thencc/inkey-client-js');
 				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
 				let createClientSdk = inkeyLib.createClient;
 				// }
-				console.log('createClientSdk', createClientSdk);
 				clientSdk = await createClientSdk(clientOptions);
 			}
 
@@ -81,7 +75,6 @@ export class InkeyClient extends BaseClient {
 	}
 
 	async connect() {
-		console.log('doConnect');
 		const inkeyAccounts = await this.sdk.connect();
 		// console.log('inkeyAccounts', inkeyAccounts);
 
@@ -142,12 +135,6 @@ export class InkeyClient extends BaseClient {
 			// If the transaction isn't already signed and is to be sent from a connected account,
 			// add it to the arrays of transactions to be signed.
 
-			console.log('readout txnsToSign:', {
-				acc,
-				txn,
-				i
-			});
-
 			if (
 				!('txn' in txn) &&
 				// connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
@@ -172,7 +159,7 @@ export class InkeyClient extends BaseClient {
 		// console.log('txnsAsStrB64', txnsAsStrB64);
 
 		const result = await this.sdk.signTxns(txnsAsStrB64);
-		console.log('result', result);
+		// console.log('result', result);
 
 		if (!result.success) {
 			throw new Error('did not sign txns');
@@ -180,7 +167,7 @@ export class InkeyClient extends BaseClient {
 
 		// put in extra array since incoming is a single txn...
 		const returnedTxns = [result.signedTxns] as Uint8Array[];
-		console.log('returnedTxns', returnedTxns);
+		// console.log('returnedTxns', returnedTxns);
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
@@ -197,5 +184,3 @@ export class InkeyClient extends BaseClient {
 	}
 
 }
-
-export default InkeyClient;

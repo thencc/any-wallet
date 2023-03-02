@@ -174,5 +174,3 @@ export class ExodusClient extends BaseClient {
 	}
 
 }
-
-export default ExodusClient;

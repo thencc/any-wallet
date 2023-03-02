@@ -110,9 +110,11 @@ export class MnemonicClient extends BaseClient {
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
 		const signedTxns: Uint8Array[] = [];
+
 		// Sign them with the client.
 		const signingResults: Uint8Array[] = [];
-	 for (const idx in decodedTxns) {
+
+		for (const idx in decodedTxns) {
 			const dtxn = decodedTxns[idx];
 			const isSigned = 'txn' in dtxn;
 
@@ -147,7 +149,7 @@ export class MnemonicClient extends BaseClient {
 
 		// Restore the newly signed txns in the correct order
 		let signedIdx = 0;
-				const formattedTxns = signedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
+		const formattedTxns = signedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
 			// If its an empty array, infer that it is one of the
 			// ones we wanted to have signed and overwrite the empty buff
 			if (txn.length === 0) {
@@ -164,5 +166,3 @@ export class MnemonicClient extends BaseClient {
 		return Promise.resolve(formattedTxns);
 	}
 }
-
-export default MnemonicClient;
