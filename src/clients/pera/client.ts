@@ -22,6 +22,7 @@ import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAd
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
+	static metadata = METADATA;
 
 	constructor({
 		sdk: clientSdk, // inited
@@ -29,8 +30,6 @@ export class PeraClient extends BaseClient {
 		super(); // doesnt really do anything
 		this.sdk = clientSdk;
 	}
-
-	static metadata = METADATA;
 
 	static async init(initParams?: InitParams): Promise<PeraClient | null> {
 		// console.log(`[${METADATA.id}] init started`);
@@ -59,7 +58,6 @@ export class PeraClient extends BaseClient {
 				let createClientSdk = sdkLib.PeraWalletConnect || sdkLib.default.PeraWalletConnect; // sometimes needs this shim
 				// FYI because pera's client is built to cjs, vite's optimize deps helper in the server acts differently than when it builds using rollup. solution: fallback to .default;
 
-				// console.log('createClientSdk', createClientSdk);
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
@@ -75,8 +73,6 @@ export class PeraClient extends BaseClient {
 	}
 
 	async connect(onDisconnect: () => void): Promise<Wallet> {
-		// console.log(`[${METADATA.id}] connect`);
-
 		const accounts = await this.sdk.connect();
 
 		this.sdk.connector?.on('disconnect', onDisconnect);

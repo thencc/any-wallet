@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@thencc/algonautjs': ^0.2.94
-  '@thencc/web3-wallet-handler': ^0.0.138
+  '@thencc/web3-wallet-handler': ^0.0.143
   '@vitejs/plugin-vue': ^4.0.0
   typescript: ^4.6.4
   vite: ^4.1.1
@@ -11,7 +11,7 @@ specifiers:
 
 dependencies:
   '@thencc/algonautjs': 0.2.96
-  '@thencc/web3-wallet-handler': 0.0.138
+  '@thencc/web3-wallet-handler': 0.0.143
   vue: 3.2.47
 
 devDependencies:
@@ -407,8 +407,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/web3-wallet-handler/0.0.138:
-    resolution: {integrity: sha512-dfsbdIia+LESUyOU4yf71mV4pjGRoDRMwQ+u4W7QT4WSN73TaEW9OqQZ2PQADBN7rw+EYCbYxEchQBVJVLnd4A==}
+  /@thencc/web3-wallet-handler/0.0.143:
+    resolution: {integrity: sha512-i5lkpJPbzF5eL5kPABL9PR7Y8sWwFor84kJv2PmCZx/1Pn1sqN39sr9wpougMLUO9scdWEK7i1F8MxAKr4JGRQ==}
     requiresBuild: true
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0

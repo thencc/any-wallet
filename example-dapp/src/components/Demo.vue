@@ -138,7 +138,8 @@ export default defineComponent({
 		async doTxnSimpleAlgJs() {
 			console.log('doTxnSimpleAlgJs');
 
-			let addr = AnyWalletState.activeAddress;
+			// let addr = AnyWalletState.activeAddress;
+			let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY'; // hardcoded test
 
 			if (!addr) {
 				alert('no .to address provided');

@@ -29,7 +29,6 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 
 export class InkeyClient extends BaseClient {
 	sdk: InkeySdk;
-
 	static metadata = METADATA;
 
 	constructor({
@@ -41,9 +40,7 @@ export class InkeyClient extends BaseClient {
 
 	static async init(initParams?: InitParams): Promise<InkeyClient | null> {
 		try {
-
-			// TODO fix this
-			// make this inkey client be able to init twice (other clients work ok)
+			// TODO fix this: make this inkey client be able to init twice (other clients work ok)
 
 			// a client sdk can be passed in pre-initialized. if so, use that
 			let clientSdk: InkeySdk;
@@ -51,18 +48,16 @@ export class InkeyClient extends BaseClient {
 				clientSdk = initParams.sdk; // already init-ed sdk
 			} else {
 
-				let clientOptions: SdkConfig;
-				const defaultInkeyConfig: SdkConfig = {
+				let sdkConfig: SdkConfig;
+				const defaultConfig: SdkConfig = {
 					src: 'https://inkey-staging.web.app', //
 					align: 'center',
 				};
-				clientOptions = initParams?.config || defaultInkeyConfig;
+				sdkConfig = initParams?.config || defaultConfig;
 
-				let inkeyLib = await import('@thencc/inkey-client-js');
-				// inkeyLib = inkeyLib.default.createClient; // not all the clients need this shim...
-				let createClientSdk = inkeyLib.createClient;
-				// }
-				clientSdk = await createClientSdk(clientOptions);
+				let sdkLib = await import('@thencc/inkey-client-js');
+				let createClientSdk = sdkLib.createClient || sdkLib.default.createClient;
+				clientSdk = await createClientSdk(sdkConfig);
 			}
 
 			return new InkeyClient({
@@ -76,7 +71,7 @@ export class InkeyClient extends BaseClient {
 
 	async connect() {
 		const inkeyAccounts = await this.sdk.connect();
-		// console.log('inkeyAccounts', inkeyAccounts);
+		// TODO make inkey connect throw / return something to catch when inkey modal was closed and connect didnt occur
 
 		if (!inkeyAccounts) {
 			throw new Error('no inkeyAccounts');
@@ -96,7 +91,8 @@ export class InkeyClient extends BaseClient {
 		}
 
 		const mappedAccounts = accounts.map((account) => ({
-			...account,
+			name: account.name,
+			address: account.address,
 			walletId: METADATA.id,
 		}));
 
@@ -125,44 +121,38 @@ export class InkeyClient extends BaseClient {
 			return decodeObj(txn);
 		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
 
-		// Get the unsigned transactions.
+		// Marshal the transactions, and add the signers property if they shouldn't be signed. Get the unsigned transactions.
+		// If the transaction isn't already signed and is to be sent from a connected account, add it to the arrays of transactions to be signed.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
-			// If the transaction isn't already signed and is to be sent from a connected account,
-			// add it to the arrays of transactions to be signed.
-
 			if (
 				!('txn' in txn) &&
-				// connectedAccounts.includes(this.algosdk.encodeAddress(txn['snd']))
 				connectedAccounts.includes(encodeAddress(txn['snd']))
 			) {
-				// added inkeyClient method to sign Uint8Array,
-				// option 2: convert Uint8Array txn to base64 str txn for inkey
-
 				acc.push(transactions[i]);
 			}
-
 			return acc;
 		}, []);
 
 		// Sign them with the client.
 
 		// FYI BOTH signing approaches work... (up to dev whether to convert from buff->b64 before or let inkey do it)
-		// const result = await this.client.signTxnsUint8Array(txnsToSign);
+
+		// op 1
+		// const result = await this.sdk.signTxnsUint8Array(txnsToSign);
 		// console.log('result', result);
 
+		// op 2
 		const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
-		// console.log('txnsAsStrB64', txnsAsStrB64);
-
 		const result = await this.sdk.signTxns(txnsAsStrB64);
 		// console.log('result', result);
 
 		if (!result.success) {
-			throw new Error('did not sign txns');
+			throw new Error('Error signing transactions');
 		}
 
 		// put in extra array since incoming is a single txn...
+		// TODO test multi txns in 1 atomic txn
 		const returnedTxns = [result.signedTxns] as Uint8Array[];
-		// console.log('returnedTxns', returnedTxns);
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {

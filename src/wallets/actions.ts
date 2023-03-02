@@ -60,6 +60,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				// if it gets past .connect, it worked, so saved the returned accts + set one as active
 				addConnectedAccounts(accounts);
 				setAsActiveAccount(accounts[0]);
+
+				return accounts;
 			} catch(e) {
 				throw e;
 			} finally {
@@ -129,8 +131,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 export const enableWallets = (
 	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
-	console.log('enableWallets started');
-
+	// console.log('enableWallets started');
 	// TODO add (walletsToEnable = array) ? simply: ['pera', 'inkey'] etc
 
 	if (AnyWalletState.enabledWallets !== null) {
@@ -207,20 +208,29 @@ export const setAsActiveAccount = (acct: Account) => {
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
-	console.log('signTransactions', txns);
+	// console.log('signTransactions', txns);
 
 	if (!AnyWalletState.enabledWallets) {
 		throw new Error('No wallets enabled, call enableWallets() first');
 	}
+	let wKeys = Object.keys(AnyWalletState.enabledWallets);
+	if (!AnyWalletState.activeWallet && wKeys.length == 1) {
+		// do auth/connect for only avail wallet
+		await AnyWalletState.enabledWallets[wKeys[0] as WALLET_ID]!.connect();
+		AnyWalletState.enabledWallets[wKeys[0] as WALLET_ID]!.connecting = false; // not all clients handle cancelled connects correctly
+	}
+	if (!AnyWalletState.activeWallet) {
+		throw new Error('No active wallet, connect one.');
+	}
 	if (!AnyWalletState.activeWalletId) {
-		throw new Error('No active wallet');
+		throw new Error('No active wallet id');
 	}
 	if (!AnyWalletState.activeAddress) {
 		throw new Error('No active account');
 	}
 	let activeWallet = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
 	if (!activeWallet) {
-		throw new Error('No active wallet... shouldnt happen.');
+		throw new Error('No active wallet... how\'d you get here.');
 	}
 
 	activeWallet.signing = true;
@@ -238,6 +248,7 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 					txns
 				);
 		// console.log('txnsSigned', txnsSigned);
+		activeWallet.signing = false;
 	} catch(e) {
 		throw e;
 	} finally {
