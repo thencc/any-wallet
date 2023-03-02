@@ -188,7 +188,7 @@ header {
 	top: 48px;
 	right: 20px;
 	padding: 2em 1em;
-	max-height: 400px;
+	max-height: 450px;
 	min-width: 400px;
 	overflow-y: scroll;
 	background: #e5e5e5;

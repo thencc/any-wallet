@@ -32,14 +32,14 @@ export default defineConfig({
 
 	platform: 'browser', // turn on to make lib browser compatible (auto shims require, buffer, process, etc -- is this true?)
 	// keepNames: false,
-	splitting: true,
-	minify: true,
-	treeshake: true,
+	// splitting: true,
+	// minify: true,
+	// treeshake: true,
 	// sourcemap: true,
 
 	// === DEV CONFIG ===
 	keepNames: true,
-	// splitting: false,
-	// minify: false,
-	// treeshake: false,
+	splitting: false,
+	minify: false,
+	treeshake: false,
 });
