@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from '@vue/reactivity';
+import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // TODO figure out how to export just the state change handler, not this who func
 import { isBrowser } from '../utils';
@@ -11,15 +11,14 @@ export const AnyWalletState = reactive({
 	allWallets: ALL_WALLETS,
 	enabledWallets: null as null | WalletsObj, // .wallets (should it be renamed this?)
 
-	// store in localstorage (FYI: DONT put Maps or Sets or Functions in this)
+	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
 	stored: {
 		version: 0, // for future schema changes, can translate old structs to new
 		connectedAccounts: [] as Account[],
 		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
 	},
 
-	// computeds
-	/*
+	// === computeds ===
 	activeAddress: readonly(computed(() => {
 		let a = '';
 		if (AnyWalletState.stored.activeAccount) {
@@ -56,7 +55,6 @@ export const AnyWalletState = reactive({
 		}
 		return someWalletIsSigning;
 	})),
-	*/
 });
 
 // if browser, do the browser-specific stuff (localstorage, etc). this built file has to be able to run thru bundlers down the line like esbuild/rollup
@@ -77,14 +75,12 @@ if (isBrowser()) {
  * }
  */
 export const onChange = (n: typeof AnyWalletState) => {
-	console.log('onChange');
-	console.log('latest', n);
+	// console.log('onChange', n);
 };
 
 watch(
 	AnyWalletState,
 	(latestState) => {
-		console.log('[in pkg] something changed');
 		onChange(latestState);
 	},
 	{

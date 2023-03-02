@@ -26,7 +26,7 @@ export class MyAlgoClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams) {
-		console.log(`[${METADATA.id}] init started`);
+		// console.log(`[${METADATA.id}] init started`);
 
 		try {
 
@@ -42,12 +42,11 @@ export class MyAlgoClient extends BaseClient {
 				};
 				sdkConfig = initParams?.config || defaultConfig;
 
+				let bufferLib = await import('buffer');
+				if (!(window as any).Buffer) (window as any).Buffer = bufferLib.default.Buffer;
 
-				// TODO programatically get this pkg name to from CLIENT_MAP ?
 				let sdkLib = await import('@randlabs/myalgo-connect');
 				let createClientSdk = sdkLib.default;
-
-				console.log('createClientSdk', createClientSdk);
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
@@ -57,7 +56,6 @@ export class MyAlgoClient extends BaseClient {
 				sdk: clientSdk
 			});
 		} catch (e) {
-			// throw new Error(`Error initializing... ${e}`);
 			console.error(`[${METADATA.id}] Error initializing...`, e);
 			return null;
 		}
@@ -134,5 +132,3 @@ export class MyAlgoClient extends BaseClient {
 	}
 
 }
-
-export default MyAlgoClient;

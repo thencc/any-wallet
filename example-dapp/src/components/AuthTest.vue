@@ -104,7 +104,7 @@ export default defineComponent({
 			watch(
 				() => AnyWalletState.stored.activeAccount,
 				(acct) => {
-					console.log('(in v comp) activeAccount changed:', acct);
+					// console.log('activeAccount changed:', acct);
 
 					// for ui
 					this.selectedAddrFromDropdown = acct;
@@ -159,7 +159,7 @@ export default defineComponent({
 		},
 
 		activeAddrChanged(x: any) {
-			console.log('activeAddrChanged', x);
+			// console.log('activeAddrChanged', x);
 			AnyWalletState.stored.activeAccount = x;
 		},
 

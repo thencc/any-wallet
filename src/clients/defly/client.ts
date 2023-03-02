@@ -69,7 +69,7 @@ export class DeflyClient extends BaseClient {
 	}
 
 	async connect(onDisconnect: () => void): Promise<Wallet> {
-		console.log(`${METADATA.id} connect`);
+		// console.log(`${METADATA.id} connect`);
 		const accounts = await this.sdk.connect().catch(console.info);
 
 		// TODO might have to do same pera (any) shim for connector
@@ -160,5 +160,3 @@ export class DeflyClient extends BaseClient {
 		return signedTxns;
 	}
 }
-
-export default DeflyClient;

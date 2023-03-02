@@ -18,7 +18,6 @@ import {
 } from './types';
 
 import { markRaw } from '@vue/reactivity';
-// single imports
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 
 export class PeraClient extends BaseClient {
@@ -34,7 +33,7 @@ export class PeraClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams): Promise<PeraClient | null> {
-		console.log(`[${METADATA.id}] init started`);
+		// console.log(`[${METADATA.id}] init started`);
 
 		try {
 			// shim for client that use walletconnect under the hood
@@ -76,7 +75,7 @@ export class PeraClient extends BaseClient {
 	}
 
 	async connect(onDisconnect: () => void): Promise<Wallet> {
-		console.log(`[${METADATA.id}] connect (in class)`);
+		// console.log(`[${METADATA.id}] connect`);
 
 		const accounts = await this.sdk.connect();
 
@@ -166,5 +165,3 @@ export class PeraClient extends BaseClient {
 	}
 
 }
-
-export default PeraClient;

@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/web3-wallet-handler",
-	"version": "0.0.128",
+	"version": "0.0.134",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -39,7 +39,8 @@
 		"@blockshake/defly-connect": "^1.1.1",
 		"@perawallet/connect": "^1.1.1",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.2"
+		"@thencc/inkey-client-js": "^0.0.2",
+		"buffer": "^6.0.3"
 	},
 	"peerDependencies": {
 		"algosdk": "^1.23.2 || ^2.1.0"
