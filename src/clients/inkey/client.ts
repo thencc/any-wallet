@@ -113,12 +113,7 @@ export class InkeyClient extends BaseClient {
 	}
 
 	async disconnect() {
-		try {
-			await this.sdk.disconnect();
-		} catch (e) {
-			console.warn((e as Error).message);
-		}
-		return;
+		await this.sdk.disconnect();
 	}
 
 	async signTransactions(

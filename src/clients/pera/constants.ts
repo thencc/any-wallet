@@ -8,7 +8,7 @@ export const ICON =
 export const METADATA: ClientMetadata = {
 	id: WALLET_ID.PERA,
 	chain: 'algorand',
-	name: 'Pera',
+	name: 'Pera Wallet',
 	icon: ICON,
 	pkg: '@perawallet/connect',
 };

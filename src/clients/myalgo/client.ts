@@ -43,7 +43,7 @@ export class MyAlgoClient extends BaseClient {
 				sdkConfig = initParams?.config || defaultConfig;
 
 				let bufferLib = await import('buffer');
-				if (!(window as any).Buffer) (window as any).Buffer = bufferLib.default.Buffer;
+				if (!(window as any).Buffer) (window as any).Buffer = bufferLib.Buffer || bufferLib.default.Buffer;
 
 				let sdkLib = await import('@randlabs/myalgo-connect');
 				let createClientSdk = sdkLib.default;

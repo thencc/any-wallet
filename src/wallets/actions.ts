@@ -50,16 +50,21 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		connect: async () => {
-			await w.isReady();
-
 			w.connecting = true;
-			// arg is onDisconnect
-			let { accounts } = await w.client!.connect(() => { });
-			w.connecting = false;
+			try {
+				await w.isReady();
 
-			// if it gets past .connect, it worked, so saved the returned accts + set one as active
-			addConnectedAccounts(accounts);
-			setAsActiveAccount(accounts[0]);
+				// arg is onDisconnect
+				let { accounts } = await w.client!.connect(() => { });
+
+				// if it gets past .connect, it worked, so saved the returned accts + set one as active
+				addConnectedAccounts(accounts);
+				setAsActiveAccount(accounts[0]);
+			} catch(e) {
+				throw e;
+			} finally {
+				w.connecting = false;
+			}
 		},
 		disconnect: async () => {
 			removeAccountsByClient(id);
@@ -213,25 +218,30 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	if (!AnyWalletState.activeAddress) {
 		throw new Error('No active account');
 	}
-
 	let activeWallet = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
 	if (!activeWallet) {
 		throw new Error('No active wallet... shouldnt happen.');
 	}
-	if (activeWallet.inited == false || activeWallet.client == null) {
-		await activeWallet.isReady(); // handles .initing state var
-	}
 
-	// sign it!
 	activeWallet.signing = true;
-	let txnsSigned =
-		await activeWallet.client! // is defined after awaiting isReady
-			.signTransactions(
-				[AnyWalletState.activeAddress],
-				txns
-			);
-	activeWallet.signing = false;
-	// console.log('txnsSigned', txnsSigned);
+	let txnsSigned: Uint8Array[];
+	try {
+		if (activeWallet.inited == false || activeWallet.client == null) {
+			await activeWallet.isReady(); // handles .initing state var
+		}
 
+		// sign it!
+		txnsSigned =
+			await activeWallet.client! // is defined after awaiting isReady
+				.signTransactions(
+					[AnyWalletState.activeAddress],
+					txns
+				);
+		// console.log('txnsSigned', txnsSigned);
+	} catch(e) {
+		throw e;
+	} finally {
+		activeWallet.signing = false;
+	}
 	return txnsSigned;
 };

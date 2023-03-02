@@ -6,7 +6,7 @@ export const ICON =
 
 export const METADATA: ClientMetadata = {
 	id: WALLET_ID.MNEMONIC,
-	name: 'MNEMONIC',
+	name: 'Mnemonic',
 	icon: ICON,
 	chain: 'algorand',
 	pkg: '', // local signing

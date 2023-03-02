@@ -1,7 +1,7 @@
 <template>
   <!-- <HelloWorldSFC /> -->
-  <!-- <PeraWalletTest /> -->
-  <AuthTest />
+  <!-- <AuthTest /> -->
+  <Demo />
 </template>
 
 <script setup lang="ts">
@@ -10,7 +10,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import HelloWorldSFC from './components/HelloWorldSFC.vue';
 import AuthTest from './components/AuthTest.vue';
-import PeraWalletTest from './components/PeraWalletTest.vue'; // working reference impl
+import Demo from './components/Demo.vue';
 </script>
 
 <style scoped>
