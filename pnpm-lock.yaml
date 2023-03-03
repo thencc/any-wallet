@@ -4,7 +4,7 @@ specifiers:
   '@blockshake/defly-connect': ^1.1.1
   '@perawallet/connect': ^1.1.1
   '@randlabs/myalgo-connect': ^1.4.2
-  '@thencc/inkey-client-js': ^0.0.8
+  '@thencc/inkey-client-js': ^0.0.9
   '@vue-reactivity/watch': ^0.2.0
   '@vue/reactivity': ^3.2.45
   '@vue/shared': ^3.2.47
@@ -22,7 +22,7 @@ optionalDependencies:
   '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
   '@perawallet/connect': 1.1.1_algosdk@2.1.0
   '@randlabs/myalgo-connect': 1.4.2
-  '@thencc/inkey-client-js': 0.0.8
+  '@thencc/inkey-client-js': 0.0.9
   buffer: 6.0.3
 
 devDependencies:
@@ -316,8 +316,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js/0.0.8:
-    resolution: {integrity: sha512-cEJ1khvoa+7kt3kXY0AKh1wpjpBvDPITdh379KicZZuiUCmZPyNhfpIVB05d3iAhtas+pufu72w8/cZ7xm4Oig==}
+  /@thencc/inkey-client-js/0.0.9:
+    resolution: {integrity: sha512-niA842mScjcf1ZSHV08eO4pY+C0SlOoLLOHRy16Cy3KfThULFjwjk7EkeSixjnsrLGMiXmBQAtuLehwucxu20w==}
     requiresBuild: true
     dev: false
     optional: true
