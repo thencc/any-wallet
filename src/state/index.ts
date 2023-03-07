@@ -3,6 +3,7 @@ import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // TODO figure out how to export just the state change handler, not this who func
 import { isBrowser } from '../utils';
 import { startWatchers } from './watchers';
+export * from './watchers';
 
 import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
@@ -63,27 +64,3 @@ if (isBrowser()) {
 	// FYI: watchers MUST be started AFTER the state inits
 	startWatchers();
 }
-
-// TODO figure out how to let client user define their own onChange handler. use setOnChange( userFun ) ?
-/**
- * try...
- *
- * import { onChange } ...
- * // set it
- * onChange = () => {
- * 	console.log('custom');
- * }
- */
-export const onChange = (n: typeof AnyWalletState) => {
-	// console.log('onChange', n);
-};
-
-watch(
-	AnyWalletState,
-	(latestState) => {
-		onChange(latestState);
-	},
-	{
-		deep: true
-	}
-);

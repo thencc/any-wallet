@@ -65,7 +65,9 @@ import {
 	signTransactions,
 	enableWallets,
 	WALLET_ID,
-	watch,
+	// watch,
+	setChangedStateHandler,
+	setChangedAccountHandler,
 } from '@thencc/web3-wallet-handler';
 
 import { Algonaut } from '@thencc/algonautjs';
@@ -104,30 +106,15 @@ export default defineComponent({
 			// [WALLET_ID.MNEMONIC]: true,
 		});
 
-		watch(
-			() => AnyWalletState.stored.activeAccount,
+		setChangedAccountHandler(
 			(acct) => {
-				// console.log('activeAccount changed:', acct);
-
-				// for ui
 				this.selectedAddrFromDropdown = acct;
 				this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
-			},
-			{
-				deep: true,
-				immediate: true
 			}
 		);
 
-		watch(
-			() => AnyWalletState.enabledWallets,
-			(ew) => {
-				this.$forceUpdate(); // re-render <template>
-			},
-			{
-				deep: true,
-				immediate: true
-			}
+		setChangedStateHandler(
+			() => this.$forceUpdate()
 		);
 	},
 	methods: {
