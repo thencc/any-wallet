@@ -69,7 +69,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		disconnect: async () => {
-			removeAccountsByClient(id);
+			removeAccountsByWalletId(id);
 
 			await w.isReady();
 			try {
@@ -83,7 +83,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			await w.client!.reconnect(() => { });
 		},
 		setAsActiveWallet: () => {
-			let accts = getAccountsByProvider(id);
+			let accts = getAccountsByWalletId(id);
 			if (!accts) {
 				throw new Error('No accounts for this provider to set as active');
 			} else {
@@ -91,7 +91,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		removeAccounts: () => {
-			removeAccountsByClient(id);
+			removeAccountsByWalletId(id);
 		},
 		signTransactions: async (transactions: Uint8Array[]): Promise<Uint8Array[]> => {
 			await w.isReady(); // loads sdk only ondemand
@@ -125,7 +125,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 
 		// === computeds ===
 		get accounts() {
-			return readonly(computed(() => getAccountsByProvider(id)))
+			return readonly(computed(() => getAccountsByWalletId(id)))
 		},
 		get isActive() {
 			return computed(() => {
@@ -162,10 +162,10 @@ export const enableWallets = (
 	// console.log('enableWallets started');
 	// TODO add (walletsToEnable = array) ? simply: ['pera', 'inkey'] etc
 
-	if (AnyWalletState.enabledWallets !== null) {
-		console.warn('enableWallets called while some wallets were already initialized');
-	} else {
+	if (AnyWalletState.enabledWallets == null) {
 		AnyWalletState.enabledWallets = {} as WalletsObj;
+	} else {
+		console.warn('enableWallets called while some wallets were already initialized (add to them)');
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
@@ -174,15 +174,25 @@ export const enableWallets = (
 		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId];
 	}
 
+	// if dapp changes config and user has a stale localstorage account, remove it
+	let previousUserWallId = AnyWalletState.stored.activeAccount?.walletId;
+	if (previousUserWallId) {
+		let enabledWalletIdSet = new Set<WALLET_ID>(Object.keys(walletsToEnable) as WALLET_ID[]);
+		if (!enabledWalletIdSet.has(previousUserWallId)) {
+			// disconnect also removes the accts from LS
+			AnyWalletState.allWallets[previousUserWallId]?.disconnect(); // dont await it
+		}
+	}
+
 	return AnyWalletState.enabledWallets;
 };
 
-export const getAccountsByProvider = (id: WALLET_ID) => {
+export const getAccountsByWalletId = (id: WALLET_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
 
-export const removeAccountsByClient = (id: WALLET_ID) => {
-	// console.log('removeAccountsByClient', id);
+export const removeAccountsByWalletId = (id: WALLET_ID) => {
+	// console.log('removeAccountsByWalletId', id);
 
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
@@ -207,15 +217,7 @@ export const removeAccountsByClient = (id: WALLET_ID) => {
 
 export const addConnectedAccounts = (accounts: Account[]) => {
 	// console.log('addConnectedAccounts', accounts);
-
-	// fast, but allows dups...
-	// AnyWalletState.stored.connectedAccounts = [
-	// 	...AnyWalletState.stored.connectedAccounts,
-	// 	...accounts
-	// ];
-
 	for (let newAcct of accounts) {
-
 		let exists = false;
 		for (let existingAcct of AnyWalletState.stored.connectedAccounts) {
 			if (newAcct.walletId == existingAcct.walletId &&
@@ -223,7 +225,6 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 				exists = true;
 			}
 		}
-
 		if (!exists) {
 			AnyWalletState.stored.connectedAccounts.push(newAcct);
 		}
@@ -231,7 +232,6 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 };
 
 export const setAsActiveAccount = (acct: Account) => {
-	// console.log('setAsActiveAccount', acct);
 	AnyWalletState.stored.activeAccount = acct;
 };
 
@@ -243,17 +243,12 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 	let wKeys = Object.keys(AnyWalletState.enabledWallets);
 	let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
 	if (wKeys.length == 1) {
-		let singleEnabledWalletId = wKeys[0];
-		if (walletId !== singleEnabledWalletId) {
-			// user must have signed in before w a different dapp config
-			AnyWalletState.stored.activeAccount = null;
-		} else {
-			walletId = wKeys[0] as WALLET_ID;
-		}
+		walletId = wKeys[0] as WALLET_ID;
 	}
 	if (!walletId) {
 		throw new Error('No active wallet id');
 	}
+	// FYI an active wallet isnt a connected wallet (active means dapp has is enabled, connected means user chose this wallet+acct)
 	let activeWallet = AnyWalletState.enabledWallets[walletId];
 	if (!activeWallet) {
 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled

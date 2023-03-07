@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@thencc/algonautjs': ^0.2.94
-  '@thencc/web3-wallet-handler': ^0.0.154
+  '@thencc/web3-wallet-handler': ^0.0.157
   '@vitejs/plugin-vue': ^4.0.0
   typescript: ^4.6.4
   vite: ^4.1.1
@@ -11,7 +11,7 @@ specifiers:
 
 dependencies:
   '@thencc/algonautjs': 0.2.105
-  '@thencc/web3-wallet-handler': 0.0.154
+  '@thencc/web3-wallet-handler': 0.0.157
   vue: 3.2.47
 
 devDependencies:
@@ -368,24 +368,11 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/web3-wallet-handler/0.0.154:
-    resolution: {integrity: sha512-QXAkoC78sgiDPD8ktSAogfenObdLDvl5mkiacTcJw0JIpeAICbf2zBoGjTKWnJ72jTkscWvFM2XyJnEr9H7leQ==}
-    peerDependencies:
-      algosdk: ^1.23.2 || ^2.1.0
-    dependencies:
-      '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
-      '@vue/reactivity': 3.2.47
-      '@vue/shared': 3.2.47
-    optionalDependencies:
-      '@blockshake/defly-connect': 1.1.1
-      '@perawallet/connect': 1.1.1
-      '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.10
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
+  /@thencc/inkey-client-js/0.0.11:
+    resolution: {integrity: sha512-4La0OZhC6/S9Ojiy5kWWSc6g5A5JKomr5DW/WBXuz5j2J8/SOYPfGqxKm/jtLNQR4BTyXyZ8I8G6uXX5Dp4M8g==}
+    requiresBuild: true
     dev: false
+    optional: true
 
   /@thencc/web3-wallet-handler/0.0.154_algosdk@2.1.0:
     resolution: {integrity: sha512-QXAkoC78sgiDPD8ktSAogfenObdLDvl5mkiacTcJw0JIpeAICbf2zBoGjTKWnJ72jTkscWvFM2XyJnEr9H7leQ==}
@@ -401,6 +388,25 @@ packages:
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
       '@thencc/inkey-client-js': 0.0.10
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@thencc/web3-wallet-handler/0.0.157:
+    resolution: {integrity: sha512-dw6Hxi3dUZToaCbsz8iMsamBBVSqkYglC1fmQ0sJ9hXif9EIS+9QjON3MwkJ/jWXBn2qMBrfBoFcLuDdYdoj8Q==}
+    peerDependencies:
+      algosdk: ^1.23.2 || ^2.1.0
+    dependencies:
+      '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
+      '@vue/reactivity': 3.2.47
+      '@vue/shared': 3.2.47
+    optionalDependencies:
+      '@blockshake/defly-connect': 1.1.1
+      '@perawallet/connect': 1.1.1
+      '@randlabs/myalgo-connect': 1.4.2
+      '@thencc/inkey-client-js': 0.0.11
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
