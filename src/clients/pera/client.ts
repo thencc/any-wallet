@@ -127,7 +127,7 @@ export class PeraClient extends BaseClient {
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd']))
+				connectedAccounts.includes(encodeAddress(txn['snd'])) // FYI this limits what kind of txns the dapp will be able to do... should probably remove this limitation
 			) {
 				acc.push({
 					txn: decodeUnsignedTransaction(transactions[i]),

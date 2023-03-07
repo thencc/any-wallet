@@ -93,7 +93,35 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		removeAccounts: () => {
 			removeAccountsByClient(id);
 		},
+		signTransactions: async (transactions: Uint8Array[]): Promise<Uint8Array[]> => {
+			await w.isReady(); // loads sdk only ondemand
 
+			// kinda clunky since modal / wallet ui might pop up twice, but it works...
+			let addrsOfThisWallet = w.accounts.map(a => a.address);
+			if (!addrsOfThisWallet.length) {
+				// then auth
+				let accts = await w.connect(); // adds to w.accounts
+				addrsOfThisWallet = accts.map(a => a.address);
+
+				// only real consistenyl way to show auth popup + txn approval pop across wallet types
+				await new Promise(resolve => setTimeout(resolve, 1000));
+			}
+
+			w.signing = true;
+			try {
+				let txnsSigned =
+					await w.client! // is defined after awaiting isReady
+						.signTransactions(
+							addrsOfThisWallet,
+							transactions,
+						);
+				return txnsSigned;
+			} catch(e) {
+				throw e;
+			} finally {
+				w.signing = false;
+			}
+		},
 
 		// === computeds ===
 		get accounts() {
@@ -209,50 +237,29 @@ export const setAsActiveAccount = (acct: Account) => {
 
 export const signTransactions = async (txns: Uint8Array[]) => {
 	// console.log('signTransactions', txns);
-
 	if (!AnyWalletState.enabledWallets) {
 		throw new Error('No wallets enabled, call enableWallets() first');
 	}
 	let wKeys = Object.keys(AnyWalletState.enabledWallets);
-	if (!AnyWalletState.activeWallet && wKeys.length == 1) {
-		// do auth/connect for only avail wallet
-		await AnyWalletState.enabledWallets[wKeys[0] as WALLET_ID]!.connect();
-		AnyWalletState.enabledWallets[wKeys[0] as WALLET_ID]!.connecting = false; // not all clients handle cancelled connects correctly
+	let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
+	if (wKeys.length == 1) {
+		let singleEnabledWalletId = wKeys[0];
+		if (walletId !== singleEnabledWalletId) {
+			// user must have signed in before w a different dapp config
+			AnyWalletState.stored.activeAccount = null;
+		} else {
+			walletId = wKeys[0] as WALLET_ID;
+		}
 	}
-	if (!AnyWalletState.activeWallet) {
-		throw new Error('No active wallet, connect one.');
-	}
-	if (!AnyWalletState.activeWalletId) {
+	if (!walletId) {
 		throw new Error('No active wallet id');
 	}
-	if (!AnyWalletState.activeAddress) {
-		throw new Error('No active account');
-	}
-	let activeWallet = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId];
+	let activeWallet = AnyWalletState.enabledWallets[walletId];
 	if (!activeWallet) {
+		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
 		throw new Error('No active wallet... how\'d you get here.');
 	}
 
-	activeWallet.signing = true;
-	let txnsSigned: Uint8Array[];
-	try {
-		if (activeWallet.inited == false || activeWallet.client == null) {
-			await activeWallet.isReady(); // handles .initing state var
-		}
-
-		// sign it!
-		txnsSigned =
-			await activeWallet.client! // is defined after awaiting isReady
-				.signTransactions(
-					[AnyWalletState.activeAddress],
-					txns
-				);
-		// console.log('txnsSigned', txnsSigned);
-		activeWallet.signing = false;
-	} catch(e) {
-		throw e;
-	} finally {
-		activeWallet.signing = false;
-	}
+	let txnsSigned = await activeWallet.signTransactions(txns);
 	return txnsSigned;
 };

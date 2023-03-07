@@ -90,13 +90,18 @@ export default defineComponent({
 	mounted() {
 		// call this at least once (choose which wallets to enable)
 		enableWallets({
-			[WALLET_ID.INKEY]: true,
-			[WALLET_ID.PERA]: true,
-			[WALLET_ID.MYALGO]: true,
-			[WALLET_ID.ALGOSIGNER]: true,
-			[WALLET_ID.EXODUS]: true,
+			// [WALLET_ID.INKEY]: {
+			// 	config: {
+			// 		src: 'https://inkey-staging.web.app/?wood'
+			// 	}
+			// },
+			// [WALLET_ID.INKEY]: true,
+			// [WALLET_ID.PERA]: true,
+			// [WALLET_ID.MYALGO]: true,
+			// [WALLET_ID.ALGOSIGNER]: true,
+			// [WALLET_ID.EXODUS]: true,
 			[WALLET_ID.DEFLY]: true,
-			[WALLET_ID.MNEMONIC]: true,
+			// [WALLET_ID.MNEMONIC]: true,
 		});
 
 		watch(
@@ -139,7 +144,10 @@ export default defineComponent({
 			console.log('doTxnSimpleAlgJs');
 
 			// let addr = AnyWalletState.activeAddress;
-			let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY'; // hardcoded test
+			// hardcoding addr is possible but often not the correct dapp flow
+			// let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY'; // hardcoded test
+			// let addr = '4LQHFBCGKT4BQ7WCU76FXQLL26JELJZEMXEB67MRGVKPPZXM3QWVHFZGYQ'; // FYI must match wallet requested
+			let addr = 'H6A7IZFJGSQKFJJ6YGRXMTPGACIY6SIZNTAMSZKGEK2PTHJYJJVYMXW4XY';
 
 			if (!addr) {
 				alert('no .to address provided');
