@@ -150,9 +150,7 @@ export class InkeyClient extends BaseClient {
 			throw new Error('Error signing transactions');
 		}
 
-		// put in extra array since incoming is a single txn...
-		// TODO test multi txns in 1 atomic txn
-		const returnedTxns = [result.signedTxns] as Uint8Array[];
+		const returnedTxns = result.signedTxns as Uint8Array[];
 
 		// Join the newly signed transactions with the original group of transactions.
 		const signedTxns = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
