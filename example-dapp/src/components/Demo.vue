@@ -62,24 +62,25 @@
 import { defineComponent } from 'vue';
 import {
 	AnyWalletState,
-	signTransactions,
 	enableWallets,
-	WALLET_ID,
-	// watch,
 	setChangedStateHandler,
 	setChangedAccountHandler,
+	signTransactions,
+	WALLET_ID,
 } from '@thencc/any-wallet';
 
+// helper lib for constructing + submitting txns
 import { Algonaut } from '@thencc/algonautjs';
-const algonaut = new Algonaut({
-	nodeConfig: {
-		LEDGER: 'mainnet',
-		BASE_SERVER: 'https://mainnet-api.algonode.cloud',
-		INDEX_SERVER: '',
-		API_TOKEN: { 'accept': 'application/json' },
-		PORT: '',
-	}
-});
+const algonaut = new Algonaut();
+// const algonaut = new Algonaut({
+// 	nodeConfig: {
+// 		LEDGER: 'mainnet',
+// 		BASE_SERVER: 'https://mainnet-api.algonode.cloud',
+// 		INDEX_SERVER: '',
+// 		API_TOKEN: { 'accept': 'application/json' },
+// 		PORT: '',
+// 	}
+// });
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
 
@@ -93,22 +94,24 @@ export default defineComponent({
 	},
 	mounted() {
 		// call this at least once (choose which wallets to enable)
-		enableWallets(); // enables default
+		// enableWallets(); // enables defaults
 
-		// enableWallets({
-		// 	// [WALLET_ID.INKEY]: {
-		// 	// 	config: {
-		// 	// 		src: 'https://inkey-staging.web.app?wood=1'
-		// 	// 	}
-		// 	// },
-		// 	[WALLET_ID.INKEY]: true,
-		// 	// [WALLET_ID.PERA]: true,
-		// 	// [WALLET_ID.MYALGO]: true,
-		// 	// [WALLET_ID.ALGOSIGNER]: true,
-		// 	// [WALLET_ID.EXODUS]: true,
-		// 	// [WALLET_ID.DEFLY]: true,
-		// 	// [WALLET_ID.MNEMONIC]: true,
-		// });
+		enableWallets({
+			[WALLET_ID.INKEY]: {
+				id: WALLET_ID.INKEY,
+				config: {
+					// src: 'https://inkey-staging.web.app#123'
+					src: 'http://localhost:5200/?wood'
+				}
+			},
+			// [WALLET_ID.INKEY]: true,
+			[WALLET_ID.PERA]: true,
+			[WALLET_ID.MYALGO]: true,
+			[WALLET_ID.ALGOSIGNER]: true,
+			[WALLET_ID.EXODUS]: true,
+			[WALLET_ID.DEFLY]: true,
+			[WALLET_ID.MNEMONIC]: true,
+		});
 
 		setChangedAccountHandler(
 			(acct) => {
@@ -134,12 +137,10 @@ export default defineComponent({
 		async doTxnSimpleAlgJs() {
 			console.log('doTxnSimpleAlgJs');
 
-			// let addr = AnyWalletState.activeAddress;
+			let addr = AnyWalletState.activeAddress;
 			// hardcoding addr is possible but often not the correct dapp flow
-			// FYI when hardcoding addr, it must match the desired authd wallet
-			let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY'; // hardcoded test
-			// let addr = '4LQHFBCGKT4BQ7WCU76FXQLL26JELJZEMXEB67MRGVKPPZXM3QWVHFZGYQ'; // FYI must match wallet requested
-			// let addr = 'H6A7IZFJGSQKFJJ6YGRXMTPGACIY6SIZNTAMSZKGEK2PTHJYJJVYMXW4XY';
+			// FYI when hardcoding addr, it must match the desired authd wallet acct addr
+			// let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY';
 
 			if (!addr) {
 				alert('no .to address provided');

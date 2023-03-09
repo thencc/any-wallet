@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@thencc/algonautjs': ^0.3.0
-  '@thencc/any-wallet': ^0.0.164
+  '@thencc/algonautjs': ^0.3.2
+  '@thencc/any-wallet': ^0.1.0
   '@vitejs/plugin-vue': ^4.0.0
   typescript: ^4.6.4
   vite: ^4.1.1
@@ -10,8 +10,8 @@ specifiers:
   vue-tsc: ^1.0.24
 
 dependencies:
-  '@thencc/algonautjs': 0.3.0
-  '@thencc/any-wallet': 0.0.164
+  '@thencc/algonautjs': 0.3.2
+  '@thencc/any-wallet': 0.1.0
   vue: 3.2.47
 
 devDependencies:
@@ -344,10 +344,10 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/algonautjs/0.3.0:
-    resolution: {integrity: sha512-Vmvy19GnJuPMoqUR1uQYcCqoCwUxcGo1BwJcRPMkxJAnlueSsATwf9jJXydl135cUxmXr9uhzBc9DOISiTS5Dg==}
+  /@thencc/algonautjs/0.3.2:
+    resolution: {integrity: sha512-AV99CSAND2BP+b+kDyP+GLrr4irWDZTu++6+rpL1jLe6HXp+kxrhhx6fyRM2n44rOv/nlBf9Yx/72AATlqYt6g==}
     dependencies:
-      '@thencc/any-wallet': 0.0.163_algosdk@2.1.0
+      '@thencc/any-wallet': 0.1.0_algosdk@2.1.0
       algosdk: 2.1.0
       buffer: 6.0.3
       tslib: 2.5.0
@@ -355,47 +355,15 @@ packages:
       '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
       '@perawallet/connect': 1.1.1_algosdk@2.1.0
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.11
+      '@thencc/inkey-client-js': 0.0.12
     transitivePeerDependencies:
       - bufferutil
       - encoding
       - utf-8-validate
     dev: false
 
-  /@thencc/inkey-client-js/0.0.11:
-    resolution: {integrity: sha512-4La0OZhC6/S9Ojiy5kWWSc6g5A5JKomr5DW/WBXuz5j2J8/SOYPfGqxKm/jtLNQR4BTyXyZ8I8G6uXX5Dp4M8g==}
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@thencc/inkey-client-js/0.0.12:
-    resolution: {integrity: sha512-Vb1JrrKt+1FwNiVJN/XLW4S3lm1s+IMbeNUxJDtmtE00x9erkZBfDLLrTIzSO0Rwouuhuc2pBbvj0teKJJK83Q==}
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@thencc/any-wallet/0.0.163_algosdk@2.1.0:
-    resolution: {integrity: sha512-wMo8SrY8DwpVb+DvAJEmr33HZMRvjg2KcqJUAiTApy5uNCfPZTBqTRvzTNS0tg/dWlqgws88pzS8ibHZuGv5Mg==}
-    peerDependencies:
-      algosdk: ^1.23.2 || ^2.1.0
-    dependencies:
-      '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
-      '@vue/reactivity': 3.2.47
-      '@vue/shared': 3.2.47
-      algosdk: 2.1.0
-    optionalDependencies:
-      '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
-      '@perawallet/connect': 1.1.1_algosdk@2.1.0
-      '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.11
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
-  /@thencc/any-wallet/0.0.164:
-    resolution: {integrity: sha512-NI+njDWJHoKGXhkq5R6k4dQWljcbqTjJGLf3danWCG2h+obBJY6AIEsSpefS2EQfVfGb6n1R+F3SEyCUJDgeDw==}
+  /@thencc/any-wallet/0.1.0:
+    resolution: {integrity: sha512-J3dwFbDzcW3gS5t6Tm0gRoGzm0j6+5kyNNlicby0HdsgJtwbyY9RfSTwesHaRXLMXXNUwisjm2pp4ETJZEC3WQ==}
     peerDependencies:
       algosdk: ^1.23.2 || ^2.1.0
     dependencies:
@@ -412,6 +380,32 @@ packages:
       - bufferutil
       - utf-8-validate
     dev: false
+
+  /@thencc/any-wallet/0.1.0_algosdk@2.1.0:
+    resolution: {integrity: sha512-J3dwFbDzcW3gS5t6Tm0gRoGzm0j6+5kyNNlicby0HdsgJtwbyY9RfSTwesHaRXLMXXNUwisjm2pp4ETJZEC3WQ==}
+    peerDependencies:
+      algosdk: ^1.23.2 || ^2.1.0
+    dependencies:
+      '@vue-reactivity/watch': 0.2.0_5dvaz4jnhp6coqtmaqcntkvxmm
+      '@vue/reactivity': 3.2.47
+      '@vue/shared': 3.2.47
+      algosdk: 2.1.0
+    optionalDependencies:
+      '@blockshake/defly-connect': 1.1.1_algosdk@2.1.0
+      '@perawallet/connect': 1.1.1_algosdk@2.1.0
+      '@randlabs/myalgo-connect': 1.4.2
+      '@thencc/inkey-client-js': 0.0.12
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@thencc/inkey-client-js/0.0.12:
+    resolution: {integrity: sha512-Vb1JrrKt+1FwNiVJN/XLW4S3lm1s+IMbeNUxJDtmtE00x9erkZBfDLLrTIzSO0Rwouuhuc2pBbvj0teKJJK83Q==}
+    requiresBuild: true
+    dev: false
+    optional: true
 
   /@vitejs/plugin-vue/4.0.0_vite@4.1.4+vue@3.2.47:
     resolution: {integrity: sha512-e0X4jErIxAB5oLtDqbHvHpJe/uWNkdpYV83AOG2xo2tEVSzCzewgJMtREZM30wXnM5ls90hxiOtAuVU6H5JgbA==}

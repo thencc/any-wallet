@@ -21,16 +21,20 @@ export const startWatchers = () => {
 
 	const initLocalStorage = () => {
 		// console.log('initLocalStorage');
-		let onLoadLStor = localStorage.getItem(lsKey);
-		if (onLoadLStor) {
-			try {
-				type StoredType = typeof AnyWalletState.stored;
-				let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
-				// console.log('onLoadLStorObj', onLoadLStorObj);
-				AnyWalletState.stored = onLoadLStorObj;
-			} catch (e) {
-				console.warn('bad sLocalStorage parse');
+		try {
+			let onLoadLStor = localStorage.getItem(lsKey);
+			if (onLoadLStor) {
+				try {
+					type StoredType = typeof AnyWalletState.stored;
+					let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
+					// console.log('onLoadLStorObj', onLoadLStorObj);
+					AnyWalletState.stored = onLoadLStorObj;
+				} catch (e) {
+					console.warn('bad sLocalStorage parse');
+				}
 			}
+		} catch(e) {
+			console.warn('could not access localstorage');
 		}
 	}
 	initLocalStorage(); // recall local storage object (1 time on load!)
@@ -41,7 +45,11 @@ export const startWatchers = () => {
 		() => AnyWalletState.stored,
 		() => {
 			// console.log('save me!', AnyWalletState.stored);
-			localStorage.setItem(lsKey, JSON.stringify(AnyWalletState.stored));
+			try {
+				localStorage.setItem(lsKey, JSON.stringify(AnyWalletState.stored));
+			} catch(e) {
+				console.warn('could not save to localstorage');
+			}
 		},
 		{
 			deep: true

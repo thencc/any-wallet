@@ -72,14 +72,7 @@ import {
 	Algonaut,
 	utils,
 } from '@thencc/algonautjs';
-
-const algonaut = new Algonaut({
-	BASE_SERVER: 'https://testnet-api.algonode.cloud',
-	INDEX_SERVER: '',
-	API_TOKEN: { 'accept': 'application/json' },
-	PORT:'',
-	LEDGER: 'testnet',
-});
+const algonaut = new Algonaut();
 
 export default defineComponent({
 	data() {
