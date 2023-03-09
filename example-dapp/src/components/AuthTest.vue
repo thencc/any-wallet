@@ -129,8 +129,9 @@ export default defineComponent({
 				[WALLET_ID.INKEY]: {
 					id: WALLET_ID.INKEY,
 					config: {
-						src: 'https://inkey-staging.web.app#123'
-						// src: 'http://localhost:5200/?wood'
+						src: 'https://inkey-staging.web.app#123',
+						// src: 'http://localhost:5200/?wood',
+						// align: 'right'
 					}
 				},
 				// [WALLET_ID.INKEY]: true, // simply accept the defaults
