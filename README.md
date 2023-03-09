@@ -1,4 +1,4 @@
-# web3-wallet-handler
+# any-wallet
 
 name subject to change.
 

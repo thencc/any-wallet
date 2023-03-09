@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-import { CLIENT_PKGS, excludeClients } from '@thencc/web3-wallet-handler';
+import { CLIENT_PKGS, excludeClients } from '@thencc/any-wallet';
 
 // https://vitejs.dev/config/
 export default defineConfig({

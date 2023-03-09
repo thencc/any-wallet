@@ -68,7 +68,7 @@ import {
 	// watch,
 	setChangedStateHandler,
 	setChangedAccountHandler,
-} from '@thencc/web3-wallet-handler';
+} from '@thencc/any-wallet';
 
 import { Algonaut } from '@thencc/algonautjs';
 const algonaut = new Algonaut({

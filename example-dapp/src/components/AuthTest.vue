@@ -65,7 +65,7 @@ import {
 	enableWallets,
 	WALLET_ID,
 	watch,
-} from '@thencc/web3-wallet-handler';
+} from '@thencc/any-wallet';
 
 
 import {
