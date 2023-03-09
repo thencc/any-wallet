@@ -1,3 +1,6 @@
+> :warning:⚠️ **this is beta software**: no significant security audits have yet been performed so use at your own discretion.
+
+
 # any-wallet
 
 name subject to change.
