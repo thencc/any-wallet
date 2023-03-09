@@ -3,17 +3,17 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"link-w3h": "pnpm link @thencc/any-wallet --global",
-		"unlink-w3h": "pnpm unlink @thencc/any-wallet",
+		"link-aw": "pnpm link @thencc/any-wallet --global",
+		"unlink-aw": "pnpm remove @thencc/any-wallet",
 		"link-algjs": "pnpm link @thencc/algonautjs --global",
-		"unlink-algjs": "pnpm unlink @thencc/algonautjs",
+		"unlink-algjs": "pnpm remove @thencc/algonautjs",
 		"dev": "vite --force",
 		"build": "vue-tsc && vite build",
 		"site-preview": "vite preview"
 	},
 	"dependencies": {
 		"@thencc/algonautjs": "^0.3.4",
-		"@thencc/any-wallet": "^0.1.3",
+		"@thencc/any-wallet": "^0.1.6",
 		"vue": "^3.2.41"
 	},
 	"devDependencies": {

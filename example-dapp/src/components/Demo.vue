@@ -97,13 +97,6 @@ export default defineComponent({
 		// enableWallets(); // enables defaults
 
 		enableWallets({
-			// [WALLET_ID.INKEY]: {
-			// 	id: WALLET_ID.INKEY,
-			// 	config: {
-			// 		src: 'https://inkey-staging.web.app/?test#123'
-			// 		// src: 'http://localhost:5200/?wood'
-			// 	}
-			// },
 			[WALLET_ID.INKEY]: true,
 			[WALLET_ID.PERA]: true,
 			[WALLET_ID.MYALGO]: true,

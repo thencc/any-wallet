@@ -192,8 +192,6 @@ export const getAccountsByWalletId = (id: WALLET_ID) => {
 };
 
 export const removeAccountsByWalletId = (id: WALLET_ID) => {
-	// console.log('removeAccountsByWalletId', id);
-
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(

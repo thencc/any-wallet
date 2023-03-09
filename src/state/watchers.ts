@@ -7,7 +7,8 @@ const stateChangeHandlers = {
 	changedAccount: (a: typeof AnyWalletState.stored.activeAccount) => { },
 };
 
-export const lsKey = 'AnyWallet';
+// export const lsKey = 'AnyWallet';
+export const lsKey = 'AW'; // !!! weirdest bug started occuring when this was set the same after multiple days... ls started reseting? running cached code?
 
 // FYI: should only happen ONCE +
 // FYI: watchers MUST be started AFTER the state inits

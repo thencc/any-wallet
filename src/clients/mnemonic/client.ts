@@ -86,7 +86,6 @@ export class MnemonicClient extends BaseClient {
 
 	async requestMnemonic(): Promise<string> {
 		if (isBrowser()) {
-			// TODO: store it locally?
 			const pass = prompt('Enter mnemonic passphrase (25 words)');
 			return pass ? pass : '';
 		} else {
@@ -94,14 +93,17 @@ export class MnemonicClient extends BaseClient {
 		}
 	}
 
-	signTransactions(
+	async signTransactions(
 		connectedAccounts: string[],
 		transactions: Uint8Array[],
 		indexesToSign?: number[],
 		returnGroup = true
 	): Promise<Uint8Array[]> {
 		if (!this.sdk) {
-			throw new Error('Client has no account');
+			await this.connect(); // re-authenticate into the account
+		}
+		if (!this.sdk) {
+			throw new Error('Client could not init');
 		}
 
 		// Decode the transactions to access their properties.
