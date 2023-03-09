@@ -5,7 +5,7 @@
 is a wallet connection handler for web3 dapps
 ![](./any-wallet-screenshot.png)
 
-# [🌐 live-demo](https://thencc.github.io/any-wallet/)
+# [🌐 live-demo](https://thencc.github.io/any-wallet/) | [example dapp source code](https://github.com/thencc/any-wallet/blob/main/example-dapp/src/components/Demo.vue)
 
 
 ## about
