@@ -72,11 +72,13 @@ import {
 
 import { Algonaut } from '@thencc/algonautjs';
 const algonaut = new Algonaut({
-	LEDGER: 'mainnet',
-	BASE_SERVER: 'https://mainnet-api.algonode.cloud',
-	INDEX_SERVER: '',
-	API_TOKEN: { 'accept': 'application/json' },
-	PORT:'',
+	nodeConfig: {
+		LEDGER: 'mainnet',
+		BASE_SERVER: 'https://mainnet-api.algonode.cloud',
+		INDEX_SERVER: '',
+		API_TOKEN: { 'accept': 'application/json' },
+		PORT: '',
+	}
 });
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
@@ -91,20 +93,22 @@ export default defineComponent({
 	},
 	mounted() {
 		// call this at least once (choose which wallets to enable)
-		enableWallets({
-			// [WALLET_ID.INKEY]: {
-			// 	config: {
-			// 		src: 'https://inkey-staging.web.app?wood=1'
-			// 	}
-			// },
-			[WALLET_ID.INKEY]: true,
-			// [WALLET_ID.PERA]: true,
-			// [WALLET_ID.MYALGO]: true,
-			// [WALLET_ID.ALGOSIGNER]: true,
-			// [WALLET_ID.EXODUS]: true,
-			// [WALLET_ID.DEFLY]: true,
-			// [WALLET_ID.MNEMONIC]: true,
-		});
+		enableWallets(); // enables default
+
+		// enableWallets({
+		// 	// [WALLET_ID.INKEY]: {
+		// 	// 	config: {
+		// 	// 		src: 'https://inkey-staging.web.app?wood=1'
+		// 	// 	}
+		// 	// },
+		// 	[WALLET_ID.INKEY]: true,
+		// 	// [WALLET_ID.PERA]: true,
+		// 	// [WALLET_ID.MYALGO]: true,
+		// 	// [WALLET_ID.ALGOSIGNER]: true,
+		// 	// [WALLET_ID.EXODUS]: true,
+		// 	// [WALLET_ID.DEFLY]: true,
+		// 	// [WALLET_ID.MNEMONIC]: true,
+		// });
 
 		setChangedAccountHandler(
 			(acct) => {

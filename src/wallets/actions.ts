@@ -165,7 +165,7 @@ export const enableWallets = (
 	if (AnyWalletState.enabledWallets == null) {
 		AnyWalletState.enabledWallets = {} as WalletsObj;
 	} else {
-		console.warn('enableWallets called while some wallets were already initialized (add to them)');
+		// console.debug('enableWallets called while some wallets were already initialized (add to them)');
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
