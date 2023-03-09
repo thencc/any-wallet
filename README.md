@@ -129,11 +129,18 @@ console.log(AnyWalletState.isSigning);
 
 ## using the mnemonic wallet (for dev!)
 this wallet can be connected via a mnemonic passed into the init params OR via html prompt input.
-1. mnemonic via prompt input
-...
+1. mnemonic via prompt input (the default behavior, no config change needed)
 
 2. mnemonic via code config
-...
+```ts
+enableWallets({
+	[WALLET_ID.MNEMONIC]: {
+		config: {
+			mnemonic: 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend'
+		}
+	},
+});
+```
 
 
 
