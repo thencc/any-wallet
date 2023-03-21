@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/any-wallet",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -35,14 +35,14 @@
 		"@vue/shared": "^3.2.47"
 	},
 	"optionalDependencies": {
-		"@blockshake/defly-connect": "^1.1.1",
-		"@perawallet/connect": "^1.1.1",
+		"@blockshake/defly-connect": "^1.1.2",
+		"@perawallet/connect": "^1.2.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
 		"@thencc/inkey-client-js": "^0.0.15",
 		"buffer": "^6.0.3"
 	},
 	"peerDependencies": {
-		"algosdk": "^1.23.2 || ^2.1.0"
+		"algosdk": "^2.1.0"
 	},
 	"devDependencies": {
 		"algosdk": "^2.1.0",
