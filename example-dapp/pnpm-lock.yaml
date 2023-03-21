@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@thencc/algonautjs': ^0.3.7
-  '@thencc/any-wallet': ^0.1.8
+  '@thencc/any-wallet': ^0.1.9
   '@vitejs/plugin-vue': ^4.0.0
   typescript: ^4.6.4
   vite: ^4.1.1
@@ -11,7 +11,7 @@ specifiers:
 
 dependencies:
   '@thencc/algonautjs': 0.3.7
-  '@thencc/any-wallet': 0.1.8
+  '@thencc/any-wallet': 0.1.9
   vue: 3.2.47
 
 devDependencies:
@@ -347,7 +347,7 @@ packages:
   /@thencc/algonautjs/0.3.7:
     resolution: {integrity: sha512-tMSQe5Vx/037iaBVKFr4Zv81K2utre2FzW94jAgKw5YksTf68wNVYfua8rt9GYeeHp/FyE+2t88jC+JaCn2YZA==}
     dependencies:
-      '@thencc/any-wallet': 0.1.8_algosdk@2.1.0
+      '@thencc/any-wallet': 0.1.9_algosdk@2.1.0
       algosdk: 2.1.0
       buffer: 6.0.3
       tslib: 2.5.0
@@ -362,8 +362,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/any-wallet/0.1.8:
-    resolution: {integrity: sha512-pchfXN7PYTAtTe1oNBEnT7KjA1Np+25A99Jfa1INxjAosNi02LJ2fjm+EPR6TDlpmcIRLuL4jsKyFVjQz+oUsw==}
+  /@thencc/any-wallet/0.1.9:
+    resolution: {integrity: sha512-Uuit40xcK7RZ9kz8m9vknQiygV0sSzeLDFz2EBWAB/Koa6Yi/MFHzO3E7hCO+2c6HTDKqeEUA9mfSPAdCrp3kA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -381,8 +381,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/any-wallet/0.1.8_algosdk@2.1.0:
-    resolution: {integrity: sha512-pchfXN7PYTAtTe1oNBEnT7KjA1Np+25A99Jfa1INxjAosNi02LJ2fjm+EPR6TDlpmcIRLuL4jsKyFVjQz+oUsw==}
+  /@thencc/any-wallet/0.1.9_algosdk@2.1.0:
+    resolution: {integrity: sha512-Uuit40xcK7RZ9kz8m9vknQiygV0sSzeLDFz2EBWAB/Koa6Yi/MFHzO3E7hCO+2c6HTDKqeEUA9mfSPAdCrp3kA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:

@@ -55,6 +55,11 @@
 		<button v-if="AnyWalletState.enabledWallets !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.enabledWallets !== null)">
 			sign transaction test
 		</button>
+
+		<!-- <br />
+		<button @click="doUnsub">
+			doUnsub
+		</button> -->
 	</div>
 </template>
 
@@ -63,8 +68,8 @@ import { defineComponent } from 'vue';
 import {
 	AnyWalletState,
 	enableWallets,
-	setChangedStateHandler,
-	setChangedAccountHandler,
+	subscribeToStateChanges,
+	subscribeToAccountChanges,
 	signTransactions,
 	WALLET_ID,
 } from '@thencc/any-wallet';
@@ -83,6 +88,14 @@ const algonaut = new Algonaut();
 // });
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
+
+
+
+const unsubAcctChange1 = subscribeToAccountChanges(
+	(acct) => {
+		console.log('outside acct changed', acct);
+	}
+);
 
 export default defineComponent({
 	data() {
@@ -106,14 +119,14 @@ export default defineComponent({
 			[WALLET_ID.MNEMONIC]: true,
 		});
 
-		setChangedAccountHandler(
+		subscribeToAccountChanges(
 			(acct) => {
 				this.selectedAddrFromDropdown = acct;
 				this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
 			}
 		);
 
-		setChangedStateHandler(
+		subscribeToStateChanges(
 			() => this.$forceUpdate()
 		);
 	},
@@ -161,6 +174,10 @@ export default defineComponent({
 			// 	console.log('groupedTxn', groupedTxn);
 			// 	console.log('id: ', groupedTxn.txId);
 		},
+		doUnsub() {
+			console.log('doUnsub');
+			unsubAcctChange1();
+		}
 	}
 });
 </script>

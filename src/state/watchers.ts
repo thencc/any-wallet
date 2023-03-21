@@ -2,13 +2,16 @@ import { watch } from '@vue-reactivity/watch';
 import { isBrowser } from 'src/utils';
 import { AnyWalletState } from './index';
 
-const stateChangeHandlers = {
-	changedState: (s: typeof AnyWalletState) => { },
-	changedAccount: (a: typeof AnyWalletState.stored.activeAccount) => { },
+type ChangedStateHandler = (s: typeof AnyWalletState) => void;
+type ChangedAccountHandler = (s: typeof AnyWalletState.stored.activeAccount) => void;
+
+const stateHandlers = {
+	changedStateHandlers: [] as ChangedStateHandler[],
+	changedAccountHandlers: [] as ChangedAccountHandler[],
 };
 
 // export const lsKey = 'AnyWallet';
-export const lsKey = 'AW'; // !!! weirdest bug started occuring when this was set the same after multiple days... ls started reseting? running cached code?
+export const lsKey = 'AW'; // !!! weirdest bug started occuring when this was set the same after multiple days... ls started reseting? running cached code? dont use above key.
 
 // FYI: should only happen ONCE +
 // FYI: watchers MUST be started AFTER the state inits
@@ -60,7 +63,7 @@ export const startWatchers = () => {
 	watch(
 		AnyWalletState,
 		(latestState) => {
-			stateChangeHandlers.changedState(latestState);
+			stateHandlers.changedStateHandlers.forEach(h => h(latestState));
 		},
 		{
 			deep: true,
@@ -71,7 +74,7 @@ export const startWatchers = () => {
 	watch(
 		() => AnyWalletState.stored.activeAccount,
 		(a) => {
-			stateChangeHandlers.changedAccount(a);
+			stateHandlers.changedAccountHandlers.forEach(h => h(a));
 		},
 		{
 			deep: true,
@@ -80,12 +83,28 @@ export const startWatchers = () => {
 	);
 };
 
-export const setChangedStateHandler = (handler: (s: typeof AnyWalletState) => void, callOnSet = true) => {
-	stateChangeHandlers.changedState = handler;
-	if (callOnSet) stateChangeHandlers.changedState(AnyWalletState); // call it once on set
+// return unsubscriber func (call to stop this handler)
+export const subscribeToStateChanges = (handler: (s: typeof AnyWalletState) => void, opts: { callOnSet: boolean } = { callOnSet: true }) => {
+	stateHandlers.changedStateHandlers.push(handler);
+	if (opts.callOnSet) handler(AnyWalletState); // call it once on set
+
+	return () => {
+		let idx = stateHandlers.changedStateHandlers.indexOf(handler);
+		if (idx !== -1) {
+			stateHandlers.changedStateHandlers.splice(idx, 1);
+		}
+	};
 };
 
-export const setChangedAccountHandler = (handler: (a: typeof AnyWalletState.stored.activeAccount) => void, callOnSet = true) => {
-	stateChangeHandlers.changedAccount = handler;
-	if (callOnSet) stateChangeHandlers.changedAccount(AnyWalletState.stored.activeAccount); // call it once on set
+// return unsubscriber func
+export const subscribeToAccountChanges = (handler: (a: typeof AnyWalletState.stored.activeAccount) => void, opts: { callOnSet: boolean } = { callOnSet: true }) => {
+	stateHandlers.changedAccountHandlers.push(handler);
+	if (opts.callOnSet) handler(AnyWalletState.stored.activeAccount); // call it once on set
+
+	return () => {
+		let idx = stateHandlers.changedAccountHandlers.indexOf(handler);
+		if (idx !== -1) {
+			stateHandlers.changedAccountHandlers.splice(idx, 1);
+		}
+	};
 };

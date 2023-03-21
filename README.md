@@ -36,8 +36,8 @@ then you're able to import the lib + use its features:
 import {
 	AnyWalletState,
 	enableWallets,
-	setChangedStateHandler,
-	setChangedAccountHandler,
+	subscribeToStateChanges,
+	subscribeToAccountChanges,
 	signTransactions,
 	WALLET_ID,
 } from '@thencc/any-wallet';
@@ -145,23 +145,28 @@ enableWallets({
 
 
 ## vue!
-when used with vue, you might need to re-render a component's <template> computations if you are displaying information stored in `AnyWalletState` because these deep object changes arent tracked by the vue runtime. for this, there are 2 helpful functions: `setChangedAccountHandler` and `setChangedStateHandler` which allow you to define a callback when say the active account changes or when anything in the state tree changes.
+when used with vue, you might need to re-render a component's `<template>` computations if you are displaying information stored in `AnyWalletState` because these deep object changes arent tracked by the vue runtime. for this, there are 2 helpful functions: `subscribeToAccountChanges` and `subscribeToStateChanges` which allow you to define a callback when say the active account changes or when anything in the state tree changes.
 
 ```ts
 import {
 	AnyWalletState,
-	setChangedStateHandler,
+	subscribeToStateChanges,
 } from '@thencc/any-wallet';
 
 // then in the vue component's mounted or setup hook you would add:
 export default defineComponent({
 	mounted() {
-		setChangedStateHandler(
+		let unsubscribe = subscribeToStateChanges(
 			() => this.$forceUpdate()
 		);
+
+		// unsubscribe(); // if you wanted to call this at some point the handler would stop getting called
 	},
 });
 ```
+
+> Applies to most frontends with components in some way. `this.requestUpdate()` in `lit` or `this.forceUpdate()` in `react`.
+
 
 
 ## Notes
