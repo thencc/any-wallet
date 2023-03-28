@@ -107,8 +107,22 @@ import {
 	signTransactions
 } from '@thencc/any-wallet';
 
-// uses the current activeWallet as chosen by the user
-await signTransactions([txn1, txn2]);
+const txn1 = await algonaut.atomicSendAlgo({
+	amount: 1000,
+	to: receiverAddr,
+	from: senderAddr // .from needed IF not authenticated
+});
+
+const assetId = 10458941;
+const txn2 = await algonaut.atomicOptInAsset(assetId);
+
+// prompts user for approval using current activeWallet as chosen by the user
+const signedTxns = await signTransactions([txn1, txn2]); // throws if user rejects txn
+// "signedTxns" is an array of Uint8Array's (raw algorand txn bytes)
+
+// now do what you want w the signed txns, like submit them to the network
+const txnGroup = await algonaut.algodClient.sendRawTransaction(signedTxns).do();
+console.log('txn id: ', txnGroup.txId);
 ```
 
 
