@@ -70,6 +70,7 @@ export class MnemonicClient extends BaseClient {
 					name: `Mnemonic Wallet 1`,
 					address: this.sdk!.addr,
 					walletId: METADATA.id,
+					chain: METADATA.chain,
 				},
 			],
 		};

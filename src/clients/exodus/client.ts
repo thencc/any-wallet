@@ -93,6 +93,7 @@ export class ExodusClient extends BaseClient {
 				name: `Exodus 1`,
 				address,
 				walletId: METADATA.id,
+				chain: METADATA.chain,
 			},
 		];
 

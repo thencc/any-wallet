@@ -73,6 +73,7 @@ export class MyAlgoClient extends BaseClient {
 		const mappedAccounts = accounts.map((account) => ({
 			...account,
 			walletId: METADATA.id,
+			chain: METADATA.chain,
 		}));
 
 		return {

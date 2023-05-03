@@ -4,12 +4,14 @@ export interface Account {
 	walletId: WALLET_ID;
 	name: string;
 	address: string;
+	chain: string;
 }
 
 export type WalletProvider = {
 	id: WALLET_ID;
 	name: string;
 	icon: string;
+	chain: string;
 };
 
 type ExtendValues<Type> = {

@@ -60,6 +60,9 @@ export class InkeyClient extends BaseClient {
 				clientSdk = await createClientSdk(sdkConfig);
 			}
 
+			// delay for css to load in so it doesnt look jumpy
+			await new Promise(resolve => setTimeout(resolve, 600));
+
 			return new InkeyClient({
 				sdk: clientSdk,
 			});
@@ -69,8 +72,8 @@ export class InkeyClient extends BaseClient {
 		}
 	}
 
-	async connect() {
-		const inkeyAccounts = await this.sdk.connect();
+	async connect(p?: { siteName?: string, username?: string, onDisconnect?: () => void }) {
+		const inkeyAccounts = await this.sdk.connect(p);
 		// TODO make inkey connect throw / return something to catch when inkey modal was closed and connect didnt occur
 
 		if (!inkeyAccounts) {
@@ -94,7 +97,12 @@ export class InkeyClient extends BaseClient {
 			name: account.name,
 			address: account.address,
 			walletId: METADATA.id,
+			chain: METADATA.chain,
 		}));
+
+		if (p?.onDisconnect) {
+			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
+		}
 
 		return {
 			...METADATA,

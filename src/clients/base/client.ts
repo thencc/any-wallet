@@ -12,7 +12,7 @@ export abstract class BaseClient {
 	constructor(params?: ClientConstructorParams) {}
 
 	// 'abstracts' means things this class has to definitely implement
-	abstract connect(onDisconnect: () => void): Promise<Wallet>;
+	abstract connect(x: any): Promise<Wallet>;
 	abstract disconnect(): Promise<void>;
 	abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;
 	abstract signTransactions(

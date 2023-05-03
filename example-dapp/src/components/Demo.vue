@@ -40,14 +40,16 @@
 						id=""
 						@change="activeAddrChanged(selectedAddrFromDropdown)">
 						<option v-for="a of p.accounts" :value="a">
-							{{ getAddrFromAccount(a) }}
+							{{ getAddrFromAccount(a) }} ({{ a.name }})
 						</option>
 					</select>
 
 					<button v-if="p.isConnected && !p.isActive" @click="p.setAsActiveWallet()" :disabled="!(p.isConnected && !p.isActive)">set as active</button>
 
 					<button v-else-if="p.isConnected" @click="p.disconnect()" :disabled="!(p.isConnected)">disconnect</button>
-					<button v-else="" @click="p.connect()" :disabled="!!(p.isConnected)">connect</button>
+					<!-- <button v-else="" @click="p.connect()" :disabled="!!(p.isConnected)">connect</button> -->
+
+					<button @click="p.connect({ username: 'sc_aw_03' })">connect</button>
 				</template>
 			</div>
 		</div>
@@ -84,6 +86,15 @@ const algonaut = new Algonaut();
 // 		INDEX_SERVER: '',
 // 		API_TOKEN: { 'accept': 'application/json' },
 // 		PORT: '',
+// 	},
+// 	anyWalletConfig: {
+// 		walletInitParams: {
+// 			inkey: {
+// 				config: {
+// 					src: 'http://localhost:5200/'
+// 				}
+// 			}
+// 		}
 // 	}
 // });
 // https://testnet-api.algonode.cloud

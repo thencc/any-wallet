@@ -25,7 +25,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		connecting: false,
 
 		// === methods ===
-		isReady: async (): Promise<true> => {
+		loadClient: async (): Promise<true> => {
 			if (w.inited) {
 				return true;
 			} else {
@@ -49,13 +49,13 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				return true;
 			}
 		},
-		connect: async () => {
+		connect: async (p?: any) => {
 			w.connecting = true;
 			try {
-				await w.isReady();
+				await w.loadClient();
 
-				// arg is onDisconnect
-				let { accounts } = await w.client!.connect(() => { });
+				// p arg can be onDisconnect or siteName, username (for inkey for ex)
+				let { accounts } = await w.client!.connect(p);
 
 				// if it gets past .connect, it worked, so saved the returned accts + set one as active
 				addConnectedAccounts(accounts);
@@ -69,9 +69,12 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		disconnect: async () => {
-			removeAccountsByWalletId(id);
+			if (AnyWalletState.stored.activeAccount &&
+				AnyWalletState.stored.activeAccount.walletId == w.id) {
+				removeAccount(AnyWalletState.stored.activeAccount);
+			}
 
-			await w.isReady();
+			await w.loadClient();
 			try {
 				await w.client!.disconnect();
 			} catch (e) {
@@ -79,7 +82,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		reconnect: async () => {
-			await w.isReady();
+			await w.loadClient();
 			await w.client!.reconnect(() => { });
 		},
 		setAsActiveWallet: () => {
@@ -94,7 +97,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			removeAccountsByWalletId(id);
 		},
 		signTransactions: async (transactions: Uint8Array[]): Promise<Uint8Array[]> => {
-			await w.isReady(); // loads sdk only ondemand
+			await w.loadClient(); // loads sdk only ondemand
 
 			// kinda clunky since modal / wallet ui might pop up twice, but it works...
 			let addrsOfThisWallet = w.accounts.map(a => a.address);
@@ -103,14 +106,14 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				let accts = await w.connect(); // adds to w.accounts
 				addrsOfThisWallet = accts.map(a => a.address);
 
-				// only real consistenyl way to show auth popup + txn approval pop across wallet types
+				// only real consistent way to show auth popup + txn approval pop across wallet types
 				await new Promise(resolve => setTimeout(resolve, 1000));
 			}
 
 			w.signing = true;
 			try {
 				let txnsSigned =
-					await w.client! // is defined after awaiting isReady
+					await w.client! // is defined after awaiting loadClient
 						.signTransactions(
 							addrsOfThisWallet,
 							transactions,
@@ -210,6 +213,37 @@ export const removeAccountsByWalletId = (id: WALLET_ID) => {
 	let acctsToKeep = AnyWalletState.stored.connectedAccounts.filter(
 		(account) => account.walletId !== id
 	);
+	AnyWalletState.stored.connectedAccounts = acctsToKeep;
+};
+
+export const removeAccount = (acct: Account) => {
+	if (AnyWalletState.stored.activeAccount) {
+		// nullify active acct if its being removed (FYI this has to come first)
+		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
+			(a) => {
+				return 	(a.walletId == acct.walletId) &&
+						(a.name == acct.name) &&
+						(a.address == acct.address)
+			}
+		);
+
+		for (let acct of acctsToRemove) {
+			if (acct.address == AnyWalletState.stored.activeAccount.address &&
+				acct.walletId == AnyWalletState.stored.activeAccount.walletId) {
+				AnyWalletState.stored.activeAccount = null; // unsets activeAccount
+				break;
+			}
+		}
+	}
+
+	let acctsToKeep = AnyWalletState.stored.connectedAccounts;
+	let rmvIdx = acctsToKeep.findIndex(a => {
+		return (a.walletId == acct.walletId) &&
+			(a.address == acct.address) &&
+			(a.name == acct.name)
+	});
+	acctsToKeep.splice(rmvIdx, 1);
+
 	AnyWalletState.stored.connectedAccounts = acctsToKeep;
 };
 

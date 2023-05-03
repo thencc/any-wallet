@@ -83,6 +83,7 @@ export class DeflyClient extends BaseClient {
 			name: `Defly Wallet ${index + 1}`,
 			address,
 			walletId: METADATA.id,
+			chain: METADATA.chain,
 		}));
 
 		return {
@@ -105,6 +106,7 @@ export class DeflyClient extends BaseClient {
 				name: `Defly Wallet ${index + 1}`,
 				address,
 				walletId: METADATA.id,
+				chain: METADATA.chain,
 			})),
 		};
 	}
