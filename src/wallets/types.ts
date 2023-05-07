@@ -12,7 +12,7 @@ import type { InitParams as MyAlgoInitParams } from 'src/clients/myalgo/types';
 import type { InitParams as AlgoSignerInitParams } from 'src/clients/algosigner/types';
 import type { InitParams as ExodusInitParams } from 'src/clients/exodus/types';
 import type { InitParams as DeflyInitParams } from 'src/clients/defly/types';
-import type { InitParams as MnemonicInitParams } from 'src/clients/mnemonic/types';
+import type { InitParamsBase as MnemonicInitParams } from 'src/clients/mnemonic/types';
 
 export type WalletInitParamsObj = {
 	[WALLET_ID.PERA]?: boolean | {

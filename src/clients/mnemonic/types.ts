@@ -10,7 +10,9 @@ export type MnemonicClientConstructor = {
 	sdk?: MnemonicSdk;
 };
 
-export type InitParams = {
+export type InitParamsBase = {
 	config?: SdkConfig;
 	sdk?: MnemonicSdk;
-} | SdkConfig['mnemonic'];
+};
+
+export type InitParams = InitParamsBase | SdkConfig['mnemonic'];
