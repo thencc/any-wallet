@@ -25,19 +25,30 @@ export class MnemonicClient extends BaseClient {
 			let clientSdk: undefined | MnemonicSdk = undefined;
 
 			// can intake:
+			// 0. mnemonic string (instead of ip)
 			// 1. a algosdk.Account via ip.sdk
 			// 2. OR a mnemonic from ip.config
 			// 3. html prompt input (default)
-			if (initParams && initParams.sdk) {
-				clientSdk = initParams.sdk; // already init-ed sdk/acct
-			} else {
-				// get mnemonic from config arg or will prompt in ui later
-				if (initParams && initParams.config) {
-					if (initParams.config.mnemonic) {
-						let mn = initParams.config.mnemonic;
-						let acct = mnemonicToSecretKey(mn);
-						clientSdk = acct;
+			if (initParams) {
+				if (typeof initParams == 'string') {
+					// do init w passed in mnemonic (try)
+					let acct = mnemonicToSecretKey(initParams);
+					clientSdk = acct;
+				} else if (typeof initParams == 'object') {
+					// assume initParams is an object
+					if (initParams.sdk) {
+						clientSdk = initParams.sdk; // already init-ed sdk/acct
+					} else if (initParams.config) {
+						if (initParams.config.mnemonic) {
+							let mn = initParams.config.mnemonic;
+							let acct = mnemonicToSecretKey(mn);
+							clientSdk = acct;
+						}
+					} else {
+						// insuffient mnemonic client init params
 					}
+				} else {
+					throw new Error('bad initParams for mnemonic client');
 				}
 			}
 
