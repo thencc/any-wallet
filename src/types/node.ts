@@ -1,4 +1,4 @@
-import type algosdk from 'algosdk'; // TODO remove this
+import type algosdk from 'algosdk';
 export type AlgodClientOptions = ConstructorParameters<typeof algosdk.Algodv2>;
 
 export type Network = 'betanet' | 'testnet' | 'mainnet' | string;

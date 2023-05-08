@@ -11,21 +11,7 @@ import {
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
 import { METADATA } from './constants';
 import { decodeObj, encodeAddress } from 'algosdk';
-
-// helpers TODO remove this / move it to algonaut pkg
-export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
-	if (typeof window == undefined) {
-		throw new Error('[inkey] cannot access window');
-	}
-	var binary = '';
-	var bytes = new Uint8Array(buffer);
-	var len = bytes.byteLength;
-	for (var i = 0; i < len; i++) {
-		binary += String.fromCharCode(bytes[i]);
-	}
-	return window.btoa(binary);
-};
-
+import { arrayBufferToBase64 } from 'src/utils';
 
 export class InkeyClient extends BaseClient {
 	sdk: InkeySdk;
@@ -45,12 +31,12 @@ export class InkeyClient extends BaseClient {
 			// a client sdk can be passed in pre-initialized. if so, use that
 			let clientSdk: InkeySdk;
 			if (initParams && initParams.sdk) {
-				clientSdk = initParams.sdk; // already init-ed sdk
+				clientSdk = initParams.sdk; // the already init-ed sdk
 			} else {
 
 				let sdkConfig: SdkConfig;
 				const defaultConfig: SdkConfig = {
-					src: 'https://inkey-staging.web.app', //
+					src: 'https://inkey-staging.web.app', // TODO this shouldnt be the default src after 0.3.0 merge
 					align: 'center',
 				};
 				sdkConfig = initParams?.config || defaultConfig;
@@ -74,7 +60,7 @@ export class InkeyClient extends BaseClient {
 
 	async connect(p?: { siteName?: string, username?: string, onDisconnect?: () => void }) {
 		const inkeyAccounts = await this.sdk.connect(p);
-		// TODO make inkey connect throw / return something to catch when inkey modal was closed and connect didnt occur
+		// TODO make inkey connect throw / return something to catch when inkey-wallet modal was closed and connect didnt occur
 
 		if (!inkeyAccounts) {
 			throw new Error('no inkeyAccounts');
@@ -110,7 +96,7 @@ export class InkeyClient extends BaseClient {
 		};
 	}
 
-	// TODO implement reconnect
+	// what is .reconnect() used for? its in use-wallet lib but why?
 	async reconnect(): Promise<Wallet | null> {
 		// console.log('inkey reconnect')
 		return null;

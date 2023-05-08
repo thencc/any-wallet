@@ -45,7 +45,7 @@ export type WalletInitParamsObj = {
 		config?: DeflyInitParams['config'];
 		sdk?: DeflyInitParams['sdk'];
 	};
-	[WALLET_ID.MNEMONIC]?: boolean | {
+	[WALLET_ID.MNEMONIC]?: boolean | string | {
 		id?: WALLET_ID.MNEMONIC;
 		config?: MnemonicInitParams['config'];
 		sdk?: MnemonicInitParams['sdk'];

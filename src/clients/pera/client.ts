@@ -37,7 +37,8 @@ export class PeraClient extends BaseClient {
 		try {
 			// shim for client that use walletconnect under the hood
 			if (typeof window !== 'undefined') {
-				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
+				// TODO check if still in needed lib version that uses algosdk w buffer shim already done?
+				(window as any).global = window; // necessary shim for pera. 
 			} else {
 				console.warn('Using a browser lib not in a browser...');
 			}

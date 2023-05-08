@@ -34,7 +34,8 @@ export class DeflyClient extends BaseClient {
 		try {
 			// necessary shim for lib that use walletconnect under the hood (pera, defly, wc)
 			if (typeof window !== 'undefined') {
-				(window as any).global = window; // necessary shim for pera. TODO still in new lib version that uses algosdk w buffer shim already done?
+				// TODO check if this is still needed in new lib version that uses algosdk w buffer shim already done
+				(window as any).global = window; // necessary shim for pera. 
 			} else {
 				console.warn('Using a browser lib not in a browser...');
 			}
@@ -51,7 +52,6 @@ export class DeflyClient extends BaseClient {
 				};
 				sdkConfig = initParams?.config || defaultConfig;
 
-				// TODO get this pkg name from METADATA
 				let sdkLib = await import('@blockshake/defly-connect');
 				let createClientSdk = sdkLib.DeflyWalletConnect || sdkLib.default.DeflyWalletConnect; // sometimes needs this shim
 
@@ -72,7 +72,6 @@ export class DeflyClient extends BaseClient {
 		// console.log(`${METADATA.id} connect`);
 		const accounts = await this.sdk.connect().catch(console.info);
 
-		// TODO might have to do same pera (any) shim for connector
 		this.sdk.connector.on('disconnect', onDisconnect);
 
 		if (!accounts || accounts.length === 0) {

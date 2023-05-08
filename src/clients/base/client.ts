@@ -1,5 +1,5 @@
 import type {
-	Wallet, // TODO type this better
+	Wallet,
 } from '../../types';
 
 import type { ClientMetadata, ClientConstructorParams, ClientInitParams } from './types';

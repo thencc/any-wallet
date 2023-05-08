@@ -11,7 +11,6 @@ import { MnemonicClient } from 'src/clients/mnemonic/client';
 export const CLIENT_MAP = {
 	[WALLET_ID.PERA]: {
 		client: PeraClient,
-		// metadata: // ? TODO consider this approach
 	},
 	[WALLET_ID.INKEY]: {
 		client: InkeyClient,
@@ -45,3 +44,5 @@ export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_P
 };
 
 export type ClientType<T extends WALLET_ID> = InstanceType<typeof CLIENT_MAP[T]['client']>;
+
+export * from './base';

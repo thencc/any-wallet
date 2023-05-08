@@ -5,20 +5,18 @@ import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, 
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 
-// other TODO sort
+// FYI import order matters during build
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 
-// FYI ip/initParams arg isnt really used anymore w new code design
-// TODO remove WalClient + ip (even smaller build size)
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 	let w = reactive({
 		// === wallet state ===
 		id: id,
 		metadata: CLIENT_MAP[id].client.metadata,
 		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does...
-		initParams: ip,
+		initParams: ip, // params used for client init
 		inited: false, // client
 		initing: false, // client + sdk
 		signing: false,
@@ -40,8 +38,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				} else {
 					// skip it
 					// catches here for false or wrong init obj (or should wrong obj init it w defaults?)
-					// TODO show err
-					console.warn('bad/incomplete init params for wallet:', id);
+					// TODO ? show error in ui to user?
+					console.warn('Bad/incomplete init params for wallet:', id);
 				}
 
 				w.initing = false;
@@ -163,7 +161,6 @@ export const enableWallets = (
 	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
 	// console.log('enableWallets started');
-	// TODO add (walletsToEnable = array) ? simply: ['pera', 'inkey'] etc
 
 	if (AnyWalletState.enabledWallets == null) {
 		AnyWalletState.enabledWallets = {} as WalletsObj;
@@ -173,7 +170,8 @@ export const enableWallets = (
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
 		let wId = wKey as WALLET_ID; // could just be a unique id for double initing but why
-		AnyWalletState.allWallets[wId]!.initParams = wInitParams; // ? should allWallets even be in global state?
+		// TODO ? should allWallets even be in global state?
+		AnyWalletState.allWallets[wId]!.initParams = wInitParams as Exclude<typeof wInitParams, String>; // as ClientInitParams; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly)
 		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId];
 	}
 
@@ -188,6 +186,21 @@ export const enableWallets = (
 	}
 
 	return AnyWalletState.enabledWallets;
+};
+
+export const disableWallets = (wIds: WALLET_ID[]) => {
+	if (!AnyWalletState.enabledWallets) {
+		console.warn('no wallets enabled to disable');
+		return 
+	}
+
+	for (let wId of wIds) {
+		let w = AnyWalletState.enabledWallets[wId];
+		if (w) {
+			w.disconnect(); // dont await it
+			delete AnyWalletState.enabledWallets[wId];
+		}
+	}
 };
 
 export const getAccountsByWalletId = (id: WALLET_ID) => {

@@ -1,6 +1,6 @@
 import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
-export { watch } from '@vue-reactivity/watch'; // re-export for frontend use // TODO figure out how to export just the state change handler, not this who func
+export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
 import { isBrowser } from '../utils';
 import { startWatchers } from './watchers';
 export * from './watchers';
