@@ -29,7 +29,10 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			} else {
 				w.initing = true;
 
-				if (typeof w.initParams == 'object' && (
+				if (typeof w.initParams == 'string') {
+					// FYI this check is only for the mnemonic wallet, when directly mn string as initParam config directly
+					w.client = await CLIENT_MAP[id].client.init(w.initParams);
+				} else if (typeof w.initParams == 'object' && (
 					w.initParams.config || w.initParams.sdk
 				)) {
 					w.client = await CLIENT_MAP[id].client.init(w.initParams);
