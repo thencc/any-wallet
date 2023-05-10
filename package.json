@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/any-wallet",
-	"version": "0.1.26",
+	"version": "0.1.27",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -23,7 +23,8 @@
 		"!.DS_Store"
 	],
 	"scripts": {
-		"link-pnpm": "pnpm link --global",
+		"link": "pnpm link --global",
+		"unlink": "pnpm -g rm @thencc/any-wallet",
 		"link-ic": "pnpm link @thencc/inkey-client-js --global",
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
 		"build": "tsup --config=tsup.config.ts",
@@ -38,7 +39,7 @@
 		"@blockshake/defly-connect": "^1.1.2",
 		"@perawallet/connect": "^1.2.0",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.16",
+		"@thencc/inkey-client-js": "^0.0.17",
 		"buffer": "^6.0.3"
 	},
 	"peerDependencies": {
