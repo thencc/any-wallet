@@ -71,21 +71,21 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				// }
 
 
-				// if (w.activeAccount) {
-				// 	if (p == undefined) {
-				// 		p = {};
-				// 	}
-				// 	p.activeAccount = w.activeAccount;
-				// }
-
-				if (w.isActive == true) {
+				if (w.activeAccount) {
 					if (p == undefined) {
 						p = {};
 					}
-					// console.log('dooo it');
-					p.activeAccount = { ...AnyWalletState.stored.activeAccount }; // needs spread / copy. CANNOT use exact instance or comms get borked
-					// p.activeAccount = AnyWalletState.stored.activeAccount; 
+					p.activeAccount = { ...w.activeAccount }; // needs spread to get around init/connect err
 				}
+
+				// if (w.isActive == true) {
+				// 	if (p == undefined) {
+				// 		p = {};
+				// 	}
+				// 	// console.log('dooo it');
+				// 	p.activeAccount = { ...AnyWalletState.stored.activeAccount }; // needs spread / copy. CANNOT use exact instance or comms get borked
+				// 	// p.activeAccount = AnyWalletState.stored.activeAccount; 
+				// }
 
 				// p arg can be onDisconnect or siteName, username (for inkey for ex)
 				let { accounts } = await w.client!.connect(p);
@@ -164,11 +164,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 		get accounts() {
 			return readonly(computed(() => getAccountsByWalletId(id)))
 		},
-		get isActive() {
-			return computed(() => {
-				return AnyWalletState.stored.activeAccount?.walletId === id
-			})
-		},
 		get isConnected() {
 			return readonly(computed(() => {
 				return AnyWalletState.stored.connectedAccounts.some(
@@ -177,15 +172,20 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				);
 			}));
 		},
-		// get activeAccount() {
-		// 	return readonly(computed(() => {
-		// 		let acct = undefined;
-		// 		if (this.isConnected && AnyWalletState.stored.activeAccount) {
-		// 			acct = AnyWalletState.stored.activeAccount;
-		// 		}
-		// 		return acct;
-		// 	}));
-		// },
+		get isActive() {
+			return computed(() => {
+				return AnyWalletState.stored.activeAccount?.walletId === id
+			})
+		},
+		get activeAccount() {
+			return readonly(computed(() => {
+				let acct = undefined;
+				if (this.isConnected && AnyWalletState.stored.activeAccount) {
+					acct = AnyWalletState.stored.activeAccount;
+				}
+				return acct;
+			}));
+		},
 
 		// or is this a better design? (it also works) -- this is only better for vue dev tools, both work
 		// i believe the below approach is better for vue dev tools inspect

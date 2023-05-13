@@ -27,10 +27,17 @@ export const AnyWalletState = reactive({
 		}
 		return a; // as string;
 	})),
+	activeAccount: readonly(computed(() => {
+		let acct = null;
+		if (AnyWalletState.stored.activeAccount) {
+			acct = AnyWalletState.stored.activeAccount as Account; // needs this cast for some reason...
+		}
+		return acct;
+	})),
 	activeWalletId: readonly(computed(() => {
 		let aWId: null | WALLET_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.walletId as unknown as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+			aWId = AnyWalletState.stored.activeAccount.walletId as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
 		}
 		return aWId;
 	})),
