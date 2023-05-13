@@ -21,6 +21,7 @@ export class MnemonicClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams) {
+		console.log('mnemonic init', initParams);
 		try {
 			let clientSdk: undefined | MnemonicSdk = undefined;
 
@@ -50,6 +51,8 @@ export class MnemonicClient extends BaseClient {
 				} else {
 					throw new Error('bad initParams for mnemonic client');
 				}
+			} else {
+				console.error('mnemonic wallet needs to be inited w a mnemonic - none provided.');
 			}
 
 			return new MnemonicClient({
@@ -63,6 +66,8 @@ export class MnemonicClient extends BaseClient {
 
 	async connect(): Promise<Wallet> {
 		if (this.sdk == undefined) {
+			console.warn('mnemonic client wasnt initialized properly... no mnemonic passed in so cannot connect.');
+			/*
 			const mnemonic = await this.requestMnemonic();
 
 			if (!mnemonic) {
@@ -72,13 +77,14 @@ export class MnemonicClient extends BaseClient {
 
 			let acct = mnemonicToSecretKey(mnemonic);
 			this.sdk = acct;
+			*/
 		}
 
 		return {
 			...METADATA,
 			accounts: [
 				{
-					name: `Mnemonic Wallet 1`,
+					name: `Mnemonic Account ${new Date().getTime().toString()}`,
 					address: this.sdk!.addr,
 					walletId: METADATA.id,
 					chain: METADATA.chain,
@@ -96,14 +102,16 @@ export class MnemonicClient extends BaseClient {
 		return null;
 	}
 
-	async requestMnemonic(): Promise<string> {
-		if (isBrowser()) {
-			const pass = prompt('Enter mnemonic passphrase (25 words)');
-			return pass ? pass : '';
-		} else {
-			throw new Error('Not used in a browser')
-		}
-	}
+	// async requestMnemonic(): Promise<string> {
+	// 	// TODO get rid of this so unit tests pass
+	// 	if (isBrowser()) {
+	// 		// TODO remove this prompt entirely + the browser check...
+	// 		const pass = prompt('Enter mnemonic passphrase (25 words)');
+	// 		return pass ? pass : '';
+	// 	} else {
+	// 		throw new Error('Not used in a browser')
+	// 	}
+	// }
 
 	async signTransactions(
 		connectedAccounts: string[],

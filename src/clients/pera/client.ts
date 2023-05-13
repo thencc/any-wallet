@@ -83,7 +83,7 @@ export class PeraClient extends BaseClient {
 		}
 
 		const mappedAccounts = accounts.map((address: string, index: number) => ({
-			name: `Pera Wallet ${index + 1}`,
+			name: `Pera Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
@@ -106,7 +106,7 @@ export class PeraClient extends BaseClient {
 		return {
 			...METADATA,
 			accounts: accounts.map((address: string, index: number) => ({
-				name: `Pera Wallet ${index + 1}`,
+				name: `Pera Account ${index + 1}`,
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,

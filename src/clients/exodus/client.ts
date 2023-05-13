@@ -90,7 +90,7 @@ export class ExodusClient extends BaseClient {
 
 		const accounts = [
 			{
-				name: `Exodus 1`,
+				name: `Exodus Account ${new Date().getTime().toString()}`,
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,

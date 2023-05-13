@@ -99,7 +99,7 @@ export class AlgoSignerClient extends BaseClient {
 		}
 
 		const mappedAccounts = accounts.map(({ address }, index) => ({
-			name: `AlgoSigner ${index + 1}`,
+			name: `AlgoSigner Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,

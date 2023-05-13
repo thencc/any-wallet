@@ -24,12 +24,19 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 
 		// === methods ===
 		loadClient: async (): Promise<true> => {
+			console.log('loadClient', id);
+			// console.trace();
+			console.log('w', w);
+			console.log('w.ip', w.initParams);
+			
 			if (w.inited) {
+				console.log('already inited');
 				return true;
 			} else {
 				w.initing = true;
 
 				if (typeof w.initParams == 'string') {
+					console.log('doing init w mnemonic str:', w.initParams);
 					// FYI this check is only for the mnemonic wallet, when directly mn string as initParam config directly
 					w.client = await CLIENT_MAP[id].client.init(w.initParams);
 				} else if (typeof w.initParams == 'object' && (
@@ -55,6 +62,31 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			try {
 				await w.loadClient();
 
+				// if (w.isActive) {
+				// 	if (p == undefined) {
+				// 		p = {};
+				// 	}
+				// 	p.w = w;
+				// 	p.activeWallet = AnyWalletState.activeWallet;
+				// }
+
+
+				// if (w.activeAccount) {
+				// 	if (p == undefined) {
+				// 		p = {};
+				// 	}
+				// 	p.activeAccount = w.activeAccount;
+				// }
+
+				if (w.isActive == true) {
+					if (p == undefined) {
+						p = {};
+					}
+					// console.log('dooo it');
+					p.activeAccount = { ...AnyWalletState.stored.activeAccount }; // needs spread / copy. CANNOT use exact instance or comms get borked
+					// p.activeAccount = AnyWalletState.stored.activeAccount; 
+				}
+
 				// p arg can be onDisconnect or siteName, username (for inkey for ex)
 				let { accounts } = await w.client!.connect(p);
 
@@ -75,6 +107,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				removeAccount(AnyWalletState.stored.activeAccount);
 			}
 
+			// TODO add this back in...
 			await w.loadClient();
 			try {
 				await w.client!.disconnect();
@@ -144,6 +177,15 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				);
 			}));
 		},
+		// get activeAccount() {
+		// 	return readonly(computed(() => {
+		// 		let acct = undefined;
+		// 		if (this.isConnected && AnyWalletState.stored.activeAccount) {
+		// 			acct = AnyWalletState.stored.activeAccount;
+		// 		}
+		// 		return acct;
+		// 	}));
+		// },
 
 		// or is this a better design? (it also works) -- this is only better for vue dev tools, both work
 		// i believe the below approach is better for vue dev tools inspect
@@ -163,7 +205,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 export const enableWallets = (
 	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
-	// console.log('enableWallets started');
+	console.log('enableWallets started', walletsToEnable);
 
 	if (AnyWalletState.enabledWallets == null) {
 		AnyWalletState.enabledWallets = {} as WalletsObj;
@@ -179,14 +221,14 @@ export const enableWallets = (
 	}
 
 	// if dapp changes config and user has a stale localstorage account, remove it
-	let previousUserWallId = AnyWalletState.stored.activeAccount?.walletId;
-	if (previousUserWallId) {
-		let enabledWalletIdSet = new Set<WALLET_ID>(Object.keys(walletsToEnable) as WALLET_ID[]);
-		if (!enabledWalletIdSet.has(previousUserWallId)) {
-			// disconnect also removes the accts from LS
-			AnyWalletState.allWallets[previousUserWallId]?.disconnect(); // dont await it
-		}
-	}
+	// let previousUserWallId = AnyWalletState.stored.activeAccount?.walletId;
+	// if (previousUserWallId) {
+	// 	let enabledWalletIdSet = new Set<WALLET_ID>(Object.keys(walletsToEnable) as WALLET_ID[]);
+	// 	if (!enabledWalletIdSet.has(previousUserWallId)) {
+	// 		// disconnect also removes the accts from LS
+	// 		AnyWalletState.allWallets[previousUserWallId]?.disconnect(); // dont await it
+	// 	}
+	// }
 
 	return AnyWalletState.enabledWallets;
 };

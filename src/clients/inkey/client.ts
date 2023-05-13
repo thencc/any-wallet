@@ -12,6 +12,7 @@ import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from '.
 import { METADATA } from './constants';
 import { decodeObj, encodeAddress } from 'algosdk';
 import { arrayBufferToBase64 } from 'src/utils';
+// import type { Account } from 'src/types';
 
 export class InkeyClient extends BaseClient {
 	sdk: InkeySdk;
@@ -58,28 +59,29 @@ export class InkeyClient extends BaseClient {
 		}
 	}
 
-	async connect(p?: { siteName?: string, username?: string, onDisconnect?: () => void }) {
+	async connect(p?: { activeAccount?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
+		// connect w the previously connected username if possible
+		if (p) {
+			if (p.activeAccount?.name) {
+				p.username = p.activeAccount.name;
+			}
+		}
+
 		const inkeyAccounts = await this.sdk.connect(p);
+		
 		// TODO make inkey connect throw / return something to catch when inkey-wallet modal was closed and connect didnt occur
 
 		if (!inkeyAccounts) {
 			throw new Error('no inkeyAccounts');
 		}
 
-		const accounts = inkeyAccounts.map(a => {
-			return {
-				address: a.address,
-				name: a.username
-			}
-		});
-
-		if (accounts.length === 0) {
+		if (inkeyAccounts.length === 0) {
 			throw new Error(
 				`No accounts found for ${METADATA.id}`
 			);
 		}
 
-		const mappedAccounts = accounts.map((account) => ({
+		const mappedAccounts = inkeyAccounts.map((account) => ({
 			name: account.name,
 			address: account.address,
 			walletId: METADATA.id,

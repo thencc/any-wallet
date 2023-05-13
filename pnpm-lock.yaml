@@ -22,13 +22,16 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.18
-    version: 0.0.18
+    specifier: ^0.0.19
+    version: 0.0.19
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
 
 devDependencies:
+  '@thencc/inkey-types':
+    specifier: ^0.0.8
+    version: 0.0.8
   algosdk:
     specifier: ^2.1.0
     version: 2.1.0
@@ -179,11 +182,15 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js@0.0.18:
-    resolution: {integrity: sha512-/45QunyZoI1nLqOTSX7t19iEmOCmddXzfumr0MS2/aIMfLAMYUx0/YpXdppNur0Hx4U1W5K2pwp3gI4tS73hcw==}
+  /@thencc/inkey-client-js@0.0.19:
+    resolution: {integrity: sha512-g01IbGFo9HFVEFAvoFhvuDxRA8tOdYtKiYtCF3Kwn/71YWNoHNTZHi+uPa7sZw1pgIkiWhtTOuby4VP+4BzXZg==}
     requiresBuild: true
     dev: false
     optional: true
+
+  /@thencc/inkey-types@0.0.8:
+    resolution: {integrity: sha512-OmqU1wZliwAS67Yo8PzJOcBbsxguEhvQ1zWLnh9Ff/GJWvMhf58Kn3vuLQ3sElOTe5muzlyFHeM9YWPvzR+5Mg==}
+    dev: true
 
   /@vue-reactivity/watch@0.2.0(@vue/reactivity@3.2.45)(@vue/shared@3.2.47):
     resolution: {integrity: sha512-U1asJgKuzZveyIbohN2TuLL17fz1MfYwq1WqL51UDSDwQmQzP63aC7D1I6XyH7U3Tfgj8OoGr/tZIqqy+rns0A==}

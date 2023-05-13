@@ -79,7 +79,7 @@ export class DeflyClient extends BaseClient {
 		}
 
 		const mappedAccounts = accounts.map((address: string, index: number) => ({
-			name: `Defly Wallet ${index + 1}`,
+			name: `Defly Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
@@ -102,7 +102,7 @@ export class DeflyClient extends BaseClient {
 		return {
 			...METADATA,
 			accounts: accounts.map((address: string, index: number) => ({
-				name: `Defly Wallet ${index + 1}`,
+				name: `Defly Account ${index + 1}`,
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,
