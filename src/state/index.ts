@@ -34,6 +34,13 @@ export const AnyWalletState = reactive({
 		}
 		return acct;
 	})),
+	connectedAccounts: readonly(computed(() => {
+		let cAccts = [] as Account[];
+		if (AnyWalletState.stored.connectedAccounts) {
+			cAccts = AnyWalletState.stored.connectedAccounts; // needs this cast for some reason...
+		}
+		return cAccts;
+	})),
 	activeWalletId: readonly(computed(() => {
 		let aWId: null | WALLET_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
