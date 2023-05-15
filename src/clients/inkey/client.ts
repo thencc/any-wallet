@@ -59,7 +59,7 @@ export class InkeyClient extends BaseClient {
 		}
 	}
 
-	async connect(p?: { activeAccount?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
+	async connect(p?: { connectedAccounts?: any, activeAccount?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
 		// connect w the previously connected username if possible
 		if (p) {
 			if (p.activeAccount?.name) {
@@ -86,6 +86,7 @@ export class InkeyClient extends BaseClient {
 			address: account.address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
+			active: false,
 		}));
 
 		if (p?.onDisconnect) {

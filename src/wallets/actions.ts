@@ -71,6 +71,9 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				// }
 
 
+				// TODO pass in connectedAccounts arr
+
+
 				if (w.activeAccount) {
 					if (p == undefined) {
 						p = {};
@@ -323,6 +326,12 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 
 export const setAsActiveAccount = (acct: Account) => {
 	AnyWalletState.stored.activeAccount = acct;
+
+	// change .active bool
+	AnyWalletState.stored.connectedAccounts.forEach(ca => {
+		ca.active = false;
+	});
+	AnyWalletState.stored.activeAccount.active = true; // changes in connectectAccounts array too
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {

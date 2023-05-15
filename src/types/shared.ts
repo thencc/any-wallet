@@ -5,6 +5,7 @@ export interface Account {
 	name: string;
 	address: string;
 	chain: string;
+	active: boolean;
 }
 
 export type WalletProvider = {

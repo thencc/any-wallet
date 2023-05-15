@@ -74,6 +74,7 @@ export class MyAlgoClient extends BaseClient {
 			...account,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
+			active: false,
 		}));
 
 		return {

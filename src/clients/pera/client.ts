@@ -87,6 +87,7 @@ export class PeraClient extends BaseClient {
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
+			active: false,
 		}));
 
 		return {
@@ -110,6 +111,7 @@ export class PeraClient extends BaseClient {
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,
+				active: false,
 			})),
 		};
 	}

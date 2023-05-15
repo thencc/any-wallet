@@ -103,6 +103,7 @@ export class AlgoSignerClient extends BaseClient {
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
+			active: false,
 		}));
 
 		return {
