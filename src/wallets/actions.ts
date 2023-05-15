@@ -109,8 +109,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				AnyWalletState.stored.activeAccount.walletId == w.id) {
 				removeAccount(AnyWalletState.stored.activeAccount);
 			}
-
-			// TODO add this back in...
 			await w.loadClient();
 			try {
 				await w.client!.disconnect();
@@ -307,6 +305,12 @@ export const removeAccount = (acct: Account) => {
 
 	AnyWalletState.stored.connectedAccounts = acctsToKeep;
 };
+
+// aka disconnectAllAccounts
+export const removeAllAccounts = () => {
+	AnyWalletState.stored.activeAccount = null;
+	AnyWalletState.stored.connectedAccounts = [];
+}
 
 export const addConnectedAccounts = (accounts: Account[]) => {
 	// console.log('addConnectedAccounts', accounts);
