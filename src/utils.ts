@@ -27,7 +27,7 @@ export const logger = {
 	enabled: false,
 	log(...args: any) {
 		if (!this.enabled) return;
-		logger.log(...args);
+		console.log(...args);
 	},
 	warn(...args: any) {
 		if (!this.enabled) return;

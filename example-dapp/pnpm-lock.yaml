@@ -5,8 +5,8 @@ dependencies:
     specifier: ^0.3.7
     version: 0.3.7
   '@thencc/any-wallet':
-    specifier: ^0.1.21
-    version: 0.1.21(algosdk@2.1.0)
+    specifier: ^0.1.68
+    version: 0.1.68(algosdk@2.1.0)
   vue:
     specifier: ^3.2.41
     version: 3.2.47
@@ -316,7 +316,7 @@ packages:
   /@thencc/algonautjs@0.3.7:
     resolution: {integrity: sha512-tMSQe5Vx/037iaBVKFr4Zv81K2utre2FzW94jAgKw5YksTf68wNVYfua8rt9GYeeHp/FyE+2t88jC+JaCn2YZA==}
     dependencies:
-      '@thencc/any-wallet': 0.1.21(algosdk@2.1.0)
+      '@thencc/any-wallet': 0.1.68(algosdk@2.1.0)
       algosdk: 2.1.0
       buffer: 6.0.3
       tslib: 2.5.0
@@ -331,8 +331,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/any-wallet@0.1.21(algosdk@2.1.0):
-    resolution: {integrity: sha512-rPE0ZsQgb04EcRPDOog1sPl782cQZQJcgEMMcTqZUU8uEiKLkCryR6NgvPp73gdVCzZkprgmjieOy5tm6Bn/Ow==}
+  /@thencc/any-wallet@0.1.68(algosdk@2.1.0):
+    resolution: {integrity: sha512-ngnXkhCg2rC/G0LKEcinxWDINu7CQP3NjnnjWd5Yev1Xcj12Und8nEAnxFLDQBoFFnrIyrQtut8qNEbswR4rEw==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
@@ -344,7 +344,7 @@ packages:
       '@blockshake/defly-connect': 1.1.2(algosdk@2.1.0)
       '@perawallet/connect': 1.2.1(algosdk@2.1.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.16
+      '@thencc/inkey-client-js': 0.0.19
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
@@ -357,8 +357,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js@0.0.16:
-    resolution: {integrity: sha512-jJU91WPEZ+4l1Y7BquZ7K83o6yya/ip/Q6muqIW2TYiRJoQHKHcCISX1LRLAZMkKI2AwotrW9OPyDv6ysGvFUA==}
+  /@thencc/inkey-client-js@0.0.19:
+    resolution: {integrity: sha512-g01IbGFo9HFVEFAvoFhvuDxRA8tOdYtKiYtCF3Kwn/71YWNoHNTZHi+uPa7sZw1pgIkiWhtTOuby4VP+4BzXZg==}
     requiresBuild: true
     dev: false
     optional: true
