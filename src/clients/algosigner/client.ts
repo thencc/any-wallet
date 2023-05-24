@@ -54,7 +54,6 @@ export class AlgoSignerClient extends BaseClient {
 	static metadata = METADATA;
 
 	static async init(initParams?: InitParams) {
-		// console.log(`[${METADATA.id}] init started`);
 		try {
 			if (
 				typeof window == 'undefined' ||

@@ -53,7 +53,7 @@ export class ExodusClient extends BaseClient {
 			 */
 
 			let clientSdk = (window as WindowExtended).exodus.algorand; // as ExodusSdk;
-			// console.log('clientSdk', clientSdk);
+			// logger.log('clientSdk', clientSdk);
 
 			let onlyIfTrusted = false;
 			if (initParams?.config?.onlyIfTrusted) {
@@ -77,7 +77,7 @@ export class ExodusClient extends BaseClient {
 			const { address: addr } = await (window as any).exodus.algorand.connect({
 				onlyIfTrusted: this.onlyIfTrusted,
 			});
-			// console.log('addr', addr);
+
 			address = addr;
 		} catch (e) {
 			console.warn('err w exodus connect');

@@ -1,5 +1,5 @@
 import { watch } from '@vue-reactivity/watch';
-import { isBrowser } from 'src/utils';
+import { isBrowser, logger } from 'src/utils';
 import { AnyWalletState } from './index';
 
 type ChangedStateHandler = (s: typeof AnyWalletState) => void;
@@ -16,47 +16,49 @@ export const lsKey = 'AW'; // !!! weirdest bug started occuring when this was se
 // FYI: should only happen ONCE +
 // FYI: watchers MUST be started AFTER the state inits
 export const startWatchers = () => {
-	// console.log('startWatchers started');
+	logger.debug('startWatchers started');
 
-	if (!isBrowser()) {
-		console.warn('not in browser...');
-		return;
-	}
-
-	const initLocalStorage = () => {
-		// console.log('initLocalStorage');
-		try {
-			let onLoadLStor = localStorage.getItem(lsKey);
-			if (onLoadLStor) {
-				try {
-					type StoredType = typeof AnyWalletState.stored;
-					let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
-					// console.log('onLoadLStorObj', onLoadLStorObj);
-					AnyWalletState.stored = onLoadLStorObj;
-				} catch (e) {
-					console.warn('bad sLocalStorage parse');
+	// FYI only run LS code in browser, not node
+	if (isBrowser()) {
+		const initLocalStorage = () => {
+			// logger.log('initLocalStorage');
+			try {
+				let onLoadLStor = localStorage.getItem(lsKey);
+				if (onLoadLStor) {
+					try {
+						type StoredType = typeof AnyWalletState.stored;
+						let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
+						// logger.log('onLoadLStorObj', onLoadLStorObj);
+						AnyWalletState.stored = onLoadLStorObj;
+					} catch (e) {
+						console.warn('bad sLocalStorage parse');
+					}
 				}
+			} catch(e) {
+				console.warn('could not access localstorage');
 			}
-		} catch(e) {
-			console.warn('could not access localstorage');
 		}
+		initLocalStorage(); // recall local storage object (1 time on load!)	
 	}
-	initLocalStorage(); // recall local storage object (1 time on load!)
-
 
 	// save '.stored' to localstorage
 	watch(
 		() => AnyWalletState.stored,
 		() => {
-			// console.log('save me!', AnyWalletState.stored);
+			// logger.log('save me!', AnyWalletState.stored);
 			try {
 				localStorage.setItem(lsKey, JSON.stringify(AnyWalletState.stored));
 			} catch(e) {
-				console.warn('could not save to localstorage');
+				if (isBrowser()) {
+					console.warn('could not save to localstorage');
+				} else {
+					logger.log('no localstorage to save to in node env');
+				}
 			}
 		},
 		{
-			deep: true
+			deep: true,
+			// immediate: true,
 		}
 	);
 
@@ -83,28 +85,31 @@ export const startWatchers = () => {
 	);
 };
 
-// return unsubscriber func (call to stop this handler)
+// returns unsubscriber func (call to stop this handler)
 export const subscribeToStateChanges = (handler: (s: typeof AnyWalletState) => void, opts: { callOnSet: boolean } = { callOnSet: true }) => {
 	stateHandlers.changedStateHandlers.push(handler);
 	if (opts.callOnSet) handler(AnyWalletState); // call it once on set
 
-	return () => {
+	const unsubscribe = () => {
 		let idx = stateHandlers.changedStateHandlers.indexOf(handler);
 		if (idx !== -1) {
 			stateHandlers.changedStateHandlers.splice(idx, 1);
 		}
 	};
+	return unsubscribe;
 };
 
-// return unsubscriber func
+// returns unsubscriber func
 export const subscribeToAccountChanges = (handler: (a: typeof AnyWalletState.stored.activeAccount) => void, opts: { callOnSet: boolean } = { callOnSet: true }) => {
 	stateHandlers.changedAccountHandlers.push(handler);
 	if (opts.callOnSet) handler(AnyWalletState.stored.activeAccount); // call it once on set
 
-	return () => {
+	// unsubscribe fn
+	const unsubscribe = () => {
 		let idx = stateHandlers.changedAccountHandlers.indexOf(handler);
 		if (idx !== -1) {
 			stateHandlers.changedAccountHandlers.splice(idx, 1);
 		}
 	};
+	return unsubscribe;
 };

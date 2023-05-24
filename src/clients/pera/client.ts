@@ -32,8 +32,6 @@ export class PeraClient extends BaseClient {
 	}
 
 	static async init(initParams?: InitParams): Promise<PeraClient | null> {
-		// console.log(`[${METADATA.id}] init started`);
-
 		try {
 			// shim for client that use walletconnect under the hood
 			if (typeof window !== 'undefined') {

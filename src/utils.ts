@@ -22,3 +22,19 @@ export const arrayBufferToBase64 = (buffer: ArrayBufferLike) => {
 	}
 	return window.btoa(binary);
 };
+
+export const logger = {
+	enabled: false,
+	log(...args: any) {
+		if (!this.enabled) return;
+		logger.log(...args);
+	},
+	warn(...args: any) {
+		if (!this.enabled) return;
+		console.warn(...args);
+	},
+	debug(...args: any) {
+		if (!this.enabled) return;
+		console.debug(...args);
+	},
+};

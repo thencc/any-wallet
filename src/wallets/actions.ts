@@ -4,6 +4,8 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
+import { logger } from 'src/utils';
+import { deepToRaw } from './helpers-reactivity';
 
 // FYI import order matters during build
 import { BaseClient } from 'src/clients/base/client';
@@ -24,19 +26,15 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 
 		// === methods ===
 		loadClient: async (): Promise<true> => {
-			console.log('loadClient', id);
-			// console.trace();
-			console.log('w', w);
-			console.log('w.ip', w.initParams);
+			logger.debug('loadClient:', id);
 			
 			if (w.inited) {
-				console.log('already inited');
+				logger.log('already inited');
 				return true;
 			} else {
 				w.initing = true;
 
 				if (typeof w.initParams == 'string') {
-					console.log('doing init w mnemonic str:', w.initParams);
 					// FYI this check is only for the mnemonic wallet, when directly mn string as initParam config directly
 					w.client = await CLIENT_MAP[id].client.init(w.initParams);
 				} else if (typeof w.initParams == 'object' && (
@@ -62,35 +60,15 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			try {
 				await w.loadClient();
 
-				// if (w.isActive) {
-				// 	if (p == undefined) {
-				// 		p = {};
-				// 	}
-				// 	p.w = w;
-				// 	p.activeWallet = AnyWalletState.activeWallet;
-				// }
-
-
-				// TODO pass in connectedAccounts arr
-
-
-				if (w.activeAccount) {
+				if (w.accounts) {
 					if (p == undefined) {
 						p = {};
 					}
-					p.activeAccount = { ...w.activeAccount }; // needs spread to get around init/connect err
+					// FYI need the RAW js objects here, not the computed proxies (otherwise is breaks in runtime but not build)
+					let cAccts = deepToRaw(w.accounts);
+					p.connectedAccounts = [...cAccts];
 				}
 
-				// if (w.isActive == true) {
-				// 	if (p == undefined) {
-				// 		p = {};
-				// 	}
-				// 	// console.log('dooo it');
-				// 	p.activeAccount = { ...AnyWalletState.stored.activeAccount }; // needs spread / copy. CANNOT use exact instance or comms get borked
-				// 	// p.activeAccount = AnyWalletState.stored.activeAccount; 
-				// }
-
-				// p arg can be onDisconnect or siteName, username (for inkey for ex)
 				let { accounts } = await w.client!.connect(p);
 
 				// if it gets past .connect, it worked, so saved the returned accts + set one as active
@@ -169,7 +147,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			return readonly(computed(() => {
 				return AnyWalletState.stored.connectedAccounts.some(
 					(accounts) => accounts.walletId === id
-					// (accounts) => accounts.walletId === this.id
 				);
 			}));
 		},
@@ -187,18 +164,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				return acct;
 			}));
 		},
-
-		// or is this a better design? (it also works) -- this is only better for vue dev tools, both work
-		// i believe the below approach is better for vue dev tools inspect
-		// isConnected: () => {
-		// 	return readonly(computed(() => {
-		// 		return AnyWalletState.stored.connectedAccounts.some(
-		// 			(accounts) => accounts.walletId === id
-		// 			// (accounts) => accounts.walletId === this.id
-		// 		);
-		// 	}));
-		// },
-
 	});
 	return w;
 };
@@ -206,12 +171,12 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 export const enableWallets = (
 	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
 ) => {
-	console.log('enableWallets started', walletsToEnable);
+	logger.log('enableWallets started', walletsToEnable);
 
 	if (AnyWalletState.enabledWallets == null) {
 		AnyWalletState.enabledWallets = {} as WalletsObj;
 	} else {
-		// console.debug('enableWallets called while some wallets were already initialized (add to them)');
+		// logger.debug('enableWallets called while some wallets were already initialized (add to them)');
 	}
 
 	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
@@ -313,7 +278,7 @@ export const removeAllAccounts = () => {
 }
 
 export const addConnectedAccounts = (accounts: Account[]) => {
-	// console.log('addConnectedAccounts', accounts);
+	// logger.log('addConnectedAccounts', accounts);
 	for (let newAcct of accounts) {
 		let exists = false;
 		for (let existingAcct of AnyWalletState.stored.connectedAccounts) {
@@ -329,17 +294,28 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 };
 
 export const setAsActiveAccount = (acct: Account) => {
+	logger.debug('setAsActiveAccount', acct);
+	
 	AnyWalletState.stored.activeAccount = acct;
 
 	// change .active bool
 	AnyWalletState.stored.connectedAccounts.forEach(ca => {
-		ca.active = false;
+		// is it the same?
+		if (ca.walletId == acct.walletId && 
+			ca.address == acct.address &&
+			ca.name == acct.name
+			) {
+				ca.active = true;
+			}
+		else {
+			ca.active = false;
+		}
 	});
-	AnyWalletState.stored.activeAccount.active = true; // changes in connectectAccounts array too
+	AnyWalletState.stored.activeAccount.active = true; // changes in connectedAccounts array too
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
-	// console.log('signTransactions', txns);
+	// logger.log('signTransactions', txns);
 	if (!AnyWalletState.enabledWallets) {
 		throw new Error('No wallets enabled, call enableWallets() first');
 	}
@@ -360,4 +336,8 @@ export const signTransactions = async (txns: Uint8Array[]) => {
 
 	let txnsSigned = await activeWallet.signTransactions(txns);
 	return txnsSigned;
+};
+
+export const setLogsEnabled = (isEnabled: boolean) => {
+	logger.enabled = isEnabled;
 };

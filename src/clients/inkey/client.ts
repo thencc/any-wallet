@@ -59,13 +59,13 @@ export class InkeyClient extends BaseClient {
 		}
 	}
 
-	async connect(p?: { connectedAccounts?: any, activeAccount?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
+	async connect(p?: { connectedAccounts?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
 		// connect w the previously connected username if possible
-		if (p) {
-			if (p.activeAccount?.name) {
-				p.username = p.activeAccount.name;
-			}
-		}
+		// if (p) {
+		// 	// if (p.activeAccount?.name) {
+		// 	// 	p.username = p.activeAccount.name;
+		// 	// }
+		// }
 
 		const inkeyAccounts = await this.sdk.connect(p);
 		
@@ -101,7 +101,7 @@ export class InkeyClient extends BaseClient {
 
 	// what is .reconnect() used for? its in use-wallet lib but why?
 	async reconnect(): Promise<Wallet | null> {
-		// console.log('inkey reconnect')
+		// logger.log('inkey reconnect')
 		return null;
 	}
 
@@ -136,12 +136,12 @@ export class InkeyClient extends BaseClient {
 
 		// op 1
 		// const result = await this.sdk.signTxnsUint8Array(txnsToSign);
-		// console.log('result', result);
+		// logger.log('result', result);
 
 		// op 2
 		const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
 		const result = await this.sdk.signTxns(txnsAsStrB64);
-		// console.log('result', result);
+		// logger.log('result', result);
 
 		if (!result.success) {
 			throw new Error('Error signing transactions');

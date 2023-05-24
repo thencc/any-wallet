@@ -17,6 +17,7 @@ import {
 } from './types';
 import type { Wallet } from '../../types';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
+import { logger } from 'src/utils';
 
 export class DeflyClient extends BaseClient {
 	sdk: DeflySdk;
@@ -54,8 +55,8 @@ export class DeflyClient extends BaseClient {
 
 				let sdkLib = await import('@blockshake/defly-connect');
 				let createClientSdk = sdkLib.DeflyWalletConnect || sdkLib.default.DeflyWalletConnect; // sometimes needs this shim
+				// logger.log('createClientSdk', createClientSdk);
 
-				// console.log('createClientSdk', createClientSdk);
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
@@ -69,7 +70,8 @@ export class DeflyClient extends BaseClient {
 	}
 
 	async connect(onDisconnect: () => void): Promise<Wallet> {
-		// console.log(`${METADATA.id} connect`);
+		logger.debug(`${METADATA.id} connect`);
+		
 		const accounts = await this.sdk.connect().catch(console.info);
 
 		this.sdk.connector.on('disconnect', onDisconnect);

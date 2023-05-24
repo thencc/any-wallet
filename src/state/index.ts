@@ -72,9 +72,5 @@ export const AnyWalletState = reactive({
 	})),
 });
 
-// if browser, do the browser-specific stuff (localstorage, etc). this built file has to be able to run thru bundlers down the line like esbuild/rollup
-if (isBrowser()) {
-	// FYI: should only happen ONCE +
-	// FYI: watchers MUST be started AFTER the state inits
-	startWatchers();
-}
+// once on load, kick off the watchers
+startWatchers(); // FYI: should only happen ONCE + watchers MUST be started AFTER the state inits
