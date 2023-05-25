@@ -59,14 +59,12 @@ export class InkeyClient extends BaseClient {
 		}
 	}
 
-	async connect(p?: { connectedAccounts?: any, siteName?: string, username?: string, onDisconnect?: () => void }) {
-		// connect w the previously connected username if possible
-		// if (p) {
-		// 	// if (p.activeAccount?.name) {
-		// 	// 	p.username = p.activeAccount.name;
-		// 	// }
-		// }
-
+	async connect(p?: { 
+		connectedAccounts?: any, 
+		siteName?: string, 
+		onDisconnect?: () => void 
+	}) {
+		// FYI will pass in connectedAccounts if any were connected previously
 		const inkeyAccounts = await this.sdk.connect(p);
 		
 		// TODO make inkey connect throw / return something to catch when inkey-wallet modal was closed and connect didnt occur

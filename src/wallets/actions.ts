@@ -60,6 +60,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			try {
 				await w.loadClient();
 
+				// if we have cached accts for this client wallet, send em over w the connect (inkey uses this for one)
 				if (w.accounts) {
 					if (p == undefined) {
 						p = {};
