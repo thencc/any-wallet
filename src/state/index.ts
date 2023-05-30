@@ -1,8 +1,8 @@
 import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
-import { isBrowser } from '../utils';
-import { startWatchers } from './watchers';
+import { isBrowser, logger } from '../utils';
+import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
 import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
@@ -71,6 +71,33 @@ export const AnyWalletState = reactive({
 		return someWalletIsSigning;
 	})),
 });
+
+export const recallState = () => {
+	logger.log('recallState');
+	
+	// FYI only run LS code in browser, not node or v8
+	if (isBrowser()) {
+		const initLocalStorage = () => {
+			logger.log('initLocalStorage');
+			try {
+				let onLoadLStor = localStorage.getItem(lsKey);
+				if (onLoadLStor) {
+					try {
+						type StoredType = typeof AnyWalletState.stored;
+						let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
+						// logger.log('onLoadLStorObj', onLoadLStorObj);
+						AnyWalletState.stored = onLoadLStorObj;
+					} catch (e) {
+						console.warn('bad sLocalStorage parse');
+					}
+				}
+			} catch(e) {
+				console.warn('could not access localstorage');
+			}
+		}
+		initLocalStorage(); // recall local storage object (1 time on load!)	
+	}
+};
 
 // once on load, kick off the watchers
 startWatchers(); // FYI: should only happen ONCE + watchers MUST be started AFTER the state inits

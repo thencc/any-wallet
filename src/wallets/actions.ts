@@ -4,7 +4,7 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
-import { logger } from 'src/utils';
+import { isBrowser, logger } from 'src/utils';
 import { deepToRaw } from './helpers-reactivity';
 
 // FYI import order matters during build
@@ -29,7 +29,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			logger.debug('loadClient:', id);
 			
 			if (w.inited) {
-				logger.log('already inited');
+				logger.log('aw already inited client');
 				return true;
 			} else {
 				w.initing = true;

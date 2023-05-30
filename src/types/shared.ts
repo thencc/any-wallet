@@ -6,6 +6,8 @@ export interface Account {
 	address: string;
 	chain: string;
 	active: boolean;
+	// timeAdded: number; // datetime as number
+	// timeLastUsed: number;
 }
 
 export type WalletProvider = {

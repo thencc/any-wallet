@@ -16,12 +16,12 @@ export enum WALLET_ID {
 };
 
 export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
-	[WALLET_ID.PERA]: true,
-	[WALLET_ID.INKEY]: true,
-	[WALLET_ID.MYALGO]: true,
-	[WALLET_ID.ALGOSIGNER]: true,
-	[WALLET_ID.EXODUS]: true,
-	[WALLET_ID.DEFLY]: true,
+	// [WALLET_ID.PERA]: true,
+	// [WALLET_ID.INKEY]: true,
+	// [WALLET_ID.MYALGO]: true,
+	// [WALLET_ID.ALGOSIGNER]: true,
+	// [WALLET_ID.EXODUS]: true,
+	// [WALLET_ID.DEFLY]: true,
 	// [WALLET_ID.MNEMONIC]: false,
 };
 

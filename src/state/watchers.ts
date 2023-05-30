@@ -18,29 +18,6 @@ export const lsKey = 'AW'; // !!! weirdest bug started occuring when this was se
 export const startWatchers = () => {
 	logger.debug('startWatchers started');
 
-	// FYI only run LS code in browser, not node
-	if (isBrowser()) {
-		const initLocalStorage = () => {
-			// logger.log('initLocalStorage');
-			try {
-				let onLoadLStor = localStorage.getItem(lsKey);
-				if (onLoadLStor) {
-					try {
-						type StoredType = typeof AnyWalletState.stored;
-						let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
-						// logger.log('onLoadLStorObj', onLoadLStorObj);
-						AnyWalletState.stored = onLoadLStorObj;
-					} catch (e) {
-						console.warn('bad sLocalStorage parse');
-					}
-				}
-			} catch(e) {
-				console.warn('could not access localstorage');
-			}
-		}
-		initLocalStorage(); // recall local storage object (1 time on load!)	
-	}
-
 	// save '.stored' to localstorage
 	watch(
 		() => AnyWalletState.stored,
