@@ -7,6 +7,7 @@ import type {
 	Wallet,
 	DecodedTransaction,
 	DecodedSignedTransaction,
+	Account,
 } from '../../types';
 import { METADATA } from './constants';
 import {
@@ -119,7 +120,7 @@ export class PeraClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[]
 	) {
 		const decodedTxns = transactions.map((txn) => {
@@ -128,9 +129,10 @@ export class PeraClient extends BaseClient {
 
 		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd'])) // FYI this limits what kind of txns the dapp will be able to do... should probably remove this limitation
+				connectedAddrs.includes(encodeAddress(txn['snd'])) // FYI this limits what kind of txns the dapp will be able to do... should probably remove this limitation
 			) {
 				acc.push({
 					txn: decodeUnsignedTransaction(transactions[i]),

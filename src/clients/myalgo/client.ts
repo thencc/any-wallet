@@ -6,6 +6,7 @@ import { BaseClient } from '../base/client';
 import {
 	DecodedTransaction,
 	DecodedSignedTransaction,
+	Account,
 } from '../../types';
 import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './types';
 import { METADATA } from './constants';
@@ -90,7 +91,7 @@ export class MyAlgoClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
@@ -102,10 +103,11 @@ export class MyAlgoClient extends BaseClient {
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
 			// If the transaction isn't already signed and is to be sent from a connected account,
 			// add it to the arrays of transactions to be signed.
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd']))
+				connectedAddrs.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push(transactions[i]);
 			}

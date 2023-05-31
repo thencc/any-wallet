@@ -1,4 +1,5 @@
 import type {
+	Account,
 	Wallet,
 } from '../../types';
 
@@ -16,7 +17,7 @@ export abstract class BaseClient {
 	abstract disconnect(): Promise<void>;
 	abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;
 	abstract signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Array<Uint8Array>
 	): Promise<Uint8Array[]>;
 	// abstract signMessage(accts: any, msg: string);

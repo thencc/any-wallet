@@ -9,6 +9,7 @@ import type {
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Network,
+	Account,
 } from '../../types';
 import { METADATA } from './constants';
 import type {
@@ -127,7 +128,7 @@ export class AlgoSignerClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
@@ -141,10 +142,10 @@ export class AlgoSignerClient extends BaseClient {
 				const txnObj: AlgoSignerTransaction = {
 					txn: this.sdk.encoding.msgpackToBase64(transactions[i]),
 				};
-
+				let connectedAddrs = connectedAccounts.map(a => a.address);
 				if (
 					'txn' in txn ||
-					!connectedAccounts.includes(encodeAddress(txn['snd']))
+					!connectedAddrs.includes(encodeAddress(txn['snd']))
 				) {
 					txnObj.txn = this.sdk.encoding.msgpackToBase64(
 						decodeSignedTransaction(transactions[i]).txn.toByte()

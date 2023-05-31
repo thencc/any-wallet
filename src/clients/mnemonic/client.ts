@@ -1,6 +1,6 @@
 // insecure wallet approach for fast development
 import { BaseClient } from '../base/client';
-import type { Wallet, DecodedTransaction, DecodedSignedTransaction } from '../../types';
+import type { Wallet, DecodedTransaction, DecodedSignedTransaction, Account } from '../../types';
 import { METADATA } from './constants';
 import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
@@ -91,7 +91,7 @@ export class MnemonicClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[],
 		indexesToSign?: number[],
 		returnGroup = true
@@ -116,6 +116,7 @@ export class MnemonicClient extends BaseClient {
 		for (const idx in decodedTxns) {
 			const dtxn = decodedTxns[idx];
 			const isSigned = 'txn' in dtxn;
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 
 			// push the incoming txn into signed, we'll overwrite it later
 			signedTxns.push(transactions[idx]);
@@ -133,7 +134,7 @@ export class MnemonicClient extends BaseClient {
 			}
 			// Not to be signed by our signer, skip it
 			else if (
-				!connectedAccounts.includes(encodeAddress(dtxn.snd))
+				!connectedAddrs.includes(encodeAddress(dtxn.snd))
 			) {
 				continue;
 			}

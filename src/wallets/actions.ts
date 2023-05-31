@@ -114,11 +114,13 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			await w.loadClient(); // loads sdk only ondemand
 
 			// kinda clunky since modal / wallet ui might pop up twice, but it works...
-			let addrsOfThisWallet = w.accounts.map(a => a.address);
-			if (!addrsOfThisWallet.length) {
+			// let addrsOfThisWallet = w.accounts.map(a => a.address);
+			let acctsOfThisWallet = w.accounts as Account[];
+			if (!acctsOfThisWallet.length) {
 				// then auth
 				let accts = await w.connect(); // adds to w.accounts
-				addrsOfThisWallet = accts.map(a => a.address);
+				// addrsOfThisWallet = accts.map(a => a.address);
+				acctsOfThisWallet = accts;
 
 				// only real consistent way to show auth popup + txn approval pop across wallet types
 				await new Promise(resolve => setTimeout(resolve, 1000));
@@ -129,7 +131,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				let txnsSigned =
 					await w.client! // is defined after awaiting loadClient
 						.signTransactions(
-							addrsOfThisWallet,
+							// addrsOfThisWallet,
+							acctsOfThisWallet,
 							transactions,
 						);
 				return txnsSigned;

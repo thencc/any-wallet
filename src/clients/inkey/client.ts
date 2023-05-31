@@ -7,6 +7,7 @@ import {
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Wallet,
+	Account,
 } from '../../types';
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
 import { METADATA } from './constants';
@@ -60,7 +61,7 @@ export class InkeyClient extends BaseClient {
 	}
 
 	async connect(p?: { 
-		connectedAccounts?: any, 
+		connectedAccounts?: Account[], 
 		siteName?: string, 
 		onDisconnect?: () => void 
 	}) {
@@ -108,7 +109,7 @@ export class InkeyClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
@@ -119,9 +120,10 @@ export class InkeyClient extends BaseClient {
 		// Marshal the transactions, and add the signers property if they shouldn't be signed. Get the unsigned transactions.
 		// If the transaction isn't already signed and is to be sent from a connected account, add it to the arrays of transactions to be signed.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd']))
+				connectedAddrs.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push(transactions[i]);
 			}
@@ -138,7 +140,7 @@ export class InkeyClient extends BaseClient {
 
 		// op 2
 		const txnsAsStrB64 = txnsToSign.map((tBuff) => arrayBufferToBase64(tBuff));
-		const result = await this.sdk.signTxns(txnsAsStrB64);
+		const result = await this.sdk.signTxns(txnsAsStrB64, connectedAccounts);
 		// logger.log('result', result);
 
 		if (!result.success) {

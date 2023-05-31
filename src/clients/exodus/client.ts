@@ -6,6 +6,7 @@ import { BaseClient } from '../base/client';
 import type {
 	DecodedTransaction,
 	DecodedSignedTransaction,
+	Account,
 } from '../../types';
 import { METADATA } from './constants';
 import {
@@ -123,7 +124,7 @@ export class ExodusClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Array<Uint8Array>,
 		indexesToSign?: number[],
 		returnGroup = true
@@ -138,6 +139,7 @@ export class ExodusClient extends BaseClient {
 		// Get the unsigned transactions.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {
 			const isSigned = "txn" in txn;
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 
 			// If the indexes to be signed is specified
 			// add it to the arrays of transactions to be signed.
@@ -148,7 +150,7 @@ export class ExodusClient extends BaseClient {
 				// add it to the arrays of transactions to be signed
 			} else if (
 				!isSigned &&
-				connectedAccounts.includes(encodeAddress(txn["snd"]))
+				connectedAddrs.includes(encodeAddress(txn["snd"]))
 			) {
 				signedIndexes.push(i);
 				acc.push(transactions[i]);

@@ -6,6 +6,7 @@ import { BaseClient } from '../base/client';
 import type {
 	DecodedTransaction,
 	DecodedSignedTransaction,
+	Account,
 } from '../../types';
 import { METADATA } from './constants';
 import {
@@ -116,7 +117,7 @@ export class DeflyClient extends BaseClient {
 	}
 
 	async signTransactions(
-		connectedAccounts: string[],
+		connectedAccounts: Account[],
 		transactions: Uint8Array[]
 	) {
 		// Decode the transactions to access their properties.
@@ -127,9 +128,10 @@ export class DeflyClient extends BaseClient {
 		// Marshal the transactions,
 		// and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<DeflyTransaction[]>((acc, txn, i) => {
+			let connectedAddrs = connectedAccounts.map(a => a.address);
 			if (
 				!('txn' in txn) &&
-				connectedAccounts.includes(encodeAddress(txn['snd']))
+				connectedAddrs.includes(encodeAddress(txn['snd']))
 			) {
 				acc.push({
 					txn: decodeUnsignedTransaction(transactions[i]),
