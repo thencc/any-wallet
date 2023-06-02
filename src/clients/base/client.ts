@@ -13,6 +13,7 @@ export abstract class BaseClient {
 	constructor(params?: ClientConstructorParams) {}
 
 	// 'abstracts' means things this class has to definitely implement
+	abstract sdk: any; // cant type sdk in base client because they are all different 
 	abstract connect(x: any): Promise<Wallet>;
 	abstract disconnect(): Promise<void>;
 	abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;
