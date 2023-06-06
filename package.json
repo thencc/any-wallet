@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/any-wallet",
-	"version": "0.1.77",
+	"version": "0.1.78",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -46,7 +46,7 @@
 		"algosdk": "^2.1.0"
 	},
 	"devDependencies": {
-		"@thencc/inkey-types": "^0.0.8",
+		"@thencc/inkey-types": "^0.0.10",
 		"algosdk": "^2.1.0",
 		"buffer": "^6.0.3",
 		"tsup": "^6.5.0",

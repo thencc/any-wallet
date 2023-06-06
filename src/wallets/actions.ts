@@ -51,7 +51,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				}
 
 				w.initing = false;
-				w.inited = true; // success, flip it! TODO also FIX inkey to just handle re-inits like all the other wallets. instead of framebus not ready err
+				w.inited = true; // success, flip it!
 				return true;
 			}
 		},

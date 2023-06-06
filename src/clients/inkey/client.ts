@@ -6,7 +6,7 @@ import { BaseClient } from '../base/client';
 import {
 	DecodedTransaction,
 	DecodedSignedTransaction,
-	Wallet,
+	WalletAccounts,
 	Account,
 } from '../../types';
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
@@ -38,7 +38,7 @@ export class InkeyClient extends BaseClient {
 
 				let sdkConfig: SdkConfig;
 				const defaultConfig: SdkConfig = {
-					src: 'https://inkey-staging.web.app', // TODO this shouldnt be the default src after 0.3.0 merge
+					src: 'https://inkey.app',
 					align: 'center',
 				};
 				sdkConfig = initParams?.config || defaultConfig;
@@ -99,7 +99,7 @@ export class InkeyClient extends BaseClient {
 	}
 
 	// what is .reconnect() used for? its in use-wallet lib but why?
-	async reconnect(): Promise<Wallet | null> {
+	async reconnect(): Promise<WalletAccounts | null> {
 		// logger.log('inkey reconnect')
 		return null;
 	}

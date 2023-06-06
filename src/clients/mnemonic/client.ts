@@ -1,6 +1,6 @@
 // insecure wallet approach for fast development
 import { BaseClient } from '../base/client';
-import type { Wallet, DecodedTransaction, DecodedSignedTransaction, Account } from '../../types';
+import type { WalletAccounts, DecodedTransaction, DecodedSignedTransaction, Account } from '../../types';
 import { METADATA } from './constants';
 import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
@@ -62,7 +62,7 @@ export class MnemonicClient extends BaseClient {
 		}
 	}
 
-	async connect(): Promise<Wallet> {
+	async connect(): Promise<WalletAccounts> {
 		if (this.sdk == undefined) {
 			console.warn('mnemonic client wasnt initialized properly... no mnemonic passed in so cannot connect.');
 		}
@@ -86,7 +86,7 @@ export class MnemonicClient extends BaseClient {
 		return;
 	}
 
-	async reconnect(): Promise<Wallet | null> {
+	async reconnect(): Promise<WalletAccounts | null> {
 		return null;
 	}
 

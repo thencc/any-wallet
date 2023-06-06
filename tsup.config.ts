@@ -17,7 +17,6 @@ export default defineConfig({
 	// globalName: 'w3w3w', // for iife, but really who will use this...
 
 	// legacyOutput: true,
-	// TODO use dir folders
 	// outExtension({ format }) {
 	// 	return {
 	// 		js: `.${format}.js`,

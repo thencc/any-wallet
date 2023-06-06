@@ -16,7 +16,7 @@ import {
 	DeflySdk,
 	SdkConfig,
 } from './types';
-import type { Wallet } from '../../types';
+import type { WalletAccounts } from '../../types';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 
 export class DeflyClient extends BaseClient {
@@ -69,7 +69,7 @@ export class DeflyClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<Wallet> {
+	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
 		const accounts = await this.sdk.connect().catch(console.info);
 
 		this.sdk.connector.on('disconnect', onDisconnect);

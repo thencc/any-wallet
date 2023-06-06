@@ -30,8 +30,8 @@ optionalDependencies:
 
 devDependencies:
   '@thencc/inkey-types':
-    specifier: ^0.0.8
-    version: 0.0.8
+    specifier: ^0.0.10
+    version: 0.0.10
   algosdk:
     specifier: ^2.1.0
     version: 2.1.0
@@ -188,8 +188,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-types@0.0.8:
-    resolution: {integrity: sha512-OmqU1wZliwAS67Yo8PzJOcBbsxguEhvQ1zWLnh9Ff/GJWvMhf58Kn3vuLQ3sElOTe5muzlyFHeM9YWPvzR+5Mg==}
+  /@thencc/inkey-types@0.0.10:
+    resolution: {integrity: sha512-GP+vxtza2HT+X4SnTKMs2HBsy5Kc+qPVX2wY1c1d5JXNY1RmUEfcebvC4q8gDrbaAtZsuBNsb5GjjWh0hnahYA==}
     dev: true
 
   /@vue-reactivity/watch@0.2.0(@vue/reactivity@3.2.45)(@vue/shared@3.2.47):

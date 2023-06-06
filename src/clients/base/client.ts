@@ -1,6 +1,6 @@
 import type {
 	Account,
-	Wallet,
+	WalletAccounts,
 } from '../../types';
 
 import type { ClientMetadata, ClientConstructorParams, ClientInitParams } from './types';
@@ -14,9 +14,9 @@ export abstract class BaseClient {
 
 	// 'abstracts' means things this class has to definitely implement
 	abstract sdk: any; // cant type sdk in base client because they are all different 
-	abstract connect(x: any): Promise<Wallet>;
+	abstract connect(x: any): Promise<WalletAccounts>;
 	abstract disconnect(): Promise<void>;
-	abstract reconnect(onDisconnect: () => void): Promise<Wallet | null>;
+	abstract reconnect(onDisconnect: () => void): Promise<WalletAccounts | null>;
 	abstract signTransactions(
 		connectedAccounts: Account[],
 		transactions: Array<Uint8Array>

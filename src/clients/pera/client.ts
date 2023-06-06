@@ -4,7 +4,7 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	Wallet,
+	WalletAccounts,
 	DecodedTransaction,
 	DecodedSignedTransaction,
 	Account,
@@ -72,7 +72,7 @@ export class PeraClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<Wallet> {
+	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
 		const accounts = await this.sdk.connect();
 
 		this.sdk.connector?.on('disconnect', onDisconnect);
