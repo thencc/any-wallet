@@ -28,7 +28,8 @@
 		"link-ic": "pnpm link @thencc/inkey-client-js --global",
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
 		"build": "tsup --config=tsup.config.ts",
-		"publish:beta": "npm publish --access public --tag beta --greater-version-only"
+		"publish:beta": "npm publish --access public --tag beta --greater-version-only",
+		"publish:latest": "npm dist-tag add @thencc/any-wallet@beta latest "
 	},
 	"dependencies": {
 		"@vue-reactivity/watch": "^0.2.0",
