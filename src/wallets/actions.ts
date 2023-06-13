@@ -55,6 +55,10 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				return true;
 			}
 		},
+		unloadClient: async () => {
+			await w.client?.disconnect(); // nullifies w.client.sdk
+			w.inited = false;
+		},
 		connect: async (p?: any) => {
 			w.connecting = true;
 			try {
@@ -84,13 +88,10 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			}
 		},
 		disconnect: async () => {
-			if (AnyWalletState.stored.activeAccount &&
-				AnyWalletState.stored.activeAccount.walletId == w.id) {
-				removeAccount(AnyWalletState.stored.activeAccount);
-			}
 			await w.loadClient();
 			try {
-				await w.client!.disconnect();
+				await w.unloadClient();
+				w.removeAccounts();
 			} catch (e) {
 				console.warn(e);
 			}
