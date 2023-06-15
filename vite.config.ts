@@ -2,12 +2,13 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  // resolve: {
-  //   alias: {
-  //     '@': resolve(__dirname, './src'),
-  //     '@thencc/any-wallet': resolve(__dirname),
-  //   },
-  // },
+  resolve: {
+    alias: {
+      // '@': resolve(__dirname, './src'),
+      'src': resolve(__dirname, './src'), // works (+ for nested entries)
+      '@thencc/any-wallet': resolve(__dirname),
+    },
+  },
 
   test: {
     name: 'aw-test',
@@ -20,6 +21,7 @@ export default defineConfig({
     isolate: true, // default
     // ui: false,
     env: {},
+    
     alias: {
         '@thencc/any-wallet': resolve(__dirname), // 'src/index.ts') 
         // 'src/*': resolve(__dirname),
