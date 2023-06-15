@@ -1,8 +1,9 @@
 import { assert, describe, expect, test } from 'vitest'
 
 // works but vscode doesnt like it...
-import { AnyWalletState } from '@thencc/any-wallet'; // alias in vite config
+// import { AnyWalletState } from '@thencc/any-wallet'; // alias in vite config
 // import { AnyWalletState } from '../src/state/index';
+import { AnyWalletState } from '../dist/index'; // use dist not src (otherwise theres import order errs re circular imports)
 
 describe('AnyWalletState', () => {
     test('activeAddress testo', () => {
