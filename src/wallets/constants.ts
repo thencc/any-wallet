@@ -3,8 +3,9 @@ import type { Network } from 'src/types/node';
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
-// import { WALLET_ID } from './const2';
+import { WALLET_ID } from './const2';
 
+/*
 export enum WALLET_ID {
 	PERA = 'pera',
 	INKEY = 'inkey',
@@ -17,6 +18,8 @@ export enum WALLET_ID {
 	// WALLETCONNECT = 'walletconnect', // willnotfix
 };
 // export const WALLET_ID = WALLET_ID;
+*/
+
 
 /*
 export const WALLET_ID = {
@@ -43,13 +46,13 @@ export type WALLET_ID = WALLET_ID[keyof WALLET_ID];
 // };
 // export const ALL_WALLETS: WalletsObj = {
 	export const ALL_WALLETS = {
-	[WALLET_ID.PERA]: createWallet<ClientType<WALLET_ID.PERA>>(WALLET_ID.PERA),
-	[WALLET_ID.INKEY]: createWallet<ClientType<WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-	[WALLET_ID.MYALGO]: createWallet<ClientType<WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-	[WALLET_ID.EXODUS]: createWallet<ClientType<WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-	[WALLET_ID.DEFLY]: createWallet<ClientType<WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-	[WALLET_ID.MNEMONIC]: createWallet<ClientType<WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+	[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+	[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+	[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+	[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+	[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+	[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 } as const; // helps w security
 
 // algod configs (not used)

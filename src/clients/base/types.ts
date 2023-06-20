@@ -1,7 +1,7 @@
-import { WALLET_ID } from 'src/wallets/constants';
+import { WALL_V } from 'src/wallets';
 
 export type ClientMetadata = {
-	id: WALLET_ID; // unique
+	id: WALL_V; // unique
 	name: string; // readable
 	icon: string; // b64 str (png/svg)
 	chain: string; // 'algorand'

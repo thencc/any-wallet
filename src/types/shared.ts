@@ -1,7 +1,8 @@
-import { WALLET_ID } from 'src/wallets/constants';
+// import { WALLET_ID } from 'src/wallets/constants';
+import { WALL_V } from '../wallets/const2';
 
 export interface Account {
-	walletId: WALLET_ID;
+	walletId: WALL_V;
 	name: string;
 	address: string;
 	chain: string;
@@ -11,7 +12,7 @@ export interface Account {
 }
 
 export type WalletProvider = {
-	id: WALLET_ID;
+	id: WALL_V;
 	name: string;
 	icon: string;
 	chain: string;

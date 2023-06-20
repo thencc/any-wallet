@@ -3,7 +3,9 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 
 // import { WALLET_ID, WALLET_ID, WalletInitParamsObj, WalletType } from '.'; // wallets
 import { WalletInitParamsObj, WalletType } from '.'; // wallets
-import { WALLET_ID } from './constants';
+import { WALLET_ID } from './const2'; // wallets
+// import { WALLET_ID } from './constants';
+// import { WALLET_ID } from './const2';
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
@@ -13,9 +15,10 @@ import { deepToRaw } from './helpers-reactivity';
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
-import { WALL_V } from './const2';
+import type { WALL_V } from './const2';
 
-export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
+// export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
+export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL_V, ip: boolean | ClientInitParams = true) => {
 	console.debug('createWallet', id);
 	let w = reactive({
 		// === wallet state ===
@@ -174,7 +177,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	return w;
 };
 
-export const initWallet = (wId: WALLET_ID, wInitParams: WalletInitParamsObj[typeof wId]) => {
+export const initWallet = (wId: WALL_V, wInitParams: WalletInitParamsObj[typeof wId]) => {
 	const w = AnyWalletState.allWallets[wId];
 	if (!w) {
 		throw new Error(`Unknown wallet: ${wId}`);
@@ -192,14 +195,15 @@ export const initWallets = (
 ) => {
 	logger.log('initWallets started', walletInits);
 	for (let [wKey, wInitParams] of Object.entries(walletInits)) {
-		let wId = wKey as WALLET_ID; // could just be a unique id for double initing but why
+		let wId = wKey as WALL_V; // could just be a unique id for double initing but why
 		initWallet(wId, wInitParams);
 	}
 	return AnyWalletState.allWallets;
 }
 
-// export const connectWallet = async <WWID extends WALLET_ID>(wId: WALLET_ID, wInitParams?: WalletInitParamsObj[typeof wId]) => {
-export const connectWallet = async (wId: WALLET_ID, wInitParams?: WalletInitParamsObj[typeof wId]) => {
+// export const connectWallet = async <WWID extends WALL_V>(wId: WALL_V, wInitParams?: WalletInitParamsObj[WWID]) => {
+// export const connectWallet = async (wId: WALL_V, wInitParams?: WalletInitParamsObj[typeof wId]) => {
+export const connectWallet = async <One extends WALL_V, Two extends WalletInitParamsObj[One]>(wId: One, wInitParams?: Two) => {
 	// possibly set init params...
 	if (wInitParams !== undefined) {
 		initWallet(wId, wInitParams);
@@ -212,15 +216,18 @@ export const connectWallet = async (wId: WALLET_ID, wInitParams?: WalletInitPara
 	return await w.connect();
 };
 
-// connectWallet('inkey');
+// connectWallet('inkey', ''); // works
+// connectWallet('inkey', ''); // should not work...
+// connectWallet('defly')
 // connectWallet(WALLET_ID.INKEY, {config: { src: '' }});
 // connectWallet(WALLET_ID.MNEMONIC, false);
+// connectWallet(WALLET_ID.MNEMONIC, '123 456');
 
-export const getAccountsByWalletId = (id: WALLET_ID) => {
+export const getAccountsByWalletId = (id: WALL_V) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
 
-export const removeAccountsByWalletId = (id: WALLET_ID) => {
+export const removeAccountsByWalletId = (id: WALL_V) => {
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(

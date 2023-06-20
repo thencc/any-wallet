@@ -5,8 +5,9 @@ import { isBrowser, logger } from '../utils';
 import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
-import { WalletType, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
+import { WalletType, ALL_WALLETS } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
+import type { WALL_V } from 'src/wallets/const2';
 
 export const AnyWalletState = reactive({
 	allWallets: ALL_WALLETS,
@@ -41,9 +42,9 @@ export const AnyWalletState = reactive({
 		return cAccts;
 	})),
 	activeWalletId: readonly(computed(() => {
-		let aWId: null | WALLET_ID = null;
+		let aWId: null | WALL_V = null;
 		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.walletId as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+			aWId = AnyWalletState.stored.activeAccount.walletId as WALL_V; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
 		}
 		return aWId;
 	})),
