@@ -177,7 +177,9 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	return w;
 };
 
-export const initWallet = (wId: WALL_V, wInitParams: WalletInitParamsObj[typeof wId]) => {
+// export const connectWallet = async <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
+// export const initWallet = (wId: WALL_V, wInitParams: WalletInitParamsObj[typeof wId]) => {
+	export const initWallet = <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
 	const w = AnyWalletState.allWallets[wId];
 	if (!w) {
 		throw new Error(`Unknown wallet: ${wId}`);
@@ -189,6 +191,10 @@ export const initWallet = (wId: WALL_V, wInitParams: WalletInitParamsObj[typeof 
 	}
 	return w;
 }
+
+// initWallet('mnemonic', '');
+// initWallet('mnemonic', false);
+// initWallet('inkey')
 
 export const initWallets = (
 	walletInits: WalletInitParamsObj,
@@ -203,7 +209,7 @@ export const initWallets = (
 
 // export const connectWallet = async <WWID extends WALL_V>(wId: WALL_V, wInitParams?: WalletInitParamsObj[WWID]) => {
 // export const connectWallet = async (wId: WALL_V, wInitParams?: WalletInitParamsObj[typeof wId]) => {
-export const connectWallet = async <One extends WALL_V, Two extends WalletInitParamsObj[One]>(wId: One, wInitParams?: Two) => {
+export const connectWallet = async <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
 	// possibly set init params...
 	if (wInitParams !== undefined) {
 		initWallet(wId, wInitParams);
@@ -216,12 +222,15 @@ export const connectWallet = async <One extends WALL_V, Two extends WalletInitPa
 	return await w.connect();
 };
 
+// connectWallet('inkey'); // works
 // connectWallet('inkey', ''); // works
 // connectWallet('inkey', ''); // should not work...
 // connectWallet('defly')
 // connectWallet(WALLET_ID.INKEY, {config: { src: '' }});
 // connectWallet(WALLET_ID.MNEMONIC, false);
 // connectWallet(WALLET_ID.MNEMONIC, '123 456');
+// connectWallet(WALLET_ID.MNEMONIC); // works but shouldnt really
+
 
 export const getAccountsByWalletId = (id: WALL_V) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
