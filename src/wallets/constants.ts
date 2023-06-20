@@ -3,6 +3,8 @@ import type { Network } from 'src/types/node';
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
+// import { WALLET_ID } from './const2';
+
 export enum WALLET_ID {
 	PERA = 'pera',
 	INKEY = 'inkey',
@@ -14,18 +16,33 @@ export enum WALLET_ID {
 	// KMD = 'kmd', // nope
 	// WALLETCONNECT = 'walletconnect', // willnotfix
 };
+// export const WALLET_ID = WALLET_ID;
 
-export const DEFAULT_WALLETS_TO_ENABLE: WalletInitParamsObj = {
-	// [WALLET_ID.PERA]: true,
-	// [WALLET_ID.INKEY]: true,
-	// [WALLET_ID.MYALGO]: true,
-	// [WALLET_ID.ALGOSIGNER]: true,
-	// [WALLET_ID.EXODUS]: true,
-	// [WALLET_ID.DEFLY]: true,
-	// [WALLET_ID.MNEMONIC]: false,
-};
+/*
+export const WALLET_ID = {
+    PERA: 'pera',
+	INKEY: 'inkey',
+	MYALGO: 'myalgo',
+	ALGOSIGNER: 'algosigner',
+	EXODUS: 'exodus',
+	DEFLY: 'defly',
+	MNEMONIC: 'mnemonic',
+} as const;
+export type WALLET_ID = WALLET_ID[keyof WALLET_ID];
+*/
 
-export const ALL_WALLETS: WalletsObj = {
+// TODO get rid of these soon...
+// export type WalletsObj = {
+// 	[WALLET_ID.PERA]?: WalletType<WALLET_ID.PERA>;
+// 	[WALLET_ID.INKEY]?: WalletType<WALLET_ID.INKEY>;
+// 	[WALLET_ID.MYALGO]?: WalletType<WALLET_ID.MYALGO>;
+// 	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
+// 	[WALLET_ID.EXODUS]?: WalletType<WALLET_ID.EXODUS>;
+// 	[WALLET_ID.DEFLY]?: WalletType<WALLET_ID.DEFLY>;
+// 	[WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
+// };
+// export const ALL_WALLETS: WalletsObj = {
+	export const ALL_WALLETS = {
 	[WALLET_ID.PERA]: createWallet<ClientType<WALLET_ID.PERA>>(WALLET_ID.PERA),
 	[WALLET_ID.INKEY]: createWallet<ClientType<WALLET_ID.INKEY>>(WALLET_ID.INKEY),
 	[WALLET_ID.MYALGO]: createWallet<ClientType<WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),

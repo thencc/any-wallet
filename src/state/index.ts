@@ -5,12 +5,11 @@ import { isBrowser, logger } from '../utils';
 import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
-import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
+import { WalletType, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
 
 export const AnyWalletState = reactive({
 	allWallets: ALL_WALLETS,
-	enabledWallets: null as null | WalletsObj, // .wallets (should it be renamed this?)
 
 	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
 	stored: {
@@ -50,22 +49,17 @@ export const AnyWalletState = reactive({
 	})),
 	activeWallet: readonly(computed(() => {
 		let aW: undefined | WalletType = undefined;
-		if (AnyWalletState.activeWalletId !== null &&
-			AnyWalletState.enabledWallets !== null) {
-			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
+		if (AnyWalletState.activeWalletId !== null) {
+			aW = AnyWalletState.allWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
 		}
 		return aW;
 	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
-		if (!AnyWalletState.enabledWallets) {
-			// pass
-		} else {
-			for (let [k, w] of Object.entries(AnyWalletState.enabledWallets)) {
-				if (w.signing) {
-					someWalletIsSigning = true;
-					break;
-				}
+		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+			if (w.signing) {
+				someWalletIsSigning = true;
+				break;
 			}
 		}
 		return someWalletIsSigning;

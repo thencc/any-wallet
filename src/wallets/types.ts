@@ -16,37 +16,37 @@ import type { InitParamsBase as MnemonicInitParams } from 'src/clients/mnemonic/
 
 export type WalletInitParamsObj = {
 	[WALLET_ID.PERA]?: boolean | {
-		id?: WALLET_ID.PERA;
+		id?: typeof WALLET_ID.PERA;
 		config?: PeraInitParams['config'];
 		sdk?: PeraInitParams['sdk'];
 	};
 	[WALLET_ID.INKEY]?: boolean | {
-		id?: WALLET_ID.INKEY;
+		id?: typeof WALLET_ID.INKEY;
 		config?: InkeyInitParams['config'];
 		sdk?: InkeyInitParams['sdk'];
 	};
 	[WALLET_ID.MYALGO]?: boolean | {
-		id?: WALLET_ID.MYALGO;
+		id?: typeof WALLET_ID.MYALGO;
 		config?: MyAlgoInitParams['config'];
 		sdk?: MyAlgoInitParams['sdk'];
 	};
 	[WALLET_ID.ALGOSIGNER]?: boolean | {
-		id?: WALLET_ID.ALGOSIGNER;
+		id?: typeof WALLET_ID.ALGOSIGNER;
 		config?: AlgoSignerInitParams['config'];
 		sdk?: AlgoSignerInitParams['sdk'];
 	};
 	[WALLET_ID.EXODUS]?: boolean | {
-		id?: WALLET_ID.EXODUS;
+		id?: typeof WALLET_ID.EXODUS;
 		config?: ExodusInitParams['config'];
 		sdk?: ExodusInitParams['sdk'];
 	};
 	[WALLET_ID.DEFLY]?: boolean | {
-		id?: WALLET_ID.DEFLY;
+		id?: typeof WALLET_ID.DEFLY;
 		config?: DeflyInitParams['config'];
 		sdk?: DeflyInitParams['sdk'];
 	};
-	[WALLET_ID.MNEMONIC]?: boolean | string | {
-		id?: WALLET_ID.MNEMONIC;
+	[WALLET_ID.MNEMONIC]?: string | {
+		id?: typeof WALLET_ID.MNEMONIC;
 		config?: MnemonicInitParams['config'];
 		sdk?: MnemonicInitParams['sdk'];
 	};
@@ -55,11 +55,11 @@ export type WalletInitParamsObj = {
 export type WalletType<T extends WALLET_ID = WALLET_ID> = ReturnType<typeof createWallet<ClientType<T>>>;
 
 export type WalletsObj = {
-	[WALLET_ID.PERA]?: WalletType<WALLET_ID.PERA>;
-	[WALLET_ID.INKEY]?: WalletType<WALLET_ID.INKEY>;
-	[WALLET_ID.MYALGO]?: WalletType<WALLET_ID.MYALGO>;
-	[WALLET_ID.ALGOSIGNER]?: WalletType<WALLET_ID.ALGOSIGNER>;
-	[WALLET_ID.EXODUS]?: WalletType<WALLET_ID.EXODUS>;
-	[WALLET_ID.DEFLY]?: WalletType<WALLET_ID.DEFLY>;
-	[WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
+	[WALLET_ID.PERA]?: WalletType<typeof WALLET_ID.PERA>;
+	[WALLET_ID.INKEY]?: WalletType<typeof WALLET_ID.INKEY>;
+	[WALLET_ID.MYALGO]?: WalletType<typeof WALLET_ID.MYALGO>;
+	[WALLET_ID.ALGOSIGNER]?: WalletType<typeof WALLET_ID.ALGOSIGNER>;
+	[WALLET_ID.EXODUS]?: WalletType<typeof WALLET_ID.EXODUS>;
+	[WALLET_ID.DEFLY]?: WalletType<typeof WALLET_ID.DEFLY>;
+	[WALLET_ID.MNEMONIC]?: WalletType<typeof WALLET_ID.MNEMONIC>;
 };

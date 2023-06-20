@@ -23,7 +23,7 @@
 		</div>
 
 		<p>enabled wallets:</p>
-		<div v-for="(p, k) of AnyWalletState.enabledWallets">
+		<div v-for="(p, k) of AnyWalletState.allWallets">
 			<template v-if="p">
 				<!-- <img :src="p.client?.metadata.icon" alt="" style="width: 40px; height: 40px;"> -->
 				<span>{{ k }}</span>
@@ -41,7 +41,7 @@
 		</div>
 
 		<br />
-		<button @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.enabledWallets !== null)">
+		<button @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
 			doTxnSimpleAlgJs
 		</button>
 
@@ -61,8 +61,9 @@ import {
 
 import {
 	AnyWalletState,
+	initWallets,
 	signTransactions,
-	enableWallets,
+	// enableWallets,
 	WALLET_ID,
 	watch,
 } from '@thencc/any-wallet';
@@ -110,7 +111,7 @@ export default defineComponent({
 			);
 
 			watch(
-				() => AnyWalletState.enabledWallets,
+				() => AnyWalletState.allWallets,
 				(ew) => {
 					this.$forceUpdate(); // re-render <template>
 				},
@@ -125,7 +126,7 @@ export default defineComponent({
 		doEnableWallets() {
 			console.log('doEnableWallets');
 
-			let wallets = enableWallets({
+			let wallets = initWallets({
 				[WALLET_ID.INKEY]: {
 					id: WALLET_ID.INKEY,
 					config: {

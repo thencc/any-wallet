@@ -1,19 +1,19 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-import { CLIENT_PKGS, excludeClients } from '@thencc/any-wallet';
+// import { CLIENT_PKGS, excludeClients } from '@thencc/any-wallet';
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [vue()],
 	base: '', // needed for github pages re relative path
 
-	optimizeDeps: {
-		// for vite server to work correctly...
-		include: [
-			...CLIENT_PKGS
-		],
-	},
+	// optimizeDeps: {
+	// 	// for vite server to work correctly...
+	// 	include: [
+	// 		...CLIENT_PKGS
+	// 	],
+	// },
 
 	build: {
 		minify: false,

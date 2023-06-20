@@ -1,4 +1,4 @@
-import type { Account } from "algosdk";
+import type { Account } from 'algosdk';
 
 export type MnemonicSdk = Account;
 

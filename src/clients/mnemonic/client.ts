@@ -4,7 +4,7 @@ import type { WalletAccounts, DecodedTransaction, DecodedSignedTransaction, Acco
 import { METADATA } from './constants';
 import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
-import { decodeObj, encodeAddress, mnemonicToSecretKey, Transaction } from 'algosdk';
+import { decodeObj, encodeAddress, EncodedSignedTransaction, EncodedTransaction, mnemonicToSecretKey, Transaction } from 'algosdk';
 
 export class MnemonicClient extends BaseClient {
 	// sdk IS the algo Account in this client
@@ -26,8 +26,7 @@ export class MnemonicClient extends BaseClient {
 			// can intake:
 			// 0. mnemonic string (instead of ip)
 			// 1. a algosdk.Account via ip.sdk
-			// 2. OR a mnemonic from ip.config
-			// 3. html prompt input (default)
+			// 2. OR a mnemonic from ip.config.mnemonic
 			if (initParams) {
 				if (typeof initParams == 'string') {
 					// do init w passed in mnemonic (try)
@@ -106,7 +105,7 @@ export class MnemonicClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		const signedTxns: Uint8Array[] = [];
 

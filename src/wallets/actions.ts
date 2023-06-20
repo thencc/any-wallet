@@ -1,7 +1,9 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
+// import { WALLET_ID, WALLET_ID, WalletInitParamsObj, WalletType } from '.'; // wallets
+import { WalletInitParamsObj, WalletType } from '.'; // wallets
+import { WALLET_ID } from './constants';
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
@@ -11,8 +13,10 @@ import { deepToRaw } from './helpers-reactivity';
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
+import { WALL_V } from './const2';
 
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
+	console.debug('createWallet', id);
 	let w = reactive({
 		// === wallet state ===
 		id: id,
@@ -29,7 +33,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			logger.debug('loadClient:', id);
 			
 			if (w.inited) {
-				logger.log('aw already inited client');
+				logger.debug('aw already inited client');
 				return true;
 			} else {
 				w.initing = true;
@@ -170,51 +174,47 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	return w;
 };
 
-export const enableWallets = (
-	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
-) => {
-	logger.log('enableWallets started', walletsToEnable);
-
-	if (AnyWalletState.enabledWallets == null) {
-		AnyWalletState.enabledWallets = {} as WalletsObj;
+export const initWallet = (wId: WALLET_ID, wInitParams: WalletInitParamsObj[typeof wId]) => {
+	const w = AnyWalletState.allWallets[wId];
+	if (!w) {
+		throw new Error(`Unknown wallet: ${wId}`);
+	}
+	if (wInitParams !== undefined) {
+		w.initParams = wInitParams as Exclude<typeof wInitParams, String>; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly);
 	} else {
-		// logger.debug('enableWallets called while some wallets were already initialized (add to them)');
+		logger.log(`didnt update wallet's init params... kept whatever existed before`);
 	}
+	return w;
+}
 
-	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
+export const initWallets = (
+	walletInits: WalletInitParamsObj,
+) => {
+	logger.log('initWallets started', walletInits);
+	for (let [wKey, wInitParams] of Object.entries(walletInits)) {
 		let wId = wKey as WALLET_ID; // could just be a unique id for double initing but why
-		// TODO ? should allWallets even be in global state?
-		AnyWalletState.allWallets[wId]!.initParams = wInitParams as Exclude<typeof wInitParams, String>; // as ClientInitParams; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly)
-		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId];
+		initWallet(wId, wInitParams);
 	}
+	return AnyWalletState.allWallets;
+}
 
-	// if dapp changes config and user has a stale localstorage account, remove it
-	// let previousUserWallId = AnyWalletState.stored.activeAccount?.walletId;
-	// if (previousUserWallId) {
-	// 	let enabledWalletIdSet = new Set<WALLET_ID>(Object.keys(walletsToEnable) as WALLET_ID[]);
-	// 	if (!enabledWalletIdSet.has(previousUserWallId)) {
-	// 		// disconnect also removes the accts from LS
-	// 		AnyWalletState.allWallets[previousUserWallId]?.disconnect(); // dont await it
-	// 	}
-	// }
-
-	return AnyWalletState.enabledWallets;
+// export const connectWallet = async <WWID extends WALLET_ID>(wId: WALLET_ID, wInitParams?: WalletInitParamsObj[typeof wId]) => {
+export const connectWallet = async (wId: WALLET_ID, wInitParams?: WalletInitParamsObj[typeof wId]) => {
+	// possibly set init params...
+	if (wInitParams !== undefined) {
+		initWallet(wId, wInitParams);
+	}
+	// then, connect
+	const w = AnyWalletState.allWallets[wId];
+	if (!w) {
+		throw new Error(`Unknown wallet: ${wId}`);
+	}
+	return await w.connect();
 };
 
-export const disableWallets = (wIds: WALLET_ID[]) => {
-	if (!AnyWalletState.enabledWallets) {
-		console.warn('no wallets enabled to disable');
-		return 
-	}
-
-	for (let wId of wIds) {
-		let w = AnyWalletState.enabledWallets[wId];
-		if (w) {
-			w.disconnect(); // dont await it
-			delete AnyWalletState.enabledWallets[wId];
-		}
-	}
-};
+// connectWallet('inkey');
+// connectWallet(WALLET_ID.INKEY, {config: { src: '' }});
+// connectWallet(WALLET_ID.MNEMONIC, false);
 
 export const getAccountsByWalletId = (id: WALLET_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
@@ -317,23 +317,35 @@ export const setAsActiveAccount = (acct: Account) => {
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
-	// logger.log('signTransactions', txns);
-	if (!AnyWalletState.enabledWallets) {
-		throw new Error('No wallets enabled, call enableWallets() first');
-	}
-	let wKeys = Object.keys(AnyWalletState.enabledWallets);
+	logger.log('signTransactions', txns);
+
+	// if (!AnyWalletState.enabledWallets) {
+	// 	throw new Error('No wallets enabled, call enableWallets() first');
+	// }
+	// let wKeys = Object.keys(AnyWalletState.enabledWallets);
+
+	// let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
+	// // if (wKeys.length == 1) {
+	// // 	walletId = wKeys[0] as WALLET_ID;
+	// // }
+	// if (!walletId) {
+	// 	throw new Error('No active wallet id');
+	// }
+
+	/*
 	let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
-	if (wKeys.length == 1) {
-		walletId = wKeys[0] as WALLET_ID;
-	}
 	if (!walletId) {
 		throw new Error('No active wallet id');
 	}
+	*/
+
+
 	// FYI an active wallet isnt a connected wallet (active means dapp has is enabled, connected means user chose this wallet+acct)
-	let activeWallet = AnyWalletState.enabledWallets[walletId];
+	// let activeWallet = AnyWalletState.enabledWallets[walletId];
+	let activeWallet = AnyWalletState.activeWallet;
 	if (!activeWallet) {
 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
-		throw new Error('No active wallet... how\'d you get here.');
+		throw new Error(`No active wallet... how'd you get here.`);
 	}
 
 	let txnsSigned = await activeWallet.signTransactions(txns);
