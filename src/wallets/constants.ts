@@ -3,7 +3,7 @@ import type { Network } from 'src/types/node';
 import type { WalletInitParamsObj, WalletsObj } from './types';
 import { createWallet } from './actions'; // needs to be AFTER the types import
 
-import { WALLET_ID } from './const2';
+import { WALLET_ID } from './const';
 
 /*
 export enum WALLET_ID {
@@ -45,7 +45,9 @@ export type WALLET_ID = WALLET_ID[keyof WALLET_ID];
 // 	[WALLET_ID.MNEMONIC]?: WalletType<WALLET_ID.MNEMONIC>;
 // };
 // export const ALL_WALLETS: WalletsObj = {
-	export const ALL_WALLETS = {
+
+/*
+export const ALL_WALLETS = {
 	[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
 	[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
 	[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
@@ -54,11 +56,12 @@ export type WALLET_ID = WALLET_ID[keyof WALLET_ID];
 	[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
 	[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 } as const; // helps w security
+*/
 
-// algod configs (not used)
-export const DEFAULT_NETWORK: Network = 'testnet'; // 'mainnet';
-export const DEFAULT_NODE_TOKEN = '';
-export const DEFAULT_NODE_PORT = '';
-export const DEFAULT_NODE_BASEURL = 'https://testnet-api.algonode.cloud';
-// https://testnet-api.algonode.cloud
-// https://mainnet-api.algonode.cloud
+// // algod configs (not used)
+// export const DEFAULT_NETWORK: Network = 'testnet'; // 'mainnet';
+// export const DEFAULT_NODE_TOKEN = '';
+// export const DEFAULT_NODE_PORT = '';
+// export const DEFAULT_NODE_BASEURL = 'https://testnet-api.algonode.cloud';
+// // https://testnet-api.algonode.cloud
+// // https://mainnet-api.algonode.cloud

@@ -3,7 +3,7 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 
 // import { WALLET_ID, WALLET_ID, WalletInitParamsObj, WalletType } from '.'; // wallets
 import { WalletInitParamsObj, WalletType } from '.'; // wallets
-import { WALLET_ID } from './const2'; // wallets
+import { WALLET_ID } from './const'; // wallets
 // import { WALLET_ID } from './constants';
 // import { WALLET_ID } from './const2';
 import { CLIENT_MAP } from 'src/clients';
@@ -15,7 +15,7 @@ import { deepToRaw } from './helpers-reactivity';
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
-import type { WALL_V } from './const2';
+import type { WALL_V } from './const';
 
 // export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL_V, ip: boolean | ClientInitParams = true) => {

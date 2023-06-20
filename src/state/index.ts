@@ -5,12 +5,39 @@ import { isBrowser, logger } from '../utils';
 import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
-import { WalletType, ALL_WALLETS } from 'src/wallets'; // wallet bits
+// import { WalletType, ALL_WALLETS } from 'src/wallets'; // wallet bits
+import type { WalletType } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
-import type { WALL_V } from 'src/wallets/const2';
+import type { WALL_V } from 'src/wallets/const';
+
+import type { ClientType } from 'src/clients';
+import type { Network } from 'src/types/node';
+// import { createWallet } from './actions'; // needs to be AFTER the types import
+import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
+
+import { WALLET_ID } from '../wallets/const';
+
+// export const ALL_WALLETS = {
+// 	[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+// 	[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+// 	[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+// 	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+// 	[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+// 	[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+// 	[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+// } as const; // helps w security
 
 export const AnyWalletState = reactive({
-	allWallets: ALL_WALLETS,
+	// allWallets: ALL_WALLETS,
+	allWallets: {
+		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+	},
 
 	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
 	stored: {

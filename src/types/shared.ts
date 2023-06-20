@@ -1,5 +1,5 @@
 // import { WALLET_ID } from 'src/wallets/constants';
-import { WALL_V } from '../wallets/const2';
+import { WALL_V } from '../wallets/const';
 
 export interface Account {
 	walletId: WALL_V;

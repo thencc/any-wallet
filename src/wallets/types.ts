@@ -1,6 +1,6 @@
 // wallets
 // import { WALLET_ID } from './constants';
-import { WALLET_ID, type WALL_V } from './const2';
+import { WALLET_ID, type WALL_V } from './const';
 import type { createWallet } from './actions'; // AFTER the constants import
 
 // clients

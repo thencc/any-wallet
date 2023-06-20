@@ -1,5 +1,5 @@
 // import { WALLET_ID } from 'src/wallets/constants';
-import { WALLET_ID, type WALL_V } from 'src/wallets/const2';
+import { WALLET_ID, type WALL_V } from 'src/wallets/const';
 
 import { PeraClient } from 'src/clients/pera/client';
 import { InkeyClient } from 'src/clients/inkey/client';
