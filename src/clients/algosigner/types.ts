@@ -1,5 +1,6 @@
 import type _algosdk from 'algosdk';
-import type { Network } from '../../types';
+
+export type Network = 'betanet' | 'testnet' | 'mainnet' | string;
 
 export type WindowExtended = { AlgoSigner: AlgoSignerSdk } & Window &
 	typeof globalThis;

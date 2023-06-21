@@ -5,8 +5,6 @@
 import { BaseClient } from '../base/client';
 import type {
 	WalletAccounts,
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -20,6 +18,10 @@ import {
 
 import { markRaw } from '@vue/reactivity';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
@@ -125,7 +127,7 @@ export class PeraClient extends BaseClient {
 	) {
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {

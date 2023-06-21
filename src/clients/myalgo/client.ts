@@ -4,8 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import {
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './types';
@@ -13,6 +11,10 @@ import { METADATA } from './constants';
 
 import { markRaw } from '@vue/reactivity';
 import { decodeObj, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class MyAlgoClient extends BaseClient {
 	sdk: MyAlgoSdk;
@@ -97,7 +99,7 @@ export class MyAlgoClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Get the unsigned transactions.
 		const txnsToSign = decodedTxns.reduce<Uint8Array[]>((acc, txn, i) => {

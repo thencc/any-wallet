@@ -1,10 +1,17 @@
 // insecure wallet approach for fast development
 import { BaseClient } from '../base/client';
-import type { WalletAccounts, DecodedTransaction, DecodedSignedTransaction, Account } from '../../types';
+import type { 
+	WalletAccounts, 
+	Account 
+} from '../../types';
 import { METADATA } from './constants';
 import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
-import { decodeObj, encodeAddress, EncodedSignedTransaction, EncodedTransaction, mnemonicToSecretKey, Transaction } from 'algosdk';
+import { decodeObj, encodeAddress, mnemonicToSecretKey, Transaction } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class MnemonicClient extends BaseClient {
 	// sdk IS the algo Account in this client

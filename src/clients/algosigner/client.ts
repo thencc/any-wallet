@@ -5,10 +5,6 @@
 import { Buffer } from 'buffer';
 import { BaseClient } from '../base/client';
 import type {
-	TransactionsArray,
-	DecodedTransaction,
-	DecodedSignedTransaction,
-	Network,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -19,24 +15,22 @@ import type {
 	AlgoSignerClientConstructor,
 	InitParams,
 	AlgoSignerSdk,
+	Network,
 } from './types';
 import { decodeObj, decodeSignedTransaction, encodeAddress } from 'algosdk';
+import type { EncodedSignedTransaction, EncodedTransaction } from 'algosdk';
 
 // maps mainnet to MainNet etc
 const getNetwork = (network: string): SupportedLedgers => {
 	if (network === 'betanet') {
 		return 'BetaNet';
-	}
-
-	if (network === 'testnet') {
+	} else if (network === 'testnet') {
 		return 'TestNet';
-	}
-
-	if (network === 'mainnet') {
+	} else if (network === 'mainnet') {
 		return 'MainNet';
+	} else {
+		return network;
 	}
-
-	return network;
 };
 
 export class AlgoSignerClient extends BaseClient {
@@ -134,7 +128,7 @@ export class AlgoSignerClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<AlgoSignerTransaction[]>(

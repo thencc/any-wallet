@@ -4,8 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -18,6 +16,10 @@ import {
 } from './types';
 import type { WalletAccounts } from '../../types';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class DeflyClient extends BaseClient {
 	sdk: DeflySdk;
@@ -123,7 +125,7 @@ export class DeflyClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions,
 		// and add the signers property if they shouldn't be signed.
