@@ -282,6 +282,9 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 
 export const setAsActiveAccount = (acct: Account) => {
 	logger.debug('setAsActiveAccount', acct);
+
+	acct.active = true; // needed here as well as below
+	acct.dateLastActive = new Date().getTime();
 	
 	AnyWalletState.stored.activeAccount = acct;
 
@@ -298,8 +301,6 @@ export const setAsActiveAccount = (acct: Account) => {
 			ca.active = false;
 		}
 	});
-	AnyWalletState.stored.activeAccount.active = true; // changes in connectedAccounts array too
-	AnyWalletState.stored.activeAccount.dateLastActive = new Date().getTime();
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
