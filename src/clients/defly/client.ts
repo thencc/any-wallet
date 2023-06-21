@@ -4,8 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -16,8 +14,11 @@ import {
 	DeflySdk,
 	SdkConfig,
 } from './types';
-import type { WalletAccounts } from '../../types';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class DeflyClient extends BaseClient {
 	sdk: DeflySdk;
@@ -69,7 +70,7 @@ export class DeflyClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
+	async connect(onDisconnect: () => void): Promise<Account[]> {
 		const accounts = await this.sdk.connect().catch(console.info);
 
 		this.sdk.connector.on('disconnect', onDisconnect);
@@ -78,18 +79,14 @@ export class DeflyClient extends BaseClient {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const mappedAccounts = accounts.map((address: string, index: number) => ({
+		return accounts.map((address: string, index: number) => ({
 			name: `Defly Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -100,16 +97,14 @@ export class DeflyClient extends BaseClient {
 			return null;
 		}
 
-		return {
-			...METADATA,
-			accounts: accounts.map((address: string, index: number) => ({
-				name: `Defly Account ${index + 1}`,
-				address,
-				walletId: METADATA.id,
-				chain: METADATA.chain,
-				active: false,
-			})),
-		};
+		return accounts.map((address: string, index: number) => ({
+			name: `Defly Account ${index + 1}`,
+			address,
+			walletId: METADATA.id,
+			chain: METADATA.chain,
+			active: false,
+			dateConnected: new Date().getTime(),
+		}));
 	}
 
 	async disconnect() {
@@ -123,7 +118,7 @@ export class DeflyClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions,
 		// and add the signers property if they shouldn't be signed.

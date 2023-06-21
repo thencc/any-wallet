@@ -29,10 +29,11 @@ export default defineConfig({
 		...Object.keys(pkg.devDependencies),
 	],
 
-	platform: 'browser', // turn on to make lib browser compatible (auto shims require, buffer, process, etc -- is this true?)
+	// platform: 'browser', // turn on to make lib browser compatible (auto shims require, buffer, process, etc -- is this true?)
+	platform: 'neutral',
 	// keepNames: false,
 	// splitting: true,
-	minify: true,
+	minify: true, // makes built file ~31kb
 	// treeshake: true,
 	// sourcemap: true,
 

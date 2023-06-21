@@ -4,16 +4,16 @@
  */
 import { BaseClient } from '../base/client';
 import {
-	DecodedTransaction,
-	DecodedSignedTransaction,
-	WalletAccounts,
 	Account,
 } from '../../types';
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
 import { METADATA } from './constants';
 import { decodeObj, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 import { arrayBufferToBase64 } from 'src/utils';
-// import type { Account } from 'src/types';
 
 export class InkeyClient extends BaseClient {
 	sdk: InkeySdk;
@@ -80,26 +80,22 @@ export class InkeyClient extends BaseClient {
 			);
 		}
 
-		const mappedAccounts = inkeyAccounts.map((account) => ({
+		if (p?.onDisconnect) {
+			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
+		}
+
+		return inkeyAccounts.map((account) => ({
 			name: account.name,
 			address: account.address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		if (p?.onDisconnect) {
-			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
-		}
-
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
 	}
 
 	// what is .reconnect() used for? its in use-wallet lib but why?
-	async reconnect(): Promise<WalletAccounts | null> {
+	async reconnect(): Promise<Account[] | null> {
 		// logger.log('inkey reconnect')
 		return null;
 	}
@@ -115,7 +111,7 @@ export class InkeyClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions, and add the signers property if they shouldn't be signed. Get the unsigned transactions.
 		// If the transaction isn't already signed and is to be sent from a connected account, add it to the arrays of transactions to be signed.

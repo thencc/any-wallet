@@ -5,12 +5,22 @@ import { isBrowser, logger } from '../utils';
 import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
-import { WalletType, WalletsObj, ALL_WALLETS, WALLET_ID } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
+import type { ClientType } from 'src/clients';
+import type { WalletType } from '../wallets/types'; // wallet bits
+import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
+import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 export const AnyWalletState = reactive({
-	allWallets: ALL_WALLETS,
-	enabledWallets: null as null | WalletsObj, // .wallets (should it be renamed this?)
+	allWallets: {
+		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+	},
 
 	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
 	stored: {
@@ -42,33 +52,38 @@ export const AnyWalletState = reactive({
 		return cAccts;
 	})),
 	activeWalletId: readonly(computed(() => {
-		let aWId: null | WALLET_ID = null;
+		let aWId: null | W_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.walletId as WALLET_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+			aWId = AnyWalletState.stored.activeAccount.walletId as W_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
 		}
 		return aWId;
 	})),
 	activeWallet: readonly(computed(() => {
 		let aW: undefined | WalletType = undefined;
-		if (AnyWalletState.activeWalletId !== null &&
-			AnyWalletState.enabledWallets !== null) {
-			aW = AnyWalletState.enabledWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
+		if (AnyWalletState.activeWalletId !== null) {
+			aW = AnyWalletState.allWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
 		}
 		return aW;
 	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
-		if (!AnyWalletState.enabledWallets) {
-			// pass
-		} else {
-			for (let [k, w] of Object.entries(AnyWalletState.enabledWallets)) {
-				if (w.signing) {
-					someWalletIsSigning = true;
-					break;
-				}
+		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+			if (w.signing) {
+				someWalletIsSigning = true;
+				break;
 			}
 		}
 		return someWalletIsSigning;
+	})),
+	isIniting: readonly(computed(() => {
+		let someWalletIsIniting = false;
+		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+			if (w.initing) {
+				someWalletIsIniting = true;
+				break;
+			}
+		}
+		return someWalletIsIniting;
 	})),
 });
 

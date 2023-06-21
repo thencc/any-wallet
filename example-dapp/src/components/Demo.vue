@@ -21,7 +21,7 @@
 				<div style="font-family: monospace; word-break: break-all;">{{ AnyWalletState.activeAddress }}</div>
 			</div>
 
-			<div v-for="(p, key) of AnyWalletState.enabledWallets" class="wallet-list-item">
+			<div v-for="(p, key) of AnyWalletState.allWallets" class="wallet-list-item">
 				<template v-if="p">
 					<img :src="p.metadata.icon" alt="" style="width: 40px; height: 40px;">
 					<span style="padding: 0 1em">{{ p.metadata.name }}</span>
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 
-		<button v-if="AnyWalletState.enabledWallets !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.enabledWallets !== null)">
+		<button v-if="AnyWalletState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
 			sign transaction test
 		</button>
 
@@ -69,11 +69,13 @@
 import { defineComponent } from 'vue';
 import {
 	AnyWalletState,
-	enableWallets,
+	// enableWallets,
 	subscribeToStateChanges,
 	subscribeToAccountChanges,
 	signTransactions,
 	WALLET_ID,
+	// initWallets,
+	// WALLET_ID_ENUM,
 } from '@thencc/any-wallet';
 
 // helper lib for constructing + submitting txns
@@ -120,15 +122,15 @@ export default defineComponent({
 		// call this at least once (choose which wallets to enable)
 		// enableWallets(); // enables defaults
 
-		enableWallets({
-			[WALLET_ID.INKEY]: true,
-			[WALLET_ID.PERA]: true,
-			[WALLET_ID.MYALGO]: true,
-			[WALLET_ID.ALGOSIGNER]: true,
-			[WALLET_ID.EXODUS]: true,
-			[WALLET_ID.DEFLY]: true,
-			[WALLET_ID.MNEMONIC]: true,
-		});
+		// initWallets({
+		// 	[WALLET_ID_ENUM.INKEY]: true,
+		// 	[WALLET_ID_ENUM.PERA]: true,
+		// 	[WALLET_ID_ENUM.MYALGO]: true,
+		// 	[WALLET_ID_ENUM.ALGOSIGNER]: true,
+		// 	[WALLET_ID_ENUM.EXODUS]: true,
+		// 	[WALLET_ID_ENUM.DEFLY]: true,
+		// 	[WALLET_ID_ENUM.MNEMONIC]: true,
+		// });
 
 		subscribeToAccountChanges(
 			(acct) => {

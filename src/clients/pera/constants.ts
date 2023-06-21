@@ -1,4 +1,4 @@
-import { WALLET_ID } from 'src/wallets/constants';
+import { WALLET_ID } from 'src/wallets';
 import type { ClientMetadata } from 'src/clients/base/types';
 
 export const ICON =

@@ -4,8 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -15,8 +13,11 @@ import {
 	ExodusSdk,
 	ExodusClientConstructor,
 } from './types';
-import { markRaw } from '@vue/reactivity';
 import { decodeObj, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class ExodusClient extends BaseClient {
 	sdk: ExodusSdk;
@@ -89,20 +90,16 @@ export class ExodusClient extends BaseClient {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const accounts = [
+		return [
 			{
-				name: `Exodus Account ${new Date().getTime().toString()}`,
+				name: `Exodus Account ${new Date().getTime()}`,
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,
 				active: false,
-			},
+				dateConnected: new Date().getTime()
+			}
 		];
-
-		return {
-			...METADATA,
-			accounts,
-		};
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -132,7 +129,7 @@ export class ExodusClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		const signedIndexes: number[] = [];
 

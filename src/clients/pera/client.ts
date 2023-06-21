@@ -4,9 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	WalletAccounts,
-	DecodedTransaction,
-	DecodedSignedTransaction,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -20,6 +17,10 @@ import {
 
 import { markRaw } from '@vue/reactivity';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class PeraClient extends BaseClient {
 	sdk: PeraSdk;
@@ -72,27 +73,22 @@ export class PeraClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
+	async connect(onDisconnect: () => void) {
 		const accounts = await this.sdk.connect();
-
 		this.sdk.connector?.on('disconnect', onDisconnect);
 
 		if (accounts.length === 0) {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const mappedAccounts = accounts.map((address: string, index: number) => ({
+		return accounts.map((address: string, index: number) => ({
 			name: `Pera Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -103,16 +99,14 @@ export class PeraClient extends BaseClient {
 			return null;
 		}
 
-		return {
-			...METADATA,
-			accounts: accounts.map((address: string, index: number) => ({
-				name: `Pera Account ${index + 1}`,
-				address,
-				walletId: METADATA.id,
-				chain: METADATA.chain,
-				active: false,
-			})),
-		};
+		return accounts.map((address: string, index: number) => ({
+			name: `Pera Account ${index + 1}`,
+			address,
+			walletId: METADATA.id,
+			chain: METADATA.chain,
+			active: false,
+			dateConnected: new Date().getTime(),
+		}));
 	}
 
 	async disconnect() {
@@ -125,7 +119,7 @@ export class PeraClient extends BaseClient {
 	) {
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		// Marshal the transactions, and add the signers property if they shouldn't be signed.
 		const txnsToSign = decodedTxns.reduce<PeraTransaction[]>((acc, txn, i) => {

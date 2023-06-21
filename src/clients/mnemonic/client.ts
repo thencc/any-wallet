@@ -1,10 +1,16 @@
 // insecure wallet approach for fast development
 import { BaseClient } from '../base/client';
-import type { WalletAccounts, DecodedTransaction, DecodedSignedTransaction, Account } from '../../types';
+import type { 
+	Account 
+} from '../../types';
 import { METADATA } from './constants';
 import { InitParams, MnemonicSdk, MnemonicClientConstructor } from './types';
 
 import { decodeObj, encodeAddress, mnemonicToSecretKey, Transaction } from 'algosdk';
+import type {
+	EncodedSignedTransaction, 
+	EncodedTransaction,
+} from 'algosdk';
 
 export class MnemonicClient extends BaseClient {
 	// sdk IS the algo Account in this client
@@ -26,8 +32,7 @@ export class MnemonicClient extends BaseClient {
 			// can intake:
 			// 0. mnemonic string (instead of ip)
 			// 1. a algosdk.Account via ip.sdk
-			// 2. OR a mnemonic from ip.config
-			// 3. html prompt input (default)
+			// 2. OR a mnemonic from ip.config.mnemonic
 			if (initParams) {
 				if (typeof initParams == 'string') {
 					// do init w passed in mnemonic (try)
@@ -62,23 +67,21 @@ export class MnemonicClient extends BaseClient {
 		}
 	}
 
-	async connect(): Promise<WalletAccounts> {
+	async connect(): Promise<Account[]> {
 		if (this.sdk == undefined) {
 			console.warn('mnemonic client wasnt initialized properly... no mnemonic passed in so cannot connect.');
 		}
 
-		return {
-			...METADATA,
-			accounts: [
-				{
-					name: `Mnemonic Account ${new Date().getTime().toString()}`,
-					address: this.sdk?.addr || '',
-					walletId: METADATA.id,
-					chain: METADATA.chain,
-					active: false,
-				},
-			],
-		};
+		return [
+			{
+				name: `Mnemonic Account ${new Date().getTime()}`,
+				address: this.sdk?.addr || '',
+				walletId: METADATA.id,
+				chain: METADATA.chain,
+				active: false,
+				dateConnected: new Date().getTime(),
+			}
+		];
 	}
 
 	async disconnect() {
@@ -86,7 +89,7 @@ export class MnemonicClient extends BaseClient {
 		return;
 	}
 
-	async reconnect(): Promise<WalletAccounts | null> {
+	async reconnect(): Promise<Account[] | null> {
 		return null;
 	}
 
@@ -106,7 +109,7 @@ export class MnemonicClient extends BaseClient {
 		// Decode the transactions to access their properties.
 		const decodedTxns = transactions.map((txn) => {
 			return decodeObj(txn);
-		}) as Array<DecodedTransaction | DecodedSignedTransaction>;
+		}) as Array<EncodedTransaction | EncodedSignedTransaction>;
 
 		const signedTxns: Uint8Array[] = [];
 

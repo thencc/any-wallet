@@ -1,7 +1,7 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-import { WALLET_ID, WalletInitParamsObj, DEFAULT_WALLETS_TO_ENABLE, WalletsObj, WalletType } from '.'; // wallets
+import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
@@ -11,13 +11,15 @@ import { deepToRaw } from './helpers-reactivity';
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
+import type { W_ID } from './consts';
 
-export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
+export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID, ip: boolean | ClientInitParams = true) => {
+	console.debug('createWallet', id);
 	let w = reactive({
-		// === wallet state ===
+		// === state ===
 		id: id,
 		metadata: CLIENT_MAP[id].client.metadata,
-		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does...
+		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does... too big of a type to infer
 		initParams: ip, // params used for client init
 		inited: false, // client
 		initing: false, // client + sdk
@@ -29,7 +31,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			logger.debug('loadClient:', id);
 			
 			if (w.inited) {
-				logger.log('aw already inited client');
+				logger.debug('aw already inited client');
 				return true;
 			} else {
 				w.initing = true;
@@ -74,7 +76,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 					p.connectedAccounts = [...cAccts];
 				}
 
-				let { accounts } = await w.client!.connect(p);
+				let accounts = await w.client!.connect(p);
 
 				// if it gets past .connect, it worked, so saved the returned accts + set one as active
 				addConnectedAccounts(accounts);
@@ -105,7 +107,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 			if (!accts) {
 				throw new Error('No accounts for this provider to set as active');
 			} else {
-				AnyWalletState.stored.activeAccount = accts[0];
+				// defaults to first avail acct
+				setAsActiveAccount(accts[0]);
 			}
 		},
 		removeAccounts: () => {
@@ -157,70 +160,52 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 				return AnyWalletState.stored.activeAccount?.walletId === id
 			})
 		},
-		get activeAccount() {
-			return readonly(computed(() => {
-				let acct = undefined;
-				if (this.isConnected && AnyWalletState.stored.activeAccount) {
-					acct = AnyWalletState.stored.activeAccount;
-				}
-				return acct;
-			}));
-		},
 	});
 	return w;
 };
 
-export const enableWallets = (
-	walletsToEnable: WalletInitParamsObj = DEFAULT_WALLETS_TO_ENABLE,
-) => {
-	logger.log('enableWallets started', walletsToEnable);
-
-	if (AnyWalletState.enabledWallets == null) {
-		AnyWalletState.enabledWallets = {} as WalletsObj;
+export const initWallet = <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
+	const w = AnyWalletState.allWallets[wId];
+	if (!w) {
+		throw new Error(`Unknown wallet: ${wId}`);
+	}
+	if (wInitParams !== undefined) {
+		w.initParams = wInitParams as Exclude<typeof wInitParams, String>; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly);
 	} else {
-		// logger.debug('enableWallets called while some wallets were already initialized (add to them)');
+		logger.log(`didnt update wallet's init params... kept whatever existed before`);
 	}
+	return w;
+}
 
-	for (let [wKey, wInitParams] of Object.entries(walletsToEnable)) {
-		let wId = wKey as WALLET_ID; // could just be a unique id for double initing but why
-		// TODO ? should allWallets even be in global state?
-		AnyWalletState.allWallets[wId]!.initParams = wInitParams as Exclude<typeof wInitParams, String>; // as ClientInitParams; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly)
-		AnyWalletState.enabledWallets[wId] = AnyWalletState.allWallets[wId];
+export const initWallets = (
+	walletInits: WalletInitParamsObj,
+) => {
+	logger.log('initWallets started', walletInits);
+	for (let [wKey, wInitParams] of Object.entries(walletInits)) {
+		let wId = wKey as W_ID; // could just be a unique id for double initing but why
+		initWallet(wId, wInitParams);
 	}
+	return AnyWalletState.allWallets;
+}
 
-	// if dapp changes config and user has a stale localstorage account, remove it
-	// let previousUserWallId = AnyWalletState.stored.activeAccount?.walletId;
-	// if (previousUserWallId) {
-	// 	let enabledWalletIdSet = new Set<WALLET_ID>(Object.keys(walletsToEnable) as WALLET_ID[]);
-	// 	if (!enabledWalletIdSet.has(previousUserWallId)) {
-	// 		// disconnect also removes the accts from LS
-	// 		AnyWalletState.allWallets[previousUserWallId]?.disconnect(); // dont await it
-	// 	}
-	// }
-
-	return AnyWalletState.enabledWallets;
+export const connectWallet = async <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
+	// possibly set init params...
+	if (wInitParams !== undefined) {
+		initWallet(wId, wInitParams);
+	}
+	// then, connect
+	const w = AnyWalletState.allWallets[wId];
+	if (!w) {
+		throw new Error(`Unknown wallet: ${wId}`);
+	}
+	return await w.connect();
 };
 
-export const disableWallets = (wIds: WALLET_ID[]) => {
-	if (!AnyWalletState.enabledWallets) {
-		console.warn('no wallets enabled to disable');
-		return 
-	}
-
-	for (let wId of wIds) {
-		let w = AnyWalletState.enabledWallets[wId];
-		if (w) {
-			w.disconnect(); // dont await it
-			delete AnyWalletState.enabledWallets[wId];
-		}
-	}
-};
-
-export const getAccountsByWalletId = (id: WALLET_ID) => {
+export const getAccountsByWalletId = (id: W_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
 
-export const removeAccountsByWalletId = (id: WALLET_ID) => {
+export const removeAccountsByWalletId = (id: W_ID) => {
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
@@ -297,6 +282,9 @@ export const addConnectedAccounts = (accounts: Account[]) => {
 
 export const setAsActiveAccount = (acct: Account) => {
 	logger.debug('setAsActiveAccount', acct);
+
+	acct.active = true; // needed here as well as below
+	acct.dateLastActive = new Date().getTime();
 	
 	AnyWalletState.stored.activeAccount = acct;
 
@@ -313,29 +301,15 @@ export const setAsActiveAccount = (acct: Account) => {
 			ca.active = false;
 		}
 	});
-	AnyWalletState.stored.activeAccount.active = true; // changes in connectedAccounts array too
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
-	// logger.log('signTransactions', txns);
-	if (!AnyWalletState.enabledWallets) {
-		throw new Error('No wallets enabled, call enableWallets() first');
-	}
-	let wKeys = Object.keys(AnyWalletState.enabledWallets);
-	let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
-	if (wKeys.length == 1) {
-		walletId = wKeys[0] as WALLET_ID;
-	}
-	if (!walletId) {
-		throw new Error('No active wallet id');
-	}
-	// FYI an active wallet isnt a connected wallet (active means dapp has is enabled, connected means user chose this wallet+acct)
-	let activeWallet = AnyWalletState.enabledWallets[walletId];
+	logger.log('signTransactions', txns);
+	let activeWallet = AnyWalletState.activeWallet;
 	if (!activeWallet) {
 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
-		throw new Error('No active wallet... how\'d you get here.');
+		throw new Error(`No active wallet... how'd you get here.`);
 	}
-
 	let txnsSigned = await activeWallet.signTransactions(txns);
 	return txnsSigned;
 };
