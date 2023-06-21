@@ -4,7 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import {
-	WalletAccounts,
 	Account,
 } from '../../types';
 import { InitParams, InkeySdk, SdkConfig, InkeyWalletClientConstructor } from './types';
@@ -93,14 +92,11 @@ export class InkeyClient extends BaseClient {
 			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
 		}
 
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
+		return mappedAccounts
 	}
 
 	// what is .reconnect() used for? its in use-wallet lib but why?
-	async reconnect(): Promise<WalletAccounts | null> {
+	async reconnect(): Promise<Account[] | null> {
 		// logger.log('inkey reconnect')
 		return null;
 	}

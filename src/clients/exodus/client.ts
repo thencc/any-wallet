@@ -100,10 +100,7 @@ export class ExodusClient extends BaseClient {
 			},
 		];
 
-		return {
-			...METADATA,
-			accounts,
-		};
+		return accounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {

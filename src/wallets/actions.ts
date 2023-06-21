@@ -76,7 +76,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID
 					p.connectedAccounts = [...cAccts];
 				}
 
-				let { accounts } = await w.client!.connect(p);
+				let accounts = await w.client!.connect(p);
 
 				// if it gets past .connect, it worked, so saved the returned accts + set one as active
 				addConnectedAccounts(accounts);

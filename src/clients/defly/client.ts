@@ -14,7 +14,6 @@ import {
 	DeflySdk,
 	SdkConfig,
 } from './types';
-import type { WalletAccounts } from '../../types';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 import type {
 	EncodedSignedTransaction, 
@@ -71,7 +70,7 @@ export class DeflyClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
+	async connect(onDisconnect: () => void): Promise<Account[]> {
 		const accounts = await this.sdk.connect().catch(console.info);
 
 		this.sdk.connector.on('disconnect', onDisconnect);
@@ -88,10 +87,7 @@ export class DeflyClient extends BaseClient {
 			active: false,
 		}));
 
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
+		return mappedAccounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -102,16 +98,13 @@ export class DeflyClient extends BaseClient {
 			return null;
 		}
 
-		return {
-			...METADATA,
-			accounts: accounts.map((address: string, index: number) => ({
-				name: `Defly Account ${index + 1}`,
-				address,
-				walletId: METADATA.id,
-				chain: METADATA.chain,
-				active: false,
-			})),
-		};
+		return accounts.map((address: string, index: number) => ({
+			name: `Defly Account ${index + 1}`,
+			address,
+			walletId: METADATA.id,
+			chain: METADATA.chain,
+			active: false,
+		}));
 	}
 
 	async disconnect() {

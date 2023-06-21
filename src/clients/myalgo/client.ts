@@ -78,10 +78,7 @@ export class MyAlgoClient extends BaseClient {
 			active: false,
 		}));
 
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
+		return mappedAccounts;
 	}
 
 	async reconnect() {

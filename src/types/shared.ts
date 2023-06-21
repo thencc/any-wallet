@@ -23,6 +23,6 @@ type ExtendValues<Type> = {
 
 // TODO rename this type as its very misleading
 // This type extends the values of `WalletProvider` with `null` values and adds the `accounts` property.
-export type WalletAccounts = ExtendValues<WalletProvider> & {
-	accounts: Account[];
-};
+// export type WalletAccounts = ExtendValues<WalletProvider> & {
+// 	accounts: Account[];
+// };

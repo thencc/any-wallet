@@ -4,7 +4,6 @@
  */
 import { BaseClient } from '../base/client';
 import type {
-	WalletAccounts,
 	Account,
 } from '../../types';
 import { METADATA } from './constants';
@@ -74,7 +73,7 @@ export class PeraClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<WalletAccounts> {
+	async connect(onDisconnect: () => void): Promise<Account[]> {
 		const accounts = await this.sdk.connect();
 
 		this.sdk.connector?.on('disconnect', onDisconnect);
@@ -91,10 +90,7 @@ export class PeraClient extends BaseClient {
 			active: false,
 		}));
 
-		return {
-			...METADATA,
-			accounts: mappedAccounts,
-		};
+		return mappedAccounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -105,16 +101,13 @@ export class PeraClient extends BaseClient {
 			return null;
 		}
 
-		return {
-			...METADATA,
-			accounts: accounts.map((address: string, index: number) => ({
-				name: `Pera Account ${index + 1}`,
-				address,
-				walletId: METADATA.id,
-				chain: METADATA.chain,
-				active: false,
-			})),
-		};
+		return accounts.map((address: string, index: number) => ({
+			name: `Pera Account ${index + 1}`,
+			address,
+			walletId: METADATA.id,
+			chain: METADATA.chain,
+			active: false,
+		}));
 	}
 
 	async disconnect() {

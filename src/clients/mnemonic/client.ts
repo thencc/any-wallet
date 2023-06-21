@@ -1,7 +1,6 @@
 // insecure wallet approach for fast development
 import { BaseClient } from '../base/client';
 import type { 
-	WalletAccounts, 
 	Account 
 } from '../../types';
 import { METADATA } from './constants';
@@ -68,23 +67,20 @@ export class MnemonicClient extends BaseClient {
 		}
 	}
 
-	async connect(): Promise<WalletAccounts> {
+	async connect(): Promise<Account[]> {
 		if (this.sdk == undefined) {
 			console.warn('mnemonic client wasnt initialized properly... no mnemonic passed in so cannot connect.');
 		}
 
-		return {
-			...METADATA,
-			accounts: [
-				{
-					name: `Mnemonic Account ${new Date().getTime().toString()}`,
-					address: this.sdk?.addr || '',
-					walletId: METADATA.id,
-					chain: METADATA.chain,
-					active: false,
-				},
-			],
-		};
+		return [
+			{
+				name: `Mnemonic Account ${new Date().getTime().toString()}`,
+				address: this.sdk?.addr || '',
+				walletId: METADATA.id,
+				chain: METADATA.chain,
+				active: false,
+			}
+		];
 	}
 
 	async disconnect() {
@@ -92,7 +88,7 @@ export class MnemonicClient extends BaseClient {
 		return;
 	}
 
-	async reconnect(): Promise<WalletAccounts | null> {
+	async reconnect(): Promise<Account[] | null> {
 		return null;
 	}
 
