@@ -1,7 +1,7 @@
-import { WALLET_ID } from 'src/wallets/constants';
+import { W_ID } from 'src/wallets';
 
 export type ClientMetadata = {
-	id: WALLET_ID; // unique
+	id: W_ID; // unique
 	name: string; // readable
 	icon: string; // b64 str (png/svg)
 	chain: string; // 'algorand'
@@ -16,4 +16,3 @@ export type ClientInitParams = {
 export type ClientConstructorParams = {
 	someField?: string;
 };
-
