@@ -1,3 +1,4 @@
+// essentially an enum but more useful this way (allows for args as enum val or str)
 export const WALLET_ID = {
     PERA: 'pera',
 	INKEY: 'inkey',

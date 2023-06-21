@@ -92,12 +92,13 @@ export class AlgoSignerClient extends BaseClient {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const mappedAccounts = accounts.map(({ address }, index) => ({
+		const mappedAccounts: Account[] = accounts.map(({ address }, index) => ({
 			name: `AlgoSigner Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
 
 		return mappedAccounts;

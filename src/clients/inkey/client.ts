@@ -80,19 +80,18 @@ export class InkeyClient extends BaseClient {
 			);
 		}
 
-		const mappedAccounts = inkeyAccounts.map((account) => ({
+		if (p?.onDisconnect) {
+			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
+		}
+
+		return inkeyAccounts.map((account) => ({
 			name: account.name,
 			address: account.address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		if (p?.onDisconnect) {
-			this.sdk.frameBus.setOnDisconnect(p.onDisconnect);
-		}
-
-		return mappedAccounts
 	}
 
 	// what is .reconnect() used for? its in use-wallet lib but why?

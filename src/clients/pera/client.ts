@@ -73,24 +73,22 @@ export class PeraClient extends BaseClient {
 		}
 	}
 
-	async connect(onDisconnect: () => void): Promise<Account[]> {
+	async connect(onDisconnect: () => void) {
 		const accounts = await this.sdk.connect();
-
 		this.sdk.connector?.on('disconnect', onDisconnect);
 
 		if (accounts.length === 0) {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const mappedAccounts = accounts.map((address: string, index: number) => ({
+		return accounts.map((address: string, index: number) => ({
 			name: `Pera Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		return mappedAccounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -107,6 +105,7 @@ export class PeraClient extends BaseClient {
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
 	}
 

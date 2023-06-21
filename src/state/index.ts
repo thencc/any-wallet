@@ -75,6 +75,16 @@ export const AnyWalletState = reactive({
 		}
 		return someWalletIsSigning;
 	})),
+	isIniting: readonly(computed(() => {
+		let someWalletIsIniting = false;
+		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+			if (w.initing) {
+				someWalletIsIniting = true;
+				break;
+			}
+		}
+		return someWalletIsIniting;
+	})),
 });
 
 export const recallState = () => {

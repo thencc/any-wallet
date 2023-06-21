@@ -74,11 +74,12 @@ export class MnemonicClient extends BaseClient {
 
 		return [
 			{
-				name: `Mnemonic Account ${new Date().getTime().toString()}`,
+				name: `Mnemonic Account ${new Date().getTime()}`,
 				address: this.sdk?.addr || '',
 				walletId: METADATA.id,
 				chain: METADATA.chain,
 				active: false,
+				dateConnected: new Date().getTime(),
 			}
 		];
 	}

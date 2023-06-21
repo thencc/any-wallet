@@ -71,14 +71,13 @@ export class MyAlgoClient extends BaseClient {
 			);
 		}
 
-		const mappedAccounts = accounts.map((account) => ({
+		return accounts.map((account) => ({
 			...account,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		return mappedAccounts;
 	}
 
 	async reconnect() {

@@ -79,15 +79,14 @@ export class DeflyClient extends BaseClient {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const mappedAccounts = accounts.map((address: string, index: number) => ({
+		return accounts.map((address: string, index: number) => ({
 			name: `Defly Account ${index + 1}`,
 			address,
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
-
-		return mappedAccounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {
@@ -104,6 +103,7 @@ export class DeflyClient extends BaseClient {
 			walletId: METADATA.id,
 			chain: METADATA.chain,
 			active: false,
+			dateConnected: new Date().getTime(),
 		}));
 	}
 

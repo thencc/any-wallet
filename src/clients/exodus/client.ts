@@ -90,17 +90,16 @@ export class ExodusClient extends BaseClient {
 			throw new Error(`No accounts found for ${METADATA.id}`);
 		}
 
-		const accounts = [
+		return [
 			{
-				name: `Exodus Account ${new Date().getTime().toString()}`,
+				name: `Exodus Account ${new Date().getTime()}`,
 				address,
 				walletId: METADATA.id,
 				chain: METADATA.chain,
 				active: false,
-			},
+				dateConnected: new Date().getTime()
+			}
 		];
-
-		return accounts;
 	}
 
 	async reconnect(onDisconnect: () => void) {

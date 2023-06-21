@@ -107,7 +107,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID
 			if (!accts) {
 				throw new Error('No accounts for this provider to set as active');
 			} else {
-				AnyWalletState.stored.activeAccount = accts[0];
+				// defaults to first avail acct
+				setAsActiveAccount(accts[0]);
 			}
 		},
 		removeAccounts: () => {
@@ -158,15 +159,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID
 			return computed(() => {
 				return AnyWalletState.stored.activeAccount?.walletId === id
 			})
-		},
-		get activeAccount() {
-			return readonly(computed(() => {
-				let acct = undefined;
-				if (this.isConnected && AnyWalletState.stored.activeAccount) {
-					acct = AnyWalletState.stored.activeAccount;
-				}
-				return acct;
-			}));
 		},
 	});
 	return w;
@@ -307,6 +299,7 @@ export const setAsActiveAccount = (acct: Account) => {
 		}
 	});
 	AnyWalletState.stored.activeAccount.active = true; // changes in connectedAccounts array too
+	AnyWalletState.stored.activeAccount.dateLastActive = new Date().getTime();
 };
 
 export const signTransactions = async (txns: Uint8Array[]) => {
