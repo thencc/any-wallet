@@ -14,7 +14,7 @@ import { Account } from 'src/types/shared';
 import type { W_ID } from './consts';
 
 export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID, ip: boolean | ClientInitParams = true) => {
-	console.debug('createWallet', id);
+	// logger.debug('createWallet', id);
 	let w = reactive({
 		// === state ===
 		id: id,
