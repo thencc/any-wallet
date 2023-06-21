@@ -5,30 +5,13 @@ import { isBrowser, logger } from '../utils';
 import { lsKey, startWatchers } from './watchers';
 export * from './watchers';
 
-// import { WalletType, ALL_WALLETS } from 'src/wallets'; // wallet bits
-import type { WalletType } from 'src/wallets'; // wallet bits
 import type { Account } from 'src/types';
-import type { WALL_V } from 'src/wallets/const';
-
 import type { ClientType } from 'src/clients';
-import type { Network } from 'src/types/node';
-// import { createWallet } from './actions'; // needs to be AFTER the types import
+import type { WalletType } from '../wallets/types'; // wallet bits
 import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
-
-import { WALLET_ID } from '../wallets/const';
-
-// export const ALL_WALLETS = {
-// 	[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
-// 	[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-// 	[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-// 	[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-// 	[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-// 	[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-// 	[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
-// } as const; // helps w security
+import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 export const AnyWalletState = reactive({
-	// allWallets: ALL_WALLETS,
 	allWallets: {
 		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
 		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
@@ -69,9 +52,9 @@ export const AnyWalletState = reactive({
 		return cAccts;
 	})),
 	activeWalletId: readonly(computed(() => {
-		let aWId: null | WALL_V = null;
+		let aWId: null | W_ID = null;
 		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.walletId as WALL_V; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+			aWId = AnyWalletState.stored.activeAccount.walletId as W_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
 		}
 		return aWId;
 	})),

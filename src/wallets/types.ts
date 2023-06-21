@@ -1,6 +1,5 @@
 // wallets
-// import { WALLET_ID } from './constants';
-import { WALLET_ID, type WALL_V } from './const';
+import { WALLET_ID, type W_ID } from './consts';
 import type { createWallet } from './actions'; // AFTER the constants import
 
 // clients
@@ -53,7 +52,7 @@ export type WalletInitParamsObj = {
 	};
 };
 
-export type WalletType<T extends WALL_V = WALL_V> = ReturnType<typeof createWallet<ClientType<T>>>;
+export type WalletType<T extends W_ID = W_ID> = ReturnType<typeof createWallet<ClientType<T>>>;
 
 export type WalletsObj = {
 	[WALLET_ID.PERA]?: WalletType<typeof WALLET_ID.PERA>;

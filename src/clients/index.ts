@@ -1,5 +1,5 @@
 // import { WALLET_ID } from 'src/wallets/constants';
-import { WALLET_ID, type WALL_V } from 'src/wallets/const';
+import { WALLET_ID, type W_ID } from 'src/wallets/consts';
 
 import { PeraClient } from 'src/clients/pera/client';
 import { InkeyClient } from 'src/clients/inkey/client';
@@ -33,7 +33,7 @@ export const CLIENT_MAP = {
 	},
 } as const; // 'const' is helpful for object security + typing
 
-export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id) as WALL_V[];
+export const CLIENT_IDS = Object.values(CLIENT_MAP).map(c => c.client.metadata.id) as W_ID[];
 export const CLIENT_PKGS = Object.values(CLIENT_MAP).map(c => c.client.metadata.pkg).filter(p => p !== '');
 
 export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_PKGS => {
@@ -44,6 +44,6 @@ export const excludeClients = (idsToDisable: typeof CLIENT_IDS): typeof CLIENT_P
 	return pkgsToDisable;
 };
 
-export type ClientType<T extends WALL_V> = InstanceType<typeof CLIENT_MAP[T]['client']>;
+export type ClientType<T extends W_ID> = InstanceType<typeof CLIENT_MAP[T]['client']>;
 
 export * from './base';

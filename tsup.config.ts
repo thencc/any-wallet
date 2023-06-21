@@ -33,7 +33,7 @@ export default defineConfig({
 	platform: 'neutral',
 	// keepNames: false,
 	// splitting: true,
-	// minify: true,
+	// minify: true, // makes built file ~31kb
 	// treeshake: true,
 	// sourcemap: true,
 

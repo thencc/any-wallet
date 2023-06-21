@@ -1,11 +1,7 @@
 // libs
 import { computed, reactive, readonly } from '@vue/reactivity';
 
-// import { WALLET_ID, WALLET_ID, WalletInitParamsObj, WalletType } from '.'; // wallets
-import { WalletInitParamsObj, WalletType } from '.'; // wallets
-import { WALLET_ID } from './const'; // wallets
-// import { WALLET_ID } from './constants';
-// import { WALLET_ID } from './const2';
+import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
@@ -15,16 +11,15 @@ import { deepToRaw } from './helpers-reactivity';
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
-import type { WALL_V } from './const';
+import type { W_ID } from './consts';
 
-// export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALLET_ID, ip: boolean | ClientInitParams = true) => {
-export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL_V, ip: boolean | ClientInitParams = true) => {
+export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID, ip: boolean | ClientInitParams = true) => {
 	console.debug('createWallet', id);
 	let w = reactive({
-		// === wallet state ===
+		// === state ===
 		id: id,
 		metadata: CLIENT_MAP[id].client.metadata,
-		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does...
+		client: null as null | BaseClient, // WalClient, // suddenly this doesnt work... but BaseClient does... too big of a type to infer
 		initParams: ip, // params used for client init
 		inited: false, // client
 		initing: false, // client + sdk
@@ -177,9 +172,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	return w;
 };
 
-// export const connectWallet = async <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
-// export const initWallet = (wId: WALL_V, wInitParams: WalletInitParamsObj[typeof wId]) => {
-	export const initWallet = <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
+export const initWallet = <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
 	const w = AnyWalletState.allWallets[wId];
 	if (!w) {
 		throw new Error(`Unknown wallet: ${wId}`);
@@ -192,24 +185,18 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: WALL
 	return w;
 }
 
-// initWallet('mnemonic', '');
-// initWallet('mnemonic', false);
-// initWallet('inkey')
-
 export const initWallets = (
 	walletInits: WalletInitParamsObj,
 ) => {
 	logger.log('initWallets started', walletInits);
 	for (let [wKey, wInitParams] of Object.entries(walletInits)) {
-		let wId = wKey as WALL_V; // could just be a unique id for double initing but why
+		let wId = wKey as W_ID; // could just be a unique id for double initing but why
 		initWallet(wId, wInitParams);
 	}
 	return AnyWalletState.allWallets;
 }
 
-// export const connectWallet = async <WWID extends WALL_V>(wId: WALL_V, wInitParams?: WalletInitParamsObj[WWID]) => {
-// export const connectWallet = async (wId: WALL_V, wInitParams?: WalletInitParamsObj[typeof wId]) => {
-export const connectWallet = async <W extends WALL_V, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
+export const connectWallet = async <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
 	// possibly set init params...
 	if (wInitParams !== undefined) {
 		initWallet(wId, wInitParams);
@@ -222,21 +209,11 @@ export const connectWallet = async <W extends WALL_V, P extends WalletInitParams
 	return await w.connect();
 };
 
-// connectWallet('inkey'); // works
-// connectWallet('inkey', ''); // works
-// connectWallet('inkey', ''); // should not work...
-// connectWallet('defly')
-// connectWallet(WALLET_ID.INKEY, {config: { src: '' }});
-// connectWallet(WALLET_ID.MNEMONIC, false);
-// connectWallet(WALLET_ID.MNEMONIC, '123 456');
-// connectWallet(WALLET_ID.MNEMONIC); // works but shouldnt really
-
-
-export const getAccountsByWalletId = (id: WALL_V) => {
+export const getAccountsByWalletId = (id: W_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
 
-export const removeAccountsByWalletId = (id: WALL_V) => {
+export const removeAccountsByWalletId = (id: W_ID) => {
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
@@ -334,36 +311,11 @@ export const setAsActiveAccount = (acct: Account) => {
 
 export const signTransactions = async (txns: Uint8Array[]) => {
 	logger.log('signTransactions', txns);
-
-	// if (!AnyWalletState.enabledWallets) {
-	// 	throw new Error('No wallets enabled, call enableWallets() first');
-	// }
-	// let wKeys = Object.keys(AnyWalletState.enabledWallets);
-
-	// let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
-	// // if (wKeys.length == 1) {
-	// // 	walletId = wKeys[0] as WALLET_ID;
-	// // }
-	// if (!walletId) {
-	// 	throw new Error('No active wallet id');
-	// }
-
-	/*
-	let walletId: WALLET_ID | null = AnyWalletState.activeWalletId;
-	if (!walletId) {
-		throw new Error('No active wallet id');
-	}
-	*/
-
-
-	// FYI an active wallet isnt a connected wallet (active means dapp has is enabled, connected means user chose this wallet+acct)
-	// let activeWallet = AnyWalletState.enabledWallets[walletId];
 	let activeWallet = AnyWalletState.activeWallet;
 	if (!activeWallet) {
 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
 		throw new Error(`No active wallet... how'd you get here.`);
 	}
-
 	let txnsSigned = await activeWallet.signTransactions(txns);
 	return txnsSigned;
 };
