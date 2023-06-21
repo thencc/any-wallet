@@ -16,4 +16,3 @@ export type ClientInitParams = {
 export type ClientConstructorParams = {
 	someField?: string;
 };
-
