@@ -201,6 +201,14 @@ export const connectWallet = async <W extends W_ID, P extends WalletInitParamsOb
 	return await w.connect();
 };
 
+export const disconnectWallet = async <W extends W_ID>(wId: W) => {
+	const w = AnyWalletState.allWallets[wId];
+	if (!w) {
+		throw new Error(`Unknown wallet: ${wId}`);
+	}
+	return await w.disconnect();
+};
+
 export const getAccountsByWalletId = (id: W_ID) => {
 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
 };
