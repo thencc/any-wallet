@@ -71,7 +71,7 @@ import {
 
 import {
 	Algonaut,
-	utils,
+	// utils,
 } from '@thencc/algonautjs';
 const algonaut = new Algonaut();
 
