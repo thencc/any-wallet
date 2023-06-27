@@ -71,6 +71,7 @@ import {
 	subscribeToAccountChanges,
 	signTransactions,
 	WALLET_ID,
+connectWallet,
 	// initWallets,
 	// WALLET_ID_ENUM,
 } from '@thencc/any-wallet';
@@ -117,6 +118,15 @@ export default defineComponent({
 		activeAddrChanged(x: any) {
 			// console.log('activeAddrChanged', x);
 			AnyWalletState.stored.activeAccount = x;
+		},
+
+		async connectInkey() {
+			let accts = await connectWallet('inkey');
+			return accts;
+		},
+
+		async connectMnemonic() {
+			return await connectWallet('mnemonic', '123 456 789 ...')
 		},
 
 		async doTxnSimpleAlgJs() {
