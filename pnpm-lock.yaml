@@ -21,6 +21,9 @@ optionalDependencies:
   '@randlabs/myalgo-connect':
     specifier: ^1.4.2
     version: 1.4.2
+  '@thencc/inkey-client-js':
+    specifier: ^0.0.24
+    version: 0.0.24
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
@@ -584,6 +587,12 @@ packages:
     requiresBuild: true
     dependencies:
       '@randlabs/communication-bridge': 1.0.1
+    dev: false
+    optional: true
+
+  /@thencc/inkey-client-js@0.0.24:
+    resolution: {integrity: sha512-Klh2C/KFcVUBWZ3+C2IKjS6qN2U71txL8hGxyq8svz2B3Ee5GPm0DNtubWRRHeohZ4Bjb5V8FN/QwumJSmrpFQ==}
+    requiresBuild: true
     dev: false
     optional: true
 
