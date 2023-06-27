@@ -34,6 +34,7 @@ pnpm i @thencc/any-wallet
 import {
 	AnyWalletState,
 	connectWallet,
+	recallState,
 	subscribeToStateChanges,
 	subscribeToAccountChanges,
 	signTransactions,
@@ -87,13 +88,19 @@ console.log('txn id: ', txnGroup.txId);
 
 a few helpful things inside `AnyWalletState`
 ```ts
-import { AnyWalletState } from '@thencc/any-wallet';
+import { 
+	AnyWalletState,
+	recallState
+} from '@thencc/any-wallet';
 
 // access the current address
 console.log(AnyWalletState.activeAddress);
 
 // boolean for if any of the wallets are doing some txn signing
 console.log(AnyWalletState.isSigning);
+
+// even after a page reload, the dapp can access the reconnect the last connected account(s) by called recallState so it is recommended to call this on page load
+recallState();
 ```
 
 

@@ -66,14 +66,12 @@
 import { defineComponent } from 'vue';
 import {
 	AnyWalletState,
-	// enableWallets,
 	subscribeToStateChanges,
 	subscribeToAccountChanges,
 	signTransactions,
 	WALLET_ID,
-connectWallet,
-	// initWallets,
-	// WALLET_ID_ENUM,
+	connectWallet,
+	recallState,
 } from '@thencc/any-wallet';
 
 // helper lib for constructing + submitting txns
@@ -109,6 +107,8 @@ export default defineComponent({
 		subscribeToStateChanges(
 			() => this.$forceUpdate()
 		);
+
+		recallState();
 	},
 	methods: {
 		getAddrFromAccount(a: any) {
