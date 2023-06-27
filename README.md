@@ -9,7 +9,7 @@ is a wallet connection handler for web3 dapps
 
 
 ## about
-any-wallet provides a common interface layer between the dapp and the wallet so dapp developers can treat any connected wallet the same way. any-wallet does not load a wallet's client library until it needs to / when the user starts interacting with that wallet. for optimal user experience across page loads, any-wallet saves the last connected account to localstorage (dont worry, no secrets are saved, just the user's public address and a reference to which wallet they connected with).
+any-wallet provides a common interface layer between the dapp and the wallet so that dapp developers can treat any connected wallet the same way. any-wallet does not load a wallet's client library until it needs to / when the user starts interacting with that wallet. for optimal user experience across page loads, any-wallet saves the last connected account(s) to localstorage (dont worry, no secrets are saved, just the user's public address and a reference to which wallet they connected with).
 
 currently supported chains + wallets:
 - algorand
@@ -19,23 +19,22 @@ currently supported chains + wallets:
 	- algosigner
 	- exodus
 	- defly
-	- mnemonic input (not "safe" but helpful for development)
+	- mnemonic (not "safe" but helpful for development)
 
 
 ## usage
 
 ### install
-firstly, install it!
 ```bash
 pnpm i @thencc/any-wallet
 ```
 
 ### import
-then you're able to import the lib + use its features:
 ```ts
 import {
 	AnyWalletState,
-	enableWallets,
+	connectWallet,
+	recallState,
 	subscribeToStateChanges,
 	subscribeToAccountChanges,
 	signTransactions,
@@ -43,67 +42,25 @@ import {
 } from '@thencc/any-wallet';
 ```
 
-### enable
-to interact with any wallet(s), you need to call `enableWallets` (at least once)
-```ts
-// enables defaults
-enableWallets();
-
-// or, pick which wallet(s) you want to enable in the dapp
-enableWallets({
-	[WALLET_ID.INKEY]: true,
-	[WALLET_ID.PERA]: true,
-	[WALLET_ID.MYALGO]: true,
-	[WALLET_ID.ALGOSIGNER]: true,
-	[WALLET_ID.EXODUS]: true,
-	[WALLET_ID.DEFLY]: true,
-	[WALLET_ID.MNEMONIC]: true,
-});
-
-// or, initialize w specific wallet config
-enableWallets({
-	[WALLET_ID.INKEY]: {
-		config: {
-			align: 'right',
-		}
-	},
-	['pera']: {
-		config: {
-			shouldShowSignTxnToast: true
-		}
-	},
-	[WALLET_ID.ALGOSIGNER]: true, // simply accept the defaults
-	[WALLET_ID.EXODUS]: true,
-	['mnemonic']: {
-		config: {
-			mnemonic: '25 secret words'
-		}
-	},
-});
-```
-
-after that, `AnyWalletState.enabledWallets` will be populated and connections + signing can now happen
 
 ### connecting
 ```ts
 // connect pera
-await AnyWalletState.enabledWallets.pera.connect();
+await AnyWalletState.allWallets.pera.connect();
+
+// or, simpler api
+await connectWallet('pera');
 
 // or, connect inkey
-await AnyWalletState.enabledWallets![WALLET_ID.INKEY]?.connect();
+const accts = await AnyWalletState.allWallets[WALLET_ID.INKEY].connect();
 
-// and if you want to be typescript safe...
-if (AnyWalletState.enabledWallets) {
-	if (AnyWalletState.enabledWallets[WALLET_ID.INKEY]) {
-		let accts = await AnyWalletState.enabledWallets[WALLET_ID.INKEY].connect();
-	}
-}
+// now...
+// accts[0] == AnyWalletState.activeAccount;
 ```
 
 ### signing transactions
 ```ts
 import {
-	enableWallets,
 	signTransactions
 } from '@thencc/any-wallet';
 
@@ -131,29 +88,29 @@ console.log('txn id: ', txnGroup.txId);
 
 a few helpful things inside `AnyWalletState`
 ```ts
-import { AnyWalletState } from '@thencc/any-wallet';
+import { 
+	AnyWalletState,
+	recallState
+} from '@thencc/any-wallet';
 
 // access the current address
 console.log(AnyWalletState.activeAddress);
 
-// boolean for if any of the enabled wallets are doing some txn signing
+// boolean for if any of the wallets are doing some txn signing
 console.log(AnyWalletState.isSigning);
+
+// even after a page reload, the dapp can access the reconnect the last connected account(s) by called recallState so it is recommended to call this on page load
+recallState();
 ```
 
 
 ## using the mnemonic wallet (for dev!)
-this wallet can be connected via a mnemonic passed into the init params OR via html prompt input.
-1. mnemonic via prompt input (the default behavior, no config change needed)
-
-2. mnemonic via code config
 ```ts
-enableWallets({
-	[WALLET_ID.MNEMONIC]: {
-		config: {
-			mnemonic: 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend'
-		}
-	},
-});
+import {
+	connectWallet
+} from '@thencc/any-wallet';
+
+let accts = await connectWallet('mnemonic', 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend');
 ```
 
 

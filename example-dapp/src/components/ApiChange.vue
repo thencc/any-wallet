@@ -51,9 +51,24 @@
 			</div>
 		</div>
 
-		<button v-if="AnyWalletState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
-			sign transaction test
-		</button>
+		<div class="buttons" style="display: flex; flex-direction: column;">
+
+			<!-- <WalletConnectBtn wallet-id="inkey">
+				connect it: inkey
+			</WalletConnectBtn>
+			<button @click="AnyWalletState.allWallets.pera.connect()">
+				connect: pera
+			</button>
+			<button @click="AnyWalletState.allWallets.inkey.connect()">
+				connect: inkey
+			</button> -->
+
+
+			<button v-if="AnyWalletState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
+				sign transaction test
+			</button>
+		</div>
+		
 
 		<!-- <br />
 		<button @click="doUnsub">
@@ -69,17 +84,15 @@ import {
 	subscribeToStateChanges,
 	subscribeToAccountChanges,
 	signTransactions,
-	WALLET_ID,
-	connectWallet,
-	recallState,
+	WALLET_ID, // enum-ish
+	W_ID,
 } from '@thencc/any-wallet';
 
 // helper lib for constructing + submitting txns
 import { Algonaut } from '@thencc/algonautjs';
-const algonaut = new Algonaut();;
+const algonaut = new Algonaut();
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
-
 
 
 const unsubAcctChange1 = subscribeToAccountChanges(
@@ -88,7 +101,12 @@ const unsubAcctChange1 = subscribeToAccountChanges(
 	}
 );
 
+import WalletConnectBtn from './WalletConnectBtn.vue';
+
 export default defineComponent({
+	components: {
+		WalletConnectBtn
+	},
 	data() {
 		return {
 			walletListOpen: false,
@@ -107,8 +125,6 @@ export default defineComponent({
 		subscribeToStateChanges(
 			() => this.$forceUpdate()
 		);
-
-		recallState();
 	},
 	methods: {
 		getAddrFromAccount(a: any) {
@@ -118,15 +134,6 @@ export default defineComponent({
 		activeAddrChanged(x: any) {
 			// console.log('activeAddrChanged', x);
 			AnyWalletState.stored.activeAccount = x;
-		},
-
-		async connectInkey() {
-			let accts = await connectWallet('inkey');
-			return accts;
-		},
-
-		async connectMnemonic() {
-			return await connectWallet('mnemonic', '123 456 789 ...')
 		},
 
 		async doTxnSimpleAlgJs() {
