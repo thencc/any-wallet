@@ -2,6 +2,7 @@
   <!-- <HelloWorldSFC /> -->
   <!-- <AuthTest /> -->
   <Demo />
+  <!-- <ApiChange /> -->
 </template>
 
 <script setup lang="ts">
@@ -11,6 +12,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import HelloWorldSFC from './components/HelloWorldSFC.vue';
 import AuthTest from './components/AuthTest.vue';
 import Demo from './components/Demo.vue';
+import ApiChange from './components/ApiChange.vue';
 </script>
 
 <style scoped>
