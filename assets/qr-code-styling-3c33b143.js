@@ -1,139 +1,4 @@
-import { a as algosdk, A as ABIAddressType, d as ABIArrayDynamicType, e as ABIArrayStaticType, f as ABIBoolType, h as ABIByteType, i as ABIContract, j as ABIInterface, k as ABIMethod, l as ABIReferenceType, m as ABIStringType, n as ABITransactionType, p as ABITupleType, q as ABIType, r as ABIUfixedType, s as ABIUintType, t as ADDR_BYTE_SIZE, u as ALGORAND_MIN_TX_FEE, v as AlgodClient, w as AtomicTransactionComposer, x as AtomicTransactionComposerStatus, D as DryrunResult, E as ERROR_INVALID_MICROALGOS, y as ERROR_MULTISIG_BAD_SENDER, I as INVALID_MICROALGOS_ERROR_MSG, z as IndexerClient, B as IntDecoding, K as Kmd, L as LENGTH_ENCODE_BYTE_SIZE, C as LogicSig, F as LogicSigAccount, M as MAX_LEN, G as MULTISIG_BAD_SENDER_ERROR_MSG, O as OnApplicationComplete, S as SINGLE_BOOL_SIZE, H as SINGLE_BYTE_SIZE, J as SourceMap, T as Transaction, N as TransactionType, P as abiCheckTransactionType, Q as abiTypeIsReference, R as abiTypeIsTransaction, U as algosToMicroalgos, V as appendSignMultisigTransaction, W as appendSignRawMultisigSignature, X as assignGroupID, Y as bigIntToBytes, Z as bytesToBigInt, _ as computeGroupID, $ as createDryrun, a0 as createMultisigTransaction, a1 as decodeAddress, a2 as decodeObj, a3 as decodeSignedTransaction, a4 as decodeUint64, a5 as decodeUnsignedTransaction, a6 as encodeAddress, a7 as encodeObj, a8 as encodeUint64, a9 as encodeUnsignedTransaction, aa as generateAccount, ab as getApplicationAddress, ac as getMethodByName, ad as types, ae as instantiateTxnIfNeeded, af as isTransactionWithSigner, ag as isValidAddress$1, ah as logicSigFromByte, ai as makeApplicationCallTxnFromObject, aj as makeApplicationClearStateTxn, ak as makeApplicationClearStateTxnFromObject, al as makeApplicationCloseOutTxn, am as makeApplicationCloseOutTxnFromObject, an as makeApplicationCreateTxn, ao as makeApplicationCreateTxnFromObject, ap as makeApplicationDeleteTxn, aq as makeApplicationDeleteTxnFromObject, ar as makeApplicationNoOpTxn, as as makeApplicationNoOpTxnFromObject, at as makeApplicationOptInTxn, au as makeApplicationOptInTxnFromObject, av as makeApplicationUpdateTxn, aw as makeApplicationUpdateTxnFromObject, ax as makeAssetConfigTxnWithSuggestedParams, ay as makeAssetConfigTxnWithSuggestedParamsFromObject, az as makeAssetCreateTxnWithSuggestedParams, aA as makeAssetCreateTxnWithSuggestedParamsFromObject, aB as makeAssetDestroyTxnWithSuggestedParams, aC as makeAssetDestroyTxnWithSuggestedParamsFromObject, aD as makeAssetFreezeTxnWithSuggestedParams, aE as makeAssetFreezeTxnWithSuggestedParamsFromObject, aF as makeAssetTransferTxnWithSuggestedParams, aG as makeAssetTransferTxnWithSuggestedParamsFromObject, aH as makeBasicAccountTransactionSigner, aI as makeKeyRegistrationTxnWithSuggestedParams, aJ as makeKeyRegistrationTxnWithSuggestedParamsFromObject, aK as makeLogicSigAccountTransactionSigner, aL as makeMultiSigAccountTransactionSigner, aM as makePaymentTxnWithSuggestedParams, aN as makePaymentTxnWithSuggestedParamsFromObject, aO as masterDerivationKeyToMnemonic, aP as mergeMultisigTransactions, aQ as microalgosToAlgos, aR as mnemonicFromSeed, aS as mnemonicToMasterDerivationKey, aT as mnemonicToSecretKey, aU as types$1, aV as multisigAddress, aW as secretKeyToMnemonic, aX as seedFromMnemonic, aY as signBid, aZ as signBytes, a_ as signLogicSigTransaction, a$ as signLogicSigTransactionObject, b0 as signMultisigTransaction, b1 as signTransaction, b2 as tealSign, b3 as tealSignFromProgram, b4 as verifyBytes, b5 as verifyMultisig, b6 as verifyTealSign, b7 as waitForConfirmation, b8 as require$$0, c as commonjsGlobal, b9 as getAugmentedNamespace } from "./index-4e05fa9e.js";
-const esm$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  ABIAddressType,
-  ABIArrayDynamicType,
-  ABIArrayStaticType,
-  ABIBoolType,
-  ABIByteType,
-  ABIContract,
-  ABIInterface,
-  ABIMethod,
-  get ABIReferenceType() {
-    return ABIReferenceType;
-  },
-  ABIStringType,
-  get ABITransactionType() {
-    return ABITransactionType;
-  },
-  ABITupleType,
-  ABIType,
-  ABIUfixedType,
-  ABIUintType,
-  ADDR_BYTE_SIZE,
-  ALGORAND_MIN_TX_FEE,
-  Algodv2: AlgodClient,
-  AtomicTransactionComposer,
-  get AtomicTransactionComposerStatus() {
-    return AtomicTransactionComposerStatus;
-  },
-  DryrunResult,
-  ERROR_INVALID_MICROALGOS,
-  ERROR_MULTISIG_BAD_SENDER,
-  INVALID_MICROALGOS_ERROR_MSG,
-  Indexer: IndexerClient,
-  IntDecoding,
-  Kmd,
-  LENGTH_ENCODE_BYTE_SIZE,
-  LogicSig,
-  LogicSigAccount,
-  MAX_LEN,
-  MULTISIG_BAD_SENDER_ERROR_MSG,
-  get OnApplicationComplete() {
-    return OnApplicationComplete;
-  },
-  SINGLE_BOOL_SIZE,
-  SINGLE_BYTE_SIZE,
-  SourceMap,
-  Transaction,
-  get TransactionType() {
-    return TransactionType;
-  },
-  abiCheckTransactionType,
-  abiTypeIsReference,
-  abiTypeIsTransaction,
-  algosToMicroalgos,
-  appendSignMultisigTransaction,
-  appendSignRawMultisigSignature,
-  assignGroupID,
-  bigIntToBytes,
-  bytesToBigInt,
-  computeGroupID,
-  createDryrun,
-  createMultisigTransaction,
-  decodeAddress,
-  decodeObj,
-  decodeSignedTransaction,
-  decodeUint64,
-  decodeUnsignedTransaction,
-  default: algosdk,
-  encodeAddress,
-  encodeObj,
-  encodeUint64,
-  encodeUnsignedTransaction,
-  generateAccount,
-  getApplicationAddress,
-  getMethodByName,
-  indexerModels: types,
-  instantiateTxnIfNeeded,
-  isTransactionWithSigner,
-  isValidAddress: isValidAddress$1,
-  logicSigFromByte,
-  makeApplicationCallTxnFromObject,
-  makeApplicationClearStateTxn,
-  makeApplicationClearStateTxnFromObject,
-  makeApplicationCloseOutTxn,
-  makeApplicationCloseOutTxnFromObject,
-  makeApplicationCreateTxn,
-  makeApplicationCreateTxnFromObject,
-  makeApplicationDeleteTxn,
-  makeApplicationDeleteTxnFromObject,
-  makeApplicationNoOpTxn,
-  makeApplicationNoOpTxnFromObject,
-  makeApplicationOptInTxn,
-  makeApplicationOptInTxnFromObject,
-  makeApplicationUpdateTxn,
-  makeApplicationUpdateTxnFromObject,
-  makeAssetConfigTxnWithSuggestedParams,
-  makeAssetConfigTxnWithSuggestedParamsFromObject,
-  makeAssetCreateTxnWithSuggestedParams,
-  makeAssetCreateTxnWithSuggestedParamsFromObject,
-  makeAssetDestroyTxnWithSuggestedParams,
-  makeAssetDestroyTxnWithSuggestedParamsFromObject,
-  makeAssetFreezeTxnWithSuggestedParams,
-  makeAssetFreezeTxnWithSuggestedParamsFromObject,
-  makeAssetTransferTxnWithSuggestedParams,
-  makeAssetTransferTxnWithSuggestedParamsFromObject,
-  makeBasicAccountTransactionSigner,
-  makeKeyRegistrationTxnWithSuggestedParams,
-  makeKeyRegistrationTxnWithSuggestedParamsFromObject,
-  makeLogicSigAccountTransactionSigner,
-  makeMultiSigAccountTransactionSigner,
-  makePaymentTxnWithSuggestedParams,
-  makePaymentTxnWithSuggestedParamsFromObject,
-  masterDerivationKeyToMnemonic,
-  mergeMultisigTransactions,
-  microalgosToAlgos,
-  mnemonicFromSeed,
-  mnemonicToMasterDerivationKey,
-  mnemonicToSecretKey,
-  modelsv2: types$1,
-  multisigAddress,
-  secretKeyToMnemonic,
-  seedFromMnemonic,
-  signBid,
-  signBytes,
-  signLogicSigTransaction,
-  signLogicSigTransactionObject,
-  signMultisigTransaction,
-  signTransaction,
-  tealSign,
-  tealSignFromProgram,
-  verifyBytes,
-  verifyMultisig,
-  verifyTealSign,
-  waitForConfirmation
-}, Symbol.toStringTag, { value: "Module" }));
+import { r as require$$0, a as commonjsGlobal, g as getDefaultExportFromCjs, d as getAugmentedNamespace } from "./index-7454982e.js";
 var cjs$2 = {};
 var cjs$1 = {};
 Object.defineProperty(cjs$1, "__esModule", { value: true });
@@ -589,15 +454,8 @@ const signingMethods = [
   "wallet_watchAsset",
   "wallet_scanQRCode"
 ];
-var bnExports = {};
-var bn = {
-  get exports() {
-    return bnExports;
-  },
-  set exports(v) {
-    bnExports = v;
-  }
-};
+var bn = { exports: {} };
+bn.exports;
 (function(module) {
   (function(module2, exports) {
     function assert(val, msg) {
@@ -3426,7 +3284,8 @@ var bn = {
     };
   })(module, commonjsGlobal);
 })(bn);
-const BN = bnExports;
+var bnExports = bn.exports;
+const BN = /* @__PURE__ */ getDefaultExportFromCjs(bnExports);
 var isTypedarray = isTypedArray$1;
 isTypedArray$1.strict = isStrictTypedArray;
 isTypedArray$1.loose = isLooseTypedArray;
@@ -3463,6 +3322,7 @@ var typedarrayToBuffer = function typedarrayToBuffer2(arr) {
     return Buffer.from(arr);
   }
 };
+const typedArrayToBuffer = /* @__PURE__ */ getDefaultExportFromCjs(typedarrayToBuffer);
 const ENC_HEX = "hex";
 const ENC_UTF8 = "utf8";
 const STRING_ZERO = "0";
@@ -3477,7 +3337,7 @@ function bufferToUtf8(buf) {
   return buf.toString(ENC_UTF8);
 }
 function arrayToBuffer(arr) {
-  return typedarrayToBuffer(arr);
+  return typedArrayToBuffer(arr);
 }
 function arrayToHex(arr, prefixed = false) {
   return bufferToHex(arrayToBuffer(arr), prefixed);
@@ -3575,15 +3435,7 @@ function convertNumberToHex(num, noPrefix) {
   const hex = removeHexPrefix(sanitizeHex$1(new BN(num).toString(16)));
   return noPrefix ? hex : addHexPrefix(hex);
 }
-var sha3Exports = {};
-var sha3 = {
-  get exports() {
-    return sha3Exports;
-  },
-  set exports(v) {
-    sha3Exports = v;
-  }
-};
+var sha3 = { exports: {} };
 /**
  * [js-sha3]{@link https://github.com/emn178/js-sha3}
  *
@@ -4230,16 +4082,9 @@ var sha3 = {
     }
   })();
 })(sha3);
+var sha3Exports = sha3.exports;
 var cjs = {};
-var tslibExports = {};
-var tslib = {
-  get exports() {
-    return tslibExports;
-  },
-  set exports(v) {
-    tslibExports = v;
-  }
-};
+var tslib = { exports: {} };
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -4644,6 +4489,7 @@ PERFORMANCE OF THIS SOFTWARE.
     exporter("__classPrivateFieldSet", __classPrivateFieldSet);
   });
 })(tslib);
+var tslibExports = tslib.exports;
 var crypto = {};
 var hasRequiredCrypto;
 function requireCrypto() {
@@ -4695,9 +4541,9 @@ function requireEnv() {
   tslib_1.__exportStar(requireCrypto(), exports);
   tslib_1.__exportStar(requireEnv(), exports);
 })(cjs);
-function payloadId$1() {
-  const date = Date.now() * Math.pow(10, 3);
-  const extra = Math.floor(Math.random() * Math.pow(10, 3));
+function payloadId$1(entropy = 3) {
+  const date = Date.now() * Math.pow(10, entropy);
+  const extra = Math.floor(Math.random() * Math.pow(10, entropy));
   return date + extra;
 }
 function sanitizeHex(hex) {
@@ -6611,16 +6457,7 @@ const esm = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty(
   default: WalletConnect
 }, Symbol.toStringTag, { value: "Module" }));
 const require$$1 = /* @__PURE__ */ getAugmentedNamespace(esm);
-const require$$2 = /* @__PURE__ */ getAugmentedNamespace(esm$1);
-var es5Exports = {};
-var es5 = {
-  get exports() {
-    return es5Exports;
-  },
-  set exports(v) {
-    es5Exports = v;
-  }
-};
+var es5 = { exports: {} };
 (function(module, exports) {
   !function(e, t) {
     module.exports = t();
@@ -7271,19 +7108,12 @@ var es5 = {
     } });
   });
 })(es5);
-var qrCodeStylingExports = {};
-var qrCodeStyling = {
-  get exports() {
-    return qrCodeStylingExports;
-  },
-  set exports(v) {
-    qrCodeStylingExports = v;
-  }
-};
+var es5Exports = es5.exports;
+var qrCodeStyling = { exports: {} };
 var hasRequiredQrCodeStyling;
 function requireQrCodeStyling() {
   if (hasRequiredQrCodeStyling)
-    return qrCodeStylingExports;
+    return qrCodeStyling.exports;
   hasRequiredQrCodeStyling = 1;
   (function(module, exports) {
     !function(t, e) {
@@ -8858,11 +8688,10 @@ function requireQrCodeStyling() {
       })().default;
     });
   })(qrCodeStyling);
-  return qrCodeStylingExports;
+  return qrCodeStyling.exports;
 }
 export {
   require$$1 as a,
-  require$$2 as b,
   es5Exports as e,
   requireQrCodeStyling as r
 };

@@ -1,6 +1,7 @@
-import { r as requireQrCodeStyling, a as require$$1, b as require$$2, e as es5Exports } from "./qr-code-styling-5f5f0e1c.js";
-import { b as buffer } from "./index-4e05fa9e.js";
-import { r as requireLottieWebLight } from "./index-56481aea.js";
+import { r as requireQrCodeStyling, a as require$$1, e as es5Exports } from "./qr-code-styling-3c33b143.js";
+import { a as algosdk_minExports } from "./algosdk.min-1c1c7044.js";
+import { b as buffer } from "./index-7454982e.js";
+import { r as requireLottieWebLight } from "./index-f3593f61.js";
 function _mergeNamespaces(n, m) {
   for (var i = 0; i < m.length; i++) {
     const e2 = m[i];
@@ -21,14 +22,14 @@ function _mergeNamespaces(n, m) {
   return Object.freeze(Object.defineProperty(n, Symbol.toStringTag, { value: "Module" }));
 }
 var dist = {};
-var indexA764fc7a = {};
-var App4a4d42d5 = {};
-var hasRequiredApp4a4d42d5;
-function requireApp4a4d42d5() {
-  if (hasRequiredApp4a4d42d5)
-    return App4a4d42d5;
-  hasRequiredApp4a4d42d5 = 1;
-  var e2 = requireIndexA764fc7a(), n = requireQrCodeStyling(), t = requireLottieWebLight();
+var index42ef4f76 = {};
+var App4a2b7e5c = {};
+var hasRequiredApp4a2b7e5c;
+function requireApp4a2b7e5c() {
+  if (hasRequiredApp4a2b7e5c)
+    return App4a2b7e5c;
+  hasRequiredApp4a2b7e5c = 1;
+  var e2 = requireIndex42ef4f76(), n = requireQrCodeStyling(), t = requireLottieWebLight();
   function a(e3) {
     return e3 && "object" == typeof e3 && "default" in e3 ? e3 : { default: e3 };
   }
@@ -665,14 +666,14 @@ function requireApp4a4d42d5() {
   }), window.addEventListener("resize", () => {
     c();
   }), window.customElements.define("pera-wallet-connect-modal", H), window.customElements.define("pera-wallet-modal-desktop-mode", y), window.customElements.define("pera-wallet-modal-header", m), window.customElements.define("pera-wallet-modal-touch-screen-mode", E), window.customElements.define("pera-wallet-redirect-modal", R), window.customElements.define("pera-wallet-connect-modal-information-section", S), window.customElements.define("pera-wallet-connect-modal-pending-message-section", j), window.customElements.define("pera-wallet-sign-txn-toast", $), window.customElements.define("pera-wallet-sign-txn-modal", Q), window.customElements.define("pera-wallet-download-qr-code", f);
-  return App4a4d42d5;
+  return App4a2b7e5c;
 }
-var hasRequiredIndexA764fc7a;
-function requireIndexA764fc7a() {
-  if (hasRequiredIndexA764fc7a)
-    return indexA764fc7a;
-  hasRequiredIndexA764fc7a = 1;
-  var e2 = require$$1, t = require$$2, n = es5Exports;
+var hasRequiredIndex42ef4f76;
+function requireIndex42ef4f76() {
+  if (hasRequiredIndex42ef4f76)
+    return index42ef4f76;
+  hasRequiredIndex42ef4f76 = 1;
+  var e2 = require$$1, t = algosdk_minExports, n = es5Exports;
   function a(e3) {
     return e3 && "object" == typeof e3 && "default" in e3 ? e3 : { default: e3 };
   }
@@ -770,7 +771,7 @@ function requireIndexA764fc7a() {
           if (o2 += 1, 50 === o2)
             return clearInterval(r2), void n2(new i({ type: "MESSAGE_NOT_RECEIVED" }, "Couldn't open Pera Wallet, please try again."));
           a2 && (true === a2.closed && (clearInterval(r2), n2(new i({ type: "OPERATION_CANCELLED" }, "Operation cancelled by user"))), d.sendMessage({ message: { type: "TAB_OPEN" }, origin: e3, targetWindow: a2 }));
-        }, 300);
+        }, 700);
         d.setupListener({ onReceiveMessage: (e4) => {
           "TAB_OPEN_RECEIVED" === e4.data.message.type && (clearInterval(r2), t2(a2));
         } });
@@ -807,23 +808,23 @@ function requireIndexA764fc7a() {
     t2 && t2.remove();
   }
   const v = "PeraWallet.Wallet", N = "walletconnect";
-  function C() {
+  function E() {
     return "undefined" == typeof localStorage ? void 0 : localStorage;
   }
-  function E(e3, t2) {
+  function C(e3, t2) {
     var n2;
-    null === (n2 = C()) || void 0 === n2 || n2.setItem(v, JSON.stringify({ type: t2 || "pera-wallet", accounts: e3, selectedAccount: e3[0] }));
+    null === (n2 = E()) || void 0 === n2 || n2.setItem(v, JSON.stringify({ type: t2 || "pera-wallet", accounts: e3, selectedAccount: e3[0] }));
   }
   function f() {
     var e3;
-    const t2 = null === (e3 = C()) || void 0 === e3 ? void 0 : e3.getItem(v);
+    const t2 = null === (e3 = E()) || void 0 === e3 ? void 0 : e3.getItem(v);
     return t2 ? JSON.parse(t2) : null;
   }
   function T() {
     return new Promise((e3, t2) => {
       var n2, a2;
       try {
-        null === (n2 = C()) || void 0 === n2 || n2.removeItem(N), null === (a2 = C()) || void 0 === a2 || a2.removeItem(v), e3(void 0);
+        null === (n2 = E()) || void 0 === n2 || n2.removeItem(N), null === (a2 = E()) || void 0 === a2 || a2.removeItem(v), e3(void 0);
       } catch (e4) {
         t2(e4);
       }
@@ -842,7 +843,7 @@ function requireIndexA764fc7a() {
       return fetch(e3, t2).then((e4) => e4.json()).then((e4) => e4);
     }("https://wc.perawallet.app/config.json", { cache: "no-store" });
   }
-  function S() {
+  function I() {
     return s(this, void 0, void 0, function* () {
       let e3 = { bridgeURL: "", webWalletURL: "", isWebWalletAvailable: false, shouldDisplayNewBadge: false, shouldUseSound: true, silent: false };
       try {
@@ -854,29 +855,29 @@ function requireIndexA764fc7a() {
       return e3;
     });
   }
-  function b(e3) {
+  function A(e3) {
     return Uint8Array.from(window.atob(e3), (e4) => e4.charCodeAt(0));
   }
-  function A() {
+  function S() {
     return "undefined" != typeof navigator;
   }
-  function O() {
-    return A() && /Android/i.test(navigator.userAgent);
+  function b() {
+    return S() && /Android/i.test(navigator.userAgent);
   }
-  function I() {
-    return A() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  function O() {
+    return S() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
   function L() {
-    return A() && /iPhone|iPod|Android/i.test(navigator.userAgent);
+    return S() && /iPhone|iPod|Android/i.test(navigator.userAgent);
   }
   function W() {
-    if (!A())
+    if (!S())
       return null;
     const { userAgent: e3 } = navigator;
     let t2;
     return t2 = e3.match(/DuckDuckGo/i) ? "DuckDuckGo" : e3.match(/OPX/i) ? "Opera GX" : navigator.brave ? "Brave" : l.default.getParser(navigator.userAgent).getBrowserName(), t2;
   }
-  const M = O() ? "algorand://" : "algorand-wc://";
+  const M = b() ? "algorand://" : "algorand-wc://";
   function D(e3) {
     return { ROOT: `https://${e3}`, CONNECT: `https://${e3}/connect`, TRANSACTION_SIGN: `https://${e3}/transaction/sign` };
   }
@@ -899,8 +900,8 @@ function requireIndexA764fc7a() {
     var a2;
   }
   "undefined" != typeof window && (window.global = window, window.Buffer = window.Buffer || buffer.Buffer, Promise.resolve().then(function() {
-    return requireApp4a4d42d5();
-  })), indexA764fc7a.PERA_DOWNLOAD_URL = "https://perawallet.app/download/", indexA764fc7a.PERA_WALLET_CONNECT_MODAL_ID = "pera-wallet-connect-modal-wrapper", indexA764fc7a.PERA_WALLET_MODAL_CLASSNAME = "pera-wallet-modal", indexA764fc7a.PERA_WALLET_REDIRECT_MODAL_ID = "pera-wallet-redirect-modal-wrapper", indexA764fc7a.PERA_WALLET_SIGN_TXN_MODAL_ID = "pera-wallet-sign-txn-modal-wrapper", indexA764fc7a.PERA_WALLET_SIGN_TXN_TOAST_ID = "pera-wallet-sign-txn-toast-wrapper", indexA764fc7a.PeraWalletConnect = class {
+    return requireApp4a2b7e5c();
+  })), index42ef4f76.PERA_DOWNLOAD_URL = "https://perawallet.app/download/", index42ef4f76.PERA_WALLET_CONNECT_MODAL_ID = "pera-wallet-connect-modal-wrapper", index42ef4f76.PERA_WALLET_MODAL_CLASSNAME = "pera-wallet-modal", index42ef4f76.PERA_WALLET_REDIRECT_MODAL_ID = "pera-wallet-redirect-modal-wrapper", index42ef4f76.PERA_WALLET_SIGN_TXN_MODAL_ID = "pera-wallet-sign-txn-modal-wrapper", index42ef4f76.PERA_WALLET_SIGN_TXN_TOAST_ID = "pera-wallet-sign-txn-toast-wrapper", index42ef4f76.PeraWalletConnect = class {
     constructor(e3) {
       this.bridge = (null == e3 ? void 0 : e3.bridge) || "", this.connector = null, this.shouldShowSignTxnToast = void 0 === (null == e3 ? void 0 : e3.shouldShowSignTxnToast) || e3.shouldShowSignTxnToast, this.chainId = null == e3 ? void 0 : e3.chainId;
     }
@@ -917,52 +918,62 @@ function requireIndexA764fc7a() {
     }
     connectWithWebWallet(e3, t2, n2, a2) {
       const o2 = W(), r2 = D(n2), l2 = document.createElement("iframe");
-      function s2(n3) {
-        var o3, s3, w2, g2, m2, h2;
-        if (e3 && "CONNECT_CALLBACK" === n3.data.message.type) {
-          const t3 = n3.data.message.data.addresses;
-          E(t3, "pera-wallet-web"), e3(t3), u2(), null === (o3 = document.getElementById("pera-wallet-iframe")) || void 0 === o3 || o3.remove();
-        } else if ("CONNECT_NETWORK_MISMATCH" === n3.data.message.type)
-          t2(new i({ type: "CONNECT_NETWORK_MISMATCH", detail: n3.data.message.error }, n3.data.message.error || "Your wallet is connected to a different network to this dApp. Update your wallet to the correct network (MainNet or TestNet) to continue.")), u2(), null === (s3 = document.getElementById("pera-wallet-iframe")) || void 0 === s3 || s3.remove();
-        else if (["CREATE_PASSCODE_EMBEDDED", "SELECT_ACCOUNT_EMBEDDED"].includes(n3.data.message.type)) {
-          if ("CREATE_PASSCODE_EMBEDDED" === n3.data.message.type)
-            p(r2.CONNECT).then((n4) => {
-              n4 && d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: n4 });
-              const o4 = setInterval(() => {
-                true === (null == n4 ? void 0 : n4.closed) && (t2(new i({ type: "CONNECT_CANCELLED" }, "Connect is cancelled by user")), u2(), clearInterval(o4));
-              }, 2e3);
-              d.setupListener({ onReceiveMessage: (t3) => {
-                if (e3 && "CONNECT_CALLBACK" === t3.data.message.type) {
-                  const a3 = t3.data.message.data.addresses;
-                  E(a3, "pera-wallet-web"), e3(a3), u2(), null == n4 || n4.close();
-                }
-              } });
-            });
-          else if ("SELECT_ACCOUNT_EMBEDDED" === n3.data.message.type) {
-            const e4 = document.getElementById("pera-wallet-connect-modal-wrapper"), t3 = null === (g2 = null === (w2 = null == e4 ? void 0 : e4.querySelector("pera-wallet-connect-modal")) || void 0 === w2 ? void 0 : w2.shadowRoot) || void 0 === g2 ? void 0 : g2.querySelector(".pera-wallet-modal"), n4 = null === (h2 = null === (m2 = null == t3 ? void 0 : t3.querySelector("pera-wallet-modal-desktop-mode")) || void 0 === m2 ? void 0 : m2.shadowRoot) || void 0 === h2 ? void 0 : h2.querySelector(".pera-wallet-connect-modal-desktop-mode");
-            t3 && n4 && (t3.classList.add("pera-wallet-modal--select-account"), t3.classList.remove("pera-wallet-modal--create-passcode"), n4.classList.add("pera-wallet-connect-modal-desktop-mode--select-account"), n4.classList.remove("pera-wallet-connect-modal-desktop-mode--create-passcode")), d.sendMessage({ message: { type: "SELECT_ACCOUNT_EMBEDDED_CALLBACK" }, origin: r2.CONNECT, targetWindow: l2.contentWindow });
-          }
-        }
-      }
-      function u2() {
+      function s2() {
         h("pera-wallet-connect-modal-wrapper");
       }
       return { onWebWalletConnect: function(n3) {
-        "Chrome" === o2 ? (l2.setAttribute("id", "pera-wallet-iframe"), l2.setAttribute("src", x(r2.CONNECT)), n3.appendChild(l2), l2.contentWindow && d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: l2.contentWindow }), d.setupListener({ onReceiveMessage: s2 })) : p(r2.CONNECT).then((n4) => {
-          n4 && d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: n4 });
-          const o3 = setInterval(() => {
-            true === (null == n4 ? void 0 : n4.closed) && (t2(new i({ type: "CONNECT_CANCELLED" }, "Connect is cancelled by user")), clearInterval(o3), u2());
-          }, 2e3);
-          d.setupListener({ onReceiveMessage: (a3) => {
-            if (e3 && "CONNECT_CALLBACK" === a3.data.message.type) {
-              const t3 = a3.data.message.data.addresses;
-              E(t3, "pera-wallet-web"), e3(t3), u2(), null == n4 || n4.close();
-            } else
-              "CONNECT_NETWORK_MISMATCH" === a3.data.message.type && (t2(new i({ type: "CONNECT_NETWORK_MISMATCH", detail: a3.data.message.error }, a3.data.message.error || "Your wallet is connected to a different network to this dApp. Update your wallet to the correct network (MainNet or TestNet) to continue.")), u2(), null == n4 || n4.close());
-          } });
-        }).catch((e4) => {
-          u2(), t2(e4);
-        });
+        if ("Chrome" === o2) {
+          if (l2.setAttribute("id", "pera-wallet-iframe"), l2.setAttribute("src", x(r2.CONNECT)), n3.appendChild(l2), l2.contentWindow) {
+            let n4 = 0;
+            const o3 = setInterval(() => {
+              n4 += 1, 50 !== n4 ? d.sendMessage({ message: { type: "IFRAME_INITIALIZED" }, origin: r2.CONNECT, targetWindow: l2.contentWindow }) : clearInterval(o3);
+            }, 700);
+            d.setupListener({ onReceiveMessage: (n5) => {
+              var u2, w2, g2, m2, h2, v2;
+              if ("IFRAME_INITIALIZED_RECEIVED" === n5.data.message.type)
+                clearInterval(o3), d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: l2.contentWindow });
+              else if (e3 && "CONNECT_CALLBACK" === n5.data.message.type) {
+                const t3 = n5.data.message.data.addresses;
+                C(t3, "pera-wallet-web"), e3(t3), s2(), null === (u2 = document.getElementById("pera-wallet-iframe")) || void 0 === u2 || u2.remove();
+              } else if ("CONNECT_NETWORK_MISMATCH" === n5.data.message.type)
+                t2(new i({ type: "CONNECT_NETWORK_MISMATCH", detail: n5.data.message.error }, n5.data.message.error || "Your wallet is connected to a different network to this dApp. Update your wallet to the correct network (MainNet or TestNet) to continue.")), s2(), null === (w2 = document.getElementById("pera-wallet-iframe")) || void 0 === w2 || w2.remove();
+              else if (["CREATE_PASSCODE_EMBEDDED", "SELECT_ACCOUNT_EMBEDDED"].includes(n5.data.message.type)) {
+                if ("CREATE_PASSCODE_EMBEDDED" === n5.data.message.type)
+                  p(r2.CONNECT).then((n6) => {
+                    n6 && d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: n6 });
+                    const o4 = setInterval(() => {
+                      true === (null == n6 ? void 0 : n6.closed) && (t2(new i({ type: "CONNECT_CANCELLED" }, "Connect is cancelled by user")), s2(), clearInterval(o4));
+                    }, 2e3);
+                    d.setupListener({ onReceiveMessage: (t3) => {
+                      if (e3 && "CONNECT_CALLBACK" === t3.data.message.type) {
+                        const a3 = t3.data.message.data.addresses;
+                        C(a3, "pera-wallet-web"), e3(a3), s2(), null == n6 || n6.close();
+                      }
+                    } });
+                  });
+                else if ("SELECT_ACCOUNT_EMBEDDED" === n5.data.message.type) {
+                  const e4 = document.getElementById("pera-wallet-connect-modal-wrapper"), t3 = null === (m2 = null === (g2 = null == e4 ? void 0 : e4.querySelector("pera-wallet-connect-modal")) || void 0 === g2 ? void 0 : g2.shadowRoot) || void 0 === m2 ? void 0 : m2.querySelector(".pera-wallet-modal"), n6 = null === (v2 = null === (h2 = null == t3 ? void 0 : t3.querySelector("pera-wallet-modal-desktop-mode")) || void 0 === h2 ? void 0 : h2.shadowRoot) || void 0 === v2 ? void 0 : v2.querySelector(".pera-wallet-connect-modal-desktop-mode");
+                  t3 && n6 && (t3.classList.add("pera-wallet-modal--select-account"), t3.classList.remove("pera-wallet-modal--create-passcode"), n6.classList.add("pera-wallet-connect-modal-desktop-mode--select-account"), n6.classList.remove("pera-wallet-connect-modal-desktop-mode--create-passcode")), d.sendMessage({ message: { type: "SELECT_ACCOUNT_EMBEDDED_CALLBACK" }, origin: r2.CONNECT, targetWindow: l2.contentWindow });
+                }
+              }
+            } });
+          }
+        } else
+          p(r2.CONNECT).then((n4) => {
+            n4 && d.sendMessage({ message: { type: "CONNECT", data: Object.assign(Object.assign({}, c()), { chainId: a2 }) }, origin: r2.CONNECT, targetWindow: n4 });
+            const o3 = setInterval(() => {
+              true === (null == n4 ? void 0 : n4.closed) && (t2(new i({ type: "CONNECT_CANCELLED" }, "Connect is cancelled by user")), clearInterval(o3), s2());
+            }, 2e3);
+            d.setupListener({ onReceiveMessage: (a3) => {
+              if (e3 && "CONNECT_CALLBACK" === a3.data.message.type) {
+                const t3 = a3.data.message.data.addresses;
+                C(t3, "pera-wallet-web"), e3(t3), s2(), null == n4 || n4.close();
+              } else
+                "CONNECT_NETWORK_MISMATCH" === a3.data.message.type && (t2(new i({ type: "CONNECT_NETWORK_MISMATCH", detail: a3.data.message.error }, a3.data.message.error || "Your wallet is connected to a different network to this dApp. Update your wallet to the correct network (MainNet or TestNet) to continue.")), s2(), null == n4 || n4.close());
+            } });
+          }).catch((e4) => {
+            s2(), t2(e4);
+          });
       } };
     }
     connect() {
@@ -974,7 +985,7 @@ function requireIndexA764fc7a() {
               yield this.connector.killSession();
             } catch (e4) {
             }
-          const { isWebWalletAvailable: a2, bridgeURL: r2, webWalletURL: l2, shouldDisplayNewBadge: s2, shouldUseSound: d2 } = yield S(), { onWebWalletConnect: c2 } = this.connectWithWebWallet(e3, t2, l2, this.chainId);
+          const { isWebWalletAvailable: a2, bridgeURL: r2, webWalletURL: l2, shouldDisplayNewBadge: s2, shouldUseSound: d2 } = yield I(), { onWebWalletConnect: c2 } = this.connectWithWebWallet(e3, t2, l2, this.chainId);
           a2 && (window.onWebWalletConnect = c2), this.connector = new o.default({ bridge: this.bridge || r2 || "https://bridge.walletconnect.org", qrcodeModal: B({ isWebWalletAvailable: a2, shouldDisplayNewBadge: s2, shouldUseSound: d2 }) }), yield this.connector.createSession({ chainId: this.chainId || 4160 }), function(e4) {
             var t3, n3, a3, o2;
             const r3 = document.getElementById("pera-wallet-connect-modal-wrapper"), l3 = null === (n3 = null === (t3 = null == r3 ? void 0 : r3.querySelector("pera-wallet-connect-modal")) || void 0 === t3 ? void 0 : t3.shadowRoot) || void 0 === n3 ? void 0 : n3.querySelector(".pera-wallet-modal"), s3 = null === (o2 = null === (a3 = null == l3 ? void 0 : l3.querySelector("pera-wallet-modal-header")) || void 0 === a3 ? void 0 : a3.shadowRoot) || void 0 === o2 ? void 0 : o2.getElementById("pera-wallet-modal-header-close-button");
@@ -983,7 +994,7 @@ function requireIndexA764fc7a() {
             });
           }(() => t2(new i({ type: "CONNECT_MODAL_CLOSED" }, "Connect modal is closed by user"))), this.connector.on("connect", (n3, a3) => {
             var o2, r3;
-            n3 && t2(n3), e3((null === (o2 = this.connector) || void 0 === o2 ? void 0 : o2.accounts) || []), E((null === (r3 = this.connector) || void 0 === r3 ? void 0 : r3.accounts) || []);
+            n3 && t2(n3), e3((null === (o2 = this.connector) || void 0 === o2 ? void 0 : o2.accounts) || []), C((null === (r3 = this.connector) || void 0 === r3 ? void 0 : r3.accounts) || []);
           });
         } catch (e4) {
           console.log(e4), t2(new i({ type: "SESSION_CONNECT", detail: e4 }, e4.message || "There was an error while connecting to Pera Wallet"));
@@ -995,13 +1006,15 @@ function requireIndexA764fc7a() {
         var n2, a2;
         try {
           const r2 = f();
+          if (!r2)
+            return void e3([]);
           if ("pera-wallet-web" === (null == r2 ? void 0 : r2.type)) {
-            const { isWebWalletAvailable: n3 } = yield S();
+            const { isWebWalletAvailable: n3 } = yield I();
             n3 ? e3(r2.accounts || []) : t2(new i({ type: "SESSION_RECONNECT", detail: "Pera Web is not available" }, "Pera Web is not available"));
           }
           this.connector && e3(this.connector.accounts || []), this.bridge = (null === (n2 = function() {
             var e4;
-            const t3 = null === (e4 = C()) || void 0 === e4 ? void 0 : e4.getItem(N);
+            const t3 = null === (e4 = E()) || void 0 === e4 ? void 0 : e4.getItem(N);
             return t3 ? JSON.parse(t3) : null;
           }()) || void 0 === n2 ? void 0 : n2.bridge) || "", this.bridge && (this.connector = new o.default({ bridge: this.bridge }), e3((null === (a2 = this.connector) || void 0 === a2 ? void 0 : a2.accounts) || [])), this.isConnected || e3([]);
         } catch (e4) {
@@ -1024,8 +1037,8 @@ function requireIndexA764fc7a() {
         var n2, a2;
         try {
           try {
-            const { silent: e4 } = yield S(), n3 = (yield this.connector.sendCustomRequest(t2, { forcePushNotification: !e4 })).filter(Boolean);
-            return "string" == typeof n3[0] ? n3.map(b) : n3.map((e5) => Uint8Array.from(e5));
+            const { silent: e4 } = yield I(), n3 = (yield this.connector.sendCustomRequest(t2, { forcePushNotification: !e4 })).filter(Boolean);
+            return "string" == typeof n3[0] ? n3.map(A) : n3.map((e5) => Uint8Array.from(e5));
           } catch (e4) {
             return yield Promise.reject(new i({ type: "SIGN_TRANSACTIONS", detail: e4 }, e4.message || "Failed to sign transaction"));
           }
@@ -1042,12 +1055,18 @@ function requireIndexA764fc7a() {
           const u2 = t3, p2 = document.createElement("iframe"), w2 = x(o2.TRANSACTION_SIGN), g2 = `hid ${w2}; bluetooth ${w2}`;
           p2.setAttribute("id", "pera-wallet-iframe"), p2.setAttribute("src", w2), p2.setAttribute("allow", g2), null == u2 || u2.appendChild(p2);
           const v2 = null === (s2 = null === (l2 = null === (r2 = document.getElementById("pera-wallet-sign-txn-modal-wrapper")) || void 0 === r2 ? void 0 : r2.querySelector("pera-wallet-sign-txn-modal")) || void 0 === l2 ? void 0 : l2.shadowRoot) || void 0 === s2 ? void 0 : s2.querySelector("pera-wallet-modal-header"), N2 = null === (c2 = null == v2 ? void 0 : v2.shadowRoot) || void 0 === c2 ? void 0 : c2.getElementById("pera-wallet-modal-header-close-button");
-          N2 && N2.addEventListener("click", () => {
+          if (N2 && N2.addEventListener("click", () => {
             a2(new i({ type: "SIGN_TXN_CANCELLED" }, "Transaction signing is cancelled by user.")), h("pera-wallet-sign-txn-modal-wrapper");
-          }), p2.contentWindow && d.sendMessage({ message: { type: "SIGN_TXN", txn: e3 }, origin: x(o2.TRANSACTION_SIGN), targetWindow: p2.contentWindow }), d.setupListener({ onReceiveMessage: (e4) => {
-            var t4, o3, r3;
-            "SIGN_TXN_CALLBACK" === e4.data.message.type && (null === (t4 = document.getElementById("pera-wallet-iframe")) || void 0 === t4 || t4.remove(), m(), n2(e4.data.message.signedTxns.map((e5) => b(e5.signedTxn)))), "SIGN_TXN_NETWORK_MISMATCH" === e4.data.message.type && a2(new i({ type: "SIGN_TXN_NETWORK_MISMATCH", detail: e4.data.message.error }, e4.data.message.error || "Network mismatch")), "SESSION_DISCONNECTED" === e4.data.message.type && (null === (o3 = document.getElementById("pera-wallet-iframe")) || void 0 === o3 || o3.remove(), m(), T(), a2(new i({ type: "SESSION_DISCONNECTED", detail: e4.data.message.error }, e4.data.message.error))), "SIGN_TXN_CALLBACK_ERROR" === e4.data.message.type && (null === (r3 = document.getElementById("pera-wallet-iframe")) || void 0 === r3 || r3.remove(), m(), a2(new i({ type: "SIGN_TXN_CANCELLED" }, e4.data.message.error)));
-          } });
+          }), p2.contentWindow) {
+            let t4 = 0;
+            const r3 = setInterval(() => {
+              t4 += 1, 50 !== t4 ? d.sendMessage({ message: { type: "IFRAME_INITIALIZED" }, origin: o2.CONNECT, targetWindow: p2.contentWindow }) : clearInterval(r3);
+            }, 700);
+            d.setupListener({ onReceiveMessage: (t5) => {
+              var l3, s3, c3;
+              "IFRAME_INITIALIZED_RECEIVED" === t5.data.message.type && (clearInterval(r3), d.sendMessage({ message: { type: "SIGN_TXN", txn: e3 }, origin: x(o2.TRANSACTION_SIGN), targetWindow: p2.contentWindow })), "SIGN_TXN_CALLBACK" === t5.data.message.type && (null === (l3 = document.getElementById("pera-wallet-iframe")) || void 0 === l3 || l3.remove(), m(), n2(t5.data.message.signedTxns.map((e4) => A(e4.signedTxn)))), "SIGN_TXN_NETWORK_MISMATCH" === t5.data.message.type && a2(new i({ type: "SIGN_TXN_NETWORK_MISMATCH", detail: t5.data.message.error }, t5.data.message.error || "Network mismatch")), "SESSION_DISCONNECTED" === t5.data.message.type && (null === (s3 = document.getElementById("pera-wallet-iframe")) || void 0 === s3 || s3.remove(), m(), T(), a2(new i({ type: "SESSION_DISCONNECTED", detail: t5.data.message.error }, t5.data.message.error))), "SIGN_TXN_CALLBACK_ERROR" === t5.data.message.type && (null === (c3 = document.getElementById("pera-wallet-iframe")) || void 0 === c3 || c3.remove(), m(), a2(new i({ type: "SIGN_TXN_CANCELLED" }, t5.data.message.error)));
+            } });
+          }
         }).catch((e4) => {
           console.log(e4);
         }) : p(o2.TRANSACTION_SIGN).then((t3) => {
@@ -1056,7 +1075,7 @@ function requireIndexA764fc7a() {
             true === (null == t3 ? void 0 : t3.closed) && (a2(new i({ type: "SIGN_TXN_CANCELLED" }, "Transaction signing is cancelled by user.")), clearInterval(r2));
           }, 2e3);
           d.setupListener({ onReceiveMessage: (e4) => {
-            "SIGN_TXN_CALLBACK" === e4.data.message.type && (null == t3 || t3.close(), n2(e4.data.message.signedTxns.map((e5) => b(e5.signedTxn)))), "SIGN_TXN_NETWORK_MISMATCH" === e4.data.message.type && a2(new i({ type: "SIGN_TXN_NETWORK_MISMATCH", detail: e4.data.message.error }, e4.data.message.error || "Network mismatch")), "SESSION_DISCONNECTED" === e4.data.message.type && (null == t3 || t3.close(), T(), a2(new i({ type: "SESSION_DISCONNECTED", detail: e4.data.message.error }, e4.data.message.error))), "SIGN_TXN_CALLBACK_ERROR" === e4.data.message.type && (null == t3 || t3.close(), a2(new i({ type: "SIGN_TXN_CANCELLED" }, e4.data.message.error)));
+            "SIGN_TXN_CALLBACK" === e4.data.message.type && (null == t3 || t3.close(), n2(e4.data.message.signedTxns.map((e5) => A(e5.signedTxn)))), "SIGN_TXN_NETWORK_MISMATCH" === e4.data.message.type && a2(new i({ type: "SIGN_TXN_NETWORK_MISMATCH", detail: e4.data.message.error }, e4.data.message.error || "Network mismatch")), "SESSION_DISCONNECTED" === e4.data.message.type && (null == t3 || t3.close(), T(), a2(new i({ type: "SESSION_DISCONNECTED", detail: e4.data.message.error }, e4.data.message.error))), "SIGN_TXN_CALLBACK_ERROR" === e4.data.message.type && (null == t3 || t3.close(), a2(new i({ type: "SIGN_TXN_CANCELLED" }, e4.data.message.error)));
           } });
         }).catch((e4) => {
           a2(e4);
@@ -1075,27 +1094,27 @@ function requireIndexA764fc7a() {
           return Array.isArray(n3) && (a2.signers = n3), e6.authAddr && (a2.authAddr = e6.authAddr), e6.message && (a2.message = e6.message), e6.msig && (a2.msig = e6.msig), a2;
         }(e5, t2)));
         if ("web" === this.platform) {
-          const { webWalletURL: e4 } = yield S();
+          const { webWalletURL: e4 } = yield I();
           return this.signTransactionWithWeb(n2, e4);
         }
         return this.signTransactionWithMobile(n2);
       });
     }
-  }, indexA764fc7a.closePeraWalletSignTxnToast = function() {
+  }, index42ef4f76.closePeraWalletSignTxnToast = function() {
     h("pera-wallet-sign-txn-toast-wrapper");
-  }, indexA764fc7a.detectBrowser = W, indexA764fc7a.generatePeraWalletAppDeepLink = R, indexA764fc7a.generatePeraWalletConnectDeepLink = function(e3) {
+  }, index42ef4f76.detectBrowser = W, index42ef4f76.generatePeraWalletAppDeepLink = R, index42ef4f76.generatePeraWalletConnectDeepLink = function(e3) {
     let t2 = R(false);
-    I() && !t2.includes("-wc") && (t2 = t2.replace("://", "-wc://"));
+    O() && !t2.includes("-wc") && (t2 = t2.replace("://", "-wc://"));
     let n2 = `${t2}wc?uri=${encodeURIComponent(e3)}`;
     const a2 = W();
-    return O() && (n2 = e3), a2 && (n2 = `${n2}&browser=${encodeURIComponent(a2)}`), n2;
-  }, indexA764fc7a.isIOS = I, indexA764fc7a.isMobile = L, indexA764fc7a.removeModalWrapperFromDOM = h;
-  return indexA764fc7a;
+    return b() && (n2 = e3), a2 && (n2 = `${n2}&browser=${encodeURIComponent(a2)}`), n2;
+  }, index42ef4f76.isIOS = O, index42ef4f76.isMobile = L, index42ef4f76.removeModalWrapperFromDOM = h;
+  return index42ef4f76;
 }
 var closePeraWalletSignTxnToast;
 var PeraWalletConnect;
 Object.defineProperty(dist, "__esModule", { value: true });
-var e = requireIndexA764fc7a();
+var e = requireIndex42ef4f76();
 PeraWalletConnect = dist.PeraWalletConnect = e.PeraWalletConnect, closePeraWalletSignTxnToast = dist.closePeraWalletSignTxnToast = e.closePeraWalletSignTxnToast;
 const index = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,

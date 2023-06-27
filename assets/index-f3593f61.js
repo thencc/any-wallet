@@ -1,16 +1,8 @@
-var lottieWebLightExports = {};
-var lottieWebLight = {
-  get exports() {
-    return lottieWebLightExports;
-  },
-  set exports(v) {
-    lottieWebLightExports = v;
-  }
-};
+var lottieWebLight = { exports: {} };
 var hasRequiredLottieWebLight;
 function requireLottieWebLight() {
   if (hasRequiredLottieWebLight)
-    return lottieWebLightExports;
+    return lottieWebLight.exports;
   hasRequiredLottieWebLight = 1;
   (function(module) {
     typeof navigator !== "undefined" && function(root, factory) {
@@ -834,7 +826,7 @@ function requireLottieWebLight() {
             return tostring(out);
           } catch (e) {
             var browser = global.navigator, plugins = browser && browser.plugins;
-            return [+new Date(), global, plugins, global.screen, tostring(pool)];
+            return [+/* @__PURE__ */ new Date(), global, plugins, global.screen, tostring(pool)];
           }
         }
         function tostring(a) {
@@ -973,7 +965,7 @@ function requireLottieWebLight() {
         }
         if (!window2.requestAnimationFrame) {
           window2.requestAnimationFrame = function(callback) {
-            var currTime = new Date().getTime();
+            var currTime = (/* @__PURE__ */ new Date()).getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
             var id = setTimeout(
               function() {
@@ -9321,7 +9313,7 @@ function requireLottieWebLight() {
       return lottie;
     });
   })(lottieWebLight);
-  return lottieWebLightExports;
+  return lottieWebLight.exports;
 }
 export {
   requireLottieWebLight as r

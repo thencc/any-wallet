@@ -1,6 +1,7 @@
-import { r as requireQrCodeStyling, a as require$$1, b as require$$2, e as es5Exports } from "./qr-code-styling-5f5f0e1c.js";
-import { b as buffer } from "./index-4e05fa9e.js";
-import { r as requireLottie } from "./lottie-3dd57f71.js";
+import { r as requireQrCodeStyling, a as require$$1, e as es5Exports } from "./qr-code-styling-3c33b143.js";
+import { a as algosdk_minExports } from "./algosdk.min-1c1c7044.js";
+import { b as buffer } from "./index-7454982e.js";
+import { r as requireLottie } from "./lottie-f9918250.js";
 function _mergeNamespaces(n, m) {
   for (var i = 0; i < m.length; i++) {
     const e2 = m[i];
@@ -21,14 +22,14 @@ function _mergeNamespaces(n, m) {
   return Object.freeze(Object.defineProperty(n, Symbol.toStringTag, { value: "Module" }));
 }
 var dist = {};
-var indexBcf8d0cd = {};
-var AppCff5e450 = {};
-var hasRequiredAppCff5e450;
-function requireAppCff5e450() {
-  if (hasRequiredAppCff5e450)
-    return AppCff5e450;
-  hasRequiredAppCff5e450 = 1;
-  var n = requireIndexBcf8d0cd(), e2 = requireQrCodeStyling(), t = requireLottie();
+var indexE064c757 = {};
+var AppF4dba749 = {};
+var hasRequiredAppF4dba749;
+function requireAppF4dba749() {
+  if (hasRequiredAppF4dba749)
+    return AppF4dba749;
+  hasRequiredAppF4dba749 = 1;
+  var n = requireIndexE064c757(), e2 = requireQrCodeStyling(), t = requireLottie();
   function o(n2) {
     return n2 && "object" == typeof n2 && "default" in n2 ? n2 : { default: n2 };
   }
@@ -274,7 +275,7 @@ function requireAppCff5e450() {
     constructor() {
       if (super(), this.attachShadow({ mode: "open" }), this.shadowRoot) {
         const e3 = document.createElement("style");
-        e3.textContent = A, s() && n.isMobile() ? (S.innerHTML = `
+        e3.textContent = A, n.isMobile() ? (S.innerHTML = `
         <div class="${M}">
           <div class="defly-wallet-modal__body" part="body">
             <defly-wallet-modal-header modal-id="${n.DEFLY_WALLET_CONNECT_MODAL_ID}"></defly-wallet-modal-header/>
@@ -321,7 +322,7 @@ function requireAppCff5e450() {
             <a
               id="defly-wallet-redirect-modal-download-defly-link"
               class="defly-wallet-redirect-modal__content__install-defly-text__link"
-              href="https://deflywallet.app/download/"
+              href="https://defly.app/ "
               rel="noopener noreferrer"
               target="_blank">
               Tap here to install.
@@ -439,7 +440,7 @@ function requireAppCff5e450() {
 
     <div>
       <a
-        href="https://support.deflywallet.app/en/article/resolving-walletconnect-issues-1tolptm/"
+        href=" https://docs.defly.app/app/dapp-browser"
         target="_blank"
         rel="noopener noreferrer"
         class="defly-wallet-connect-modal-pending-message--try-again-view__resolving-anchor">
@@ -570,14 +571,14 @@ function requireAppCff5e450() {
   }), window.addEventListener("resize", () => {
     c();
   }), window.customElements.define("defly-wallet-connect-modal", B), window.customElements.define("defly-wallet-modal-desktop-mode", b), window.customElements.define("defly-wallet-modal-header", m), window.customElements.define("defly-wallet-modal-touch-screen-mode", D), window.customElements.define("defly-wallet-redirect-modal", T), window.customElements.define("defly-wallet-connect-modal-information-section", H), window.customElements.define("defly-wallet-connect-modal-pending-message-section", Z), window.customElements.define("defly-wallet-sign-txn-toast", $), window.customElements.define("defly-wallet-sign-txn-modal", Q), window.customElements.define("defly-wallet-download-qr-code", h);
-  return AppCff5e450;
+  return AppF4dba749;
 }
-var hasRequiredIndexBcf8d0cd;
-function requireIndexBcf8d0cd() {
-  if (hasRequiredIndexBcf8d0cd)
-    return indexBcf8d0cd;
-  hasRequiredIndexBcf8d0cd = 1;
-  var e2 = require$$1, t = require$$2, n = es5Exports;
+var hasRequiredIndexE064c757;
+function requireIndexE064c757() {
+  if (hasRequiredIndexE064c757)
+    return indexE064c757;
+  hasRequiredIndexE064c757 = 1;
+  var e2 = require$$1, t = algosdk_minExports, n = es5Exports;
   function o(e3) {
     return e3 && "object" == typeof e3 && "default" in e3 ? e3 : { default: e3 };
   }
@@ -621,20 +622,20 @@ function requireIndexBcf8d0cd() {
     const t2 = document.getElementById(e3);
     t2 && t2.remove();
   }
-  const g = "DeflyWallet.Wallet", m = "walletconnect";
-  function y() {
+  const g = { WALLET: "DeflyWallet.Wallet", WALLETCONNECT: "walletconnect" };
+  function m() {
     return "undefined" == typeof localStorage ? void 0 : localStorage;
   }
-  function w() {
+  function y() {
     const e3 = function() {
       var e4;
-      const t3 = null === (e4 = y()) || void 0 === e4 ? void 0 : e4.getItem(g);
+      const t3 = null === (e4 = m()) || void 0 === e4 ? void 0 : e4.getItem(g.WALLET);
       return t3 ? JSON.parse(t3) : null;
     }();
     let t2 = null;
     return "defly-wallet" === (null == e3 ? void 0 : e3.type) && (t2 = "mobile"), t2;
   }
-  function p(e3) {
+  function w(e3) {
     const t2 = e3.slice();
     for (let e4 = t2.length - 1; e4 > 0; e4--) {
       const n2 = Math.floor(Math.random() * (e4 + 1));
@@ -642,33 +643,34 @@ function requireIndexBcf8d0cd() {
     }
     return t2;
   }
-  function S() {
+  const p = "https://static.defly.app/wc-bridge-servers.json";
+  function T() {
     return function(e3, t2 = {}) {
       return fetch(e3, t2).then((e4) => e4.json()).then((e4) => e4);
-    }("https://static.defly.app/wc-bridge-servers.json", { cache: "no-store" });
+    }(p, { cache: "no-store" });
   }
-  function T() {
+  function S() {
     return s(this, void 0, void 0, function* () {
       let e3 = { bridgeURL: "", shouldUseSound: true, silent: false };
       try {
-        const t2 = yield S();
-        void 0 !== t2.use_sound && (e3.shouldUseSound = t2.use_sound), void 0 !== t2.silent && (e3.silent = t2.silent), e3 = Object.assign(Object.assign({}, e3), { bridgeURL: p(t2.servers || [])[0] || "" });
+        const t2 = yield T();
+        void 0 !== t2.use_sound && (e3.shouldUseSound = t2.use_sound), void 0 !== t2.silent && (e3.silent = t2.silent), e3 = Object.assign(Object.assign({}, e3), { bridgeURL: w(t2.servers || [])[0] || "" });
       } catch (e4) {
         console.log(e4);
       }
       return e3;
     });
   }
-  function b(e3) {
+  function L(e3) {
     return Uint8Array.from(window.atob(e3), (e4) => e4.charCodeAt(0));
   }
-  function A() {
+  function E() {
     return "undefined" != typeof navigator;
   }
-  function E() {
-    return A() && /iPhone|iPod|Android/i.test(navigator.userAgent);
+  function A() {
+    return E() && /iPhone|iPod|iPad|Android/i.test(navigator.userAgent);
   }
-  function D({ shouldUseSound: e3 }) {
+  function b({ shouldUseSound: e3 }) {
     return { open: (t2 = { shouldUseSound: e3 }, (e4) => {
       if (!document.getElementById(d)) {
         const n2 = f(d), o2 = `${e4}&algorand=true`, { shouldUseSound: r2 } = t2;
@@ -678,13 +680,13 @@ function requireIndexBcf8d0cd() {
     var t2;
   }
   "undefined" != typeof window && (window.global = window, window.Buffer = window.Buffer || buffer.Buffer, Promise.resolve().then(function() {
-    return requireAppCff5e450();
-  })), indexBcf8d0cd.DEFLY_WALLET_CONNECT_MODAL_ID = d, indexBcf8d0cd.DEFLY_WALLET_MODAL_CLASSNAME = h, indexBcf8d0cd.DEFLY_WALLET_REDIRECT_MODAL_ID = a, indexBcf8d0cd.DEFLY_WALLET_SIGN_TXN_MODAL_ID = "defly-wallet-sign-txn-modal-wrapper", indexBcf8d0cd.DEFLY_WALLET_SIGN_TXN_TOAST_ID = u, indexBcf8d0cd.DeflyWalletConnect = class {
+    return requireAppF4dba749();
+  })), indexE064c757.DEFLY_WALLET_CONNECT_MODAL_ID = d, indexE064c757.DEFLY_WALLET_MODAL_CLASSNAME = h, indexE064c757.DEFLY_WALLET_REDIRECT_MODAL_ID = a, indexE064c757.DEFLY_WALLET_SIGN_TXN_MODAL_ID = "defly-wallet-sign-txn-modal-wrapper", indexE064c757.DEFLY_WALLET_SIGN_TXN_TOAST_ID = u, indexE064c757.DeflyWalletConnect = class {
     constructor(e3) {
       this.bridge = (null == e3 ? void 0 : e3.bridge) || "", this.connector = null, this.shouldShowSignTxnToast = void 0 === (null == e3 ? void 0 : e3.shouldShowSignTxnToast) || e3.shouldShowSignTxnToast, this.chainId = null == e3 ? void 0 : e3.chainId;
     }
     get platform() {
-      return w();
+      return y();
     }
     get isConnected() {
       return "mobile" === this.platform && !!this.connector;
@@ -698,8 +700,8 @@ function requireIndexBcf8d0cd() {
               yield this.connector.killSession();
             } catch (e4) {
             }
-          const { bridgeURL: o2, shouldUseSound: i2 } = yield T();
-          this.connector = new r.default({ bridge: this.bridge || o2 || "https://bridge.walletconnect.org", storageId: m, qrcodeModal: D({ shouldUseSound: i2 }) }), yield this.connector.createSession({ chainId: this.chainId || 4160 }), function(e4) {
+          const { bridgeURL: o2, shouldUseSound: i2 } = yield S();
+          this.connector = new r.default({ bridge: this.bridge || o2 || "https://bridge.walletconnect.org", qrcodeModal: b({ shouldUseSound: i2 }) }), yield this.connector.createSession({ chainId: this.chainId || 4160 }), function(e4) {
             var t3, n3, o3, r2;
             const i3 = document.getElementById(d), l2 = null === (n3 = null === (t3 = null == i3 ? void 0 : i3.querySelector("defly-wallet-connect-modal")) || void 0 === t3 ? void 0 : t3.shadowRoot) || void 0 === n3 ? void 0 : n3.querySelector(`.${h}`), s2 = null === (r2 = null === (o3 = null == l2 ? void 0 : l2.querySelector("defly-wallet-modal-header")) || void 0 === o3 ? void 0 : o3.shadowRoot) || void 0 === r2 ? void 0 : r2.getElementById("defly-wallet-modal-header-close-button");
             null == s2 || s2.addEventListener("click", () => {
@@ -709,7 +711,7 @@ function requireIndexBcf8d0cd() {
             var r2, i3;
             n3 && t2(n3), e3((null === (r2 = this.connector) || void 0 === r2 ? void 0 : r2.accounts) || []), function(e4, t3) {
               var n4;
-              null === (n4 = y()) || void 0 === n4 || n4.setItem(g, JSON.stringify({ type: t3 || "defly-wallet", accounts: e4, selectedAccount: e4[0] }));
+              null === (n4 = m()) || void 0 === n4 || n4.setItem(g.WALLET, JSON.stringify({ type: t3 || "defly-wallet", accounts: e4, selectedAccount: e4[0] }));
             }((null === (i3 = this.connector) || void 0 === i3 ? void 0 : i3.accounts) || []);
           });
         } catch (e4) {
@@ -723,7 +725,7 @@ function requireIndexBcf8d0cd() {
         try {
           this.connector && e3(this.connector.accounts || []), this.bridge = (null === (n2 = function() {
             var e4;
-            const t3 = null === (e4 = y()) || void 0 === e4 ? void 0 : e4.getItem(m);
+            const t3 = null === (e4 = m()) || void 0 === e4 ? void 0 : e4.getItem(g.WALLETCONNECT);
             return t3 ? JSON.parse(t3) : null;
           }()) || void 0 === n2 ? void 0 : n2.bridge) || "", this.bridge && (this.connector = new r.default({ bridge: this.bridge }), e3((null === (o2 = this.connector) || void 0 === o2 ? void 0 : o2.accounts) || [])), this.isConnected || e3([]);
         } catch (e4) {
@@ -740,7 +742,7 @@ function requireIndexBcf8d0cd() {
         })), yield new Promise((e4, t3) => {
           var n2, o2;
           try {
-            null === (n2 = y()) || void 0 === n2 || n2.removeItem(m), null === (o2 = y()) || void 0 === o2 || o2.removeItem(g), e4(void 0);
+            null === (n2 = m()) || void 0 === n2 || n2.removeItem(g.WALLETCONNECT), null === (o2 = m()) || void 0 === o2 || o2.removeItem(g.WALLET), e4(void 0);
           } catch (e5) {
             t3(e5);
           }
@@ -753,8 +755,8 @@ function requireIndexBcf8d0cd() {
         var n2, o2;
         try {
           try {
-            const { silent: e4 } = yield T(), n3 = (yield this.connector.sendCustomRequest(t2, { forcePushNotification: !e4 })).filter(Boolean);
-            return "string" == typeof n3[0] ? n3.map(b) : n3.map((e5) => Uint8Array.from(e5));
+            const { silent: e4 } = yield S(), n3 = (yield this.connector.sendCustomRequest(t2, { forcePushNotification: !e4 })).filter(Boolean);
+            return "string" == typeof n3[0] ? n3.map(L) : n3.map((e5) => Uint8Array.from(e5));
           } catch (e4) {
             return yield Promise.reject(new c({ type: "SIGN_TRANSACTIONS", detail: e4 }, e4.message || "Failed to sign transaction"));
           }
@@ -765,7 +767,7 @@ function requireIndexBcf8d0cd() {
     }
     signTransaction(e3, t2) {
       return s(this, void 0, void 0, function* () {
-        if ("mobile" === this.platform && (E() ? f(a).innerHTML = "<defly-wallet-redirect-modal></defly-wallet-redirect-modal>" : !E() && this.shouldShowSignTxnToast && (f(u).innerHTML = "<defly-wallet-sign-txn-toast></defly-wallet-sign-txn-toast>"), !this.connector))
+        if ("mobile" === this.platform && (A() ? f(a).innerHTML = "<defly-wallet-redirect-modal></defly-wallet-redirect-modal>" : !A() && this.shouldShowSignTxnToast && (f(u).innerHTML = "<defly-wallet-sign-txn-toast></defly-wallet-sign-txn-toast>"), !this.connector))
           throw new Error("DeflyWalletConnect was not initialized correctly.");
         const n2 = e3.flatMap((e4) => e4.map((e5) => function(e6, t3) {
           let n3;
@@ -777,25 +779,25 @@ function requireIndexBcf8d0cd() {
         return this.signTransactionWithMobile(n2);
       });
     }
-  }, indexBcf8d0cd.closeDeflyWalletSignTxnToast = function() {
+  }, indexE064c757.closeDeflyWalletSignTxnToast = function() {
     v(u);
-  }, indexBcf8d0cd.detectBrowser = function() {
-    if (!A())
+  }, indexE064c757.detectBrowser = function() {
+    if (!E())
       return null;
     const { userAgent: e3 } = navigator;
     let t2;
     return t2 = e3.match(/DuckDuckGo/i) ? "DuckDuckGo" : e3.match(/OPX/i) ? "Opera GX" : navigator.brave ? "Brave" : l.default.getParser(navigator.userAgent).getBrowserName(), t2;
-  }, indexBcf8d0cd.isAndroid = function() {
-    return A() && /Android/i.test(navigator.userAgent);
-  }, indexBcf8d0cd.isIOS = function() {
-    return A() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }, indexBcf8d0cd.isMobile = E, indexBcf8d0cd.removeModalWrapperFromDOM = v;
-  return indexBcf8d0cd;
+  }, indexE064c757.isAndroid = function() {
+    return E() && /Android/i.test(navigator.userAgent);
+  }, indexE064c757.isIOS = function() {
+    return E() && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }, indexE064c757.isMobile = A, indexE064c757.removeModalWrapperFromDOM = v;
+  return indexE064c757;
 }
 var closeDeflyWalletSignTxnToast;
 var DeflyWalletConnect;
 Object.defineProperty(dist, "__esModule", { value: true });
-var e = requireIndexBcf8d0cd();
+var e = requireIndexE064c757();
 DeflyWalletConnect = dist.DeflyWalletConnect = e.DeflyWalletConnect, closeDeflyWalletSignTxnToast = dist.closeDeflyWalletSignTxnToast = e.closeDeflyWalletSignTxnToast;
 const index = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,

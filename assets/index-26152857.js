@@ -1,4 +1,4 @@
-import { g as getDefaultExportFromCjs } from "./index-4e05fa9e.js";
+import { g as getDefaultExportFromCjs } from "./index-7454982e.js";
 function _mergeNamespaces(n, m) {
   for (var i = 0; i < m.length; i++) {
     const e = m[i];
@@ -18,15 +18,6 @@ function _mergeNamespaces(n, m) {
   }
   return Object.freeze(Object.defineProperty(n, Symbol.toStringTag, { value: "Module" }));
 }
-var myalgoConnectExports = {};
-var myalgoConnect = {
-  get exports() {
-    return myalgoConnectExports;
-  },
-  set exports(v) {
-    myalgoConnectExports = v;
-  }
-};
 const ERRORS = {
   WINDOW_NOT_LOADED: "Window not loaded",
   WINDOW_IS_OPENED: "Windows is opened",
@@ -127,15 +118,6 @@ function prepareTxn$1(transaction) {
 var utils = {
   sleep: sleep$1,
   prepareTxn: prepareTxn$1
-};
-var communicationBridgeExports = {};
-var communicationBridge = {
-  get exports() {
-    return communicationBridgeExports;
-  },
-  set exports(v) {
-    communicationBridgeExports = v;
-  }
 };
 let Messenger$1 = class Messenger {
   /**
@@ -299,10 +281,8 @@ let Messenger$1 = class Messenger {
   }
 };
 var messenger = Messenger$1;
-(function(module) {
-  module.exports = messenger;
-})(communicationBridge);
-const Messenger2 = communicationBridgeExports;
+var communicationBridge = messenger;
+const Messenger2 = communicationBridge;
 const WALLET_BRIDGE_CHANNEL_NAME = "wallet-bridge-communication-channel";
 let Messaging$1 = class Messaging {
   /**
@@ -697,14 +677,12 @@ class MyAlgoConnect {
   }
 }
 var main = MyAlgoConnect;
-(function(module) {
-  module.exports = main;
-})(myalgoConnect);
-const index = /* @__PURE__ */ getDefaultExportFromCjs(myalgoConnectExports);
+var myalgoConnect = main;
+const index = /* @__PURE__ */ getDefaultExportFromCjs(myalgoConnect);
 const index$1 = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,
   default: index
-}, [myalgoConnectExports]);
+}, [myalgoConnect]);
 export {
   index$1 as i
 };

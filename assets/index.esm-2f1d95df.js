@@ -19,6 +19,7 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var logger = {
   enabled: false,
+  // TODO add prefix option for logger "[inkey-client]"
   log(...args) {
     if (!this.enabled)
       return;
@@ -95,7 +96,7 @@ var FrameBus = class {
       walElContainer.classList.add("align-right");
     let cacheStr = (/* @__PURE__ */ new Date()).getTime().toString();
     const walEl = document.createElement("iframe");
-    walEl.src = `${src}?cache=${cacheStr}`;
+    walEl.src = `${src}${src.includes("?") ? "&" : "?"}cache=${cacheStr}`;
     walEl.classList.add("inkey-wallet");
     walEl.setAttribute("id", "inkey-wallet");
     walEl.setAttribute("name", `inkey-wallet-instance_${cacheStr}`);
@@ -228,7 +229,7 @@ var FrameBus = class {
   onMessage(event) {
     let d = event.data;
     if (d.source && d.source == "ncc-inkey-wallet") {
-      logger.log("inkey-client got msg:", d);
+      logger.log("[inkey-client] got:", d);
       if (d.type === "hide") {
         this.hideFrame();
       }
@@ -262,7 +263,7 @@ var FrameBus = class {
     }
   }
   emit(data) {
-    logger.log("inkeyClient>emit", data);
+    logger.log("[inkey-client] emit:", data);
     if (!this.ready) {
       throw new Error("FrameBus not ready");
     }
@@ -321,8 +322,6 @@ var createClient = async (config) => {
   logger.log("inkey>createClient>started");
   return {
     frameBus: new FrameBus(config),
-    connectedAccounts: [],
-    // TODO should this be stored in LocalStorage?
     /**
      * Opens Inkey to allow users to create an account or login with a previously
      * created account. Must be called before transactions can be signed.
@@ -338,8 +337,7 @@ var createClient = async (config) => {
         payload
       };
       const { accounts } = await this.ping(data, { showFrame: true });
-      this.connectedAccounts = accounts;
-      return this.connectedAccounts;
+      return accounts;
     },
     /**
      * Tells Inkey to close your session & clear local storage.
@@ -349,13 +347,9 @@ var createClient = async (config) => {
       const data = {
         type: "disconnect"
       };
-      if (!this.connectedAccounts.length) {
-        throw new Error("no inkey accts to disconnect");
-      }
       const res = await this.ping(data, { showFrame: false });
-      if (res.success) {
-        this.connectedAccounts = [];
-      }
+      if (res.success)
+        ;
       return res;
     },
     /**
@@ -401,12 +395,13 @@ var createClient = async (config) => {
      * @param txns Array of Uint8Array encoded transactions
      * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
-    async signTxnsUint8Array(txns) {
+    async signTxnsUint8Array(txns, connectedAccounts) {
       var _a;
       const data = {
         type: "sign-txns-raw",
         payload: {
-          txns
+          txns,
+          connectedAccounts
         }
       };
       const res = await this.ping(data, { showFrame: true });
@@ -435,7 +430,7 @@ var createClient = async (config) => {
      * @param txns Array of base64 encoded transactions OR more complex obj array w txn signing type needed
      * @returns {Promise<InkeySignTxnResponse>} Promise resolving to response object containing signedTxns if successful. Otherwise, provides `error` or `reject` properties. { success, reject, error, signedTxns }
      */
-    async signTxns(txns) {
+    async signTxns(txns, connectedAccounts) {
       var _a;
       let data;
       if (typeof txns[0] == "string") {
@@ -443,7 +438,8 @@ var createClient = async (config) => {
           type: "sign-txns",
           // inkey-wallet determines payload type
           payload: {
-            txns
+            txns,
+            connectedAccounts
           }
         };
       } else if (typeof txns[0] == "object") {
@@ -451,7 +447,8 @@ var createClient = async (config) => {
           type: "sign-txns",
           // inkey-wallet determines payload type
           payload: {
-            txns
+            txns,
+            connectedAccounts
           }
         };
       } else {
