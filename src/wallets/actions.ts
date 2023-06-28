@@ -206,7 +206,11 @@ export const disconnectWallet = async <W extends W_ID>(wId: W) => {
 	if (!w) {
 		throw new Error(`Unknown wallet: ${wId}`);
 	}
-	return await w.disconnect();
+	if (w.isConnected) {
+		return await w.disconnect();
+	} else {
+		logger.log('disconnectWallet > for not connected wallet:', wId, )
+	}
 };
 
 export const getAccountsByWalletId = (id: W_ID) => {
