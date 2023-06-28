@@ -5,8 +5,8 @@ dependencies:
     specifier: ^0.3.58
     version: 0.3.58
   '@thencc/any-wallet':
-    specifier: ^0.1.82
-    version: 0.1.82(algosdk@2.4.0)
+    specifier: ^0.1.87
+    version: 0.1.87(algosdk@2.3.0)
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -58,26 +58,7 @@ packages:
     dependencies:
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
-      bowser: 2.11.0
-      buffer: 6.0.3
-      lottie-web: 5.12.2
-      qr-code-styling: 1.6.0-rc.1
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-    optional: true
-
-  /@blockshake/defly-connect@1.1.5(algosdk@2.4.0):
-    resolution: {integrity: sha512-IV9h1MHYnzxxsuH3dSG7hFhMhkCaZM1zJl2CDcbiiM8yZ3S5r8vclF6SnxiUgK710+pNk4ZERPpS9WaUuFr+oQ==}
-    requiresBuild: true
-    peerDependencies:
-      algosdk: ^2.1.0
-    dependencies:
-      '@walletconnect/client': 1.8.0
-      '@walletconnect/types': 1.8.0
-      algosdk: 2.4.0
+      algosdk: 2.3.0
       bowser: 2.11.0
       buffer: 6.0.3
       lottie-web: 5.12.2
@@ -312,26 +293,7 @@ packages:
       '@evanhahn/lottie-web-light': 5.8.1
       '@walletconnect/client': 1.8.0
       '@walletconnect/types': 1.8.0
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
-      bowser: 2.11.0
-      buffer: 6.0.3
-      qr-code-styling: 1.6.0-rc.1
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-    optional: true
-
-  /@perawallet/connect@1.2.3(algosdk@2.4.0):
-    resolution: {integrity: sha512-v+RJRvLG/3cOTHESX4ibxxRqkU/dh4PnU7Np0q5i8sXtsFUIwSbOAQ8ija3WB3LWcY1Ue1/24jH3qLM4hKHBMw==}
-    requiresBuild: true
-    peerDependencies:
-      algosdk: ^2.1.0
-    dependencies:
-      '@evanhahn/lottie-web-light': 5.8.1
-      '@walletconnect/client': 1.8.0
-      '@walletconnect/types': 1.8.0
-      algosdk: 2.4.0
+      algosdk: 2.3.0
       bowser: 2.11.0
       buffer: 6.0.3
       qr-code-styling: 1.6.0-rc.1
@@ -357,7 +319,7 @@ packages:
   /@thencc/algonautjs@0.3.58:
     resolution: {integrity: sha512-Y7U2uQSx5oUkKIdE0PBwtIcWu+jhF1c07klh+MUZXu2A70mnDnxtC7mDsovtzOmnzgygqDb8m3EiuYVfxhivTw==}
     dependencies:
-      '@thencc/any-wallet': 0.1.82(algosdk@2.3.0)
+      '@thencc/any-wallet': 0.1.87(algosdk@2.3.0)
       algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
       buffer: 6.0.3
     optionalDependencies:
@@ -371,40 +333,20 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/any-wallet@0.1.82(algosdk@2.3.0):
-    resolution: {integrity: sha512-H0SJsx6uq1zeBDbbPzzrRIZNx8jFZXo02t4Xo5owY64LXm3rGAi9ICgLB5BwOe3t/uABroFIj5Y7nUpR87TxWA==}
+  /@thencc/any-wallet@0.1.87(algosdk@2.3.0):
+    resolution: {integrity: sha512-xAqL3RDV7VfK3f6vkJoLCDbqa+q6sVp+szAlb1b0wfgrQurR2lg3W9IkJ/Ud7iiuRn3V/eZua7T0/SQHXMi7CA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
       '@vue-reactivity/watch': 0.2.0(@vue/reactivity@3.3.4)(@vue/shared@3.3.4)
       '@vue/reactivity': 3.3.4
       '@vue/shared': 3.3.4
-      algosdk: github.com/thencc/js-algorand-sdk-no-fetch-poly/1a963de38b4d29b9a4d06bf829c428fc0aa61ce7
+      algosdk: 2.3.0
     optionalDependencies:
       '@blockshake/defly-connect': 1.1.5(algosdk@2.3.0)
       '@perawallet/connect': 1.2.3(algosdk@2.3.0)
       '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.23
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
-  /@thencc/any-wallet@0.1.82(algosdk@2.4.0):
-    resolution: {integrity: sha512-H0SJsx6uq1zeBDbbPzzrRIZNx8jFZXo02t4Xo5owY64LXm3rGAi9ICgLB5BwOe3t/uABroFIj5Y7nUpR87TxWA==}
-    peerDependencies:
-      algosdk: ^2.1.0
-    dependencies:
-      '@vue-reactivity/watch': 0.2.0(@vue/reactivity@3.3.4)(@vue/shared@3.3.4)
-      '@vue/reactivity': 3.3.4
-      '@vue/shared': 3.3.4
-      algosdk: 2.4.0
-    optionalDependencies:
-      '@blockshake/defly-connect': 1.1.5(algosdk@2.4.0)
-      '@perawallet/connect': 1.2.3(algosdk@2.4.0)
-      '@randlabs/myalgo-connect': 1.4.2
-      '@thencc/inkey-client-js': 0.0.23
+      '@thencc/inkey-client-js': 0.0.25
       buffer: 6.0.3
     transitivePeerDependencies:
       - bufferutil
@@ -413,6 +355,12 @@ packages:
 
   /@thencc/inkey-client-js@0.0.23:
     resolution: {integrity: sha512-rMI4bmyPO4Z3tI2DGpQ+yMPHqTQB0Y7A4Mt4LwEqN6f91dcFTOgiikc6kQEwQQDxCq8dDs+OfLwEXJvlB0YVMg==}
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@thencc/inkey-client-js@0.0.25:
+    resolution: {integrity: sha512-RdBSb3gR9YKHgZFBuNS2v/p7t94pLE2czWnFxaVGR/C1pu5TsC/XarAuRKwfFrcZUWpjmtEjW4oOtf3/bv+Y0Q==}
     requiresBuild: true
     dev: false
     optional: true
@@ -717,8 +665,8 @@ packages:
     engines: {node: '>= 10'}
     dev: false
 
-  /algosdk@2.4.0:
-    resolution: {integrity: sha512-sENe6IyUqvhQprfS/7gJAkPC5sX2LI5uc+gXaKNgzKp72UEyXYSoN3h4MZkOlCrOcTSWTJW7605tYgg8nFkflw==}
+  /algosdk@2.3.0:
+    resolution: {integrity: sha512-voxoY2eue2CkzwkTh6UNN5JUeVOBL9qoNX3N/+OYwS2/Xd17ACSs6tLV/6dZumEgPa40ZL8TkO4zQF/ysDpy8w==}
     engines: {node: '>=16.0.0'}
     dependencies:
       algo-msgpack-with-bigint: 2.1.1

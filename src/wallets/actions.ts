@@ -90,10 +90,11 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(id: W_ID
 			}
 		},
 		disconnect: async () => {
+			logger.debug('disconnect', w.id);
+			w.removeAccounts();
 			await w.loadClient();
 			try {
 				await w.unloadClient();
-				w.removeAccounts();
 			} catch (e) {
 				console.warn(e);
 			}
@@ -209,8 +210,15 @@ export const disconnectWallet = async <W extends W_ID>(wId: W) => {
 	if (w.isConnected) {
 		return await w.disconnect();
 	} else {
-		logger.log('disconnectWallet > for not connected wallet:', wId, )
+		logger.debug('disconnectWallet > wallet not connected:', wId, )
 	}
+};
+
+export const disconnectAllWallets = async () => {
+	logger.debug('disconnectAllWallets');
+	Object.values(AnyWalletState.allWallets).forEach(async (w) => {
+		await disconnectWallet(w.id);
+	});
 };
 
 export const getAccountsByWalletId = (id: W_ID) => {
@@ -218,6 +226,7 @@ export const getAccountsByWalletId = (id: W_ID) => {
 };
 
 export const removeAccountsByWalletId = (id: W_ID) => {
+	logger.debug('removeAccountsByWalletId', id);
 	if (AnyWalletState.stored.activeAccount) {
 		// nullify active acct if its being removed (FYI this has to come first)
 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
