@@ -11,6 +11,49 @@ import type { WalletType } from '../wallets/types'; // wallet bits
 import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
 import { WALLET_ID, type W_ID } from '../wallets/consts';
 
+
+
+import { makeAutoObservable } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
+
+export class SampleStore {
+	someProperty: [] = [];
+	hello = 'world';
+	count = 0;
+
+	constructor(
+		params?: {
+			key?: string,
+			persist?: boolean,
+		} 
+		// 	= { 
+		// 		key: new Date().getTime().toString(), 
+		// 		persist: false 
+		// }
+	) {
+		makeAutoObservable(this);
+
+		if (params) {
+			makePersistable(this, { 
+				// name: 'SampleStore', 
+				name: params.key || new Date().getTime().toString(),
+				properties: [
+					'someProperty',
+					// 'hello', 
+					'count',
+				], 
+				// storage: window.localStorage 
+				storage: params.persist ? window.localStorage : undefined
+			});
+		}
+		//
+
+  	}
+}
+
+
+
+
 export const AnyWalletState = reactive({
 	allWallets: {
 		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
