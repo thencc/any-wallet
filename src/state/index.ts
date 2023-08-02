@@ -13,8 +13,9 @@ import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
 
-import { makeAutoObservable } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
+import { makeAutoObservable, reaction } from 'mobx';
+import { makePersistable, getPersistedStore, hydrateStore } from 'mobx-persist-store';
+
 
 export class SampleStore {
 	someProperty: [] = [];
@@ -25,30 +26,117 @@ export class SampleStore {
 		params?: {
 			key?: string,
 			persist?: boolean,
-		} 
-		// 	= { 
-		// 		key: new Date().getTime().toString(), 
-		// 		persist: false 
-		// }
+		}
 	) {
 		makeAutoObservable(this);
 
+		const selfId = `${Math.random()}_${new Date().getTime()}`;
+
 		if (params) {
-			makePersistable(this, { 
-				// name: 'SampleStore', 
-				name: params.key || new Date().getTime().toString(),
-				properties: [
-					'someProperty',
-					// 'hello', 
-					'count',
-				], 
-				// storage: window.localStorage 
-				storage: params.persist ? window.localStorage : undefined
-			});
+			//
+			if (params.persist == true) {
+				//
+				makePersistable(this, { 
+					// name: 'SampleStore', 
+					name: params.key || new Date().getTime().toString(),
+					properties: [
+						'someProperty',
+						// 'hello', 
+						'count',
+					], 
+					// storage: window.localStorage 
+					storage: params.persist ? window.localStorage : undefined
+				}).then((pStore) => {
+					console.log('pStore', pStore);
+					
+					//
+
+					console.log('initing reaction');
+
+					reaction(
+						() => this.count, 
+						async (c) => {
+							console.log('c changed:', c);
+							// await pStore.hydrateStore();
+							// await this.hydrateStore();
+
+							// pStore.stopPersisting();
+							const evt = new CustomEvent('aw-state-change', {
+								detail: {
+									from: selfId,
+									// uuid: Math.random(),
+									// count: c,
+								},
+							});
+							console.log('dispatching c evt', evt);
+							window.top!.dispatchEvent(evt);	
+							// pStore.startPersisting();
+						}
+					);
+
+					// listen only once per aw inst
+					window.top!.addEventListener('aw-state-change', async (e) => {
+						console.log('caught aw-state-change evt', e);
+
+						// console.log('from', (e as CustomEvent).detail.from);
+						// console.log('selfId', selfId);
+
+						if ((e as CustomEvent).detail.from !== selfId) {
+							console.log('change other store inst');
+							// await this.doHydrateStore();
+							await this.doHydrateStore(pStore);
+
+							// let pii = await pStore.init();
+							// console.log('pii', pii);
+
+							// pStore.stopPersisting();
+							// await pStore.hydrateStore();
+							// pStore.startPersisting();
+							
+						}
+
+					}, false);
+
+
+				});
+				// end persist observ
+			}
+
 		}
-		//
+		//		
+		
 
   	}
+
+	async doHydrateStore(pS: any) {
+		console.log('doHydrateStore started');
+
+		// should be as easy as this but it turns off one of the stores persistence sync 
+		// await hydrateStore(this);
+
+
+
+		// WORKS but too explicit...
+		let s = await getPersistedStore(this);
+		
+		// too specific/explicit (dont want to specify all keys/properties or run de/serialize funcs etc):
+		// console.log('s', s);
+		// if (s?.count) {
+		// 	this.count = s.count;
+		// }
+
+		// works, but kinda janky...
+		if (pS) {
+			for (let k in pS.properties) {
+				console.log('k', k, pS.properties[k]);
+				let key = pS.properties[k].key;
+				(this as any)[key] = (s as any)[key];
+			}
+		}
+
+		
+		console.log('doHydrateStore finished');		
+	}
 }
 
 
