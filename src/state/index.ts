@@ -14,11 +14,16 @@ import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
 import { makeAutoObservable, reaction } from 'mobx';
-import { makePersistable, getPersistedStore, hydrateStore } from 'mobx-persist-store';
+import { 
+	makePersistable, 
+	getPersistedStore, 
+	hydrateStore, 
+	type PersistStore 
+} from 'mobx-persist-store';
 
 
 export class SampleStore {
-	someProperty: [] = [];
+	someArr: [] = [];
 	hello = 'world';
 	count = 0;
 
@@ -40,7 +45,7 @@ export class SampleStore {
 					// name: 'SampleStore', 
 					name: params.key || new Date().getTime().toString(),
 					properties: [
-						'someProperty',
+						'someArr',
 						// 'hello', 
 						'count',
 					], 
@@ -84,7 +89,13 @@ export class SampleStore {
 						if ((e as CustomEvent).detail.from !== selfId) {
 							console.log('change other store inst');
 							// await this.doHydrateStore();
-							await this.doHydrateStore(pStore);
+							// await this.doHydrateStore(pStore);
+
+							// works! w timeout 
+							setTimeout(async () => {
+								console.log('timeout hyd store');
+								await pStore.hydrateStore();
+							}, 1);
 
 							// let pii = await pStore.init();
 							// console.log('pii', pii);
@@ -108,7 +119,9 @@ export class SampleStore {
 
   	}
 
-	async doHydrateStore(pS: any) {
+
+	  async doHydrateStore(pS: any) {
+	// async doHydrateStore(pS: PersistStore<this, "someArr" | "count">) {
 		console.log('doHydrateStore started');
 
 		// should be as easy as this but it turns off one of the stores persistence sync 
@@ -137,6 +150,38 @@ export class SampleStore {
 		
 		console.log('doHydrateStore finished');		
 	}
+
+
+	// works:
+	// async doHydrateStore(pS: any) {
+	// 	console.log('doHydrateStore started');
+
+	// 	// should be as easy as this but it turns off one of the stores persistence sync 
+	// 	// await hydrateStore(this);
+
+
+
+	// 	// WORKS but too explicit...
+	// 	let s = await getPersistedStore(this);
+		
+	// 	// too specific/explicit (dont want to specify all keys/properties or run de/serialize funcs etc):
+	// 	// console.log('s', s);
+	// 	// if (s?.count) {
+	// 	// 	this.count = s.count;
+	// 	// }
+
+	// 	// works, but kinda janky...
+	// 	if (pS) {
+	// 		for (let k in pS.properties) {
+	// 			console.log('k', k, pS.properties[k]);
+	// 			let key = pS.properties[k].key;
+	// 			(this as any)[key] = (s as any)[key];
+	// 		}
+	// 	}
+
+		
+	// 	console.log('doHydrateStore finished');		
+	// }
 }
 
 
