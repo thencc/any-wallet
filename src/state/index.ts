@@ -13,7 +13,7 @@ import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
 
-import { makeAutoObservable, reaction } from 'mobx';
+import { autorun, makeAutoObservable, makeObservable, observable, observe, reaction, untracked } from 'mobx';
 import { 
 	makePersistable, 
 	getPersistedStore, 
@@ -21,11 +21,23 @@ import {
 	type PersistStore 
 } from 'mobx-persist-store';
 
+import { deepObserve } from 'mobx-utils';
+
+
 
 export class SampleStore {
 	someArr: [] = [];
 	hello = 'world';
 	count = 0;
+	stored = {
+		ver: 0,
+		accts: []
+	};
+
+	todos = [];
+	doingRemoteChange = false;
+
+	// someSet = new Set();
 
 	constructor(
 		params?: {
@@ -33,7 +45,46 @@ export class SampleStore {
 			persist?: boolean,
 		}
 	) {
+		// TODO init vars using existing store w same id if possible (even not in localstorage)
+
+		/*
+		makeObservable(this, {
+			// todos: observable,
+			todos: observable.deep,
+		}, {
+			deep: true
+		});
+
+		console.log('inited todo reaction...')
+		reaction(
+			() => this.todos, 
+			(t) => {
+				console.log('1 todo changed', t);
+			}
+		);
+		reaction(
+			() => this.todos.length, 
+			(t) => {
+				console.log('2 todo changed', t);
+			}
+		);
+
+		observe(
+			this.todos,
+			(t) => {
+				console.log('todos observed', t);
+			}
+		)
+		*/
+
 		makeAutoObservable(this);
+
+		// makeAutoObservable(this, {
+		// 	// stored: observable.deep,
+		// 	// someArr: observable.array
+		// }, {
+		// 	deep: true
+		// });
 
 		const selfId = `${Math.random()}_${new Date().getTime()}`;
 
@@ -41,15 +92,18 @@ export class SampleStore {
 			//
 			if (params.persist == true) {
 				//
+				const storageKey = params.key || new Date().getTime().toString();
+
 				makePersistable(this, { 
-					// name: 'SampleStore', 
-					name: params.key || new Date().getTime().toString(),
+					name: storageKey,
 					properties: [
 						'someArr',
+						'stored',
+						'todos',
+						// 'someSet',
 						// 'hello', 
 						'count',
 					], 
-					// storage: window.localStorage 
 					storage: params.persist ? window.localStorage : undefined
 				}).then((pStore) => {
 					console.log('pStore', pStore);
@@ -58,6 +112,115 @@ export class SampleStore {
 
 					console.log('initing reaction');
 
+					// observe(this, 'someArr', (a) => {
+					// 	console.log('someArr xxx', a);
+					// });
+					
+					observe(
+						this,
+						() => {
+							console.log('observed');
+
+							if (!this.doingRemoteChange) {
+								const evt = new CustomEvent('aw-state-change', {
+									detail: {
+										from: selfId,
+									},
+								});
+								console.log('dispatching c evt', evt);
+								window.top!.dispatchEvent(evt);	
+							}
+							
+						}
+					);
+					
+
+
+					// console.log('deepObserve', deepObserve);
+					deepObserve(
+						this,
+						(s) => {
+							console.log('deepObserve change', s);
+						}
+					);
+					// deepObserve(
+					// 	this.stored,
+					// 	(sto) => {
+					// 		console.log('sto deepObserve change', sto);
+					// 	}
+					// );
+
+					/*
+					autorun(() => {
+						console.log('le autoruuun');
+						// console.log(this.stored.ver);
+						// console.log(this.stored.accts.length); // works 
+						// console.log(JSON.stringify(this.stored.accts)); // work for push + entire set vals
+						console.log(JSON.stringify(this)); // works for all (but is kinda heavy...)
+
+						// const evt = new CustomEvent('aw-state-change', {
+						// 	detail: {
+						// 		from: selfId,
+						// 		// uuid: Math.random(),
+						// 		// count: c,
+						// 	},
+						// });
+						// console.log('dispatching c evt', evt);
+						// window.top!.dispatchEvent(evt);	
+					});
+					*/
+
+					// works:
+					// reaction(
+					// 	() => this.stored.ver,
+					// 	(sto) => {
+					// 		console.log('sto ver changed', sto);
+					// 	}
+					// );
+
+					/*
+					reaction(
+						() => this.count,
+						(c) => {
+							console.log('ccount changed', c);
+
+							const evt = new CustomEvent('aw-state-change', {
+								detail: {
+									from: selfId,
+									// uuid: Math.random(),
+									// count: c,
+								},
+							});
+							console.log('dispatching c evt', evt);
+							window.top!.dispatchEvent(evt);	
+						}
+					);
+					*/
+
+					// autorun(() => {
+					// 	// this;
+					// 	console.log('autorun-ed');
+					// 	console.log(this.count);
+					// 	console.log(this.hello);
+					// 	// console.log('auto count', this.count);
+					// });
+
+					// reaction(
+					// 	() => this.count, 
+					// 	(ss) => {
+					// 		console.log('ss reaction', ss);
+					// 	}
+					// );
+
+					// console.log('initing deepObserve');
+					// deepObserve(
+					// 	this,
+					// 	(ss) => {
+					// 		console.log('ss reaction', ss);
+					// 	}
+					// )
+
+					/*
 					reaction(
 						() => this.count, 
 						async (c) => {
@@ -78,34 +241,47 @@ export class SampleStore {
 							// pStore.startPersisting();
 						}
 					);
+					*/
 
 					// listen only once per aw inst
 					window.top!.addEventListener('aw-state-change', async (e) => {
-						console.log('caught aw-state-change evt', e);
-
+						// console.log('caught aw-state-change evt', e);
 						// console.log('from', (e as CustomEvent).detail.from);
 						// console.log('selfId', selfId);
 
 						if ((e as CustomEvent).detail.from !== selfId) {
-							console.log('change other store inst');
-							// await this.doHydrateStore();
-							// await this.doHydrateStore(pStore);
+							// console.log('change other store inst');
+
+							
+							this.doingRemoteChange = true;
+
 
 							// works! w timeout 
 							setTimeout(async () => {
 								console.log('timeout hyd store');
+								
 								await pStore.hydrateStore();
-							}, 1);
+								this.doingRemoteChange = true;
 
-							// let pii = await pStore.init();
-							// console.log('pii', pii);
 
-							// pStore.stopPersisting();
-							// await pStore.hydrateStore();
-							// pStore.startPersisting();
-							
+								// untracked(async () => {
+								// 	console.log('doing untracked change');
+								// 	await pStore.hydrateStore();
+								// })
+								
+
+								// let storedVals = await pStore.getPersistedStore();
+								// for (let p of (pStore as any).properties) {
+								// 	let k = p.key;
+								// 	console.log('k', k);
+								// 	console.log('pStore', pStore);
+								// 	console.log('storedVals', storedVals);
+								// 	if ((this as any)[k] !== (storedVals as any)[k]) {
+								// 		(this as any)[k] = (storedVals as any)[k];
+								// 	}
+								// }
+							}, 10);							
 						}
-
 					}, false);
 
 
@@ -120,7 +296,8 @@ export class SampleStore {
   	}
 
 
-	  async doHydrateStore(pS: any) {
+	/*
+	async doHydrateStore(pS: any) {
 	// async doHydrateStore(pS: PersistStore<this, "someArr" | "count">) {
 		console.log('doHydrateStore started');
 
@@ -150,6 +327,7 @@ export class SampleStore {
 		
 		console.log('doHydrateStore finished');		
 	}
+	*/
 
 
 	// works:
