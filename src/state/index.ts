@@ -13,7 +13,7 @@ import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
 
-import { autorun, makeAutoObservable, makeObservable, observable, observe, reaction, untracked } from 'mobx';
+import { ObservableMap, autorun, makeAutoObservable, makeObservable, observable, observe, reaction, untracked } from 'mobx';
 import { 
 	makePersistable, 
 	getPersistedStore, 
@@ -22,10 +22,25 @@ import {
 } from 'mobx-persist-store';
 
 import { deepObserve } from 'mobx-utils';
+import { createObservableArray } from 'mobx/dist/internal';
 
+export * from './user-store';
 
+let doingRemoteChange = false;
 
 export class SampleStore {
+	allWallets = {
+		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+	};
+
+
+	//
 	someArr: [] = [];
 	hello = 'world';
 	count = 0;
@@ -35,7 +50,9 @@ export class SampleStore {
 	};
 
 	todos = [];
-	doingRemoteChange = false;
+	// doingRemoteChange = false;
+
+	users = new ObservableMap<string, { name: string; id: number }>();
 
 	// someSet = new Set();
 
@@ -77,16 +94,37 @@ export class SampleStore {
 		)
 		*/
 
-		makeAutoObservable(this);
+		// makeAutoObservable(this);
 
-		// makeAutoObservable(this, {
-		// 	// stored: observable.deep,
-		// 	// someArr: observable.array
-		// }, {
+		// makeAutoObservable(this, {}, { 
+		// 	autoBind: true,
 		// 	deep: true
 		// });
 
+		makeAutoObservable(this, {
+			stored: observable.deep,
+			count: true, // true aka auto
+			todos: observable.deep,
+			// todos: observable,
+
+			//
+			allWallets: false, // DONT track
+		}, {
+			deep: true
+		});
+
 		const selfId = `${Math.random()}_${new Date().getTime()}`;
+
+		const pingUpdate = () => {
+			console.log('pingUpdate');
+			const evt = new CustomEvent('aw-state-change', {
+				detail: {
+					from: selfId,
+				},
+			});
+			console.log('dispatching c evt', evt);
+			window.top!.dispatchEvent(evt);	
+		}
 
 		if (params) {
 			//
@@ -97,14 +135,29 @@ export class SampleStore {
 				makePersistable(this, { 
 					name: storageKey,
 					properties: [
-						'someArr',
-						'stored',
-						'todos',
+						// 'someArr',
+						// 'stored',
+						// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
+						{
+							key: 'todos',
+							serialize: (v) => {
+								// return v.join(',');
+								return JSON.stringify([...v]);
+							},
+							deserialize: (v) => {
+								// return v.split(',');
+								// return new Map(JSON.parse(v));
+								// return createObservableArray(JSON.parse(v));
+								return observable.array(JSON.parse(v));
+							},
+						},
 						// 'someSet',
 						// 'hello', 
-						'count',
+						// 'count',
+						// 'users',
 					], 
-					storage: params.persist ? window.localStorage : undefined
+					storage: params.persist ? window.localStorage : undefined,
+					// debugMode: true,
 				}).then((pStore) => {
 					console.log('pStore', pStore);
 					
@@ -121,22 +174,43 @@ export class SampleStore {
 						() => {
 							console.log('observed');
 
-							if (!this.doingRemoteChange) {
-								const evt = new CustomEvent('aw-state-change', {
-									detail: {
-										from: selfId,
-									},
-								});
-								console.log('dispatching c evt', evt);
-								window.top!.dispatchEvent(evt);	
+							if (!doingRemoteChange) {
+								pingUpdate();
 							}
 							
+						}
+					);
+
+
+					observe(
+						this.todos,
+						(t) => {
+							console.log('todos observed', t);
+							if (!doingRemoteChange) {
+								pingUpdate();
+							}
+						}
+					)
+
+					// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
+					reaction(
+						() => this.todos.length,
+						async (t) => {
+							console.log('todos length change')
+							
+							// breaks mobx-persist
+							/*
+							await pStore.pausePersisting();
+							await pStore.startPersisting();
+							*/
+							pingUpdate();
 						}
 					);
 					
 
 
 					// console.log('deepObserve', deepObserve);
+					// doesnt work...
 					deepObserve(
 						this,
 						(s) => {
@@ -251,35 +325,19 @@ export class SampleStore {
 
 						if ((e as CustomEvent).detail.from !== selfId) {
 							// console.log('change other store inst');
-
-							
-							this.doingRemoteChange = true;
-
+							doingRemoteChange = true;
 
 							// works! w timeout 
 							setTimeout(async () => {
 								console.log('timeout hyd store');
-								
 								await pStore.hydrateStore();
-								this.doingRemoteChange = true;
 
-
-								// untracked(async () => {
-								// 	console.log('doing untracked change');
-								// 	await pStore.hydrateStore();
-								// })
+								// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
+								// doingRemoteChange = false;
+								setTimeout(() => {
+									doingRemoteChange = false;
+								}, 100);
 								
-
-								// let storedVals = await pStore.getPersistedStore();
-								// for (let p of (pStore as any).properties) {
-								// 	let k = p.key;
-								// 	console.log('k', k);
-								// 	console.log('pStore', pStore);
-								// 	console.log('storedVals', storedVals);
-								// 	if ((this as any)[k] !== (storedVals as any)[k]) {
-								// 		(this as any)[k] = (storedVals as any)[k];
-								// 	}
-								// }
 							}, 10);							
 						}
 					}, false);
@@ -295,6 +353,21 @@ export class SampleStore {
 
   	}
 
+
+	  addUser(schoolId: string, user: { name: string; id: number }) {
+		console.log("setuser");
+		this.users.set(schoolId, { name: "bob", id: 1 });
+	  }
+	  changeUserName(schoolId: string, id: string, name: string) {
+		console.log("change username");
+		const user = this.users.get(schoolId);
+		if (user) {
+		  user.name = name;
+		}
+	  }
+	  clearUsers() {
+		this.users.clear();
+	  }
 
 	/*
 	async doHydrateStore(pS: any) {
