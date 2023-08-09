@@ -49,7 +49,7 @@ export class UserStore {
             // },
         }],
       storage: window.localStorage,
-      debugMode: true
+    //   debugMode: true
     });
   }
 

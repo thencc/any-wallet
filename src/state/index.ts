@@ -13,7 +13,17 @@ import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
 
-import { ObservableMap, autorun, makeAutoObservable, makeObservable, observable, observe, reaction, untracked } from 'mobx';
+import { 
+	ObservableMap, 
+	autorun, 
+	makeAutoObservable, 
+	makeObservable, 
+	observable, 
+	observe, 
+	reaction, 
+	untracked,
+	toJS,
+} from 'mobx';
 import { 
 	makePersistable, 
 	getPersistedStore, 
@@ -49,7 +59,8 @@ export class SampleStore {
 		accts: []
 	};
 
-	todos = [];
+	// todos = [];
+	todos = observable.array<number[]>([]); // no diff
 	// doingRemoteChange = false;
 
 	users = new ObservableMap<string, { name: string; id: number }>();
@@ -105,6 +116,7 @@ export class SampleStore {
 			stored: observable.deep,
 			count: true, // true aka auto
 			todos: observable.deep,
+			// todos: observable.array([]),
 			// todos: observable,
 
 			//
@@ -132,25 +144,45 @@ export class SampleStore {
 				//
 				const storageKey = params.key || new Date().getTime().toString();
 
+				// this.todos.toJSON()
+
 				makePersistable(this, { 
 					name: storageKey,
 					properties: [
-						// 'someArr',
+						'someArr' as any, // casting as any here messed up typings in other vals
+						// {
+						// 	key: 'someArr',
+						// 	serialize: (v) => {
+						// 		return v;
+						// 	},
+						// 	deserialize: (v) => {
+						// 		return v;
+						// 	}
+						// },
+						
+
 						// 'stored',
 						// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
+
+						// works w custom (de)serialize
 						{
 							key: 'todos',
 							serialize: (v) => {
+								// console.log('serialize', v);
 								// return v.join(',');
-								return JSON.stringify([...v]);
+								// return JSON.stringify([...v]);
+								// return toJS(v); // convert to unrelated js obj
+								return JSON.stringify( toJS(v) );
 							},
 							deserialize: (v) => {
+								// console.log('deserialize', v);
 								// return v.split(',');
 								// return new Map(JSON.parse(v));
 								// return createObservableArray(JSON.parse(v));
 								return observable.array(JSON.parse(v));
 							},
 						},
+
 						// 'someSet',
 						// 'hello', 
 						// 'count',
