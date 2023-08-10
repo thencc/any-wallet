@@ -37,6 +37,8 @@ import { createObservableArray } from 'mobx/dist/internal';
 export * from './user-store';
 
 let doingRemoteChange = false;
+let doingLocalChange = false;
+let disableNextStrgEvt = false;
 
 export class SampleStore {
 	allWallets = {
@@ -61,7 +63,6 @@ export class SampleStore {
 
 	// todos = [];
 	todos = observable.array<number[]>([]); // no diff
-	// doingRemoteChange = false;
 
 	users = new ObservableMap<string, { name: string; id: number }>();
 
@@ -168,18 +169,20 @@ export class SampleStore {
 						{
 							key: 'todos',
 							serialize: (v) => {
-								// console.log('serialize', v);
+								console.log('serialize', v);
 								// return v.join(',');
 								// return JSON.stringify([...v]);
 								// return toJS(v); // convert to unrelated js obj
-								return JSON.stringify( toJS(v) );
+								// return JSON.stringify( toJS(v) );
+								return toJS(v);
 							},
 							deserialize: (v) => {
-								// console.log('deserialize', v);
+								console.log('deserialize', v);
 								// return v.split(',');
 								// return new Map(JSON.parse(v));
 								// return createObservableArray(JSON.parse(v));
-								return observable.array(JSON.parse(v));
+								// return observable.array(JSON.parse(v));
+								return observable.array(v);
 							},
 						},
 
@@ -206,7 +209,7 @@ export class SampleStore {
 						() => {
 							console.log('observed');
 
-							if (!doingRemoteChange) {
+							if (!doingRemoteChange && !doingLocalChange) {
 								pingUpdate();
 							}
 							
@@ -218,7 +221,7 @@ export class SampleStore {
 						this.todos,
 						(t) => {
 							console.log('todos observed', t);
-							if (!doingRemoteChange) {
+							if (!doingRemoteChange && !doingLocalChange) {
 								pingUpdate();
 							}
 						}
@@ -235,7 +238,12 @@ export class SampleStore {
 							await pStore.pausePersisting();
 							await pStore.startPersisting();
 							*/
-							pingUpdate();
+
+							// pingUpdate();
+							if (!doingRemoteChange && !doingLocalChange) {
+								pingUpdate();
+							}
+							
 						}
 					);
 					
@@ -371,6 +379,45 @@ export class SampleStore {
 								}, 100);
 								
 							}, 10);							
+						}
+					}, false);
+
+
+					// works if another window/tab change ls storage key, but NOT 2 els on same page...
+					window.addEventListener('storage', (e) => {
+						console.log('storage evt', e);
+
+						if (e.key == null) {
+							// remove everything
+						} else if (e.key == storageKey) {
+							if (e.newValue == null) {
+								// TODO delete/reset vals...
+							} else {
+								// update vals
+								let newVStr = e.newValue;
+								let newVObj = JSON.parse(newVStr);
+								console.log('newVObj', newVObj);
+
+								doingLocalChange = true;
+								console.log('pausingPersist');
+								pStore.pausePersisting();
+
+								for (let [k, v] of Object.entries(newVObj)) {
+									console.log(`${k}: ${v}`);
+									
+									(this as any)[k] = v;
+								}
+
+								setTimeout(() => {
+									doingLocalChange = false;
+									console.log('startPersist');
+									pStore.startPersisting();
+								}, 300);
+								// observable.array(JSON.parse(v));
+							}
+							
+						} else {
+							// nothing. (something we dont care abt changed)
 						}
 					}, false);
 
