@@ -385,7 +385,7 @@ export class SampleStore {
 					const resetStore = () => {
 						console.log('resetStore');
 				
-						doingLocalChange = true;
+						// doingLocalChange = true;
 						pStore.pausePersisting();
 
 						this.todos = observable.array<number[]>([]);
@@ -393,7 +393,7 @@ export class SampleStore {
 
 						setTimeout(() => {
 							pStore.startPersisting();
-							doingLocalChange = false;
+							// doingLocalChange = false;
 						}, 100);	
 					}
 
@@ -414,7 +414,7 @@ export class SampleStore {
 								let newVObj = JSON.parse(newVStr) as typeof this;
 								console.log('newVObj', newVObj);
 
-								doingLocalChange = true;
+								// doingLocalChange = true;
 								console.log('pausingPersist');
 								pStore.pausePersisting();
 
@@ -429,7 +429,7 @@ export class SampleStore {
 								}
 
 								setTimeout(() => {
-									doingLocalChange = false;
+									// doingLocalChange = false;
 									console.log('startPersist');
 									pStore.startPersisting();
 								}, 300);
