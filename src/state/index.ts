@@ -36,9 +36,9 @@ import { createObservableArray } from 'mobx/dist/internal';
 
 export * from './user-store';
 
+// needed to help w sync btwn multiple instances (dux) on 1 page 
 let doingRemoteChange = false;
 let doingLocalChange = false;
-let disableNextStrgEvt = false;
 
 export class SampleStore {
 	allWallets = {
@@ -382,6 +382,21 @@ export class SampleStore {
 						}
 					}, false);
 
+					const resetStore = () => {
+						console.log('resetStore');
+				
+						doingLocalChange = true;
+						pStore.pausePersisting();
+
+						this.todos = observable.array<number[]>([]);
+						this.someArr = [];
+
+						setTimeout(() => {
+							pStore.startPersisting();
+							doingLocalChange = false;
+						}, 100);	
+					}
+
 
 					// works if another window/tab change ls storage key, but NOT 2 els on same page...
 					window.addEventListener('storage', (e) => {
@@ -389,23 +404,28 @@ export class SampleStore {
 
 						if (e.key == null) {
 							// remove everything
+							resetStore();
 						} else if (e.key == storageKey) {
 							if (e.newValue == null) {
-								// TODO delete/reset vals...
+								resetStore();
 							} else {
 								// update vals
 								let newVStr = e.newValue;
-								let newVObj = JSON.parse(newVStr);
+								let newVObj = JSON.parse(newVStr) as typeof this;
 								console.log('newVObj', newVObj);
 
 								doingLocalChange = true;
 								console.log('pausingPersist');
 								pStore.pausePersisting();
 
-								for (let [k, v] of Object.entries(newVObj)) {
+								// ex obj loop w correct typing:
+								for (let k in newVObj) {
+									let v = newVObj[k];
+									// if (typeof v == 'string') {
+									// 	v = JSON.parse(v);
+									// }
 									console.log(`${k}: ${v}`);
-									
-									(this as any)[k] = v;
+									this[k] = v;
 								}
 
 								setTimeout(() => {
@@ -413,7 +433,6 @@ export class SampleStore {
 									console.log('startPersist');
 									pStore.startPersisting();
 								}, 300);
-								// observable.array(JSON.parse(v));
 							}
 							
 						} else {
