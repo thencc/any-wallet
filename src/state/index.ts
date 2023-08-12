@@ -76,36 +76,6 @@ export class SampleStore {
 	) {
 		// TODO init vars using existing store w same id if possible (even not in localstorage)
 
-		/*
-		makeObservable(this, {
-			// todos: observable,
-			todos: observable.deep,
-		}, {
-			deep: true
-		});
-
-		console.log('inited todo reaction...')
-		reaction(
-			() => this.todos, 
-			(t) => {
-				console.log('1 todo changed', t);
-			}
-		);
-		reaction(
-			() => this.todos.length, 
-			(t) => {
-				console.log('2 todo changed', t);
-			}
-		);
-
-		observe(
-			this.todos,
-			(t) => {
-				console.log('todos observed', t);
-			}
-		)
-		*/
-
 		// makeAutoObservable(this);
 
 		// makeAutoObservable(this, {}, { 
@@ -145,8 +115,6 @@ export class SampleStore {
 				//
 				const storageKey = params.key || new Date().getTime().toString();
 
-				// this.todos.toJSON()
-
 				makePersistable(this, { 
 					name: storageKey,
 					properties: [
@@ -169,18 +137,12 @@ export class SampleStore {
 						{
 							key: 'todos',
 							serialize: (v) => {
-								console.log('serialize', v);
-								// return v.join(',');
-								// return JSON.stringify([...v]);
-								// return toJS(v); // convert to unrelated js obj
+								// console.log('serialize', v);
 								// return JSON.stringify( toJS(v) );
 								return toJS(v);
 							},
 							deserialize: (v) => {
-								console.log('deserialize', v);
-								// return v.split(',');
-								// return new Map(JSON.parse(v));
-								// return createObservableArray(JSON.parse(v));
+								// console.log('deserialize', v);
 								// return observable.array(JSON.parse(v));
 								return observable.array(v);
 							},
@@ -195,14 +157,7 @@ export class SampleStore {
 					// debugMode: true,
 				}).then((pStore) => {
 					console.log('pStore', pStore);
-					
-					//
-
 					console.log('initing reaction');
-
-					// observe(this, 'someArr', (a) => {
-					// 	console.log('someArr xxx', a);
-					// });
 					
 					observe(
 						this,
@@ -215,7 +170,6 @@ export class SampleStore {
 							
 						}
 					);
-
 
 					observe(
 						this.todos,
@@ -232,14 +186,6 @@ export class SampleStore {
 						() => this.todos.length,
 						async (t) => {
 							console.log('todos length change')
-							
-							// breaks mobx-persist
-							/*
-							await pStore.pausePersisting();
-							await pStore.startPersisting();
-							*/
-
-							// pingUpdate();
 							if (!doingRemoteChange && !doingLocalChange) {
 								pingUpdate();
 							}
@@ -250,112 +196,15 @@ export class SampleStore {
 
 
 					// console.log('deepObserve', deepObserve);
-					// doesnt work...
+					// TODO figure out why this doesnt work...
 					deepObserve(
 						this,
 						(s) => {
 							console.log('deepObserve change', s);
 						}
 					);
-					// deepObserve(
-					// 	this.stored,
-					// 	(sto) => {
-					// 		console.log('sto deepObserve change', sto);
-					// 	}
-					// );
 
-					/*
-					autorun(() => {
-						console.log('le autoruuun');
-						// console.log(this.stored.ver);
-						// console.log(this.stored.accts.length); // works 
-						// console.log(JSON.stringify(this.stored.accts)); // work for push + entire set vals
-						console.log(JSON.stringify(this)); // works for all (but is kinda heavy...)
-
-						// const evt = new CustomEvent('aw-state-change', {
-						// 	detail: {
-						// 		from: selfId,
-						// 		// uuid: Math.random(),
-						// 		// count: c,
-						// 	},
-						// });
-						// console.log('dispatching c evt', evt);
-						// window.top!.dispatchEvent(evt);	
-					});
-					*/
-
-					// works:
-					// reaction(
-					// 	() => this.stored.ver,
-					// 	(sto) => {
-					// 		console.log('sto ver changed', sto);
-					// 	}
-					// );
-
-					/*
-					reaction(
-						() => this.count,
-						(c) => {
-							console.log('ccount changed', c);
-
-							const evt = new CustomEvent('aw-state-change', {
-								detail: {
-									from: selfId,
-									// uuid: Math.random(),
-									// count: c,
-								},
-							});
-							console.log('dispatching c evt', evt);
-							window.top!.dispatchEvent(evt);	
-						}
-					);
-					*/
-
-					// autorun(() => {
-					// 	// this;
-					// 	console.log('autorun-ed');
-					// 	console.log(this.count);
-					// 	console.log(this.hello);
-					// 	// console.log('auto count', this.count);
-					// });
-
-					// reaction(
-					// 	() => this.count, 
-					// 	(ss) => {
-					// 		console.log('ss reaction', ss);
-					// 	}
-					// );
-
-					// console.log('initing deepObserve');
-					// deepObserve(
-					// 	this,
-					// 	(ss) => {
-					// 		console.log('ss reaction', ss);
-					// 	}
-					// )
-
-					/*
-					reaction(
-						() => this.count, 
-						async (c) => {
-							console.log('c changed:', c);
-							// await pStore.hydrateStore();
-							// await this.hydrateStore();
-
-							// pStore.stopPersisting();
-							const evt = new CustomEvent('aw-state-change', {
-								detail: {
-									from: selfId,
-									// uuid: Math.random(),
-									// count: c,
-								},
-							});
-							console.log('dispatching c evt', evt);
-							window.top!.dispatchEvent(evt);	
-							// pStore.startPersisting();
-						}
-					);
-					*/
+					
 
 					// listen only once per aw inst
 					window.top!.addEventListener('aw-state-change', async (e) => {
@@ -376,7 +225,7 @@ export class SampleStore {
 								// doingRemoteChange = false;
 								setTimeout(() => {
 									doingRemoteChange = false;
-								}, 100);
+								}, 10);
 								
 							}, 10);							
 						}
@@ -388,13 +237,14 @@ export class SampleStore {
 						// doingLocalChange = true;
 						pStore.pausePersisting();
 
+						// things to reset things:
 						this.todos = observable.array<number[]>([]);
 						this.someArr = [];
 
 						setTimeout(() => {
 							pStore.startPersisting();
 							// doingLocalChange = false;
-						}, 100);	
+						}, 10);	
 					}
 
 
@@ -421,6 +271,7 @@ export class SampleStore {
 								// ex obj loop w correct typing:
 								for (let k in newVObj) {
 									let v = newVObj[k];
+									// for serialize w stringify use:
 									// if (typeof v == 'string') {
 									// 	v = JSON.parse(v);
 									// }
@@ -432,7 +283,7 @@ export class SampleStore {
 									// doingLocalChange = false;
 									console.log('startPersist');
 									pStore.startPersisting();
-								}, 300);
+								}, 10);
 							}
 							
 						} else {
@@ -452,85 +303,22 @@ export class SampleStore {
   	}
 
 
-	  addUser(schoolId: string, user: { name: string; id: number }) {
+	// examples:
+	addUser(schoolId: string, user: { name: string; id: number }) {
 		console.log("setuser");
 		this.users.set(schoolId, { name: "bob", id: 1 });
-	  }
-	  changeUserName(schoolId: string, id: string, name: string) {
+	}
+	changeUserName(schoolId: string, id: string, name: string) {
 		console.log("change username");
 		const user = this.users.get(schoolId);
 		if (user) {
-		  user.name = name;
+		user.name = name;
 		}
-	  }
-	  clearUsers() {
-		this.users.clear();
-	  }
-
-	/*
-	async doHydrateStore(pS: any) {
-	// async doHydrateStore(pS: PersistStore<this, "someArr" | "count">) {
-		console.log('doHydrateStore started');
-
-		// should be as easy as this but it turns off one of the stores persistence sync 
-		// await hydrateStore(this);
-
-
-
-		// WORKS but too explicit...
-		let s = await getPersistedStore(this);
-		
-		// too specific/explicit (dont want to specify all keys/properties or run de/serialize funcs etc):
-		// console.log('s', s);
-		// if (s?.count) {
-		// 	this.count = s.count;
-		// }
-
-		// works, but kinda janky...
-		if (pS) {
-			for (let k in pS.properties) {
-				console.log('k', k, pS.properties[k]);
-				let key = pS.properties[k].key;
-				(this as any)[key] = (s as any)[key];
-			}
-		}
-
-		
-		console.log('doHydrateStore finished');		
 	}
-	*/
+	clearUsers() {
+		this.users.clear();
+	}
 
-
-	// works:
-	// async doHydrateStore(pS: any) {
-	// 	console.log('doHydrateStore started');
-
-	// 	// should be as easy as this but it turns off one of the stores persistence sync 
-	// 	// await hydrateStore(this);
-
-
-
-	// 	// WORKS but too explicit...
-	// 	let s = await getPersistedStore(this);
-		
-	// 	// too specific/explicit (dont want to specify all keys/properties or run de/serialize funcs etc):
-	// 	// console.log('s', s);
-	// 	// if (s?.count) {
-	// 	// 	this.count = s.count;
-	// 	// }
-
-	// 	// works, but kinda janky...
-	// 	if (pS) {
-	// 		for (let k in pS.properties) {
-	// 			console.log('k', k, pS.properties[k]);
-	// 			let key = pS.properties[k].key;
-	// 			(this as any)[key] = (s as any)[key];
-	// 		}
-	// 	}
-
-		
-	// 	console.log('doHydrateStore finished');		
-	// }
 }
 
 
