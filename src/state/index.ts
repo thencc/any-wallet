@@ -7,7 +7,7 @@ export * from './watchers';
 
 import type { Account } from 'src/types';
 import type { ClientType } from 'src/clients';
-import type { WalletType } from '../wallets/types'; // wallet bits
+import type { WalletInitParamsObj, WalletType } from '../wallets/types'; // wallet bits
 import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
 import { WALLET_ID, type W_ID } from '../wallets/consts';
 
@@ -40,19 +40,42 @@ export * from './user-store';
 let doingRemoteChange = false;
 let doingLocalChange = false;
 
+// const defaultVals = {
+// 	activeAccount: null as null | Account,
+// 	connectedAccounts: [] as Account[],
+// } as any;
+
 export class SampleStore {
 	allWallets = {
-		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
-		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(this, WALLET_ID.PERA),
+		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(this, WALLET_ID.INKEY),
+		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(this, WALLET_ID.MYALGO),
+		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(this, WALLET_ID.ALGOSIGNER),
+		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(this, WALLET_ID.EXODUS),
+		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(this, WALLET_ID.DEFLY),
+		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(this, WALLET_ID.MNEMONIC),
 	};
 
 
-	//
+	// works 
+	// connectedAccounts = [] as Account[];
+	// activeAccount = null as null | Account;
+	// also works (promise we call initVars in constructor)
+	connectedAccounts!: Account[];
+	activeAccount!: null | Account;
+	// could work (if we NEED default vars all in 1 place)
+	// connectedAccounts = defaultVals.connectedAccounts;
+	// activeAccount = defaultVals.activeAccount;
+
+
+	// TODO delete these...
 	someArr: [] = [];
 	hello = 'world';
 	count = 0;
@@ -82,6 +105,9 @@ export class SampleStore {
 		// 	autoBind: true,
 		// 	deep: true
 		// });
+		// this.activeAccount = null;
+
+		this.initVars();
 
 		makeAutoObservable(this, {
 			stored: observable.deep,
@@ -118,7 +144,50 @@ export class SampleStore {
 				makePersistable(this, { 
 					name: storageKey,
 					properties: [
-						'someArr' as any, // casting as any here messed up typings in other vals
+						// works but TYPINGS dont w multiple arr items
+						// {
+						// 	key: 'activeAccount',
+						// 	serialize: (v) => {
+						// 		// console.log('serialize', v);
+						// 		// return JSON.stringify( toJS(v) );
+						// 		return toJS(v);
+						// 	},
+						// 	deserialize: (v) => {
+						// 		// console.log('deserialize', v);
+						// 		// return observable.array(JSON.parse(v));
+						// 		return observable(v);
+						// 	},
+						// },
+						{
+							key: 'activeAccount',
+							serialize: (v: any) => {
+								// console.log('serialize', v);
+								// return JSON.stringify( toJS(v) );
+								return toJS(v);
+							},
+							deserialize: (v: any) => {
+								// console.log('deserialize', v);
+								// return observable.array(JSON.parse(v));
+								return observable(v);
+							},
+						} as any,
+
+						// works:
+						{
+							key: 'connectedAccounts',
+							serialize: (v) => {
+								// console.log('serialize', v);
+								// return JSON.stringify( toJS(v) );
+								return toJS(v);
+							},
+							deserialize: (v) => {
+								// console.log('deserialize', v);
+								// return observable.array(JSON.parse(v));
+								return observable.array(v);
+							},
+						},
+						
+						// 'someArr' as any, // casting as any here messed up typings in other vals
 						// {
 						// 	key: 'someArr',
 						// 	serialize: (v) => {
@@ -134,19 +203,19 @@ export class SampleStore {
 						// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
 
 						// works w custom (de)serialize
-						{
-							key: 'todos',
-							serialize: (v) => {
-								// console.log('serialize', v);
-								// return JSON.stringify( toJS(v) );
-								return toJS(v);
-							},
-							deserialize: (v) => {
-								// console.log('deserialize', v);
-								// return observable.array(JSON.parse(v));
-								return observable.array(v);
-							},
-						},
+						// {
+						// 	key: 'todos',
+						// 	serialize: (v) => {
+						// 		// console.log('serialize', v);
+						// 		// return JSON.stringify( toJS(v) );
+						// 		return toJS(v);
+						// 	},
+						// 	deserialize: (v) => {
+						// 		// console.log('deserialize', v);
+						// 		// return observable.array(JSON.parse(v));
+						// 		return observable.array(v);
+						// 	},
+						// },
 
 						// 'someSet',
 						// 'hello', 
@@ -237,14 +306,13 @@ export class SampleStore {
 						// doingLocalChange = true;
 						pStore.pausePersisting();
 
-						// things to reset things:
-						this.todos = observable.array<number[]>([]);
-						this.someArr = [];
+						// reset things:
+						this.initVars();
 
 						setTimeout(() => {
 							pStore.startPersisting();
 							// doingLocalChange = false;
-						}, 10);	
+						}, 100);
 					}
 
 
@@ -302,6 +370,14 @@ export class SampleStore {
 
   	}
 
+	initVars() {
+		console.log('initVars');
+		this.todos = observable.array<number[]>([]);
+		this.someArr = [];
+		this.activeAccount = null;
+		this.connectedAccounts = []; // observable.array<Account[]>([]);
+	}
+
 
 	// examples:
 	addUser(schoolId: string, user: { name: string; id: number }) {
@@ -319,6 +395,193 @@ export class SampleStore {
 		this.users.clear();
 	}
 
+
+	// funcs
+	addConnectedAccounts(accounts: Account[]) {
+		// logger.log('addConnectedAccounts', accounts);
+		for (let newAcct of accounts) {
+			let exists = false;
+			for (let existingAcct of this.connectedAccounts) {
+				if (newAcct.walletId == existingAcct.walletId &&
+					newAcct.address == existingAcct.address) {
+					exists = true;
+				}
+			}
+			if (!exists) {
+				this.connectedAccounts.push(newAcct);
+			}
+		}
+	}
+
+	setAsActiveAccount = (acct: Account) => {
+		logger.debug('setAsActiveAccount', acct);
+	
+		acct.active = true; // needed here as well as below
+		acct.dateLastActive = new Date().getTime();
+		
+		this.activeAccount = acct;
+	
+		// change .active bool
+		this.connectedAccounts.forEach(ca => {
+			// is it the same?
+			if (ca.walletId == acct.walletId && 
+				ca.address == acct.address &&
+				ca.name == acct.name
+				) {
+					ca.active = true;
+				}
+			else {
+				ca.active = false;
+			}
+		});
+	}
+
+	removeAccount = (acct: Account) => {
+		if (this.activeAccount) {
+			// nullify active acct if its being removed (FYI this has to come first)
+			let acctsToRemove = this.connectedAccounts.filter(
+				(a) => {
+					return 	(a.walletId == acct.walletId) &&
+							(a.name == acct.name) &&
+							(a.address == acct.address)
+				}
+			);
+	
+			for (let acct of acctsToRemove) {
+				if (acct.address == this.activeAccount.address &&
+					acct.walletId == this.activeAccount.walletId) {
+					this.activeAccount = null; // unsets activeAccount
+					break;
+				}
+			}
+		}
+	
+		let acctsToKeep = this.connectedAccounts;
+		let rmvIdx = acctsToKeep.findIndex(a => {
+			return (a.walletId == acct.walletId) &&
+				(a.address == acct.address) &&
+				(a.name == acct.name)
+		});
+		acctsToKeep.splice(rmvIdx, 1);
+	
+		this.connectedAccounts = acctsToKeep;
+	}
+
+	removeAllAccounts = () => {
+		this.activeAccount = null;
+		this.connectedAccounts = [];
+	}
+
+	removeAccountsByWalletId = (id: W_ID) => {
+		logger.debug('removeAccountsByWalletId', id);
+		if (this.activeAccount) {
+			// nullify active acct if its being removed (FYI this has to come first)
+			let acctsToRemove = this.connectedAccounts.filter(
+				(account) => account.walletId == id
+			);
+			for (let acct of acctsToRemove) {
+				if (acct.address == this.activeAccount.address &&
+					acct.walletId == this.activeAccount.walletId) {
+					this.activeAccount = null; // unsets activeAccount
+					break;
+				}
+			}
+		}
+	
+		// remove this client's accts
+		let acctsToKeep = this.connectedAccounts.filter(
+			(account) => account.walletId !== id
+		);
+		this.connectedAccounts = acctsToKeep;
+	};
+
+	getAccountsByWalletId = (id: W_ID) => {
+		return this.connectedAccounts.filter((account) => account.walletId === id);
+	};
+
+	initWallet = <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
+		const w = AnyWalletState.allWallets[wId];
+		if (!w) {
+			throw new Error(`Unknown wallet: ${wId}`);
+		}
+		if (wInitParams !== undefined) {
+			w.initParams = wInitParams as Exclude<typeof wInitParams, String>; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly);
+		} else {
+			logger.log(`didnt update wallet's init params... kept whatever existed before`);
+		}
+		return w;
+	}
+
+
+	initWallets = (
+		walletInits: WalletInitParamsObj,
+	) => {
+		logger.log('initWallets started', walletInits);
+		for (let [wKey, wInitParams] of Object.entries(walletInits)) {
+			let wId = wKey as W_ID; // could just be a unique id for double initing but why
+			this.initWallet(wId, wInitParams);
+		}
+		return AnyWalletState.allWallets;
+	}
+
+	connectWallet = async <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
+		// possibly set init params...
+		if (wInitParams !== undefined) {
+			this.initWallet(wId, wInitParams);
+		}
+		// then, connect
+		const w = AnyWalletState.allWallets[wId];
+		if (!w) {
+			throw new Error(`Unknown wallet: ${wId}`);
+		}
+		return await w.connect();
+	};
+
+	disconnectWallet = async <W extends W_ID>(wId: W) => {
+		const w = AnyWalletState.allWallets[wId];
+		if (!w) {
+			throw new Error(`Unknown wallet: ${wId}`);
+		}
+		if (w.isConnected) {
+			return await w.disconnect();
+		} else {
+			logger.debug('disconnectWallet > wallet not connected:', wId, )
+		}
+	};
+
+	disconnectAllWallets = async () => {
+		logger.debug('disconnectAllWallets');
+		Object.values(AnyWalletState.allWallets).forEach(async (w) => {
+			// await disconnectWallet(w.id);
+			await this.disconnectWallet((w as any).id);
+		});
+	};
+
+
+
+
+	// computeds 
+	get computedEx() {
+        console.log("Computing...")
+        return this.hello + this.count;
+    }
+	get activeWalletId() {
+        let aWId: null | W_ID = null;
+		if (this.activeAccount) {
+			aWId = this.activeAccount.walletId as W_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+		}
+		return aWId;
+    }
+	get activeWallet() {
+        let aW: undefined | WalletType = undefined;
+		if (this.activeWalletId !== null) {
+			aW = this.allWallets[this.activeWalletId] as undefined | WalletType;
+		}
+		return aW;
+    }
+
+
+
 }
 
 
@@ -326,14 +589,22 @@ export class SampleStore {
 
 export const AnyWalletState = reactive({
 	allWallets: {
-		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
-		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-		[WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-		[WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
-	},
+		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+		
+		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(this, WALLET_ID.PERA),
+		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(this, WALLET_ID.INKEY),
+		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(this, WALLET_ID.MYALGO),
+		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(this, WALLET_ID.ALGOSIGNER),
+		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(this, WALLET_ID.EXODUS),
+		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(this, WALLET_ID.DEFLY),
+		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(this, WALLET_ID.MNEMONIC),
+	} as any,
 
 	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
 	stored: {
@@ -381,7 +652,8 @@ export const AnyWalletState = reactive({
 	isSigning: readonly(computed(() => {
 		let someWalletIsSigning = false;
 		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
-			if (w.signing) {
+			// if (w.signing) {
+			if ((w as any).signing) {
 				someWalletIsSigning = true;
 				break;
 			}
@@ -391,7 +663,8 @@ export const AnyWalletState = reactive({
 	isIniting: readonly(computed(() => {
 		let someWalletIsIniting = false;
 		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
-			if (w.initing) {
+			// if (w.initing) {
+			if ((w as any).initing) {
 				someWalletIsIniting = true;
 				break;
 			}
