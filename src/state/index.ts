@@ -8,7 +8,7 @@ export * from './watchers';
 import type { Account } from 'src/types';
 import type { ClientType } from 'src/clients';
 import type { WalletInitParamsObj, WalletType } from '../wallets/types'; // wallet bits
-import { createWallet } from '../wallets/actions'; // needs to be AFTER the types import
+import { createWallet, signTransactions } from '../wallets/actions'; // needs to be AFTER the types import
 import { WALLET_ID, type W_ID } from '../wallets/consts';
 
 
@@ -74,6 +74,8 @@ export class SampleStore {
 	// connectedAccounts = defaultVals.connectedAccounts;
 	// activeAccount = defaultVals.activeAccount;
 
+	changedAccountHandlers = new Set<any>();
+
 
 	// TODO delete these...
 	someArr: [] = [];
@@ -115,9 +117,10 @@ export class SampleStore {
 			todos: observable.deep,
 			// todos: observable.array([]),
 			// todos: observable,
-
+		
 			//
 			allWallets: false, // DONT track
+			changedAccountHandlers: false, // dont Track (because proxy messes up unsub fn)
 		}, {
 			deep: true
 		});
@@ -261,7 +264,18 @@ export class SampleStore {
 							
 						}
 					);
-					
+
+
+					// acct watcher
+					reaction(
+						() => this.activeAccount,
+						async (a) => {
+							console.log('activeAccount changed', a);
+							this.changedAccountHandlers.forEach(h => h(a));
+						}
+					);
+
+
 
 
 					// console.log('deepObserve', deepObserve);
@@ -396,6 +410,9 @@ export class SampleStore {
 	}
 
 
+
+
+
 	// funcs
 	addConnectedAccounts(accounts: Account[]) {
 		// logger.log('addConnectedAccounts', accounts);
@@ -500,7 +517,7 @@ export class SampleStore {
 	};
 
 	initWallet = <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
-		const w = AnyWalletState.allWallets[wId];
+		const w = this.allWallets[wId];
 		if (!w) {
 			throw new Error(`Unknown wallet: ${wId}`);
 		}
@@ -521,7 +538,7 @@ export class SampleStore {
 			let wId = wKey as W_ID; // could just be a unique id for double initing but why
 			this.initWallet(wId, wInitParams);
 		}
-		return AnyWalletState.allWallets;
+		return this.allWallets;
 	}
 
 	connectWallet = async <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
@@ -530,7 +547,7 @@ export class SampleStore {
 			this.initWallet(wId, wInitParams);
 		}
 		// then, connect
-		const w = AnyWalletState.allWallets[wId];
+		const w = this.allWallets[wId];
 		if (!w) {
 			throw new Error(`Unknown wallet: ${wId}`);
 		}
@@ -538,7 +555,7 @@ export class SampleStore {
 	};
 
 	disconnectWallet = async <W extends W_ID>(wId: W) => {
-		const w = AnyWalletState.allWallets[wId];
+		const w = this.allWallets[wId];
 		if (!w) {
 			throw new Error(`Unknown wallet: ${wId}`);
 		}
@@ -551,11 +568,30 @@ export class SampleStore {
 
 	disconnectAllWallets = async () => {
 		logger.debug('disconnectAllWallets');
-		Object.values(AnyWalletState.allWallets).forEach(async (w) => {
-			// await disconnectWallet(w.id);
-			await this.disconnectWallet((w as any).id);
+		Object.values(this.allWallets).forEach(async (w) => {
+			await this.disconnectWallet(w.id);
 		});
 	};
+
+	// sign txns
+	signTransactions = async (txns: Uint8Array[]) => {
+		return await signTransactions(this, txns);
+	};
+
+
+	subscribeToAccountChanges = (handler: (a: null | Account) => void, opts: { callOnSet: boolean } = { callOnSet: true }) => {
+		this.changedAccountHandlers.add(handler);
+		if (opts.callOnSet) handler(this.activeAccount); // call it once on set
+		
+		// unsubscribe fn
+		const unsubscribe = () => {
+			this.changedAccountHandlers.delete(handler);
+		};
+		return unsubscribe;
+	};
+	
+
+
 
 
 
@@ -564,6 +600,13 @@ export class SampleStore {
 	get computedEx() {
         console.log("Computing...")
         return this.hello + this.count;
+    }
+	get activeAddress() {
+        let a = '';
+		if (this.activeAccount) {
+			a = this.activeAccount.address;
+		}
+		return a;
     }
 	get activeWalletId() {
         let aWId: null | W_ID = null;
@@ -579,8 +622,27 @@ export class SampleStore {
 		}
 		return aW;
     }
-
-
+	get isSigning() {
+        let someWalletIsSigning = false;
+		for (let [k, w] of Object.entries(this.allWallets)) {
+			if (w.signing) {
+				someWalletIsSigning = true;
+				break;
+			}
+		}
+		return someWalletIsSigning;
+    }
+	get isIniting() {
+        let someWalletIsIniting = false;
+		for (let [k, w] of Object.entries(this.allWallets)) {
+			if (w.initing) {
+				someWalletIsIniting = true;
+				break;
+			}
+		}
+		return someWalletIsIniting;
+    }
+	//
 
 }
 
