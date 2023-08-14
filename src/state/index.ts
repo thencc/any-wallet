@@ -140,6 +140,26 @@ export class SampleStore {
 
 		if (params) {
 			//
+
+			// let isB = isBrowser();
+			// if (!isB) params.persist = false;
+
+			
+			// keep watchers OUTSIDE of the persist true block...
+
+			// acct watcher
+			reaction(
+				() => this.activeAccount,
+				async (a) => {
+					console.log('activeAccount changed', a);
+					this.changedAccountHandlers.forEach(h => h(a));
+				}
+			);
+
+			
+
+
+
 			if (params.persist == true) {
 				//
 				const storageKey = params.key || new Date().getTime().toString();
@@ -266,14 +286,14 @@ export class SampleStore {
 					);
 
 
-					// acct watcher
-					reaction(
-						() => this.activeAccount,
-						async (a) => {
-							console.log('activeAccount changed', a);
-							this.changedAccountHandlers.forEach(h => h(a));
-						}
-					);
+					// // acct watcher
+					// reaction(
+					// 	() => this.activeAccount,
+					// 	async (a) => {
+					// 		console.log('activeAccount changed', a);
+					// 		this.changedAccountHandlers.forEach(h => h(a));
+					// 	}
+					// );
 
 
 
