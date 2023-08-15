@@ -1,4 +1,4 @@
-import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
+// import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
 import { isBrowser, logger } from '../utils';
@@ -37,10 +37,8 @@ import {
 	StorageController
 } from 'mobx-persist-store';
 
-import { deepObserve } from 'mobx-utils';
-import { createObservableArray } from 'mobx/dist/internal';
-
-export * from './user-store';
+// TODO figure out why this doesnt work...
+// import { deepObserve } from 'mobx-utils';
 
 // needed to help w sync btwn multiple instances (dux) on 1 page 
 let doingRemoteChange = false;
@@ -310,12 +308,12 @@ export class AnyWalletState {
 
 					// logger.log('deepObserve', deepObserve);
 					// TODO figure out why this doesnt work...
-					deepObserve(
-						this,
-						(s) => {
-							logger.log('deepObserve change', s);
-						}
-					);
+					// deepObserve(
+					// 	this,
+					// 	(s) => {
+					// 		logger.log('deepObserve change', s);
+					// 	}
+					// );
 
 					
 

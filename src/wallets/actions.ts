@@ -1,5 +1,5 @@
 // libs
-import { computed, reactive, readonly } from '@vue/reactivity';
+// import { computed, reactive, readonly } from '@vue/reactivity';
 
 import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
@@ -13,10 +13,16 @@ import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 import type { W_ID } from './consts';
 
+import { 
+	observable, 
+	toJS,
+} from 'mobx';
+
 export const createWallet = <WalClient extends BaseClient = BaseClient>(state: AnyWalletState, id: W_ID, ip: boolean | ClientInitParams = true) => {
 	logger.debug('createWallet', state, id);
 
-	let w = reactive({
+	// let w = reactive({
+	let w = observable({
 		// === state ===
 		id: id,
 		metadata: CLIENT_MAP[id].client.metadata,
@@ -73,7 +79,7 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 						p = {};
 					}
 					// FYI need the RAW js objects here, not the computed proxies (otherwise is breaks in runtime but not build)
-					let cAccts = deepToRaw(w.accounts);
+					let cAccts = toJS(w.accounts);
 					p.connectedAccounts = [...cAccts];
 				}
 
@@ -125,7 +131,8 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 			await w.loadClient(); // loads sdk only ondemand
 
 			// kinda clunky since modal / wallet ui might pop up twice, but it works...
-			let acctsOfThisWallet = deepToRaw(w.accounts) as Account[];
+			let acctsOfThisWallet = toJS(w.accounts);
+			
 			if (!acctsOfThisWallet.length) {
 				// then auth
 				let accts = await w.connect(); // adds to w.accounts
@@ -153,21 +160,51 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 
 		// === computeds ===
 		get accounts() {
-			// return readonly(computed(() => getAccountsByWalletId(id)))
-			return readonly(computed(() => state.getAccountsByWalletId(id)))
+			return state.getAccountsByWalletId(id);
 		},
 		get isConnected() {
-			return readonly(computed(() => {
-				return state.connectedAccounts.some(
-					(accounts) => accounts.walletId === id
-				);
-			}));
+			return state.connectedAccounts.some(
+				(accounts) => accounts.walletId === id
+			);
 		},
 		get isActive() {
-			return computed(() => {
-				return state.activeAccount?.walletId === id
-			})
+			return state.activeAccount?.walletId === id
 		},
+		
+		// get accounts() {
+		// 	// return readonly(computed(() => getAccountsByWalletId(id)))
+		// 	return computed(() => state.getAccountsByWalletId(id));
+		// },
+		// get isConnected() {
+		// 	return computed(() => {
+		// 		return state.connectedAccounts.some(
+		// 			(accounts) => accounts.walletId === id
+		// 		);
+		// 	});
+		// },
+		// get isActive() {
+		// 	return computed(() => {
+		// 		return state.activeAccount?.walletId === id
+		// 	})
+		// },
+
+		// get accounts() {
+		// 	// return readonly(computed(() => getAccountsByWalletId(id)))
+		// 	return readonly(computed(() => state.getAccountsByWalletId(id)))
+		// },
+		// get isConnected() {
+		// 	return readonly(computed(() => {
+		// 		return state.connectedAccounts.some(
+		// 			(accounts) => accounts.walletId === id
+		// 		);
+		// 	}));
+		// },
+		// get isActive() {
+		// 	return computed(() => {
+		// 		return state.activeAccount?.walletId === id
+		// 	})
+		// },
+
 		// get isConnected() {
 		// 	return readonly(computed(() => {
 		// 		return AnyWalletState.stored.connectedAccounts.some(
