@@ -2,7 +2,7 @@ import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
 import { watch } from '@vue-reactivity/watch';
 export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
 import { isBrowser, logger } from '../utils';
-import { lsKey, startWatchers } from './watchers';
+import { lsKey } from './watchers';
 export * from './watchers';
 
 import type { Account } from 'src/types';
@@ -33,7 +33,8 @@ import {
 	getPersistedStore, 
 	hydrateStore, 
 	type PersistStore, 
-	type PersistenceStorageOptions
+	type PersistenceStorageOptions,
+	StorageController
 } from 'mobx-persist-store';
 
 import { deepObserve } from 'mobx-utils';
@@ -50,15 +51,8 @@ let doingLocalChange = false;
 // 	connectedAccounts: [] as Account[],
 // } as any;
 
-export class SampleStore {
+export class AnyWalletState {
 	allWallets = {
-		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
-		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 		[WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(this, WALLET_ID.PERA),
 		[WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(this, WALLET_ID.INKEY),
 		[WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(this, WALLET_ID.MYALGO),
@@ -67,63 +61,28 @@ export class SampleStore {
 		[WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(this, WALLET_ID.DEFLY),
 		[WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(this, WALLET_ID.MNEMONIC),
 	};
-
-
-	// works 
-	// connectedAccounts = [] as Account[];
-	// activeAccount = null as null | Account;
-	// also works (promise we call initVars in constructor)
-	connectedAccounts!: Account[];
 	activeAccount!: null | Account;
-	// could work (if we NEED default vars all in 1 place)
-	// connectedAccounts = defaultVals.connectedAccounts;
-	// activeAccount = defaultVals.activeAccount;
-
+	connectedAccounts!: Account[];
 	changedAccountHandlers = new Set<any>();
-
-
-	// TODO delete these...
-	someArr: [] = [];
-	hello = 'world';
-	count = 0;
-	stored = {
-		ver: 0,
-		accts: []
-	};
-
-	// todos = [];
-	todos = observable.array<number[]>([]); // no diff
-
-	users = new ObservableMap<string, { name: string; id: number }>();
-
-	// someSet = new Set();
+	
+	// dev/debug
+	// arr = [];
+	arr = observable.array<number[]>([]); // no diff
 
 	constructor(
 		params?: {
-			key?: string,
+			storageKey?: string,
 			persist?: boolean,
+			storageController?: StorageController;
+			// sync?: boolean, // TODO support syncing state without persist: true
 		}
 	) {
-		// TODO init vars using existing store w same id if possible (even not in localstorage)
-
-		// makeAutoObservable(this);
-
-		// makeAutoObservable(this, {}, { 
-		// 	autoBind: true,
-		// 	deep: true
-		// });
-		// this.activeAccount = null;
-
 		this.initVars();
 
 		makeAutoObservable(this, {
-			stored: observable.deep,
-			count: true, // true aka auto
-			todos: observable.deep,
-			// todos: observable.array([]),
-			// todos: observable,
+			arr: observable.deep, // dev/debug
 			
-			// 
+			// stored
 			connectedAccounts: observable.deep,
 			activeAccount: observable,
 		
@@ -136,110 +95,27 @@ export class SampleStore {
 
 		const selfId = `${Math.random()}_${new Date().getTime()}`;
 
-		// type XX = ReturnType<typeof makePersistable<T, P>>;
-		// const propsToPersist: PersistenceStorageOptions<this> = {
-		// }
-		const propsToStore = [
-			'todos',
-			{
-				key: 'activeAccount',
-				serialize: (v: any) => {
-					// console.log('serialize', v);
-					// return JSON.stringify( toJS(v) );
-					return toJS(v);
-				},
-				deserialize: (v: any) => {
-					// console.log('deserialize', v);
-					// return observable.array(JSON.parse(v));
-					return observable(v);
-				},
-			},
-			{
-				key: 'connectedAccounts',
-				serialize: (v: any) => {
-					// console.log('serialize', v);
-					// return JSON.stringify( toJS(v) );
-					return toJS(v);
-				},
-				deserialize: (v: any) => {
-					// console.log('deserialize', v);
-					// return observable.array(JSON.parse(v));
-					return observable.array(v);
-				},
-			},
-		] as const;
-
-
 		const pingUpdate = () => {
-			console.log('pingUpdate');
+			logger.log('pingUpdate');
 			const evt = new CustomEvent('aw-state-change', {
 				detail: {
 					from: selfId,
 					// stateNew: toJS(this),
-					stateNew: this,
+					// stateNew: this,
 				},
 			});
-			console.log('dispatching c evt', evt);
+			logger.log('dispatching c evt', evt);
 			window.top!.dispatchEvent(evt);	
 		}
-
-		// listen only once per aw inst
-		// window.top!.addEventListener('aw-state-change', async (e) => {
-		// 	console.log('caught aw-state-change evt', e);
-		// 	// console.log('from', (e as CustomEvent).detail.from);
-		// 	// console.log('selfId', selfId);
-
-		// 	if ((e as CustomEvent).detail.from !== selfId) {
-		// 		// console.log('change other store inst');
-		// 		doingRemoteChange = true;
-
-				
-
-		// 		// works! w timeout 
-		// 		setTimeout(async () => {
-		// 			console.log('timeout hyd store');
-		// 			// await pStore.hydrateStore();
-		// 			// console.log('this', this);
-
-		// 			const dd = (e as CustomEvent).detail.stateNew;
-		// 			console.log('dd', dd);
-		// 			for (let k in dd) {
-		// 				let v = dd[k];
-		// 				// if (!v.isMobxAction) {
-		// 				// 	//
-		// 				// }
-		// 				// console.log('tpyeof d', v);
-		// 				// console.log('k',k,'v', v,' - ', isObservable(v));
-
-
-		// 				for (let p of propsToStore) {
-		// 					// console.log('p itr', k, p);
-							
-		// 					// let pk = p.key;
-		// 					if (k == p.key) {
-		// 						console.log('update it!', p, k);
-		// 						this[k] = v;
-		// 					}
-		// 				}
-		// 			}
-
-		// 			// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
-		// 			// doingRemoteChange = false;
-		// 			setTimeout(() => {
-		// 				doingRemoteChange = false;
-		// 			}, 10);
-					
-		// 		}, 10);							
-		// 	}
-		// }, false);
-
-
 
 		if (params) {
 			//
 
-			// let isB = isBrowser();
-			// if (!isB) params.persist = false;
+			let isB = isBrowser();
+			if (!isB && params.persist == true) {
+				console.warn('Persisting to storage outside browser. Make sure you have set an appropriate storageController.');
+			}
+
 
 			
 			// keep watchers OUTSIDE of the persist true block...
@@ -248,7 +124,7 @@ export class SampleStore {
 			reaction(
 				() => this.activeAccount,
 				async (a) => {
-					console.log('activeAccount changed', a);
+					logger.log('activeAccount changed', a);
 					this.changedAccountHandlers.forEach(h => h(a));
 
 					if (!doingRemoteChange && !doingLocalChange) {
@@ -261,30 +137,8 @@ export class SampleStore {
 			observe(
 				this,
 				() => {
-					console.log('observed');
+					logger.log('observed');
 
-					if (!doingRemoteChange && !doingLocalChange) {
-						pingUpdate();
-					}
-					
-				}
-			);
-
-			observe(
-				this.todos,
-				(t) => {
-					console.log('todos observed', t);
-					if (!doingRemoteChange && !doingLocalChange) {
-						pingUpdate();
-					}
-				}
-			)
-
-			// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
-			reaction(
-				() => this.todos.length,
-				async (t) => {
-					console.log('todos length change')
 					if (!doingRemoteChange && !doingLocalChange) {
 						pingUpdate();
 					}
@@ -295,7 +149,7 @@ export class SampleStore {
 			observe(
 				this.connectedAccounts,
 				(t) => {
-					console.log('connectedAccounts observed', t);
+					logger.log('connectedAccounts observed', t);
 					if (!doingRemoteChange && !doingLocalChange) {
 						pingUpdate();
 					}
@@ -306,7 +160,7 @@ export class SampleStore {
 			reaction(
 				() => this.connectedAccounts.length,
 				async (t) => {
-					console.log('connectedAccounts length change')
+					logger.log('connectedAccounts length change')
 					if (!doingRemoteChange && !doingLocalChange) {
 						pingUpdate();
 					}
@@ -314,26 +168,34 @@ export class SampleStore {
 				}
 			);
 
+
+			// dev/debug
+			observe(
+				this.arr,
+				(t) => {
+					logger.log('arr observed', t);
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+				}
+			)
+			// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
 			reaction(
-				() => this.hello,
+				() => this.arr.length,
 				async (t) => {
-					console.log('hello change')
+					logger.log('arr length change')
 					if (!doingRemoteChange && !doingLocalChange) {
 						pingUpdate();
 					}
 					
 				}
 			);
-
-			
-
-			
 
 
 
 			if (params.persist == true) {
 				//
-				const storageKey = params.key || new Date().getTime().toString();
+				const storageKey = params.storageKey || new Date().getTime().toString();
 
 				makePersistable(this, { 
 					name: storageKey,
@@ -343,12 +205,12 @@ export class SampleStore {
 						// {
 						// 	key: 'activeAccount',
 						// 	serialize: (v) => {
-						// 		// console.log('serialize', v);
+						// 		// logger.log('serialize', v);
 						// 		// return JSON.stringify( toJS(v) );
 						// 		return toJS(v);
 						// 	},
 						// 	deserialize: (v) => {
-						// 		// console.log('deserialize', v);
+						// 		// logger.log('deserialize', v);
 						// 		// return observable.array(JSON.parse(v));
 						// 		return observable(v);
 						// 	},
@@ -356,12 +218,12 @@ export class SampleStore {
 						{
 							key: 'activeAccount',
 							serialize: (v: any) => {
-								// console.log('serialize', v);
+								// logger.log('serialize', v);
 								// return JSON.stringify( toJS(v) );
 								return toJS(v);
 							},
 							deserialize: (v: any) => {
-								// console.log('deserialize', v);
+								// logger.log('deserialize', v);
 								// return observable.array(JSON.parse(v));
 								return observable(v);
 							},
@@ -369,21 +231,21 @@ export class SampleStore {
 						{
 							key: 'connectedAccounts',
 							serialize: (v) => {
-								// console.log('serialize', v);
+								// logger.log('serialize', v);
 								// return JSON.stringify( toJS(v) );
 								return toJS(v);
 							},
 							deserialize: (v) => {
-								// console.log('deserialize', v);
+								// logger.log('deserialize', v);
 								// return observable.array(JSON.parse(v));
 								return observable.array(v);
 							},
 						},
 
 
-						// 'todos',
+						// 'arr',
 						{
-							key: 'todos',
+							key: 'arr',
 							serialize: (v) => {
 								return toJS(v);
 							},
@@ -393,96 +255,16 @@ export class SampleStore {
 							},
 						},
 					], 
-
-					// properties: [
-					// 	// works but TYPINGS dont w multiple arr items
-					// 	// {
-					// 	// 	key: 'activeAccount',
-					// 	// 	serialize: (v) => {
-					// 	// 		// console.log('serialize', v);
-					// 	// 		// return JSON.stringify( toJS(v) );
-					// 	// 		return toJS(v);
-					// 	// 	},
-					// 	// 	deserialize: (v) => {
-					// 	// 		// console.log('deserialize', v);
-					// 	// 		// return observable.array(JSON.parse(v));
-					// 	// 		return observable(v);
-					// 	// 	},
-					// 	// },
-					// 	{
-					// 		key: 'activeAccount',
-					// 		serialize: (v: any) => {
-					// 			// console.log('serialize', v);
-					// 			// return JSON.stringify( toJS(v) );
-					// 			return toJS(v);
-					// 		},
-					// 		deserialize: (v: any) => {
-					// 			// console.log('deserialize', v);
-					// 			// return observable.array(JSON.parse(v));
-					// 			return observable(v);
-					// 		},
-					// 	} as any,
-
-					// 	// works:
-					// 	{
-					// 		key: 'connectedAccounts',
-					// 		serialize: (v) => {
-					// 			// console.log('serialize', v);
-					// 			// return JSON.stringify( toJS(v) );
-					// 			return toJS(v);
-					// 		},
-					// 		deserialize: (v) => {
-					// 			// console.log('deserialize', v);
-					// 			// return observable.array(JSON.parse(v));
-					// 			return observable.array(v);
-					// 		},
-					// 	},
-						
-					// 	// 'someArr' as any, // casting as any here messed up typings in other vals
-					// 	// {
-					// 	// 	key: 'someArr',
-					// 	// 	serialize: (v) => {
-					// 	// 		return v;
-					// 	// 	},
-					// 	// 	deserialize: (v) => {
-					// 	// 		return v;
-					// 	// 	}
-					// 	// },
-						
-
-					// 	// 'stored',
-					// 	// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
-
-					// 	// works w custom (de)serialize
-					// 	// {
-					// 	// 	key: 'todos',
-					// 	// 	serialize: (v) => {
-					// 	// 		// console.log('serialize', v);
-					// 	// 		// return JSON.stringify( toJS(v) );
-					// 	// 		return toJS(v);
-					// 	// 	},
-					// 	// 	deserialize: (v) => {
-					// 	// 		// console.log('deserialize', v);
-					// 	// 		// return observable.array(JSON.parse(v));
-					// 	// 		return observable.array(v);
-					// 	// 	},
-					// 	// },
-
-					// 	// 'someSet',
-					// 	// 'hello', 
-					// 	// 'count',
-					// 	// 'users',
-					// ], 
-					storage: params.persist ? window.localStorage : undefined,
+					storage: params.storageController ? params.storageController : params.persist ? window.localStorage : undefined,
 					// debugMode: true,
 				}).then((pStore) => {
-					console.log('pStore', pStore);
-					console.log('initing reaction');
+					logger.log('pStore', pStore);
+					logger.log('initing reaction');
 					
 					// observe(
 					// 	this,
 					// 	() => {
-					// 		console.log('observed');
+					// 		logger.log('observed');
 
 					// 		if (!doingRemoteChange && !doingLocalChange) {
 					// 			pingUpdate();
@@ -492,9 +274,9 @@ export class SampleStore {
 					// );
 
 					// observe(
-					// 	this.todos,
+					// 	this.arr,
 					// 	(t) => {
-					// 		console.log('todos observed', t);
+					// 		logger.log('arr observed', t);
 					// 		if (!doingRemoteChange && !doingLocalChange) {
 					// 			pingUpdate();
 					// 		}
@@ -503,9 +285,9 @@ export class SampleStore {
 
 					// // TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
 					// reaction(
-					// 	() => this.todos.length,
+					// 	() => this.arr.length,
 					// 	async (t) => {
-					// 		console.log('todos length change')
+					// 		logger.log('arr length change')
 					// 		if (!doingRemoteChange && !doingLocalChange) {
 					// 			pingUpdate();
 					// 		}
@@ -518,7 +300,7 @@ export class SampleStore {
 					// reaction(
 					// 	() => this.activeAccount,
 					// 	async (a) => {
-					// 		console.log('activeAccount changed', a);
+					// 		logger.log('activeAccount changed', a);
 					// 		this.changedAccountHandlers.forEach(h => h(a));
 					// 	}
 					// );
@@ -526,12 +308,12 @@ export class SampleStore {
 
 
 
-					// console.log('deepObserve', deepObserve);
+					// logger.log('deepObserve', deepObserve);
 					// TODO figure out why this doesnt work...
 					deepObserve(
 						this,
 						(s) => {
-							console.log('deepObserve change', s);
+							logger.log('deepObserve change', s);
 						}
 					);
 
@@ -539,29 +321,29 @@ export class SampleStore {
 
 					// // listen only once per aw inst
 					window.top!.addEventListener('aw-state-change', async (e) => {
-						console.log('caught aw-state-change evt', e);
-						// console.log('from', (e as CustomEvent).detail.from);
-						// console.log('selfId', selfId);
+						logger.log('caught aw-state-change evt', e);
+						// logger.log('from', (e as CustomEvent).detail.from);
+						// logger.log('selfId', selfId);
 
 						if ((e as CustomEvent).detail.from !== selfId) {
-							// console.log('change other store inst');
+							// logger.log('change other store inst');
 							doingRemoteChange = true;
 
 							// const dd = (e as CustomEvent).detail.stateNew;
-							// console.log('dd', dd);
+							// logger.log('dd', dd);
 							// for (let k in dd) {
 							// 	let v = dd[k];
 							// 	if (!v.isMobxAction) {
 							// 		//
 							// 	}
-							// 	console.log('tpyeof d', v);
-							// 	console.log('k',k,'v', v,' - ', isObservable(v));
+							// 	logger.log('tpyeof d', v);
+							// 	logger.log('k',k,'v', v,' - ', isObservable(v));
 
 							// }
 
 							// works! w timeout 
 							setTimeout(async () => {
-								console.log('timeout hyd store');
+								logger.log('timeout hyd store');
 								await pStore.hydrateStore();
 
 								// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
@@ -575,7 +357,7 @@ export class SampleStore {
 					}, false);
 
 					const resetStore = () => {
-						console.log('resetStore');
+						logger.log('resetStore');
 				
 						// doingLocalChange = true;
 						pStore.pausePersisting();
@@ -592,7 +374,7 @@ export class SampleStore {
 
 					// works if another window/tab change ls storage key, but NOT 2 els on same page...
 					window.addEventListener('storage', (e) => {
-						console.log('storage evt', e);
+						logger.log('storage evt', e);
 
 						if (e.key == null) {
 							// remove everything
@@ -604,10 +386,10 @@ export class SampleStore {
 								// update vals
 								let newVStr = e.newValue;
 								let newVObj = JSON.parse(newVStr) as typeof this;
-								console.log('newVObj', newVObj);
+								logger.log('newVObj', newVObj);
 
 								// doingLocalChange = true;
-								console.log('pausingPersist');
+								logger.log('pausingPersist');
 								pStore.pausePersisting();
 
 								// ex obj loop w correct typing:
@@ -617,13 +399,13 @@ export class SampleStore {
 									// if (typeof v == 'string') {
 									// 	v = JSON.parse(v);
 									// }
-									console.log(`${k}: ${v}`);
+									logger.log(`${k}: ${v}`);
 									this[k] = v;
 								}
 
 								setTimeout(() => {
 									// doingLocalChange = false;
-									console.log('startPersist');
+									logger.log('startPersist');
 									pStore.startPersisting();
 								}, 10);
 							}
@@ -644,36 +426,16 @@ export class SampleStore {
 
   	}
 
+
+	// ACTIONS
+
 	initVars() {
-		console.log('initVars');
-		this.todos = observable.array<number[]>([]);
-		this.someArr = [];
+		logger.log('initVars');
 		this.activeAccount = null;
 		this.connectedAccounts = []; // observable.array<Account[]>([]);
-	}
-
-
-	// examples:
-	addUser(schoolId: string, user: { name: string; id: number }) {
-		console.log("setuser");
-		this.users.set(schoolId, { name: "bob", id: 1 });
-	}
-	changeUserName(schoolId: string, id: string, name: string) {
-		console.log("change username");
-		const user = this.users.get(schoolId);
-		if (user) {
-		user.name = name;
-		}
-	}
-	clearUsers() {
-		this.users.clear();
-	}
-
-
-
-
-
-	// funcs
+		// dev
+		this.arr = observable.array<number[]>([]);
+	}	
 	addConnectedAccounts(accounts: Account[]) {
 		// logger.log('addConnectedAccounts', accounts);
 		for (let newAcct of accounts) {
@@ -851,16 +613,7 @@ export class SampleStore {
 	};
 	
 
-
-
-
-
-
-	// computeds 
-	get computedEx() {
-        console.log("Computing...")
-        return this.hello + this.count;
-    }
+	// COMPUTEDs 
 	get activeAddress() {
         let a = '';
 		if (this.activeAccount) {
@@ -902,125 +655,123 @@ export class SampleStore {
 		}
 		return someWalletIsIniting;
     }
-	//
-
 }
 
 
 
 
-export const AnyWalletState = reactive({
-	allWallets: {
-		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
-		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
-		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
-		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
-		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
-		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
-		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
+// export const AnyWalletState = reactive({
+// 	allWallets: {
+// 		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(WALLET_ID.PERA),
+// 		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(WALLET_ID.INKEY),
+// 		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(WALLET_ID.MYALGO),
+// 		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(WALLET_ID.ALGOSIGNER),
+// 		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(WALLET_ID.EXODUS),
+// 		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(WALLET_ID.DEFLY),
+// 		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(WALLET_ID.MNEMONIC),
 		
-		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(this, WALLET_ID.PERA),
-		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(this, WALLET_ID.INKEY),
-		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(this, WALLET_ID.MYALGO),
-		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(this, WALLET_ID.ALGOSIGNER),
-		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(this, WALLET_ID.EXODUS),
-		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(this, WALLET_ID.DEFLY),
-		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(this, WALLET_ID.MNEMONIC),
-	} as any,
+// 		// [WALLET_ID.PERA]: createWallet<ClientType<typeof WALLET_ID.PERA>>(this, WALLET_ID.PERA),
+// 		// [WALLET_ID.INKEY]: createWallet<ClientType<typeof WALLET_ID.INKEY>>(this, WALLET_ID.INKEY),
+// 		// [WALLET_ID.MYALGO]: createWallet<ClientType<typeof WALLET_ID.MYALGO>>(this, WALLET_ID.MYALGO),
+// 		// [WALLET_ID.ALGOSIGNER]: createWallet<ClientType<typeof WALLET_ID.ALGOSIGNER>>(this, WALLET_ID.ALGOSIGNER),
+// 		// [WALLET_ID.EXODUS]: createWallet<ClientType<typeof WALLET_ID.EXODUS>>(this, WALLET_ID.EXODUS),
+// 		// [WALLET_ID.DEFLY]: createWallet<ClientType<typeof WALLET_ID.DEFLY>>(this, WALLET_ID.DEFLY),
+// 		// [WALLET_ID.MNEMONIC]: createWallet<ClientType<typeof WALLET_ID.MNEMONIC>>(this, WALLET_ID.MNEMONIC),
+// 	} as any,
 
-	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
-	stored: {
-		version: 0, // for future schema changes, can translate old structs to new
-		connectedAccounts: [] as Account[],
-		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
-	},
+// 	// === localstorage === (FYI: dont put Maps or Sets or Functions in this)
+// 	stored: {
+// 		version: 0, // for future schema changes, can translate old structs to new
+// 		connectedAccounts: [] as Account[],
+// 		activeAccount: null as null | Account // null works in ls but not undefined. think abt JSON stringify/parse
+// 	},
 
-	// === computeds ===
-	activeAddress: readonly(computed(() => {
-		let a = '';
-		if (AnyWalletState.stored.activeAccount) {
-			a = AnyWalletState.stored.activeAccount.address;
-		}
-		return a; // as string;
-	})),
-	activeAccount: readonly(computed(() => {
-		let acct = null;
-		if (AnyWalletState.stored.activeAccount) {
-			acct = AnyWalletState.stored.activeAccount as Account; // needs this cast for some reason...
-		}
-		return acct;
-	})),
-	connectedAccounts: readonly(computed(() => {
-		let cAccts = [] as Account[];
-		if (AnyWalletState.stored.connectedAccounts) {
-			cAccts = AnyWalletState.stored.connectedAccounts; // needs this cast for some reason...
-		}
-		return cAccts;
-	})),
-	activeWalletId: readonly(computed(() => {
-		let aWId: null | W_ID = null;
-		if (AnyWalletState.stored.activeAccount) {
-			aWId = AnyWalletState.stored.activeAccount.walletId as W_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
-		}
-		return aWId;
-	})),
-	activeWallet: readonly(computed(() => {
-		let aW: undefined | WalletType = undefined;
-		if (AnyWalletState.activeWalletId !== null) {
-			aW = AnyWalletState.allWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
-		}
-		return aW;
-	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
-	isSigning: readonly(computed(() => {
-		let someWalletIsSigning = false;
-		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
-			// if (w.signing) {
-			if ((w as any).signing) {
-				someWalletIsSigning = true;
-				break;
-			}
-		}
-		return someWalletIsSigning;
-	})),
-	isIniting: readonly(computed(() => {
-		let someWalletIsIniting = false;
-		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
-			// if (w.initing) {
-			if ((w as any).initing) {
-				someWalletIsIniting = true;
-				break;
-			}
-		}
-		return someWalletIsIniting;
-	})),
-});
+// 	// === computeds ===
+// 	activeAddress: readonly(computed(() => {
+// 		let a = '';
+// 		if (AnyWalletState.stored.activeAccount) {
+// 			a = AnyWalletState.stored.activeAccount.address;
+// 		}
+// 		return a; // as string;
+// 	})),
+// 	activeAccount: readonly(computed(() => {
+// 		let acct = null;
+// 		if (AnyWalletState.stored.activeAccount) {
+// 			acct = AnyWalletState.stored.activeAccount as Account; // needs this cast for some reason...
+// 		}
+// 		return acct;
+// 	})),
+// 	connectedAccounts: readonly(computed(() => {
+// 		let cAccts = [] as Account[];
+// 		if (AnyWalletState.stored.connectedAccounts) {
+// 			cAccts = AnyWalletState.stored.connectedAccounts; // needs this cast for some reason...
+// 		}
+// 		return cAccts;
+// 	})),
+// 	activeWalletId: readonly(computed(() => {
+// 		let aWId: null | W_ID = null;
+// 		if (AnyWalletState.stored.activeAccount) {
+// 			aWId = AnyWalletState.stored.activeAccount.walletId as W_ID; // sometimes vue-r isnt smart enough to figure out this nested type. or maybe its an enum thing
+// 		}
+// 		return aWId;
+// 	})),
+// 	activeWallet: readonly(computed(() => {
+// 		let aW: undefined | WalletType = undefined;
+// 		if (AnyWalletState.activeWalletId !== null) {
+// 			aW = AnyWalletState.allWallets[AnyWalletState.activeWalletId] as undefined | WalletType;
+// 		}
+// 		return aW;
+// 	})) as unknown as undefined | WalletType, // this type assertion is needed to help w max inferred type size exceeded
+// 	isSigning: readonly(computed(() => {
+// 		let someWalletIsSigning = false;
+// 		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+// 			// if (w.signing) {
+// 			if ((w as any).signing) {
+// 				someWalletIsSigning = true;
+// 				break;
+// 			}
+// 		}
+// 		return someWalletIsSigning;
+// 	})),
+// 	isIniting: readonly(computed(() => {
+// 		let someWalletIsIniting = false;
+// 		for (let [k, w] of Object.entries(AnyWalletState.allWallets)) {
+// 			// if (w.initing) {
+// 			if ((w as any).initing) {
+// 				someWalletIsIniting = true;
+// 				break;
+// 			}
+// 		}
+// 		return someWalletIsIniting;
+// 	})),
+// });
 
-export const recallState = () => {
-	logger.log('recallState');
+// export const recallState = () => {
+// 	logger.log('recallState');
 	
-	// FYI only run LS code in browser, not node or v8
-	if (isBrowser()) {
-		const initLocalStorage = () => {
-			logger.log('initLocalStorage');
-			try {
-				let onLoadLStor = localStorage.getItem(lsKey);
-				if (onLoadLStor) {
-					try {
-						type StoredType = typeof AnyWalletState.stored;
-						let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
-						// logger.log('onLoadLStorObj', onLoadLStorObj);
-						AnyWalletState.stored = onLoadLStorObj;
-					} catch (e) {
-						console.warn('bad sLocalStorage parse');
-					}
-				}
-			} catch(e) {
-				console.warn('could not access localstorage');
-			}
-		}
-		initLocalStorage(); // recall local storage object (1 time on load!)	
-	}
-};
+// 	// FYI only run LS code in browser, not node or v8
+// 	if (isBrowser()) {
+// 		const initLocalStorage = () => {
+// 			logger.log('initLocalStorage');
+// 			try {
+// 				let onLoadLStor = localStorage.getItem(lsKey);
+// 				if (onLoadLStor) {
+// 					try {
+// 						type StoredType = typeof AnyWalletState.stored;
+// 						let onLoadLStorObj: StoredType = JSON.parse(onLoadLStor);
+// 						// logger.log('onLoadLStorObj', onLoadLStorObj);
+// 						AnyWalletState.stored = onLoadLStorObj;
+// 					} catch (e) {
+// 						console.warn('bad sLocalStorage parse');
+// 					}
+// 				}
+// 			} catch(e) {
+// 				console.warn('could not access localstorage');
+// 			}
+// 		}
+// 		initLocalStorage(); // recall local storage object (1 time on load!)	
+// 	}
+// };
 
 // once on load, kick off the watchers
-startWatchers(); // FYI: should only happen ONCE + watchers MUST be started AFTER the state inits
+// startWatchers(); // FYI: should only happen ONCE + watchers MUST be started AFTER the state inits

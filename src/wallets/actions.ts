@@ -3,7 +3,7 @@ import { computed, reactive, readonly } from '@vue/reactivity';
 
 import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
-import { AnyWalletState, SampleStore } from 'src/state'; // state
+import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
 import { deepToRaw } from './helpers-reactivity';
 
@@ -13,7 +13,7 @@ import { ClientInitParams } from 'src/clients/base/types';
 import { Account } from 'src/types/shared';
 import type { W_ID } from './consts';
 
-export const createWallet = <WalClient extends BaseClient = BaseClient>(state: SampleStore, id: W_ID, ip: boolean | ClientInitParams = true) => {
+export const createWallet = <WalClient extends BaseClient = BaseClient>(state: AnyWalletState, id: W_ID, ip: boolean | ClientInitParams = true) => {
 	logger.debug('createWallet', state, id);
 
 	let w = reactive({
@@ -158,16 +158,28 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: S
 		},
 		get isConnected() {
 			return readonly(computed(() => {
-				return AnyWalletState.stored.connectedAccounts.some(
+				return state.connectedAccounts.some(
 					(accounts) => accounts.walletId === id
 				);
 			}));
 		},
 		get isActive() {
 			return computed(() => {
-				return AnyWalletState.stored.activeAccount?.walletId === id
+				return state.activeAccount?.walletId === id
 			})
 		},
+		// get isConnected() {
+		// 	return readonly(computed(() => {
+		// 		return AnyWalletState.stored.connectedAccounts.some(
+		// 			(accounts) => accounts.walletId === id
+		// 		);
+		// 	}));
+		// },
+		// get isActive() {
+		// 	return computed(() => {
+		// 		return AnyWalletState.stored.activeAccount?.walletId === id
+		// 	})
+		// },
 	});
 	return w;
 };
@@ -343,8 +355,11 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: S
 // 	return txnsSigned;
 // };
 
-export const signTransactions = async (state: SampleStore, txns: Uint8Array[]) => {
+export const signTransactions = async (state: AnyWalletState, txns: Uint8Array[]) => {
 	logger.log('signTransactions', txns);
+	if (!state.activeAccount) {
+		throw new Error('No active account to sign txns with.');
+	}
 	let activeWallet = state.activeWallet;
 	if (!activeWallet) {
 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
