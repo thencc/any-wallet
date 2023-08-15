@@ -18,6 +18,10 @@ import {
 	autorun, 
 	makeAutoObservable, 
 	makeObservable, 
+	isComputed,
+	isBoxedObservable,
+	isObservable,
+	isObservableArray,
 	observable, 
 	observe, 
 	reaction, 
@@ -28,7 +32,8 @@ import {
 	makePersistable, 
 	getPersistedStore, 
 	hydrateStore, 
-	type PersistStore 
+	type PersistStore, 
+	type PersistenceStorageOptions
 } from 'mobx-persist-store';
 
 import { deepObserve } from 'mobx-utils';
@@ -117,26 +122,118 @@ export class SampleStore {
 			todos: observable.deep,
 			// todos: observable.array([]),
 			// todos: observable,
+			
+			// 
+			connectedAccounts: observable.deep,
+			activeAccount: observable,
 		
-			//
-			allWallets: false, // DONT track
-			changedAccountHandlers: false, // dont Track (because proxy messes up unsub fn)
+			// DONT TRACK
+			allWallets: false,
+			changedAccountHandlers: false, 
 		}, {
 			deep: true
 		});
 
 		const selfId = `${Math.random()}_${new Date().getTime()}`;
 
+		// type XX = ReturnType<typeof makePersistable<T, P>>;
+		// const propsToPersist: PersistenceStorageOptions<this> = {
+		// }
+		const propsToStore = [
+			'todos',
+			{
+				key: 'activeAccount',
+				serialize: (v: any) => {
+					// console.log('serialize', v);
+					// return JSON.stringify( toJS(v) );
+					return toJS(v);
+				},
+				deserialize: (v: any) => {
+					// console.log('deserialize', v);
+					// return observable.array(JSON.parse(v));
+					return observable(v);
+				},
+			},
+			{
+				key: 'connectedAccounts',
+				serialize: (v: any) => {
+					// console.log('serialize', v);
+					// return JSON.stringify( toJS(v) );
+					return toJS(v);
+				},
+				deserialize: (v: any) => {
+					// console.log('deserialize', v);
+					// return observable.array(JSON.parse(v));
+					return observable.array(v);
+				},
+			},
+		] as const;
+
+
 		const pingUpdate = () => {
 			console.log('pingUpdate');
 			const evt = new CustomEvent('aw-state-change', {
 				detail: {
 					from: selfId,
+					// stateNew: toJS(this),
+					stateNew: this,
 				},
 			});
 			console.log('dispatching c evt', evt);
 			window.top!.dispatchEvent(evt);	
 		}
+
+		// listen only once per aw inst
+		// window.top!.addEventListener('aw-state-change', async (e) => {
+		// 	console.log('caught aw-state-change evt', e);
+		// 	// console.log('from', (e as CustomEvent).detail.from);
+		// 	// console.log('selfId', selfId);
+
+		// 	if ((e as CustomEvent).detail.from !== selfId) {
+		// 		// console.log('change other store inst');
+		// 		doingRemoteChange = true;
+
+				
+
+		// 		// works! w timeout 
+		// 		setTimeout(async () => {
+		// 			console.log('timeout hyd store');
+		// 			// await pStore.hydrateStore();
+		// 			// console.log('this', this);
+
+		// 			const dd = (e as CustomEvent).detail.stateNew;
+		// 			console.log('dd', dd);
+		// 			for (let k in dd) {
+		// 				let v = dd[k];
+		// 				// if (!v.isMobxAction) {
+		// 				// 	//
+		// 				// }
+		// 				// console.log('tpyeof d', v);
+		// 				// console.log('k',k,'v', v,' - ', isObservable(v));
+
+
+		// 				for (let p of propsToStore) {
+		// 					// console.log('p itr', k, p);
+							
+		// 					// let pk = p.key;
+		// 					if (k == p.key) {
+		// 						console.log('update it!', p, k);
+		// 						this[k] = v;
+		// 					}
+		// 				}
+		// 			}
+
+		// 			// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
+		// 			// doingRemoteChange = false;
+		// 			setTimeout(() => {
+		// 				doingRemoteChange = false;
+		// 			}, 10);
+					
+		// 		}, 10);							
+		// 	}
+		// }, false);
+
+
 
 		if (params) {
 			//
@@ -153,8 +250,82 @@ export class SampleStore {
 				async (a) => {
 					console.log('activeAccount changed', a);
 					this.changedAccountHandlers.forEach(h => h(a));
+
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
 				}
 			);
+
+
+			observe(
+				this,
+				() => {
+					console.log('observed');
+
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+					
+				}
+			);
+
+			observe(
+				this.todos,
+				(t) => {
+					console.log('todos observed', t);
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+				}
+			)
+
+			// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
+			reaction(
+				() => this.todos.length,
+				async (t) => {
+					console.log('todos length change')
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+					
+				}
+			);
+
+			observe(
+				this.connectedAccounts,
+				(t) => {
+					console.log('connectedAccounts observed', t);
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+				}
+			)
+
+			// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
+			reaction(
+				() => this.connectedAccounts.length,
+				async (t) => {
+					console.log('connectedAccounts length change')
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+					
+				}
+			);
+
+			reaction(
+				() => this.hello,
+				async (t) => {
+					console.log('hello change')
+					if (!doingRemoteChange && !doingLocalChange) {
+						pingUpdate();
+					}
+					
+				}
+			);
+
+			
 
 			
 
@@ -166,6 +337,7 @@ export class SampleStore {
 
 				makePersistable(this, { 
 					name: storageKey,
+					// properties: propsToStore as any,
 					properties: [
 						// works but TYPINGS dont w multiple arr items
 						// {
@@ -194,8 +366,6 @@ export class SampleStore {
 								return observable(v);
 							},
 						} as any,
-
-						// works:
 						{
 							key: 'connectedAccounts',
 							serialize: (v) => {
@@ -209,81 +379,139 @@ export class SampleStore {
 								return observable.array(v);
 							},
 						},
-						
-						// 'someArr' as any, // casting as any here messed up typings in other vals
-						// {
-						// 	key: 'someArr',
-						// 	serialize: (v) => {
-						// 		return v;
-						// 	},
-						// 	deserialize: (v) => {
-						// 		return v;
-						// 	}
-						// },
-						
 
-						// 'stored',
-						// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
 
-						// works w custom (de)serialize
-						// {
-						// 	key: 'todos',
-						// 	serialize: (v) => {
-						// 		// console.log('serialize', v);
-						// 		// return JSON.stringify( toJS(v) );
-						// 		return toJS(v);
-						// 	},
-						// 	deserialize: (v) => {
-						// 		// console.log('deserialize', v);
-						// 		// return observable.array(JSON.parse(v));
-						// 		return observable.array(v);
-						// 	},
-						// },
-
-						// 'someSet',
-						// 'hello', 
-						// 'count',
-						// 'users',
+						// 'todos',
+						{
+							key: 'todos',
+							serialize: (v) => {
+								return toJS(v);
+							},
+							deserialize: (v) => {
+								// necessary (de)serialize func to make persist watch pickup changes for arr.push
+								return observable.array(v);
+							},
+						},
 					], 
+
+					// properties: [
+					// 	// works but TYPINGS dont w multiple arr items
+					// 	// {
+					// 	// 	key: 'activeAccount',
+					// 	// 	serialize: (v) => {
+					// 	// 		// console.log('serialize', v);
+					// 	// 		// return JSON.stringify( toJS(v) );
+					// 	// 		return toJS(v);
+					// 	// 	},
+					// 	// 	deserialize: (v) => {
+					// 	// 		// console.log('deserialize', v);
+					// 	// 		// return observable.array(JSON.parse(v));
+					// 	// 		return observable(v);
+					// 	// 	},
+					// 	// },
+					// 	{
+					// 		key: 'activeAccount',
+					// 		serialize: (v: any) => {
+					// 			// console.log('serialize', v);
+					// 			// return JSON.stringify( toJS(v) );
+					// 			return toJS(v);
+					// 		},
+					// 		deserialize: (v: any) => {
+					// 			// console.log('deserialize', v);
+					// 			// return observable.array(JSON.parse(v));
+					// 			return observable(v);
+					// 		},
+					// 	} as any,
+
+					// 	// works:
+					// 	{
+					// 		key: 'connectedAccounts',
+					// 		serialize: (v) => {
+					// 			// console.log('serialize', v);
+					// 			// return JSON.stringify( toJS(v) );
+					// 			return toJS(v);
+					// 		},
+					// 		deserialize: (v) => {
+					// 			// console.log('deserialize', v);
+					// 			// return observable.array(JSON.parse(v));
+					// 			return observable.array(v);
+					// 		},
+					// 	},
+						
+					// 	// 'someArr' as any, // casting as any here messed up typings in other vals
+					// 	// {
+					// 	// 	key: 'someArr',
+					// 	// 	serialize: (v) => {
+					// 	// 		return v;
+					// 	// 	},
+					// 	// 	deserialize: (v) => {
+					// 	// 		return v;
+					// 	// 	}
+					// 	// },
+						
+
+					// 	// 'stored',
+					// 	// 'todos', // Hmmm... persisted state doesnt track arr.push, just entire changes
+
+					// 	// works w custom (de)serialize
+					// 	// {
+					// 	// 	key: 'todos',
+					// 	// 	serialize: (v) => {
+					// 	// 		// console.log('serialize', v);
+					// 	// 		// return JSON.stringify( toJS(v) );
+					// 	// 		return toJS(v);
+					// 	// 	},
+					// 	// 	deserialize: (v) => {
+					// 	// 		// console.log('deserialize', v);
+					// 	// 		// return observable.array(JSON.parse(v));
+					// 	// 		return observable.array(v);
+					// 	// 	},
+					// 	// },
+
+					// 	// 'someSet',
+					// 	// 'hello', 
+					// 	// 'count',
+					// 	// 'users',
+					// ], 
 					storage: params.persist ? window.localStorage : undefined,
 					// debugMode: true,
 				}).then((pStore) => {
 					console.log('pStore', pStore);
 					console.log('initing reaction');
 					
-					observe(
-						this,
-						() => {
-							console.log('observed');
+					// observe(
+					// 	this,
+					// 	() => {
+					// 		console.log('observed');
 
-							if (!doingRemoteChange && !doingLocalChange) {
-								pingUpdate();
-							}
+					// 		if (!doingRemoteChange && !doingLocalChange) {
+					// 			pingUpdate();
+					// 		}
 							
-						}
-					);
+					// 	}
+					// );
 
-					observe(
-						this.todos,
-						(t) => {
-							console.log('todos observed', t);
-							if (!doingRemoteChange && !doingLocalChange) {
-								pingUpdate();
-							}
-						}
-					)
+					// observe(
+					// 	this.todos,
+					// 	(t) => {
+					// 		console.log('todos observed', t);
+					// 		if (!doingRemoteChange && !doingLocalChange) {
+					// 			pingUpdate();
+					// 		}
+					// 	}
+					// )
 
-					// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
-					reaction(
-						() => this.todos.length,
-						async (t) => {
-							console.log('todos length change')
-							if (!doingRemoteChange && !doingLocalChange) {
-								pingUpdate();
-							}
+					// // TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
+					// reaction(
+					// 	() => this.todos.length,
+					// 	async (t) => {
+					// 		console.log('todos length change')
+					// 		if (!doingRemoteChange && !doingLocalChange) {
+					// 			pingUpdate();
+					// 		}
 							
-						}
-					);
+					// 	}
+					// );
 
 
 					// // acct watcher
@@ -309,15 +537,27 @@ export class SampleStore {
 
 					
 
-					// listen only once per aw inst
+					// // listen only once per aw inst
 					window.top!.addEventListener('aw-state-change', async (e) => {
-						// console.log('caught aw-state-change evt', e);
+						console.log('caught aw-state-change evt', e);
 						// console.log('from', (e as CustomEvent).detail.from);
 						// console.log('selfId', selfId);
 
 						if ((e as CustomEvent).detail.from !== selfId) {
 							// console.log('change other store inst');
 							doingRemoteChange = true;
+
+							// const dd = (e as CustomEvent).detail.stateNew;
+							// console.log('dd', dd);
+							// for (let k in dd) {
+							// 	let v = dd[k];
+							// 	if (!v.isMobxAction) {
+							// 		//
+							// 	}
+							// 	console.log('tpyeof d', v);
+							// 	console.log('k',k,'v', v,' - ', isObservable(v));
+
+							// }
 
 							// works! w timeout 
 							setTimeout(async () => {
