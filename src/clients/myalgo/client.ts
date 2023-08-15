@@ -51,7 +51,8 @@ export class MyAlgoClient extends BaseClient {
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
-			clientSdk = markRaw(clientSdk); // vue-r fix
+			// clientSdk = markRaw(clientSdk); // vue-r fix
+			clientSdk = clientSdk;
 
 			return new MyAlgoClient({
 				sdk: clientSdk

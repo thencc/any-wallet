@@ -1,6 +1,6 @@
 // import { computed, reactive, readonly, toRefs } from '@vue/reactivity';
-import { watch } from '@vue-reactivity/watch';
-export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
+// import { watch } from '@vue-reactivity/watch';
+// export { watch } from '@vue-reactivity/watch'; // re-exported for frontend use
 import { isBrowser, logger } from '../utils';
 import { lsKey } from './watchers';
 export * from './watchers';
@@ -10,8 +10,6 @@ import type { ClientType } from 'src/clients';
 import type { WalletInitParamsObj, WalletType } from '../wallets/types'; // wallet bits
 import { createWallet, signTransactions } from '../wallets/actions'; // needs to be AFTER the types import
 import { WALLET_ID, type W_ID } from '../wallets/consts';
-
-
 
 import { 
 	ObservableMap, 
@@ -44,10 +42,12 @@ import {
 let doingRemoteChange = false;
 let doingLocalChange = false;
 
-// const defaultVals = {
-// 	activeAccount: null as null | Account,
-// 	connectedAccounts: [] as Account[],
-// } as any;
+export type AnyWalletStateConfig = {
+	storageKey?: string;
+	persist?: boolean;
+	storageController?: StorageController;
+	// sync?: boolean; // TODO future - support syncing state without persist: true
+};
 
 export class AnyWalletState {
 	allWallets = {
@@ -64,18 +64,10 @@ export class AnyWalletState {
 	changedAccountHandlers = new Set<any>();
 	
 	// dev/debug
-	// arr = [];
 	arr = observable.array<number[]>([]); // no diff
 
 	// TODO make these constructor params their own exported type
-	constructor(
-		params?: {
-			storageKey?: string,
-			persist?: boolean,
-			storageController?: StorageController;
-			// sync?: boolean, // TODO support syncing state without persist: true
-		}
-	) {
+	constructor(config?: AnyWalletStateConfig) {
 		this.initVars();
 
 		makeAutoObservable(this, {
@@ -107,11 +99,11 @@ export class AnyWalletState {
 			window.top!.dispatchEvent(evt);	
 		}
 
-		if (params) {
+		if (config) {
 			//
 
 			let isB = isBrowser();
-			if (!isB && params.persist == true) {
+			if (!isB && config.persist == true) {
 				console.warn('Persisting to storage outside browser. Make sure you have set an appropriate storageController.');
 			}
 
@@ -192,9 +184,9 @@ export class AnyWalletState {
 
 
 
-			if (params.persist == true) {
+			if (config.persist == true) {
 				//
-				const storageKey = params.storageKey || new Date().getTime().toString();
+				const storageKey = config.storageKey || new Date().getTime().toString();
 
 				makePersistable(this, { 
 					name: storageKey,
@@ -254,7 +246,7 @@ export class AnyWalletState {
 							},
 						},
 					], 
-					storage: params.storageController ? params.storageController : params.persist ? window.localStorage : undefined,
+					storage: config.storageController ? config.storageController : config.persist ? window.localStorage : undefined,
 					// debugMode: true,
 				}).then((pStore) => {
 					logger.log('pStore', pStore);

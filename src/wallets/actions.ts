@@ -5,7 +5,7 @@ import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
-import { deepToRaw } from './helpers-reactivity';
+// import { deepToRaw } from './helpers-reactivity';
 
 // FYI import order matters during build
 import { BaseClient } from 'src/clients/base/client';
