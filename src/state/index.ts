@@ -67,6 +67,7 @@ export class AnyWalletState {
 	// arr = [];
 	arr = observable.array<number[]>([]); // no diff
 
+	// TODO make these constructor params their own exported type
 	constructor(
 		params?: {
 			storageKey?: string,
