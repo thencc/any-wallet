@@ -31,9 +31,8 @@ let doingRemoteChange = false;
 
 export type AnyWalletStateConfig = {
 	storageKey?: string;
-	persist?: boolean;
 	storageController?: StorageController;
-	// sync?: boolean; // TODO future - support syncing state without persist: true
+	// sync?: boolean; // TODO future - support syncing state without persisting (ie multiple dux on a page)
 };
 
 export class AnyWalletState {	
@@ -68,87 +67,28 @@ export class AnyWalletState {
 			deep: true
 		});
 
-		const selfId = `${Math.random()}_${new Date().getTime()}`;
-
-		const pingUpdate = () => {
-			logger.log('pingUpdate');
-			if (!doingRemoteChange) {
-				const evt = new CustomEvent('aw-state-change', {
-					detail: {
-						from: selfId,
-						// stateNew: toJS(this),
-						// stateNew: this,
-					},
-				});
-				logger.log('dispatching c evt', evt);
-				window.top!.dispatchEvent(evt);	
-			}
-		}
 
 		if (config) {
+			// FYI keep watchers OUTSIDE storage logic
+			initWatchers(this);
 
-			let isB = isBrowser();
-			if (!isB && config.persist == true) {
-				console.warn('Persisting to storage outside browser. Make sure you have set an appropriate storageController.');
-			}
-
-
-			// keep watchers OUTSIDE of the persist true block...
-			observe(
-				this, // everything
-				() => {
-					logger.log('observed');
-					pingUpdate();					
+			// if storageKey is set, we ARE persisting data to storage
+			if (config.storageKey) {
+				this.storageKey = config.storageKey;
+				if (config.storageController) {
+					this.storageController = config.storageController;
+				} else {
+					if (config.storageKey) {
+						if (isBrowser()) {
+							this.storageController = window.localStorage;
+						} else {
+							console.warn('Provide a storageController if you want to persist state outside browser.');	
+						}
+					}
 				}
-			);
-			reaction(
-				() => this.activeAccount,
-				async (a) => {
-					logger.log('activeAccount changed', a);
-					this.changedAccountHandlers.forEach(h => h(a));
-					pingUpdate();
-				}
-			);
-			observe(
-				this.connectedAccounts,
-				(t) => {
-					logger.log('connectedAccounts observed', t);
-					pingUpdate();
-				}
-			)
-			reaction(
-				() => this.connectedAccounts.length,
-				async (t) => {
-					logger.log('connectedAccounts length change')
-					pingUpdate();
-				}
-			);
-
-
-			// dev/debug
-			observe(
-				this.arr,
-				(t) => {
-					logger.log('arr observed', t);
-					pingUpdate();
-				}
-			)
-			// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
-			reaction(
-				() => this.arr.length,
-				async (t) => {
-					logger.log('arr length change')
-					pingUpdate();
-				}
-			);
-
-
-
-			if (config.persist == true) {
-				const storageKey = config.storageKey || new Date().getTime().toString();
 
 				makePersistable(this, { 
-					name: storageKey,
+					name: this.storageKey,
 					properties: [
 						// works but TYPINGS dont w multiple arr items
 						// {
@@ -204,7 +144,7 @@ export class AnyWalletState {
 							},
 						},
 					], 
-					storage: config.storageController ? config.storageController : config.persist ? window.localStorage : undefined,
+					storage: this.storageController,
 					// debugMode: true,
 				}).then((pStore) => {
 					logger.log('pStore inited', pStore);
@@ -218,99 +158,37 @@ export class AnyWalletState {
 					// 	}
 					// );
 
-
-
-					const resetStore = () => {
-						logger.log('resetStore');
-						pStore.pausePersisting();
-						this.initVars(); // resets vars to initial state
-						// timeout is only consist way to get desired behavior
-						setTimeout(() => {
-							pStore.startPersisting();
-						}, 100); 
-					};
-					
-
-					// listen only once per aw inst
-					window.top!.addEventListener('aw-state-change', async (e) => {
-						logger.log('caught aw-state-change evt', e);
-						// logger.log('from', (e as CustomEvent).detail.from);
-						// logger.log('selfId', selfId);
-
-						if ((e as CustomEvent).detail.from !== selfId) {
-							// logger.log('change other store inst');
-							doingRemoteChange = true;
-
-							// test for state change w persist:false
-							// const dd = (e as CustomEvent).detail.stateNew;
-							// logger.log('dd', dd);
-							// for (let k in dd) {
-							// 	let v = dd[k];
-							// 	if (!v.isMobxAction) {
-							// 		//
-							// 	}
-							// 	logger.log('tpyeof d', v);
-							// 	logger.log('k',k,'v', v,' - ', isObservable(v));
-							// }
-
-							// works! w timeout 
-							setTimeout(async () => {
-								logger.log('timeout hyd store');
-								await pStore.hydrateStore();
-
-								// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
-								setTimeout(() => {
-									doingRemoteChange = false;
-								}, 10);
-							}, 10);					
-						}
-					}, false);
-
-					// works if another window/tab change ls storage key, but NOT 2 els on same page...
-					window.addEventListener('storage', (e) => {
-						logger.log('storage evt', e);
-
-						if (e.key == null) {
-							// remove everything
-							resetStore();
-						} else if (e.key == storageKey) {
-							if (e.newValue == null) {
-								resetStore();
-							} else {
-								// update vals
-								let newVStr = e.newValue;
-								let newVObj = JSON.parse(newVStr) as typeof this;
-								logger.log('newVObj', newVObj);
-
-								logger.log('pausingPersist');
-								pStore.pausePersisting();
-
-								// ex obj loop w correct typing:
-								for (let k in newVObj) {
-									let v = newVObj[k];
-									// for serialize w stringify use:
-									// if (typeof v == 'string') {
-									// 	v = JSON.parse(v);
-									// }
-									logger.log(`${k}: ${v}`);
-									this[k] = v;
-								}
-
-								setTimeout(() => {
-									logger.log('startPersist');
-									pStore.startPersisting();
-								}, 10);
-							}
-							
-						} else {
-							// nothing. (something we dont care abt changed thing)
-						}
-					}, false);
+					initListeners(this, pStore);
 				});
 			}
 		}
   	}
 
+	
+	// === STATE SYNC ===
+	selfId = `${Math.random()}_${new Date().getTime()}`;
+	storageKey = undefined as undefined | string;
+	storageController = undefined as undefined | StorageController;
+	// sync state btwn elements on the same page
+	emitSyncStates = () => {
+		logger.log('emitSyncStates');
+		if (isBrowser()) {
+			if (!doingRemoteChange) {
+				const evt = new CustomEvent('aw-state-change', {
+					detail: {
+						from: this.selfId,
+						// stateNew: toJS(this),
+						// stateNew: this,
+					},
+				});
+				logger.log('dispatching c evt', evt);
+				window.top!.dispatchEvent(evt);	
+			}
+		} else {
+			console.warn('Not in browser, no access to Window. Will not dispatch custom event');
+		}
+	}
+	
 
 	// === ACTIONS ===
 	initVars() {
@@ -321,7 +199,7 @@ export class AnyWalletState {
 		this.arr = observable.array<number[]>([]);
 	}	
 	addConnectedAccounts(accounts: Account[]) {
-		// logger.log('addConnectedAccounts', accounts);
+		logger.log('addConnectedAccounts', accounts);
 		for (let newAcct of accounts) {
 			let exists = false;
 			for (let existingAcct of this.connectedAccounts) {
@@ -525,3 +403,149 @@ export class AnyWalletState {
 		return someWalletIsIniting;
     }
 }
+
+const resetStore = <T extends AnyWalletState>(state: T, pStore: PersistStore<T, any>) => {
+	logger.log('resetStore', state.selfId);
+	pStore.pausePersisting();
+	state.initVars(); // resets vars to initial state
+	
+	// timeout is only consist way to get desired behavior
+	setTimeout(() => {
+		pStore.startPersisting();
+	}, 100); 
+};
+
+const initWatchers = (state: AnyWalletState) => {
+	logger.log('initWatchers', state.selfId);
+
+	observe(
+		state, // everything
+		() => {
+			logger.log('observed');
+			state.emitSyncStates();					
+		}
+	);
+	reaction(
+		() => state.activeAccount,
+		async (a) => {
+			logger.log('activeAccount changed', a);
+			state.changedAccountHandlers.forEach(h => h(a));
+			state.emitSyncStates();
+		}
+	);
+	observe(
+		state.connectedAccounts,
+		(t) => {
+			logger.log('connectedAccounts observed', t);
+			state.emitSyncStates();
+		}
+	)
+	reaction(
+		() => state.connectedAccounts.length,
+		async (t) => {
+			logger.log('connectedAccounts length change')
+			state.emitSyncStates();
+		}
+	);
+
+
+	// dev/debug
+	observe(
+		state.arr,
+		(t) => {
+			logger.log('arr observed', t);
+			state.emitSyncStates();
+		}
+	)
+	// TODO make sure doing arr.push works (it DOESNT work w arr.push IF de/serialize isnt set to obvious str save/parse )
+	reaction(
+		() => state.arr.length,
+		async (t) => {
+			logger.log('arr length change')
+			state.emitSyncStates();
+		}
+	);
+};
+
+const initListeners = <T extends AnyWalletState>(state: T, pStore: PersistStore<T, any>) => {
+	console.log('initListeners', state.selfId);
+		
+	if (!(isBrowser())) {
+		console.warn('No attaching Window event listeners (aw-state-change, dom storage)');
+	} else {
+		// listen only once per aw inst
+		window.top!.addEventListener('aw-state-change', async (e) => {
+			logger.log('caught aw-state-change evt', e);
+			// logger.log('from', (e as CustomEvent).detail.from);
+			// logger.log('selfId', selfId);
+
+			if ((e as CustomEvent).detail.from !== state.selfId) {
+				// logger.log('change other store inst');
+				doingRemoteChange = true;
+
+				// test for state change w persist:false
+				// const dd = (e as CustomEvent).detail.stateNew;
+				// logger.log('dd', dd);
+				// for (let k in dd) {
+				// 	let v = dd[k];
+				// 	if (!v.isMobxAction) {
+				// 		//
+				// 	}
+				// 	logger.log('tpyeof d', v);
+				// 	logger.log('k',k,'v', v,' - ', isObservable(v));
+				// }
+
+				// works! w timeout 
+				setTimeout(async () => {
+					logger.log('timeout hyd store');
+					await pStore.hydrateStore();
+
+					// NOTE: dont use this.doingR ("this" loses scope. becomes the event? )
+					setTimeout(() => {
+						doingRemoteChange = false;
+					}, 10);
+				}, 10);					
+			}
+		}, false);
+
+		// works if another window/tab change ls storage key, but NOT 2 els on same page...
+		window.addEventListener('storage', (e) => {
+			logger.log('storage evt', e);
+
+			if (e.key == null) {
+				// remove everything
+				resetStore(state, pStore);
+			} else if (e.key == state.storageKey) {
+				if (e.newValue == null) {
+					resetStore(state, pStore);
+				} else {
+					// update vals
+					let newVStr = e.newValue;
+					let newVObj = JSON.parse(newVStr) as typeof state;
+					logger.log('newVObj', newVObj);
+
+					logger.log('pausingPersist');
+					pStore.pausePersisting();
+
+					// ex obj loop w correct typing:
+					for (let k in newVObj) {
+						let v = newVObj[k];
+						// for serialize w stringify use:
+						// if (typeof v == 'string') {
+						// 	v = JSON.parse(v);
+						// }
+						logger.log(`${k}: ${v}`);
+						state[k] = v;
+					}
+
+					setTimeout(() => {
+						logger.log('startPersist');
+						pStore.startPersisting();
+					}, 10);
+				}
+			} else {
+				// nothing. (something we dont care abt changed thing)
+			}
+		}, false);	
+	}
+};
