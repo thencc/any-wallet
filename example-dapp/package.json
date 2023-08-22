@@ -12,8 +12,8 @@
 		"site-preview": "vite preview"
 	},
 	"dependencies": {
-		"@thencc/algonautjs": "^0.3.58",
-		"@thencc/any-wallet": "^0.1.87",
+		"@thencc/algonautjs": "^0.3.65",
+		"@thencc/any-wallet": "^0.2.0",
 		"vue": "^3.3.4"
 	},
 	"devDependencies": {
