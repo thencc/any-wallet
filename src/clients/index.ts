@@ -1,4 +1,3 @@
-// import { WALLET_ID } from 'src/wallets/constants';
 import { WALLET_ID, type W_ID } from 'src/wallets/consts';
 
 import { PeraClient } from 'src/clients/pera/client';

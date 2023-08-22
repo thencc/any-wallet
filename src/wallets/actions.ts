@@ -1,5 +1,4 @@
 // libs
-import { WalletInitParamsObj } from '.'; // wallets
 import { CLIENT_MAP } from 'src/clients';
 import { AnyWalletState } from 'src/state'; // state
 import { isBrowser, logger } from 'src/utils';
@@ -7,7 +6,6 @@ import { isBrowser, logger } from 'src/utils';
 // FYI import order matters during build
 import { BaseClient } from 'src/clients/base/client';
 import { ClientInitParams } from 'src/clients/base/types';
-import { Account } from 'src/types/shared';
 import type { W_ID } from './consts';
 
 import { 
@@ -32,12 +30,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 
 		constructor() {
 			makeAutoObservable(this);
-			// makeAutoObservable(
-			// 	this,
-			// 	{				
-			// 		client: false, // dont track
-			// 	}, { deep: true }
-			// );
 		}
 
 		// === methods ===
@@ -176,177 +168,6 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 	let w = new AWallet();
 	return w;
 };
-
-// export const initWallet = <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams: P) => {
-// 	const w = AnyWalletState.allWallets[wId];
-// 	if (!w) {
-// 		throw new Error(`Unknown wallet: ${wId}`);
-// 	}
-// 	if (wInitParams !== undefined) {
-// 		w.initParams = wInitParams as Exclude<typeof wInitParams, String>; // this weird exclude string shim is needed to make the mnemonic wallet init simpler (providing mnemonic str directly);
-// 	} else {
-// 		logger.log(`didnt update wallet's init params... kept whatever existed before`);
-// 	}
-// 	return w;
-// }
-
-// export const initWallets = (
-// 	walletInits: WalletInitParamsObj,
-// ) => {
-// 	logger.log('initWallets started', walletInits);
-// 	for (let [wKey, wInitParams] of Object.entries(walletInits)) {
-// 		let wId = wKey as W_ID; // could just be a unique id for double initing but why
-// 		initWallet(wId, wInitParams);
-// 	}
-// 	return AnyWalletState.allWallets;
-// }
-
-// export const connectWallet = async <W extends W_ID, P extends WalletInitParamsObj[W]>(wId: W, wInitParams?: P) => {
-// 	// possibly set init params...
-// 	if (wInitParams !== undefined) {
-// 		initWallet(wId, wInitParams);
-// 	}
-// 	// then, connect
-// 	const w = AnyWalletState.allWallets[wId];
-// 	if (!w) {
-// 		throw new Error(`Unknown wallet: ${wId}`);
-// 	}
-// 	return await w.connect();
-// };
-
-// export const disconnectWallet = async <W extends W_ID>(wId: W) => {
-// 	const w = AnyWalletState.allWallets[wId];
-// 	if (!w) {
-// 		throw new Error(`Unknown wallet: ${wId}`);
-// 	}
-// 	if (w.isConnected) {
-// 		return await w.disconnect();
-// 	} else {
-// 		logger.debug('disconnectWallet > wallet not connected:', wId, )
-// 	}
-// };
-
-// export const disconnectAllWallets = async () => {
-// 	logger.debug('disconnectAllWallets');
-// 	Object.values(AnyWalletState.allWallets).forEach(async (w) => {
-// 		// await disconnectWallet(w.id);
-// 		await disconnectWallet((w as any).id);
-// 	});
-// };
-
-// export const getAccountsByWalletId = (id: W_ID) => {
-// 	return AnyWalletState.stored.connectedAccounts.filter((account) => account.walletId === id);
-// };
-
-// export const removeAccountsByWalletId = (id: W_ID) => {
-// 	logger.debug('removeAccountsByWalletId', id);
-// 	if (AnyWalletState.stored.activeAccount) {
-// 		// nullify active acct if its being removed (FYI this has to come first)
-// 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
-// 			(account) => account.walletId == id
-// 		);
-// 		for (let acct of acctsToRemove) {
-// 			if (acct.address == AnyWalletState.stored.activeAccount.address &&
-// 				acct.walletId == AnyWalletState.stored.activeAccount.walletId) {
-// 				AnyWalletState.stored.activeAccount = null; // unsets activeAccount
-// 				break;
-// 			}
-// 		}
-// 	}
-
-// 	// remove this client's accts
-// 	let acctsToKeep = AnyWalletState.stored.connectedAccounts.filter(
-// 		(account) => account.walletId !== id
-// 	);
-// 	AnyWalletState.stored.connectedAccounts = acctsToKeep;
-// };
-
-// export const removeAccount = (acct: Account) => {
-// 	if (AnyWalletState.stored.activeAccount) {
-// 		// nullify active acct if its being removed (FYI this has to come first)
-// 		let acctsToRemove = AnyWalletState.stored.connectedAccounts.filter(
-// 			(a) => {
-// 				return 	(a.walletId == acct.walletId) &&
-// 						(a.name == acct.name) &&
-// 						(a.address == acct.address)
-// 			}
-// 		);
-
-// 		for (let acct of acctsToRemove) {
-// 			if (acct.address == AnyWalletState.stored.activeAccount.address &&
-// 				acct.walletId == AnyWalletState.stored.activeAccount.walletId) {
-// 				AnyWalletState.stored.activeAccount = null; // unsets activeAccount
-// 				break;
-// 			}
-// 		}
-// 	}
-
-// 	let acctsToKeep = AnyWalletState.stored.connectedAccounts;
-// 	let rmvIdx = acctsToKeep.findIndex(a => {
-// 		return (a.walletId == acct.walletId) &&
-// 			(a.address == acct.address) &&
-// 			(a.name == acct.name)
-// 	});
-// 	acctsToKeep.splice(rmvIdx, 1);
-
-// 	AnyWalletState.stored.connectedAccounts = acctsToKeep;
-// };
-
-// aka disconnectAllAccounts
-// export const removeAllAccounts = () => {
-// 	AnyWalletState.stored.activeAccount = null;
-// 	AnyWalletState.stored.connectedAccounts = [];
-// }
-
-// export const addConnectedAccounts = (accounts: Account[]) => {
-// 	// logger.log('addConnectedAccounts', accounts);
-// 	for (let newAcct of accounts) {
-// 		let exists = false;
-// 		for (let existingAcct of AnyWalletState.stored.connectedAccounts) {
-// 			if (newAcct.walletId == existingAcct.walletId &&
-// 				newAcct.address == existingAcct.address) {
-// 				exists = true;
-// 			}
-// 		}
-// 		if (!exists) {
-// 			AnyWalletState.stored.connectedAccounts.push(newAcct);
-// 		}
-// 	}
-// };
-
-// export const setAsActiveAccount = (acct: Account) => {
-// 	logger.debug('setAsActiveAccount', acct);
-
-// 	acct.active = true; // needed here as well as below
-// 	acct.dateLastActive = new Date().getTime();
-	
-// 	AnyWalletState.stored.activeAccount = acct;
-
-// 	// change .active bool
-// 	AnyWalletState.stored.connectedAccounts.forEach(ca => {
-// 		// is it the same?
-// 		if (ca.walletId == acct.walletId && 
-// 			ca.address == acct.address &&
-// 			ca.name == acct.name
-// 			) {
-// 				ca.active = true;
-// 			}
-// 		else {
-// 			ca.active = false;
-// 		}
-// 	});
-// };
-
-// export const signTransactions = async (txns: Uint8Array[]) => {
-// 	logger.log('signTransactions', txns);
-// 	let activeWallet = AnyWalletState.activeWallet;
-// 	if (!activeWallet) {
-// 		// happens when the dapp changes config + the user has an activeWallet in local storage that is no longer enabled
-// 		throw new Error(`No active wallet... how'd you get here.`);
-// 	}
-// 	let txnsSigned = await activeWallet.signTransactions(txns);
-// 	return txnsSigned;
-// };
 
 export const signTransactions = async (state: AnyWalletState, txns: Uint8Array[]) => {
 	logger.log('signTransactions', txns);
