@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.3.65
     version: 0.3.65
   '@thencc/any-wallet':
-    specifier: ^0.2.0
-    version: 0.2.0(algosdk@2.3.0)
+    specifier: ^0.2.1
+    version: 0.2.1(algosdk@2.3.0)
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -350,8 +350,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thencc/any-wallet@0.2.0(algosdk@2.3.0):
-    resolution: {integrity: sha512-gPz/721M3NFk/tm5ZB2IDJXIfWXbWci7fMcUj/6Om3Rdv70sIgh3SNkRk4G2rodDJFaLHPThXUuu2Ad6c1ATDA==}
+  /@thencc/any-wallet@0.2.1(algosdk@2.3.0):
+    resolution: {integrity: sha512-xvxK5/B/Cql4abUzD8Auymlkem4hj0C3n+XJm1L0KwNdPOjV0UC7rI7bu4K7eYFK2gWyEAX+PiaTZt7L9cmGfA==}
     peerDependencies:
       algosdk: ^2.1.0
     dependencies:
