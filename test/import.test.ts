@@ -5,6 +5,7 @@ import { AnyWalletState } from '../dist/index'; // use dist not src (otherwise t
 describe('AnyWalletState', () => {
     test('activeAddress testo', () => {
         // console.log('AnyWalletState', AnyWalletState);
-        expect(AnyWalletState.activeAddress).toBe('');
+        const awState = new AnyWalletState();
+        expect(awState.activeAddress).toBe('');
     })
 });
