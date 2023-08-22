@@ -9,7 +9,6 @@ import {
 import { MyAlgoClientConstructor, InitParams, MyAlgoSdk, SdkConfig } from './types';
 import { METADATA } from './constants';
 
-import { markRaw } from '@vue/reactivity';
 import { decodeObj, encodeAddress } from 'algosdk';
 import type {
 	EncodedSignedTransaction, 
@@ -51,7 +50,6 @@ export class MyAlgoClient extends BaseClient {
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
-			// clientSdk = markRaw(clientSdk); // vue-r fix
 			clientSdk = clientSdk;
 
 			return new MyAlgoClient({
