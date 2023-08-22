@@ -468,7 +468,7 @@ const initWatchers = (state: AnyWalletState) => {
 };
 
 const initListeners = <T extends AnyWalletState>(state: T, pStore: PersistStore<T, any>) => {
-	console.log('initListeners', state.selfId);
+	logger.log('initListeners', state.selfId);
 		
 	if (!(isBrowser())) {
 		console.warn('No attaching Window event listeners (aw-state-change, dom storage)');
