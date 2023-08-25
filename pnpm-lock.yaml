@@ -26,16 +26,16 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.28
-    version: 0.0.28
+    specifier: ^0.0.29
+    version: 0.0.29
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
 
 devDependencies:
   '@thencc/inkey-types':
-    specifier: ^0.0.11
-    version: 0.0.11
+    specifier: ^0.0.12
+    version: 0.0.12
   '@vitest/coverage-v8':
     specifier: ^0.32.2
     version: 0.32.2(vitest@0.32.2)
@@ -385,14 +385,14 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js@0.0.28:
-    resolution: {integrity: sha512-GPhrBd6gbCsoUbwGChZHFJIdvYMS60OehHmRLYuVawi5xRCJ08P25SH+ZJq39lDlyUP+OJCRUc80Z+ORL5PEmA==}
+  /@thencc/inkey-client-js@0.0.29:
+    resolution: {integrity: sha512-99Lf3aRTJ8fPXDvvweKugZIXtn1br+G6CRwBqcbhGQHoMhajXWkcrDLTu0O3LZbgcXMlWYEGkG1JaetIAfaETA==}
     requiresBuild: true
     dev: false
     optional: true
 
-  /@thencc/inkey-types@0.0.11:
-    resolution: {integrity: sha512-/9SifwHUqUTHORHRojn0tM3tSCxFg7Byf4DM0beu/BPwAcQKM4VmS7cG/Vc2idGdLCxTA4XcdFfgscuiY7lYhQ==}
+  /@thencc/inkey-types@0.0.12:
+    resolution: {integrity: sha512-fXcFjeEKQc7DpTgunAhFyC79uM2mTw9PvA3xu/vvD6h80irP7uBir5B8XAFtK8KZFaPB5b0aBs4Q7Isu89LD3w==}
     dev: true
 
   /@types/chai-subset@1.3.3:

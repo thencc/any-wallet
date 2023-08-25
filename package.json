@@ -1,6 +1,6 @@
 {
 	"name": "@thencc/any-wallet",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"description": "",
 	"license": "MIT",
 	"type": "module",
@@ -35,7 +35,7 @@
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
 		"build": "tsup --config=tsup.config.ts",
 		"publish:beta": "npm publish --access public --tag beta --greater-version-only",
-		"publish:latest": "npm dist-tag add @thencc/any-wallet@0.1.87 latest ",
+		"publish:latest": "npm dist-tag add @thencc/any-wallet@0.1.87 latest",
 		"test:watch": "vitest",
 		"test:run": "vitest run",
 		"test:ui": "vitest --ui",
@@ -50,14 +50,14 @@
 		"@blockshake/defly-connect": "^1.1.5",
 		"@perawallet/connect": "^1.2.3",
 		"@randlabs/myalgo-connect": "^1.4.2",
-		"@thencc/inkey-client-js": "^0.0.28",
+		"@thencc/inkey-client-js": "^0.0.29",
 		"buffer": "^6.0.3"
 	},
 	"peerDependencies": {
 		"algosdk": "^2.1.0"
 	},
 	"devDependencies": {
-		"@thencc/inkey-types": "^0.0.11",
+		"@thencc/inkey-types": "^0.0.12",
 		"@vitest/coverage-v8": "^0.32.2",
 		"@vitest/ui": "^0.32.2",
 		"algosdk": "^2.4.0",
