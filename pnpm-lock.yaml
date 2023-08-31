@@ -26,8 +26,8 @@ optionalDependencies:
     specifier: ^1.4.2
     version: 1.4.2
   '@thencc/inkey-client-js':
-    specifier: ^0.0.29
-    version: 0.0.29
+    specifier: ^0.0.30
+    version: 0.0.30
   buffer:
     specifier: ^6.0.3
     version: 6.0.3
@@ -385,8 +385,8 @@ packages:
     dev: false
     optional: true
 
-  /@thencc/inkey-client-js@0.0.29:
-    resolution: {integrity: sha512-99Lf3aRTJ8fPXDvvweKugZIXtn1br+G6CRwBqcbhGQHoMhajXWkcrDLTu0O3LZbgcXMlWYEGkG1JaetIAfaETA==}
+  /@thencc/inkey-client-js@0.0.30:
+    resolution: {integrity: sha512-h31XV0Zrrm0+Ue/FNHR+TBLZ9kYfVXpA5HS2w7UP0Hy/3k1YVDh+0NIcxHMoq2FBYPGcz208pIX/cTW73IDyZQ==}
     requiresBuild: true
     dev: false
     optional: true
