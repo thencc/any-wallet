@@ -29,40 +29,35 @@ currently supported chains + wallets:
 pnpm i @thencc/any-wallet
 ```
 
-### import
+### import + construct
 ```ts
 import {
-	AnyWalletState,
-	connectWallet,
-	recallState,
-	subscribeToStateChanges,
-	subscribeToAccountChanges,
-	signTransactions,
-	WALLET_ID,
+	AnyWalletState
 } from '@thencc/any-wallet';
+
+const awState = new AnyWalletState();
 ```
 
 
 ### connecting
 ```ts
 // connect pera
-await AnyWalletState.allWallets.pera.connect();
-
-// or, simpler api
-await connectWallet('pera');
+await awState.connectWallet('pera');
 
 // or, connect inkey
-const accts = await AnyWalletState.allWallets[WALLET_ID.INKEY].connect();
+const accts = await awState.connectWallet('inkey');
 
 // now...
-// accts[0] == AnyWalletState.activeAccount;
+// accts[0] == awState.activeAccount;
 ```
 
 ### signing transactions
 ```ts
 import {
-	signTransactions
+	awState
 } from '@thencc/any-wallet';
+
+const awState = new AnyWalletState();
 
 const txn1 = await algonaut.atomicSendAlgo({
 	amount: 1000,
@@ -74,7 +69,7 @@ const assetId = 10458941;
 const txn2 = await algonaut.atomicOptInAsset(assetId);
 
 // prompts user for approval using current activeWallet as chosen by the user
-const signedTxns = await signTransactions([txn1, txn2]); // throws if user rejects txn
+const signedTxns = await awState.signTransactions([txn1, txn2]); // throws if user rejects txn
 // "signedTxns" is an array of Uint8Array's (raw algorand txn bytes)
 
 // now do what you want w the signed txns, like submit them to the network
@@ -84,33 +79,51 @@ console.log('txn id: ', txnGroup.txId);
 
 
 ### state
-`AnyWalletState` is your friend – it is a reactive proxy object where you can access instances of each wallet (which are connected or active), which account + address the user has picked as active, etc.
+the `AnyWalletState` instance is enhanced with reactive proxy fields that update as you connect client wallets, sign transactions and change connected accounts. 
 
 a few helpful things inside `AnyWalletState`
 ```ts
 import { 
-	AnyWalletState,
-	recallState
+	AnyWalletState
 } from '@thencc/any-wallet';
 
+const awState = new AnyWalletState();
+
 // access the current address
-console.log(AnyWalletState.activeAddress);
+console.log(awState.activeAddress);
 
 // boolean for if any of the wallets are doing some txn signing
-console.log(AnyWalletState.isSigning);
+console.log(awState.isSigning);
+```
 
-// even after a page reload, the dapp can access the reconnect the last connected account(s) by called recallState so it is recommended to call this on page load
-recallState();
+recall previous state (`localstorage`):
+```ts
+// even after a page reload, the dapp can access the last connected account(s) by initializing with the same storageKey, which uses localstorage (by default) to remember relavent state fields. 
+import { 
+	AnyWalletState
+} from '@thencc/any-wallet';
+
+const awStateA = new AnyWalletState({
+	storageKey: 'state1'
+});
+const awStateB = new AnyWalletState({
+	storageKey: 'state1'
+});
+
+// now... 
+/// awStateA.activeAddress == awStateB.activeAddress
 ```
 
 
 ## using the mnemonic wallet (for dev!)
 ```ts
 import {
-	connectWallet
+	AnyWalletState
 } from '@thencc/any-wallet';
 
-let accts = await connectWallet('mnemonic', 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend');
+const awState = new AnyWalletState();
+
+let accts = await awState.connectWallet('mnemonic', 'uniform eager witness salt evolve pole envelope name supreme column begin venue decline blast finger grunt avoid people crawl during street priority diary ability lend');
 ```
 
 
@@ -120,14 +133,15 @@ when used with vue, you might need to re-render a component's `<template>` compu
 
 ```ts
 import {
-	AnyWalletState,
-	subscribeToStateChanges,
+	AnyWalletState
 } from '@thencc/any-wallet';
+
+const awState = new AnyWalletState();
 
 // then in the vue component's mounted or setup hook you would add:
 export default defineComponent({
 	mounted() {
-		let unsubscribe = subscribeToStateChanges(
+		let unsubscribe = awState.subscribeToAccountChanges(
 			() => this.$forceUpdate()
 		);
 
@@ -148,4 +162,4 @@ export default defineComponent({
 
 ## Attributions
 
-big thanks to txnlab/use-wallet for developing the react groundwork for this pkg
+big thanks to `txnlab/use-wallet` for developing the react groundwork for this pkg

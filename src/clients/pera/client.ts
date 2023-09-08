@@ -15,7 +15,6 @@ import {
 	SdkConfig,
 } from './types';
 
-import { markRaw } from '@vue/reactivity';
 import { decodeObj, decodeSignedTransaction, decodeUnsignedTransaction, encodeAddress } from 'algosdk';
 import type {
 	EncodedSignedTransaction, 
@@ -62,7 +61,7 @@ export class PeraClient extends BaseClient {
 				clientSdk = new createClientSdk(sdkConfig);
 			}
 
-			clientSdk = markRaw(clientSdk); // vue-r fix
+			clientSdk = clientSdk;
 
 			return new PeraClient({
 				sdk: clientSdk,

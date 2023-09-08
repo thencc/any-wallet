@@ -15,6 +15,9 @@
 import { defineComponent, PropType } from 'vue';
 
 import { AnyWalletState, W_ID, WALLET_ID } from '@thencc/any-wallet';
+const awState = new AnyWalletState({
+	storageKey: 'state1',
+});
 
 export default defineComponent({
     props: {
@@ -25,7 +28,7 @@ export default defineComponent({
     },
     computed: {
         wallet() {
-            return AnyWalletState.allWallets[this.walletId];
+            return awState.allWallets[this.walletId];
         }
     },
 	data() {

@@ -10,12 +10,12 @@
 
 		<div>
 			<p>active acct:</p>
-			<div v-if="AnyWalletState.stored.activeAccount">
+			<div v-if="awState.activeAccount">
 				<p>
-					<span style="font-weight: bold;">{{ AnyWalletState.stored.activeAccount.walletId }}</span>:
-					<span>{{ AnyWalletState.stored.activeAccount.name }}</span>
+					<span style="font-weight: bold;">{{ awState.activeAccount.walletId }}</span>:
+					<span>{{ awState.activeAccount.name }}</span>
 				</p>
-				<p style="font-family: monospace;">{{ AnyWalletState.activeAddress }}</p>
+				<p style="font-family: monospace;">{{ awState.activeAddress }}</p>
 			</div>
 			<div v-else>
 				none
@@ -23,7 +23,7 @@
 		</div>
 
 		<p>enabled wallets:</p>
-		<div v-for="(p, k) of AnyWalletState.allWallets">
+		<div v-for="(p, k) of awState.allWallets">
 			<template v-if="p">
 				<!-- <img :src="p.client?.metadata.icon" alt="" style="width: 40px; height: 40px;"> -->
 				<span>{{ k }}</span>
@@ -41,7 +41,7 @@
 		</div>
 
 		<br />
-		<button @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
+		<button @click="doTxnSimpleAlgJs" :disabled="!(awState.activeWallet !== null)">
 			doTxnSimpleAlgJs
 		</button>
 
@@ -61,13 +61,12 @@ import {
 
 import {
 	AnyWalletState,
-	initWallets,
-	signTransactions,
-	// enableWallets,
 	WALLET_ID,
-	watch,
 } from '@thencc/any-wallet';
 
+const awState = new AnyWalletState({
+	storageKey: 'state1',
+});
 
 import {
 	Algonaut,
@@ -78,8 +77,8 @@ const algonaut = new Algonaut();
 export default defineComponent({
 	data() {
 		return {
-			AnyWalletState,
-			selectedAddrFromDropdown: AnyWalletState.stored.activeAccount
+			awState,
+			selectedAddrFromDropdown: awState.activeAccount
 		}
 	},
 	mounted() {
@@ -94,39 +93,13 @@ export default defineComponent({
 
 			// this.doEnableWallets();
 
-			// works IF watcher comes from @vue-r/watch
-			watch(
-				() => AnyWalletState.stored.activeAccount,
-				(acct) => {
-					// console.log('activeAccount changed:', acct);
-
-					// for ui
-					this.selectedAddrFromDropdown = acct;
-					this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
-				},
-				{
-					deep: true,
-					immediate: true
-				}
-			);
-
-			watch(
-				() => AnyWalletState.allWallets,
-				(ew) => {
-					this.$forceUpdate(); // re-render <template>
-				},
-				{
-					deep: true,
-					immediate: true
-				}
-			);
-
 		},
 
 		doEnableWallets() {
 			console.log('doEnableWallets');
 
-			let wallets = initWallets({
+
+			let wallets = awState.initWallets({
 				[WALLET_ID.INKEY]: {
 					id: WALLET_ID.INKEY,
 					config: {
@@ -156,13 +129,13 @@ export default defineComponent({
 
 		activeAddrChanged(x: any) {
 			// console.log('activeAddrChanged', x);
-			AnyWalletState.stored.activeAccount = x;
+			awState.activeAccount = x;
 		},
 
 		async doTxnSimpleAlgJs() {
 			console.log('doTxnSimpleAlgJs');
 
-			let addr = AnyWalletState.activeAddress;
+			let addr = awState.activeAddress;
 
 			if (!addr) {
 				alert('no .to address provided');
@@ -179,7 +152,7 @@ export default defineComponent({
 			const txnArr = txn.transaction.toByte();
 
 			try {
-				let res = await signTransactions([txnArr]);
+				let res = await awState.signTransactions([txnArr]);
 				console.log('res', res);
 			} catch(e) {
 				console.warn(e);

@@ -1,12 +1,12 @@
 <template>
 	<div class="auth-test-container">
 		<header>
-			<span style="color: red">{{ AnyWalletState.isSigning ? '(signing)' : '' }}</span>
+			<span style="color: red">{{ awState.isSigning ? '(signing)' : '' }}</span>
 
 			<button @click="walletListOpen = !walletListOpen">
-				<span v-if="AnyWalletState.activeAddress">
-					{{ `${AnyWalletState.activeAddress.substring(0,6)}...${AnyWalletState.activeAddress.substring(AnyWalletState.activeAddress.length - 3)}` }}
-					({{ AnyWalletState.activeWalletId }})
+				<span v-if="awState.activeAddress">
+					{{ `${awState.activeAddress.substring(0,6)}...${awState.activeAddress.substring(awState.activeAddress.length - 3)}` }}
+					({{ awState.activeWalletId }})
 				</span>
 				<span v-else>
 					Connect Wallet
@@ -15,13 +15,13 @@
 		</header>
 
 		<div v-if="walletListOpen" class="wallet-list">
-			<div v-if="AnyWalletState.stored.activeAccount" class="active-account-details">
-				<span style="font-weight: bold;">{{ AnyWalletState.stored.activeAccount.name }}</span>
-				<span>({{ AnyWalletState.stored.activeAccount.walletId }})</span>
-				<div style="font-family: monospace; word-break: break-all;">{{ AnyWalletState.activeAddress }}</div>
+			<div v-if="awState.activeAccount" class="active-account-details">
+				<span style="font-weight: bold;">{{ awState.activeAccount.name }}</span>
+				<span>({{ awState.activeAccount.walletId }})</span>
+				<div style="font-family: monospace; word-break: break-all;">{{ awState.activeAddress }}</div>
 			</div>
 
-			<div v-for="(p, key) of AnyWalletState.allWallets" class="wallet-list-item">
+			<div v-for="(p, key) of awState.allWallets" class="wallet-list-item">
 				<template v-if="p">
 					<img :src="p.metadata.icon" alt="" style="width: 40px; height: 40px;">
 					<span style="padding: 0 1em">{{ p.metadata.name }}</span>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 
-		<button v-if="AnyWalletState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(AnyWalletState.activeWallet !== null)">
+		<button v-if="awState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(awState.activeWallet !== null)">
 			sign transaction test
 		</button>
 
@@ -66,12 +66,7 @@
 import { defineComponent } from 'vue';
 import {
 	AnyWalletState,
-	subscribeToStateChanges,
-	subscribeToAccountChanges,
-	signTransactions,
 	WALLET_ID,
-	connectWallet,
-	recallState,
 } from '@thencc/any-wallet';
 
 // helper lib for constructing + submitting txns
@@ -80,9 +75,12 @@ const algonaut = new Algonaut();;
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
 
+const awState = new AnyWalletState({
+	storageKey: 'state1',
+});
 
 
-const unsubAcctChange1 = subscribeToAccountChanges(
+const unsubAcctChange1 = awState.subscribeToAccountChanges(
 	(acct) => {
 		console.log('outside acct changed', acct);
 	}
@@ -92,23 +90,18 @@ export default defineComponent({
 	data() {
 		return {
 			walletListOpen: false,
-			AnyWalletState,
-			selectedAddrFromDropdown: AnyWalletState.stored.activeAccount
+			
+			awState,
+			selectedAddrFromDropdown: awState.activeAccount
 		}
 	},
 	mounted() {
-		subscribeToAccountChanges(
+		awState.subscribeToAccountChanges(
 			(acct) => {
 				this.selectedAddrFromDropdown = acct;
 				this.$forceUpdate(); // re-render <template> since vue's watcher doesnt work for this
 			}
 		);
-
-		subscribeToStateChanges(
-			() => this.$forceUpdate()
-		);
-
-		recallState();
 	},
 	methods: {
 		getAddrFromAccount(a: any) {
@@ -117,22 +110,22 @@ export default defineComponent({
 
 		activeAddrChanged(x: any) {
 			// console.log('activeAddrChanged', x);
-			AnyWalletState.stored.activeAccount = x;
+			awState.activeAccount = x;
 		},
 
 		async connectInkey() {
-			let accts = await connectWallet('inkey');
+			let accts = await awState.connectWallet('inkey');
 			return accts;
 		},
 
 		async connectMnemonic() {
-			return await connectWallet('mnemonic', '123 456 789 ...')
+			return await awState.connectWallet('mnemonic', '123 456 789 ...')
 		},
 
 		async doTxnSimpleAlgJs() {
 			console.log('doTxnSimpleAlgJs');
 
-			let addr = AnyWalletState.activeAddress;
+			let addr = awState.activeAddress;
 			// hardcoding addr is possible but often not the correct dapp flow
 			// FYI when hardcoding addr, it must match the desired authd wallet acct addr
 			// let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY';
@@ -152,7 +145,7 @@ export default defineComponent({
 			const txnArr = txn.transaction.toByte();
 
 			try {
-				let res = await signTransactions([txnArr]);
+				let res = await awState.signTransactions([txnArr]);
 				console.log('res', res);
 			} catch(e) {
 				console.warn(e);
