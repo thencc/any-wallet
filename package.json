@@ -35,7 +35,7 @@
 		"unlink-ic": "pnpm unlink @thencc/inkey-client-js",
 		"build": "tsup --config=tsup.config.ts",
 		"publish:beta": "npm publish --access public --tag beta --greater-version-only",
-		"publish:latest": "npm dist-tag add @thencc/any-wallet@0.1.87 latest",
+		"publish:latest": "npm dist-tag add @thencc/any-wallet@0.2.5 latest",
 		"test:watch": "vitest",
 		"test:run": "vitest run",
 		"test:ui": "vitest --ui",
