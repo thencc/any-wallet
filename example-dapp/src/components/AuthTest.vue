@@ -103,7 +103,7 @@ export default defineComponent({
 				[WALLET_ID.INKEY]: {
 					id: WALLET_ID.INKEY,
 					config: {
-						src: 'https://inkey-staging.web.app#123',
+						src: 'https://staging.inkey.pages.dev',
 						// src: 'http://localhost:5200/?wood',
 						// align: 'right'
 					}
