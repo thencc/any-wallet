@@ -32,6 +32,12 @@ var logger = {
   }
 };
 var SRC_DEFAULT = "https://inkey.app/";
+var DEFAULT_STYLES = {
+  transparent: true,
+  blur: true,
+  blurOverlay: false,
+  containerBg: "rgba(0,0,0,0.2)"
+};
 var FrameBus = class {
   //
   constructor(config) {
@@ -50,11 +56,12 @@ var FrameBus = class {
       if (typeof config == "string") {
         this.initSrc(config);
       } else if (typeof config == "object") {
+        logger.log("got config obj", config);
         if (config.src) {
           if (config.align) {
-            this.initSrc(config.src, config.align);
+            this.initSrc(config.src, config.align, config.styles);
           } else {
-            this.initSrc(config.src);
+            this.initSrc(config.src, "center", config.styles);
           }
         } else {
           throw new Error("bad inkey config, cannot init");
@@ -74,12 +81,13 @@ var FrameBus = class {
     }, false);
   }
   // INSERT iframe into DOM
-  async initSrc(src = SRC_DEFAULT, align = "center") {
+  async initSrc(src = SRC_DEFAULT, align = "center", styles = DEFAULT_STYLES) {
     const url = new URL(src);
     if (url.searchParams.has("wood")) {
       logger.enabled = true;
     }
     logger.log("initSrc", src);
+    logger.log("styles", styles);
     const exEl = document.querySelector("iframe#inkey-wallet");
     if (exEl) {
       console.warn("dont mount frame to DOM again");
@@ -94,6 +102,9 @@ var FrameBus = class {
       walElContainer.classList.add("align-left");
     if (align == "right")
       walElContainer.classList.add("align-right");
+    if (styles.containerBg) {
+      walElContainer.style.background = styles.containerBg;
+    }
     let cacheStr = (/* @__PURE__ */ new Date()).getTime().toString();
     const walEl = document.createElement("iframe");
     walEl.src = `${src}${src.includes("?") ? "&" : "?"}cache=${cacheStr}`;
@@ -106,6 +117,13 @@ var FrameBus = class {
     walEl.setAttribute("allow", "publickey-credentials-get; clipboard-write");
     walEl.style.display = "none";
     walEl.style.visibility = "hidden";
+    logger.log("styles.blur", styles.blur);
+    if (styles.blur) {
+      walEl.classList.add("blur-backdrop");
+    }
+    if (styles.blurOverlay) {
+      walElContainer.classList.add("blur-backdrop");
+    }
     this.walEl = walEl;
     this.walElContainer = walElContainer;
     walElContainer.appendChild(walEl);
@@ -120,6 +138,7 @@ var FrameBus = class {
       logger.log("iframe loaded");
       setTimeout(() => {
         walEl.style.display = "initial";
+        walElContainer.style.transition = "opacity 0.2s ease-out";
       }, 100);
       this.ready = true;
       this.initing = false;
@@ -129,6 +148,12 @@ var FrameBus = class {
         type: "get-style-recs"
       };
       this.emit(data);
+      this.emit({
+        type: "set-styles",
+        payload: {
+          styles
+        }
+      });
       const data2 = {
         type: "init-comms",
         payload: {
@@ -139,14 +164,15 @@ var FrameBus = class {
     });
   }
   showFrame(routepath) {
+    var _a;
     logger.log("showFrame", routepath);
+    if (!this.walElContainer)
+      return;
+    this.walElContainer.classList.add("inkey-visible");
     if (this.walEl) {
       this.walEl.classList.add("visible");
-      this.walEl.style.position = "sticky";
-      setTimeout(() => {
-        if (this.walEl)
-          this.walEl.style.position = "absolute";
-      }, 100);
+      this.walEl.style.position = "absolute";
+      (_a = this.walWin) == null ? void 0 : _a.focus();
       const data = {
         type: "set-visibility",
         payload: {
@@ -158,6 +184,7 @@ var FrameBus = class {
     }
   }
   hideFrame() {
+    this.walElContainer.classList.remove("inkey-visible");
     if (this.walEl) {
       this.walEl.classList.remove("visible");
       const data = {
@@ -175,6 +202,7 @@ var FrameBus = class {
     }
   }
   destroy() {
+    logger.log("destroy FrameBus");
     this.destroying = true;
     if (this.walElContainer) {
       if (this.walEl) {
@@ -273,7 +301,7 @@ var FrameBus = class {
       uuid
     });
     if (this.walEl && this.walWin) {
-      this.walWin.postMessage(data, this.walEl.src);
+      this.walWin.postMessage(JSON.stringify(data), this.walEl.src);
     } else {
       throw new Error("no wallEl or walWin");
     }
@@ -292,6 +320,10 @@ var FrameBus = class {
       this.requests.set(data.uuid, { req: data, resolve });
     });
   }
+  /**
+   * Insert styles into the frame container from inkey.
+   * @param css String containing CSS code
+   */
   insertStyles(css) {
     const existingStyles = document.querySelector("style#inkey-wallet-styles");
     if (!existingStyles) {
@@ -300,7 +332,7 @@ var FrameBus = class {
       stylesheet.innerText = css;
       document.head.appendChild(stylesheet);
     } else {
-      existingStyles.innerText = css;
+      existingStyles.innerText += css;
     }
     if (this.walEl) {
       setTimeout(() => {

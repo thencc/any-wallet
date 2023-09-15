@@ -1,4 +1,4 @@
-import { c as commonjsRequire, r as require$$0 } from "./index-7454982e.js";
+import { c as commonjsRequire, r as require$$0 } from "./index-ba02b125.js";
 var algosdk_min = { exports: {} };
 /*! For license information please see algosdk.min.js.LICENSE.txt */
 (function(module, exports) {
@@ -26,9 +26,9 @@ var algosdk_min = { exports: {} };
           var s2 = /* @__PURE__ */ Object.create(null);
           if (r2.r(s2), Object.defineProperty(s2, "default", { enumerable: true, value: e4 }), 2 & t3 && "string" != typeof e4)
             for (var n in e4)
-              r2.d(s2, n, function(t4) {
+              r2.d(s2, n, (function(t4) {
                 return e4[t4];
-              }.bind(null, n));
+              }).bind(null, n));
           return s2;
         }, r2.n = function(e4) {
           var t3 = e4 && e4.__esModule ? function() {
@@ -42,7 +42,7 @@ var algosdk_min = { exports: {} };
         }, r2.p = "", r2(r2.s = 0);
       }([function(e3, t2, r2) {
         r2.r(t2), r2.d(t2, "encode", function() {
-          return k;
+          return R;
         }), r2.d(t2, "decode", function() {
           return N;
         }), r2.d(t2, "decodeAsync", function() {
@@ -54,7 +54,7 @@ var algosdk_min = { exports: {} };
         }), r2.d(t2, "Decoder", function() {
           return L;
         }), r2.d(t2, "Encoder", function() {
-          return T;
+          return S;
         }), r2.d(t2, "ExtensionCodec", function() {
           return _;
         }), r2.d(t2, "ExtData", function() {
@@ -219,7 +219,7 @@ var algosdk_min = { exports: {} };
         function E(e4) {
           return e4 instanceof Uint8Array ? e4 : ArrayBuffer.isView(e4) ? new Uint8Array(e4.buffer, e4.byteOffset, e4.byteLength) : e4 instanceof ArrayBuffer ? new Uint8Array(e4) : Uint8Array.from(e4);
         }
-        var S = function(e4) {
+        var T = function(e4) {
           var t3 = "function" == typeof Symbol && Symbol.iterator, r3 = t3 && e4[t3], s3 = 0;
           if (r3)
             return r3.call(e4);
@@ -228,7 +228,7 @@ var algosdk_min = { exports: {} };
               return e4 && s3 >= e4.length && (e4 = void 0), { value: e4 && e4[s3++], done: !e4 };
             } };
           throw new TypeError(t3 ? "Object is not iterable." : "Symbol.iterator is not defined.");
-        }, T = function() {
+        }, S = function() {
           function e4(e5, t3, r3, s3, n2, i2, o2, a2) {
             void 0 === e5 && (e5 = _.defaultCodec), void 0 === t3 && (t3 = void 0), void 0 === r3 && (r3 = 100), void 0 === s3 && (s3 = 2048), void 0 === n2 && (n2 = false), void 0 === i2 && (i2 = false), void 0 === o2 && (o2 = false), void 0 === a2 && (a2 = false), this.extensionCodec = e5, this.context = t3, this.maxDepth = r3, this.initialBufferSize = s3, this.sortKeys = n2, this.forceFloat32 = i2, this.ignoreUndefined = o2, this.forceIntegerToFloat = a2, this.pos = 0, this.view = new DataView(new ArrayBuffer(this.initialBufferSize)), this.bytes = new Uint8Array(this.view.buffer);
           }
@@ -330,7 +330,7 @@ var algosdk_min = { exports: {} };
               this.writeU8(221), this.writeU32(n2);
             }
             try {
-              for (var i2 = S(e5), o2 = i2.next(); !o2.done; o2 = i2.next()) {
+              for (var i2 = T(e5), o2 = i2.next(); !o2.done; o2 = i2.next()) {
                 var a2 = o2.value;
                 this.doEncode(a2, t3 + 1);
               }
@@ -347,7 +347,7 @@ var algosdk_min = { exports: {} };
           }, e4.prototype.countWithoutUndefined = function(e5, t3) {
             var r3, s3, n2 = 0;
             try {
-              for (var i2 = S(t3), o2 = i2.next(); !o2.done; o2 = i2.next())
+              for (var i2 = T(t3), o2 = i2.next(); !o2.done; o2 = i2.next())
                 void 0 !== e5[o2.value] && n2++;
             } catch (e6) {
               r3 = { error: e6 };
@@ -374,7 +374,7 @@ var algosdk_min = { exports: {} };
               this.writeU8(223), this.writeU32(i2);
             }
             try {
-              for (var o2 = S(n2), a2 = o2.next(); !a2.done; a2 = o2.next()) {
+              for (var o2 = T(n2), a2 = o2.next(); !a2.done; a2 = o2.next()) {
                 var c2 = a2.value, u2 = e5[c2];
                 this.ignoreUndefined && void 0 === u2 || (this.encodeString(c2), this.doEncode(u2, t3 + 1));
               }
@@ -442,9 +442,9 @@ var algosdk_min = { exports: {} };
               s3 < 0 && 0 !== n2 && (s3 -= 1), e6.setUint32(t3, s3), e6.setUint32(t3 + 4, n2);
             }(this.view, this.pos, e5), this.pos += 8;
           }, e4;
-        }(), R = {};
-        function k(e4, t3) {
-          return void 0 === t3 && (t3 = R), new T(t3.extensionCodec, t3.context, t3.maxDepth, t3.initialBufferSize, t3.sortKeys, t3.forceFloat32, t3.ignoreUndefined, t3.forceIntegerToFloat).encode(e4);
+        }(), k = {};
+        function R(e4, t3) {
+          return void 0 === t3 && (t3 = k), new S(t3.extensionCodec, t3.context, t3.maxDepth, t3.initialBufferSize, t3.sortKeys, t3.forceFloat32, t3.ignoreUndefined, t3.forceIntegerToFloat).encode(e4);
         }
         function I(e4) {
           return (e4 < 0 ? "-" : "") + "0x" + Math.abs(e4).toString(16).padStart(2, "0");
@@ -561,16 +561,16 @@ var algosdk_min = { exports: {} };
           }
         }, j = function(e4) {
           return this instanceof j ? (this.v = e4, this) : new j(e4);
-        }, q = new DataView(new ArrayBuffer(0)), D = new Uint8Array(q.buffer), $ = function() {
+        }, q = new DataView(new ArrayBuffer(0)), D = new Uint8Array(q.buffer), C = function() {
           try {
             q.getInt8(0);
           } catch (e4) {
             return e4.constructor;
           }
           throw new Error("never reached");
-        }(), O = new $("Insufficient data"), C = new B(), L = function() {
+        }(), $ = new C("Insufficient data"), O = new B(), L = function() {
           function e4(e5, t3, r3, s3, n2, i2, o2, a2) {
-            void 0 === e5 && (e5 = _.defaultCodec), void 0 === t3 && (t3 = void 0), void 0 === r3 && (r3 = 4294967295), void 0 === s3 && (s3 = 4294967295), void 0 === n2 && (n2 = 4294967295), void 0 === i2 && (i2 = 4294967295), void 0 === o2 && (o2 = 4294967295), void 0 === a2 && (a2 = C), this.extensionCodec = e5, this.context = t3, this.maxStrLength = r3, this.maxBinLength = s3, this.maxArrayLength = n2, this.maxMapLength = i2, this.maxExtLength = o2, this.keyDecoder = a2, this.totalPos = 0, this.pos = 0, this.view = q, this.bytes = D, this.headByte = -1, this.stack = [];
+            void 0 === e5 && (e5 = _.defaultCodec), void 0 === t3 && (t3 = void 0), void 0 === r3 && (r3 = 4294967295), void 0 === s3 && (s3 = 4294967295), void 0 === n2 && (n2 = 4294967295), void 0 === i2 && (i2 = 4294967295), void 0 === o2 && (o2 = 4294967295), void 0 === a2 && (a2 = O), this.extensionCodec = e5, this.context = t3, this.maxStrLength = r3, this.maxBinLength = s3, this.maxArrayLength = n2, this.maxMapLength = i2, this.maxExtLength = o2, this.keyDecoder = a2, this.totalPos = 0, this.pos = 0, this.view = q, this.bytes = D, this.headByte = -1, this.stack = [];
           }
           return e4.prototype.reinitializeState = function() {
             this.totalPos = 0, this.headByte = -1;
@@ -644,7 +644,7 @@ var algosdk_min = { exports: {} };
                     try {
                       o2 = this.doDecodeSync(), i2 = true;
                     } catch (e6) {
-                      if (!(e6 instanceof $))
+                      if (!(e6 instanceof C))
                         throw e6;
                     }
                     this.totalPos += this.pos, p2.label = 4;
@@ -739,7 +739,7 @@ var algosdk_min = { exports: {} };
                   case 8:
                     return [3, 10];
                   case 9:
-                    if (!((a2 = h2.sent()) instanceof $))
+                    if (!((a2 = h2.sent()) instanceof C))
                       throw a2;
                     return [3, 10];
                   case 10:
@@ -927,7 +927,7 @@ var algosdk_min = { exports: {} };
             if (e5 > this.maxStrLength)
               throw new Error("Max length exceeded: UTF-8 byte length (" + e5 + ") > maxStrLength (" + this.maxStrLength + ")");
             if (this.bytes.byteLength < this.pos + t3 + e5)
-              throw O;
+              throw $;
             var s3, n2 = this.pos + t3;
             return s3 = this.stateIsMapKey() && (null === (r3 = this.keyDecoder) || void 0 === r3 ? void 0 : r3.canBeCached(e5)) ? this.keyDecoder.decode(this.bytes, n2, e5) : i && e5 > d ? function(e6, t4, r4) {
               var s4 = e6.subarray(t4, t4 + r4);
@@ -939,7 +939,7 @@ var algosdk_min = { exports: {} };
             if (e5 > this.maxBinLength)
               throw new Error("Max length exceeded: bin length (" + e5 + ") > maxBinLength (" + this.maxBinLength + ")");
             if (!this.hasRemaining(e5 + t3))
-              throw O;
+              throw $;
             var r3 = this.pos + t3, s3 = this.bytes.subarray(r3, r3 + e5);
             return this.pos += t3 + e5, s3;
           }, e4.prototype.decodeExtension = function(e5, t3) {
@@ -1320,19 +1320,19 @@ var algosdk_min = { exports: {} };
           return e3;
         }
         i = function e3(t3) {
-          var r3, s3, n2, i2, E, S, T, R, k, I, B = W.prototype = { constructor: W, toString: null, valueOf: null }, U = new W(1), P = 20, j = 4, q = -7, D = 21, $ = -1e7, O = 1e7, C = false, L = 1, M = 0, N = { prefix: "", groupSize: 3, secondaryGroupSize: 0, groupSeparator: ",", decimalSeparator: ".", fractionGroupSize: 0, fractionGroupSeparator: " ", suffix: "" }, F = "0123456789abcdefghijklmnopqrstuvwxyz";
+          var r3, s3, n2, i2, E, T, S, k, R, I, B = W.prototype = { constructor: W, toString: null, valueOf: null }, U = new W(1), P = 20, j = 4, q = -7, D = 21, C = -1e7, $ = 1e7, O = false, L = 1, M = 0, N = { prefix: "", groupSize: 3, secondaryGroupSize: 0, groupSeparator: ",", decimalSeparator: ".", fractionGroupSize: 0, fractionGroupSeparator: " ", suffix: "" }, F = "0123456789abcdefghijklmnopqrstuvwxyz";
           function W(e4, t4) {
             var r4, i3, a2, u2, h2, f2, g2, m2, y2 = this;
             if (!(y2 instanceof W))
               return new W(e4, t4);
             if (null == t4) {
               if (e4 && true === e4._isBigNumber)
-                return y2.s = e4.s, void (!e4.c || e4.e > O ? y2.c = y2.e = null : e4.e < $ ? y2.c = [y2.e = 0] : (y2.e = e4.e, y2.c = e4.c.slice()));
+                return y2.s = e4.s, void (!e4.c || e4.e > $ ? y2.c = y2.e = null : e4.e < C ? y2.c = [y2.e = 0] : (y2.e = e4.e, y2.c = e4.c.slice()));
               if ((f2 = "number" == typeof e4) && 0 * e4 == 0) {
                 if (y2.s = 1 / e4 < 0 ? (e4 = -e4, -1) : 1, e4 === ~~e4) {
                   for (u2 = 0, h2 = e4; h2 >= 10; h2 /= 10, u2++)
                     ;
-                  return void (u2 > O ? y2.c = y2.e = null : (y2.e = u2, y2.c = [e4]));
+                  return void (u2 > $ ? y2.c = y2.e = null : (y2.e = u2, y2.c = [e4]));
                 }
                 m2 = String(e4);
               } else {
@@ -1373,9 +1373,9 @@ var algosdk_min = { exports: {} };
             if (m2 = m2.slice(h2, ++g2)) {
               if (g2 -= h2, f2 && W.DEBUG && g2 > 15 && (e4 > p || e4 !== c(e4)))
                 throw Error(l + y2.s * e4);
-              if ((u2 = u2 - h2 - 1) > O)
+              if ((u2 = u2 - h2 - 1) > $)
                 y2.c = y2.e = null;
-              else if (u2 < $)
+              else if (u2 < C)
                 y2.c = [y2.e = 0];
               else {
                 if (y2.e = u2, y2.c = [], h2 = (u2 + 1) % d, u2 < 0 && (h2 += d), h2 < g2) {
@@ -1425,7 +1425,7 @@ var algosdk_min = { exports: {} };
               ;
             for (n3 = t4[0]; n3 >= 10; n3 /= 10, s4++)
               ;
-            return (r4 = s4 + r4 * d - 1) > O ? e4.c = e4.e = null : r4 < $ ? e4.c = [e4.e = 0] : (e4.e = r4, e4.c = t4), e4;
+            return (r4 = s4 + r4 * d - 1) > $ ? e4.c = e4.e = null : r4 < C ? e4.c = [e4.e = 0] : (e4.e = r4, e4.c = t4), e4;
           }
           function G(e4, t4, r4, s4) {
             var n3, i3, o2, u2, l2, p2, g2, m2 = e4.c, y2 = f;
@@ -1465,7 +1465,7 @@ var algosdk_min = { exports: {} };
                 for (i3 = m2.length; 0 === m2[--i3]; m2.pop())
                   ;
               }
-              e4.e > O ? e4.c = e4.e = null : e4.e < $ && (e4.c = [e4.e = 0]);
+              e4.e > $ ? e4.c = e4.e = null : e4.e < C && (e4.c = [e4.e = 0]);
             }
             return e4;
           }
@@ -1480,21 +1480,21 @@ var algosdk_min = { exports: {} };
                 throw Error(u + "Object expected: " + e4);
               if (e4.hasOwnProperty(t4 = "DECIMAL_PLACES") && (v(r4 = e4[t4], 0, m, t4), P = r4), e4.hasOwnProperty(t4 = "ROUNDING_MODE") && (v(r4 = e4[t4], 0, 8, t4), j = r4), e4.hasOwnProperty(t4 = "EXPONENTIAL_AT") && ((r4 = e4[t4]) && r4.pop ? (v(r4[0], -m, 0, t4), v(r4[1], 0, m, t4), q = r4[0], D = r4[1]) : (v(r4, -m, m, t4), q = -(D = r4 < 0 ? -r4 : r4))), e4.hasOwnProperty(t4 = "RANGE"))
                 if ((r4 = e4[t4]) && r4.pop)
-                  v(r4[0], -m, -1, t4), v(r4[1], 1, m, t4), $ = r4[0], O = r4[1];
+                  v(r4[0], -m, -1, t4), v(r4[1], 1, m, t4), C = r4[0], $ = r4[1];
                 else {
                   if (v(r4, -m, m, t4), !r4)
                     throw Error(u + t4 + " cannot be zero: " + r4);
-                  $ = -(O = r4 < 0 ? -r4 : r4);
+                  C = -($ = r4 < 0 ? -r4 : r4);
                 }
               if (e4.hasOwnProperty(t4 = "CRYPTO")) {
                 if ((r4 = e4[t4]) !== !!r4)
                   throw Error(u + t4 + " not true or false: " + r4);
                 if (r4) {
                   if ("undefined" == typeof crypto || !crypto || !crypto.getRandomValues && !crypto.randomBytes)
-                    throw C = !r4, Error(u + "crypto unavailable");
-                  C = r4;
+                    throw O = !r4, Error(u + "crypto unavailable");
+                  O = r4;
                 } else
-                  C = r4;
+                  O = r4;
               }
               if (e4.hasOwnProperty(t4 = "MODULO_MODE") && (v(r4 = e4[t4], 0, 9, t4), L = r4), e4.hasOwnProperty(t4 = "POW_PRECISION") && (v(r4 = e4[t4], 0, m, t4), M = r4), e4.hasOwnProperty(t4 = "FORMAT")) {
                 if ("object" != typeof (r4 = e4[t4]))
@@ -1507,7 +1507,7 @@ var algosdk_min = { exports: {} };
                 F = r4;
               }
             }
-            return { DECIMAL_PLACES: P, ROUNDING_MODE: j, EXPONENTIAL_AT: [q, D], RANGE: [$, O], CRYPTO: C, MODULO_MODE: L, POW_PRECISION: M, FORMAT: N, ALPHABET: F };
+            return { DECIMAL_PLACES: P, ROUNDING_MODE: j, EXPONENTIAL_AT: [q, D], RANGE: [C, $], CRYPTO: O, MODULO_MODE: L, POW_PRECISION: M, FORMAT: N, ALPHABET: F };
           }, W.isBigNumber = function(e4) {
             if (!e4 || true !== e4._isBigNumber)
               return false;
@@ -1543,19 +1543,19 @@ var algosdk_min = { exports: {} };
             return 8388608 * (1073741824 * Math.random() | 0) + (8388608 * Math.random() | 0);
           }, function(e4) {
             var t4, r4, s4, n3, i3, o2 = 0, l2 = [], h2 = new W(U);
-            if (null == e4 ? e4 = P : v(e4, 0, m), n3 = a(e4 / d), C)
+            if (null == e4 ? e4 = P : v(e4, 0, m), n3 = a(e4 / d), O)
               if (crypto.getRandomValues) {
                 for (t4 = crypto.getRandomValues(new Uint32Array(n3 *= 2)); o2 < n3; )
                   (i3 = 131072 * t4[o2] + (t4[o2 + 1] >>> 11)) >= 9e15 ? (r4 = crypto.getRandomValues(new Uint32Array(2)), t4[o2] = r4[0], t4[o2 + 1] = r4[1]) : (l2.push(i3 % 1e14), o2 += 2);
                 o2 = n3 / 2;
               } else {
                 if (!crypto.randomBytes)
-                  throw C = false, Error(u + "crypto unavailable");
+                  throw O = false, Error(u + "crypto unavailable");
                 for (t4 = crypto.randomBytes(n3 *= 7); o2 < n3; )
                   (i3 = 281474976710656 * (31 & t4[o2]) + 1099511627776 * t4[o2 + 1] + 4294967296 * t4[o2 + 2] + 16777216 * t4[o2 + 3] + (t4[o2 + 4] << 16) + (t4[o2 + 5] << 8) + t4[o2 + 6]) >= 9e15 ? crypto.randomBytes(7).copy(t4, o2) : (l2.push(i3 % 1e14), o2 += 7);
                 o2 = n3 / 7;
               }
-            if (!C)
+            if (!O)
               for (; o2 < n3; )
                 (i3 = E()) < 9e15 && (l2[o2++] = i3 % 1e14);
             for (n3 = l2[--o2], e4 %= d, n3 && e4 && (i3 = f[d - e4], l2[o2] = c(n3 / i3) * i3); 0 === l2[o2]; l2.pop(), o2--)
@@ -1631,7 +1631,7 @@ var algosdk_min = { exports: {} };
                 ;
             }
             return function(s4, n3, i3, o2, a2) {
-              var u2, l2, p2, f2, g2, m2, w2, b2, v2, x2, A2, _2, E2, S2, T2, R2, k2, I2 = s4.s == n3.s ? 1 : -1, B2 = s4.c, U2 = n3.c;
+              var u2, l2, p2, f2, g2, m2, w2, b2, v2, x2, A2, _2, E2, T2, S2, k2, R2, I2 = s4.s == n3.s ? 1 : -1, B2 = s4.c, U2 = n3.c;
               if (!(B2 && B2[0] && U2 && U2[0]))
                 return new W(s4.s && n3.s && (B2 ? !U2 || B2[0] != U2[0] : U2) ? B2 && 0 == B2[0] || !U2 ? 0 * I2 : I2 / 0 : NaN);
               for (v2 = (b2 = new W(I2)).c = [], I2 = i3 + (l2 = s4.e - n3.e) + 1, a2 || (a2 = h, l2 = y(s4.e / d) - y(n3.e / d), I2 = I2 / d | 0), p2 = 0; U2[p2] == (B2[p2] || 0); p2++)
@@ -1639,23 +1639,23 @@ var algosdk_min = { exports: {} };
               if (U2[p2] > (B2[p2] || 0) && l2--, I2 < 0)
                 v2.push(1), f2 = true;
               else {
-                for (S2 = B2.length, R2 = U2.length, p2 = 0, I2 += 2, (g2 = c(a2 / (U2[0] + 1))) > 1 && (U2 = e4(U2, g2, a2), B2 = e4(B2, g2, a2), R2 = U2.length, S2 = B2.length), E2 = R2, A2 = (x2 = B2.slice(0, R2)).length; A2 < R2; x2[A2++] = 0)
+                for (T2 = B2.length, k2 = U2.length, p2 = 0, I2 += 2, (g2 = c(a2 / (U2[0] + 1))) > 1 && (U2 = e4(U2, g2, a2), B2 = e4(B2, g2, a2), k2 = U2.length, T2 = B2.length), E2 = k2, A2 = (x2 = B2.slice(0, k2)).length; A2 < k2; x2[A2++] = 0)
                   ;
-                k2 = U2.slice(), k2 = [0].concat(k2), T2 = U2[0], U2[1] >= a2 / 2 && T2++;
+                R2 = U2.slice(), R2 = [0].concat(R2), S2 = U2[0], U2[1] >= a2 / 2 && S2++;
                 do {
-                  if (g2 = 0, (u2 = t4(U2, x2, R2, A2)) < 0) {
-                    if (_2 = x2[0], R2 != A2 && (_2 = _2 * a2 + (x2[1] || 0)), (g2 = c(_2 / T2)) > 1)
+                  if (g2 = 0, (u2 = t4(U2, x2, k2, A2)) < 0) {
+                    if (_2 = x2[0], k2 != A2 && (_2 = _2 * a2 + (x2[1] || 0)), (g2 = c(_2 / S2)) > 1)
                       for (g2 >= a2 && (g2 = a2 - 1), w2 = (m2 = e4(U2, g2, a2)).length, A2 = x2.length; 1 == t4(m2, x2, w2, A2); )
-                        g2--, r4(m2, R2 < w2 ? k2 : U2, w2, a2), w2 = m2.length, u2 = 1;
+                        g2--, r4(m2, k2 < w2 ? R2 : U2, w2, a2), w2 = m2.length, u2 = 1;
                     else
                       0 == g2 && (u2 = g2 = 1), w2 = (m2 = U2.slice()).length;
                     if (w2 < A2 && (m2 = [0].concat(m2)), r4(x2, m2, A2, a2), A2 = x2.length, -1 == u2)
-                      for (; t4(U2, x2, R2, A2) < 1; )
-                        g2++, r4(x2, R2 < A2 ? k2 : U2, A2, a2), A2 = x2.length;
+                      for (; t4(U2, x2, k2, A2) < 1; )
+                        g2++, r4(x2, k2 < A2 ? R2 : U2, A2, a2), A2 = x2.length;
                   } else
                     0 === u2 && (g2++, x2 = [0]);
                   v2[p2++] = g2, x2[0] ? x2[A2++] = B2[E2] || 0 : (x2 = [B2[E2]], A2 = 1);
-                } while ((E2++ < S2 || null != x2[0]) && I2--);
+                } while ((E2++ < T2 || null != x2[0]) && I2--);
                 f2 = null != x2[0], v2[0] || v2.splice(0, 1);
               }
               if (a2 == h) {
@@ -1666,14 +1666,14 @@ var algosdk_min = { exports: {} };
                 b2.e = l2, b2.r = +f2;
               return b2;
             };
-          }(), S = /^(-?)0([xbo])(?=\w[\w.]*$)/i, T = /^([^.]+)\.$/, R = /^\.([^.]+)$/, k = /^-?(Infinity|NaN)$/, I = /^\s*\+(?=[\w.])|^\s+|\s+$/g, n2 = function(e4, t4, r4, s4) {
+          }(), T = /^(-?)0([xbo])(?=\w[\w.]*$)/i, S = /^([^.]+)\.$/, k = /^\.([^.]+)$/, R = /^-?(Infinity|NaN)$/, I = /^\s*\+(?=[\w.])|^\s+|\s+$/g, n2 = function(e4, t4, r4, s4) {
             var n3, i3 = r4 ? t4 : t4.replace(I, "");
-            if (k.test(i3))
+            if (R.test(i3))
               e4.s = isNaN(i3) ? null : i3 < 0 ? -1 : 1;
             else {
-              if (!r4 && (i3 = i3.replace(S, function(e5, t5, r5) {
+              if (!r4 && (i3 = i3.replace(T, function(e5, t5, r5) {
                 return n3 = "x" == (r5 = r5.toLowerCase()) ? 16 : "b" == r5 ? 2 : 8, s4 && s4 != n3 ? e5 : t5;
-              }), s4 && (n3 = s4, i3 = i3.replace(T, "$1").replace(R, "0.$1")), t4 != i3))
+              }), s4 && (n3 = s4, i3 = i3.replace(S, "$1").replace(k, "0.$1")), t4 != i3))
                 return new W(i3, n3);
               if (W.DEBUG)
                 throw Error(u + "Not a" + (s4 ? " base " + s4 : "") + " number: " + t4);
@@ -1895,9 +1895,9 @@ var algosdk_min = { exports: {} };
               throw Error(u + "Argument " + (c2.isInteger() ? "out of range: " : "not an integer: ") + H(c2));
             if (!b2)
               return new W(y2);
-            for (t4 = new W(U), h2 = s4 = new W(U), n3 = l2 = new W(U), m2 = w(b2), o2 = t4.e = m2.length - y2.e - 1, t4.c[0] = f[(a2 = o2 % d) < 0 ? d + a2 : a2], e4 = !e4 || c2.comparedTo(t4) > 0 ? o2 > 0 ? t4 : h2 : c2, a2 = O, O = 1 / 0, c2 = new W(m2), l2.c[0] = 0; p2 = r3(c2, t4, 0, 1), 1 != (i3 = s4.plus(p2.times(n3))).comparedTo(e4); )
+            for (t4 = new W(U), h2 = s4 = new W(U), n3 = l2 = new W(U), m2 = w(b2), o2 = t4.e = m2.length - y2.e - 1, t4.c[0] = f[(a2 = o2 % d) < 0 ? d + a2 : a2], e4 = !e4 || c2.comparedTo(t4) > 0 ? o2 > 0 ? t4 : h2 : c2, a2 = $, $ = 1 / 0, c2 = new W(m2), l2.c[0] = 0; p2 = r3(c2, t4, 0, 1), 1 != (i3 = s4.plus(p2.times(n3))).comparedTo(e4); )
               s4 = n3, n3 = i3, h2 = l2.plus(p2.times(i3 = h2)), l2 = i3, t4 = c2.minus(p2.times(i3 = t4)), c2 = i3;
-            return i3 = r3(e4.minus(s4), n3, 0, 1), l2 = l2.plus(i3.times(h2)), s4 = s4.plus(i3.times(n3)), l2.s = h2.s = y2.s, g2 = r3(h2, n3, o2 *= 2, j).minus(y2).abs().comparedTo(r3(l2, s4, o2, j).minus(y2).abs()) < 1 ? [h2, n3] : [l2, s4], O = a2, g2;
+            return i3 = r3(e4.minus(s4), n3, 0, 1), l2 = l2.plus(i3.times(h2)), s4 = s4.plus(i3.times(n3)), l2.s = h2.s = y2.s, g2 = r3(h2, n3, o2 *= 2, j).minus(y2).abs().comparedTo(r3(l2, s4, o2, j).minus(y2).abs()) < 1 ? [h2, n3] : [l2, s4], $ = a2, g2;
           }, B.toNumber = function() {
             return +H(this);
           }, B.toPrecision = function(e4, t4) {
@@ -1908,9 +1908,9 @@ var algosdk_min = { exports: {} };
           }, B.valueOf = B.toJSON = function() {
             return H(this);
           }, B._isBigNumber = true, null != t3 && W.set(t3), W;
-        }(), i.default = i.BigNumber = i, void 0 === (s2 = function() {
+        }(), i.default = i.BigNumber = i, void 0 === (s2 = (function() {
           return i;
-        }.call(t2, r2, t2, e2)) || (e2.exports = s2);
+        }).call(t2, r2, t2, e2)) || (e2.exports = s2);
       }();
     }, 486: (e2, t2, r2) => {
       const s2 = r2(155), n = r2(525), i = "function" == typeof Symbol && "function" == typeof Symbol.for ? Symbol.for("nodejs.util.inspect.custom") : null;
@@ -2049,14 +2049,14 @@ var algosdk_min = { exports: {} };
               return B(this, t3, r3);
             case "utf8":
             case "utf-8":
-              return T(this, t3, r3);
+              return S(this, t3, r3);
             case "ascii":
-              return k(this, t3, r3);
+              return R(this, t3, r3);
             case "latin1":
             case "binary":
               return I(this, t3, r3);
             case "base64":
-              return S(this, t3, r3);
+              return T(this, t3, r3);
             case "ucs2":
             case "ucs-2":
             case "utf16le":
@@ -2158,10 +2158,10 @@ var algosdk_min = { exports: {} };
           return i2;
         }(t3, e3.length - r3), e3, r3, s3);
       }
-      function S(e3, t3, r3) {
+      function T(e3, t3, r3) {
         return 0 === t3 && r3 === e3.length ? s2.fromByteArray(e3) : s2.fromByteArray(e3.slice(t3, r3));
       }
-      function T(e3, t3, r3) {
+      function S(e3, t3, r3) {
         r3 = Math.min(e3.length, r3);
         const s3 = [];
         let n2 = t3;
@@ -2188,11 +2188,11 @@ var algosdk_min = { exports: {} };
         }
         return function(e4) {
           const t4 = e4.length;
-          if (t4 <= R)
+          if (t4 <= k)
             return String.fromCharCode.apply(String, e4);
           let r4 = "", s4 = 0;
           for (; s4 < t4; )
-            r4 += String.fromCharCode.apply(String, e4.slice(s4, s4 += R));
+            r4 += String.fromCharCode.apply(String, e4.slice(s4, s4 += k));
           return r4;
         }(s3);
       }
@@ -2298,7 +2298,7 @@ var algosdk_min = { exports: {} };
         return this;
       }, c.prototype.toString = function() {
         const e3 = this.length;
-        return 0 === e3 ? "" : 0 === arguments.length ? T(this, 0, e3) : m.apply(this, arguments);
+        return 0 === e3 ? "" : 0 === arguments.length ? S(this, 0, e3) : m.apply(this, arguments);
       }, c.prototype.toLocaleString = c.prototype.toString, c.prototype.equals = function(e3) {
         if (!c.isBuffer(e3))
           throw new TypeError("Argument must be a Buffer");
@@ -2375,8 +2375,8 @@ var algosdk_min = { exports: {} };
       }, c.prototype.toJSON = function() {
         return { type: "Buffer", data: Array.prototype.slice.call(this._arr || this, 0) };
       };
-      const R = 4096;
-      function k(e3, t3, r3) {
+      const k = 4096;
+      function R(e3, t3, r3) {
         let s3 = "";
         r3 = Math.min(e3.length, r3);
         for (let n2 = t3; n2 < r3; ++n2)
@@ -2433,17 +2433,17 @@ var algosdk_min = { exports: {} };
         let o2 = Number(t3 >> BigInt(32) & BigInt(4294967295));
         return e3[r3 + 3] = o2, o2 >>= 8, e3[r3 + 2] = o2, o2 >>= 8, e3[r3 + 1] = o2, o2 >>= 8, e3[r3] = o2, r3 + 8;
       }
-      function $(e3, t3, r3, s3, n2, i2) {
+      function C(e3, t3, r3, s3, n2, i2) {
         if (r3 + s3 > e3.length)
           throw new RangeError("Index out of range");
         if (r3 < 0)
           throw new RangeError("Index out of range");
       }
-      function O(e3, t3, r3, s3, i2) {
-        return t3 = +t3, r3 >>>= 0, i2 || $(e3, 0, r3, 4), n.write(e3, t3, r3, s3, 23, 4), r3 + 4;
+      function $(e3, t3, r3, s3, i2) {
+        return t3 = +t3, r3 >>>= 0, i2 || C(e3, 0, r3, 4), n.write(e3, t3, r3, s3, 23, 4), r3 + 4;
       }
-      function C(e3, t3, r3, s3, i2) {
-        return t3 = +t3, r3 >>>= 0, i2 || $(e3, 0, r3, 8), n.write(e3, t3, r3, s3, 52, 8), r3 + 8;
+      function O(e3, t3, r3, s3, i2) {
+        return t3 = +t3, r3 >>>= 0, i2 || C(e3, 0, r3, 8), n.write(e3, t3, r3, s3, 52, 8), r3 + 8;
       }
       c.prototype.slice = function(e3, t3) {
         const r3 = this.length;
@@ -2589,13 +2589,13 @@ var algosdk_min = { exports: {} };
       }), c.prototype.writeBigInt64BE = Z(function(e3, t3 = 0) {
         return D(this, e3, t3, -BigInt("0x8000000000000000"), BigInt("0x7fffffffffffffff"));
       }), c.prototype.writeFloatLE = function(e3, t3, r3) {
-        return O(this, e3, t3, true, r3);
+        return $(this, e3, t3, true, r3);
       }, c.prototype.writeFloatBE = function(e3, t3, r3) {
-        return O(this, e3, t3, false, r3);
+        return $(this, e3, t3, false, r3);
       }, c.prototype.writeDoubleLE = function(e3, t3, r3) {
-        return C(this, e3, t3, true, r3);
+        return O(this, e3, t3, true, r3);
       }, c.prototype.writeDoubleBE = function(e3, t3, r3) {
-        return C(this, e3, t3, false, r3);
+        return O(this, e3, t3, false, r3);
       }, c.prototype.copy = function(e3, t3, r3, s3) {
         if (!c.isBuffer(e3))
           throw new TypeError("argument should be a Buffer");
@@ -2780,45 +2780,45 @@ var algosdk_min = { exports: {} };
       function Q() {
         throw new Error("BigInt not supported");
       }
-    }, 297: function(e2, t2) {
-      var r2 = "undefined" != typeof self ? self : this, s2 = function() {
+    }, 297: (e2, t2, r2) => {
+      var s2 = "undefined" != typeof globalThis && globalThis || "undefined" != typeof self && self || void 0 !== r2.g && r2.g, n = function() {
         function e3() {
-          this.fetch = false, this.DOMException = r2.DOMException;
+          this.fetch = false, this.DOMException = s2.DOMException;
         }
-        return e3.prototype = r2, new e3();
+        return e3.prototype = s2, new e3();
       }();
       !function(e3) {
         !function(t3) {
-          var r3 = { searchParams: "URLSearchParams" in e3, iterable: "Symbol" in e3 && "iterator" in Symbol, blob: "FileReader" in e3 && "Blob" in e3 && function() {
+          var r3 = void 0 !== e3 && e3 || "undefined" != typeof self && self || void 0 !== r3 && r3, s3 = { searchParams: "URLSearchParams" in r3, iterable: "Symbol" in r3 && "iterator" in Symbol, blob: "FileReader" in r3 && "Blob" in r3 && function() {
             try {
               return new Blob(), true;
             } catch (e4) {
               return false;
             }
-          }(), formData: "FormData" in e3, arrayBuffer: "ArrayBuffer" in e3 };
-          if (r3.arrayBuffer)
-            var s3 = ["[object Int8Array]", "[object Uint8Array]", "[object Uint8ClampedArray]", "[object Int16Array]", "[object Uint16Array]", "[object Int32Array]", "[object Uint32Array]", "[object Float32Array]", "[object Float64Array]"], n2 = ArrayBuffer.isView || function(e4) {
-              return e4 && s3.indexOf(Object.prototype.toString.call(e4)) > -1;
+          }(), formData: "FormData" in r3, arrayBuffer: "ArrayBuffer" in r3 };
+          if (s3.arrayBuffer)
+            var n2 = ["[object Int8Array]", "[object Uint8Array]", "[object Uint8ClampedArray]", "[object Int16Array]", "[object Uint16Array]", "[object Int32Array]", "[object Uint32Array]", "[object Float32Array]", "[object Float64Array]"], i2 = ArrayBuffer.isView || function(e4) {
+              return e4 && n2.indexOf(Object.prototype.toString.call(e4)) > -1;
             };
-          function i(e4) {
-            if ("string" != typeof e4 && (e4 = String(e4)), /[^a-z0-9\-#$%&'*+.^_`|~]/i.test(e4))
-              throw new TypeError("Invalid character in header field name");
+          function o(e4) {
+            if ("string" != typeof e4 && (e4 = String(e4)), /[^a-z0-9\-#$%&'*+.^_`|~!]/i.test(e4) || "" === e4)
+              throw new TypeError('Invalid character in header field name: "' + e4 + '"');
             return e4.toLowerCase();
           }
-          function o(e4) {
+          function a(e4) {
             return "string" != typeof e4 && (e4 = String(e4)), e4;
           }
-          function a(e4) {
+          function c(e4) {
             var t4 = { next: function() {
               var t5 = e4.shift();
               return { done: void 0 === t5, value: t5 };
             } };
-            return r3.iterable && (t4[Symbol.iterator] = function() {
+            return s3.iterable && (t4[Symbol.iterator] = function() {
               return t4;
             }), t4;
           }
-          function c(e4) {
-            this.map = {}, e4 instanceof c ? e4.forEach(function(e5, t4) {
+          function u(e4) {
+            this.map = {}, e4 instanceof u ? e4.forEach(function(e5, t4) {
               this.append(t4, e5);
             }, this) : Array.isArray(e4) ? e4.forEach(function(e5) {
               this.append(e5[0], e5[1]);
@@ -2826,12 +2826,12 @@ var algosdk_min = { exports: {} };
               this.append(t4, e4[t4]);
             }, this);
           }
-          function u(e4) {
+          function l(e4) {
             if (e4.bodyUsed)
               return Promise.reject(new TypeError("Already read"));
             e4.bodyUsed = true;
           }
-          function l(e4) {
+          function h(e4) {
             return new Promise(function(t4, r4) {
               e4.onload = function() {
                 t4(e4.result);
@@ -2840,22 +2840,22 @@ var algosdk_min = { exports: {} };
               };
             });
           }
-          function h(e4) {
-            var t4 = new FileReader(), r4 = l(t4);
+          function d(e4) {
+            var t4 = new FileReader(), r4 = h(t4);
             return t4.readAsArrayBuffer(e4), r4;
           }
-          function d(e4) {
+          function p(e4) {
             if (e4.slice)
               return e4.slice(0);
             var t4 = new Uint8Array(e4.byteLength);
             return t4.set(new Uint8Array(e4)), t4.buffer;
           }
-          function p() {
+          function f() {
             return this.bodyUsed = false, this._initBody = function(e4) {
               var t4;
-              this._bodyInit = e4, e4 ? "string" == typeof e4 ? this._bodyText = e4 : r3.blob && Blob.prototype.isPrototypeOf(e4) ? this._bodyBlob = e4 : r3.formData && FormData.prototype.isPrototypeOf(e4) ? this._bodyFormData = e4 : r3.searchParams && URLSearchParams.prototype.isPrototypeOf(e4) ? this._bodyText = e4.toString() : r3.arrayBuffer && r3.blob && (t4 = e4) && DataView.prototype.isPrototypeOf(t4) ? (this._bodyArrayBuffer = d(e4.buffer), this._bodyInit = new Blob([this._bodyArrayBuffer])) : r3.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(e4) || n2(e4)) ? this._bodyArrayBuffer = d(e4) : this._bodyText = e4 = Object.prototype.toString.call(e4) : this._bodyText = "", this.headers.get("content-type") || ("string" == typeof e4 ? this.headers.set("content-type", "text/plain;charset=UTF-8") : this._bodyBlob && this._bodyBlob.type ? this.headers.set("content-type", this._bodyBlob.type) : r3.searchParams && URLSearchParams.prototype.isPrototypeOf(e4) && this.headers.set("content-type", "application/x-www-form-urlencoded;charset=UTF-8"));
-            }, r3.blob && (this.blob = function() {
-              var e4 = u(this);
+              this.bodyUsed = this.bodyUsed, this._bodyInit = e4, e4 ? "string" == typeof e4 ? this._bodyText = e4 : s3.blob && Blob.prototype.isPrototypeOf(e4) ? this._bodyBlob = e4 : s3.formData && FormData.prototype.isPrototypeOf(e4) ? this._bodyFormData = e4 : s3.searchParams && URLSearchParams.prototype.isPrototypeOf(e4) ? this._bodyText = e4.toString() : s3.arrayBuffer && s3.blob && (t4 = e4) && DataView.prototype.isPrototypeOf(t4) ? (this._bodyArrayBuffer = p(e4.buffer), this._bodyInit = new Blob([this._bodyArrayBuffer])) : s3.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(e4) || i2(e4)) ? this._bodyArrayBuffer = p(e4) : this._bodyText = e4 = Object.prototype.toString.call(e4) : this._bodyText = "", this.headers.get("content-type") || ("string" == typeof e4 ? this.headers.set("content-type", "text/plain;charset=UTF-8") : this._bodyBlob && this._bodyBlob.type ? this.headers.set("content-type", this._bodyBlob.type) : s3.searchParams && URLSearchParams.prototype.isPrototypeOf(e4) && this.headers.set("content-type", "application/x-www-form-urlencoded;charset=UTF-8"));
+            }, s3.blob && (this.blob = function() {
+              var e4 = l(this);
               if (e4)
                 return e4;
               if (this._bodyBlob)
@@ -2866,13 +2866,13 @@ var algosdk_min = { exports: {} };
                 throw new Error("could not read FormData body as blob");
               return Promise.resolve(new Blob([this._bodyText]));
             }, this.arrayBuffer = function() {
-              return this._bodyArrayBuffer ? u(this) || Promise.resolve(this._bodyArrayBuffer) : this.blob().then(h);
+              return this._bodyArrayBuffer ? l(this) || (ArrayBuffer.isView(this._bodyArrayBuffer) ? Promise.resolve(this._bodyArrayBuffer.buffer.slice(this._bodyArrayBuffer.byteOffset, this._bodyArrayBuffer.byteOffset + this._bodyArrayBuffer.byteLength)) : Promise.resolve(this._bodyArrayBuffer)) : this.blob().then(d);
             }), this.text = function() {
-              var e4, t4, r4, s4 = u(this);
+              var e4, t4, r4, s4 = l(this);
               if (s4)
                 return s4;
               if (this._bodyBlob)
-                return e4 = this._bodyBlob, r4 = l(t4 = new FileReader()), t4.readAsText(e4), r4;
+                return e4 = this._bodyBlob, r4 = h(t4 = new FileReader()), t4.readAsText(e4), r4;
               if (this._bodyArrayBuffer)
                 return Promise.resolve(function(e5) {
                   for (var t5 = new Uint8Array(e5), r5 = new Array(t5.length), s5 = 0; s5 < t5.length; s5++)
@@ -2882,57 +2882,62 @@ var algosdk_min = { exports: {} };
               if (this._bodyFormData)
                 throw new Error("could not read FormData body as text");
               return Promise.resolve(this._bodyText);
-            }, r3.formData && (this.formData = function() {
-              return this.text().then(m);
+            }, s3.formData && (this.formData = function() {
+              return this.text().then(y);
             }), this.json = function() {
               return this.text().then(JSON.parse);
             }, this;
           }
-          c.prototype.append = function(e4, t4) {
-            e4 = i(e4), t4 = o(t4);
+          u.prototype.append = function(e4, t4) {
+            e4 = o(e4), t4 = a(t4);
             var r4 = this.map[e4];
             this.map[e4] = r4 ? r4 + ", " + t4 : t4;
-          }, c.prototype.delete = function(e4) {
-            delete this.map[i(e4)];
-          }, c.prototype.get = function(e4) {
-            return e4 = i(e4), this.has(e4) ? this.map[e4] : null;
-          }, c.prototype.has = function(e4) {
-            return this.map.hasOwnProperty(i(e4));
-          }, c.prototype.set = function(e4, t4) {
-            this.map[i(e4)] = o(t4);
-          }, c.prototype.forEach = function(e4, t4) {
+          }, u.prototype.delete = function(e4) {
+            delete this.map[o(e4)];
+          }, u.prototype.get = function(e4) {
+            return e4 = o(e4), this.has(e4) ? this.map[e4] : null;
+          }, u.prototype.has = function(e4) {
+            return this.map.hasOwnProperty(o(e4));
+          }, u.prototype.set = function(e4, t4) {
+            this.map[o(e4)] = a(t4);
+          }, u.prototype.forEach = function(e4, t4) {
             for (var r4 in this.map)
               this.map.hasOwnProperty(r4) && e4.call(t4, this.map[r4], r4, this);
-          }, c.prototype.keys = function() {
+          }, u.prototype.keys = function() {
             var e4 = [];
             return this.forEach(function(t4, r4) {
               e4.push(r4);
-            }), a(e4);
-          }, c.prototype.values = function() {
+            }), c(e4);
+          }, u.prototype.values = function() {
             var e4 = [];
             return this.forEach(function(t4) {
               e4.push(t4);
-            }), a(e4);
-          }, c.prototype.entries = function() {
+            }), c(e4);
+          }, u.prototype.entries = function() {
             var e4 = [];
             return this.forEach(function(t4, r4) {
               e4.push([r4, t4]);
-            }), a(e4);
-          }, r3.iterable && (c.prototype[Symbol.iterator] = c.prototype.entries);
-          var f = ["DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT"];
-          function g(e4, t4) {
+            }), c(e4);
+          }, s3.iterable && (u.prototype[Symbol.iterator] = u.prototype.entries);
+          var g = ["DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT"];
+          function m(e4, t4) {
+            if (!(this instanceof m))
+              throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
             var r4, s4, n3 = (t4 = t4 || {}).body;
-            if (e4 instanceof g) {
+            if (e4 instanceof m) {
               if (e4.bodyUsed)
                 throw new TypeError("Already read");
-              this.url = e4.url, this.credentials = e4.credentials, t4.headers || (this.headers = new c(e4.headers)), this.method = e4.method, this.mode = e4.mode, this.signal = e4.signal, n3 || null == e4._bodyInit || (n3 = e4._bodyInit, e4.bodyUsed = true);
+              this.url = e4.url, this.credentials = e4.credentials, t4.headers || (this.headers = new u(e4.headers)), this.method = e4.method, this.mode = e4.mode, this.signal = e4.signal, n3 || null == e4._bodyInit || (n3 = e4._bodyInit, e4.bodyUsed = true);
             } else
               this.url = String(e4);
-            if (this.credentials = t4.credentials || this.credentials || "same-origin", !t4.headers && this.headers || (this.headers = new c(t4.headers)), this.method = (s4 = (r4 = t4.method || this.method || "GET").toUpperCase(), f.indexOf(s4) > -1 ? s4 : r4), this.mode = t4.mode || this.mode || null, this.signal = t4.signal || this.signal, this.referrer = null, ("GET" === this.method || "HEAD" === this.method) && n3)
+            if (this.credentials = t4.credentials || this.credentials || "same-origin", !t4.headers && this.headers || (this.headers = new u(t4.headers)), this.method = (s4 = (r4 = t4.method || this.method || "GET").toUpperCase(), g.indexOf(s4) > -1 ? s4 : r4), this.mode = t4.mode || this.mode || null, this.signal = t4.signal || this.signal, this.referrer = null, ("GET" === this.method || "HEAD" === this.method) && n3)
               throw new TypeError("Body not allowed for GET or HEAD requests");
-            this._initBody(n3);
+            if (this._initBody(n3), !("GET" !== this.method && "HEAD" !== this.method || "no-store" !== t4.cache && "no-cache" !== t4.cache)) {
+              var i3 = /([?&])_=[^&]*/;
+              i3.test(this.url) ? this.url = this.url.replace(i3, "$1_=" + (/* @__PURE__ */ new Date()).getTime()) : this.url += (/\?/.test(this.url) ? "&" : "?") + "_=" + (/* @__PURE__ */ new Date()).getTime();
+            }
           }
-          function m(e4) {
+          function y(e4) {
             var t4 = new FormData();
             return e4.trim().split("&").forEach(function(e5) {
               if (e5) {
@@ -2941,23 +2946,25 @@ var algosdk_min = { exports: {} };
               }
             }), t4;
           }
-          function y(e4, t4) {
-            t4 || (t4 = {}), this.type = "default", this.status = void 0 === t4.status ? 200 : t4.status, this.ok = this.status >= 200 && this.status < 300, this.statusText = "statusText" in t4 ? t4.statusText : "OK", this.headers = new c(t4.headers), this.url = t4.url || "", this._initBody(e4);
+          function w(e4, t4) {
+            if (!(this instanceof w))
+              throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
+            t4 || (t4 = {}), this.type = "default", this.status = void 0 === t4.status ? 200 : t4.status, this.ok = this.status >= 200 && this.status < 300, this.statusText = void 0 === t4.statusText ? "" : "" + t4.statusText, this.headers = new u(t4.headers), this.url = t4.url || "", this._initBody(e4);
           }
-          g.prototype.clone = function() {
-            return new g(this, { body: this._bodyInit });
-          }, p.call(g.prototype), p.call(y.prototype), y.prototype.clone = function() {
-            return new y(this._bodyInit, { status: this.status, statusText: this.statusText, headers: new c(this.headers), url: this.url });
-          }, y.error = function() {
-            var e4 = new y(null, { status: 0, statusText: "" });
+          m.prototype.clone = function() {
+            return new m(this, { body: this._bodyInit });
+          }, f.call(m.prototype), f.call(w.prototype), w.prototype.clone = function() {
+            return new w(this._bodyInit, { status: this.status, statusText: this.statusText, headers: new u(this.headers), url: this.url });
+          }, w.error = function() {
+            var e4 = new w(null, { status: 0, statusText: "" });
             return e4.type = "error", e4;
           };
-          var w = [301, 302, 303, 307, 308];
-          y.redirect = function(e4, t4) {
-            if (-1 === w.indexOf(t4))
+          var b = [301, 302, 303, 307, 308];
+          w.redirect = function(e4, t4) {
+            if (-1 === b.indexOf(t4))
               throw new RangeError("Invalid status code");
-            return new y(null, { status: t4, headers: { location: e4 } });
-          }, t3.DOMException = e3.DOMException;
+            return new w(null, { status: t4, headers: { location: e4 } });
+          }, t3.DOMException = r3.DOMException;
           try {
             new t3.DOMException();
           } catch (e4) {
@@ -2967,44 +2974,62 @@ var algosdk_min = { exports: {} };
               this.stack = r4.stack;
             }, t3.DOMException.prototype = Object.create(Error.prototype), t3.DOMException.prototype.constructor = t3.DOMException;
           }
-          function b(e4, s4) {
-            return new Promise(function(n3, i2) {
-              var o2 = new g(e4, s4);
-              if (o2.signal && o2.signal.aborted)
-                return i2(new t3.DOMException("Aborted", "AbortError"));
-              var a2 = new XMLHttpRequest();
-              function u2() {
-                a2.abort();
+          function v(e4, n3) {
+            return new Promise(function(i3, o2) {
+              var c2 = new m(e4, n3);
+              if (c2.signal && c2.signal.aborted)
+                return o2(new t3.DOMException("Aborted", "AbortError"));
+              var l2 = new XMLHttpRequest();
+              function h2() {
+                l2.abort();
               }
-              a2.onload = function() {
-                var e5, t4, r4 = { status: a2.status, statusText: a2.statusText, headers: (e5 = a2.getAllResponseHeaders() || "", t4 = new c(), e5.replace(/\r?\n[\t ]+/g, " ").split(/\r?\n/).forEach(function(e6) {
-                  var r5 = e6.split(":"), s6 = r5.shift().trim();
-                  if (s6) {
+              l2.onload = function() {
+                var e5, t4, r4 = { status: l2.status, statusText: l2.statusText, headers: (e5 = l2.getAllResponseHeaders() || "", t4 = new u(), e5.replace(/\r?\n[\t ]+/g, " ").split("\r").map(function(e6) {
+                  return 0 === e6.indexOf("\n") ? e6.substr(1, e6.length) : e6;
+                }).forEach(function(e6) {
+                  var r5 = e6.split(":"), s5 = r5.shift().trim();
+                  if (s5) {
                     var n4 = r5.join(":").trim();
-                    t4.append(s6, n4);
+                    t4.append(s5, n4);
                   }
                 }), t4) };
-                r4.url = "responseURL" in a2 ? a2.responseURL : r4.headers.get("X-Request-URL");
-                var s5 = "response" in a2 ? a2.response : a2.responseText;
-                n3(new y(s5, r4));
-              }, a2.onerror = function() {
-                i2(new TypeError("Network request failed"));
-              }, a2.ontimeout = function() {
-                i2(new TypeError("Network request failed"));
-              }, a2.onabort = function() {
-                i2(new t3.DOMException("Aborted", "AbortError"));
-              }, a2.open(o2.method, o2.url, true), "include" === o2.credentials ? a2.withCredentials = true : "omit" === o2.credentials && (a2.withCredentials = false), "responseType" in a2 && r3.blob && (a2.responseType = "blob"), o2.headers.forEach(function(e5, t4) {
-                a2.setRequestHeader(t4, e5);
-              }), o2.signal && (o2.signal.addEventListener("abort", u2), a2.onreadystatechange = function() {
-                4 === a2.readyState && o2.signal.removeEventListener("abort", u2);
-              }), a2.send(void 0 === o2._bodyInit ? null : o2._bodyInit);
+                r4.url = "responseURL" in l2 ? l2.responseURL : r4.headers.get("X-Request-URL");
+                var s4 = "response" in l2 ? l2.response : l2.responseText;
+                setTimeout(function() {
+                  i3(new w(s4, r4));
+                }, 0);
+              }, l2.onerror = function() {
+                setTimeout(function() {
+                  o2(new TypeError("Network request failed"));
+                }, 0);
+              }, l2.ontimeout = function() {
+                setTimeout(function() {
+                  o2(new TypeError("Network request failed"));
+                }, 0);
+              }, l2.onabort = function() {
+                setTimeout(function() {
+                  o2(new t3.DOMException("Aborted", "AbortError"));
+                }, 0);
+              }, l2.open(c2.method, function(e5) {
+                try {
+                  return "" === e5 && r3.location.href ? r3.location.href : e5;
+                } catch (t4) {
+                  return e5;
+                }
+              }(c2.url), true), "include" === c2.credentials ? l2.withCredentials = true : "omit" === c2.credentials && (l2.withCredentials = false), "responseType" in l2 && (s3.blob ? l2.responseType = "blob" : s3.arrayBuffer && c2.headers.get("Content-Type") && -1 !== c2.headers.get("Content-Type").indexOf("application/octet-stream") && (l2.responseType = "arraybuffer")), !n3 || "object" != typeof n3.headers || n3.headers instanceof u ? c2.headers.forEach(function(e5, t4) {
+                l2.setRequestHeader(t4, e5);
+              }) : Object.getOwnPropertyNames(n3.headers).forEach(function(e5) {
+                l2.setRequestHeader(e5, a(n3.headers[e5]));
+              }), c2.signal && (c2.signal.addEventListener("abort", h2), l2.onreadystatechange = function() {
+                4 === l2.readyState && c2.signal.removeEventListener("abort", h2);
+              }), l2.send(void 0 === c2._bodyInit ? null : c2._bodyInit);
             });
           }
-          b.polyfill = true, e3.fetch || (e3.fetch = b, e3.Headers = c, e3.Request = g, e3.Response = y), t3.Headers = c, t3.Request = g, t3.Response = y, t3.fetch = b, Object.defineProperty(t3, "__esModule", { value: true });
+          v.polyfill = true, r3.fetch || (r3.fetch = v, r3.Headers = u, r3.Request = m, r3.Response = w), t3.Headers = u, t3.Request = m, t3.Response = w, t3.fetch = v;
         }({});
-      }(s2), s2.fetch.ponyfill = true, delete s2.fetch.polyfill;
-      var n = s2;
-      (t2 = n.fetch).default = n.fetch, t2.fetch = n.fetch, t2.Headers = n.Headers, t2.Request = n.Request, t2.Response = n.Response, e2.exports = t2;
+      }(n), n.fetch.ponyfill = true, delete n.fetch.polyfill;
+      var i = s2.fetch ? s2 : n;
+      (t2 = i.fetch).default = i.fetch, t2.fetch = i.fetch, t2.Headers = i.Headers, t2.Request = i.Request, t2.Response = i.Response, e2.exports = t2;
     }, 267: (e2, t2, r2) => {
       var s2;
       !function() {
@@ -3071,9 +3096,9 @@ var algosdk_min = { exports: {} };
             return h2;
           }(e3);
         }, decode: h };
-        h.asBytes = l, n ? e2.exports = d : (t3.base32 = d, i && (void 0 === (s2 = function() {
+        h.asBytes = l, n ? e2.exports = d : (t3.base32 = d, i && (void 0 === (s2 = (function() {
           return d;
-        }.call(d, r2, d, e2)) || (e2.exports = s2)));
+        }).call(d, r2, d, e2)) || (e2.exports = s2)));
       }();
     }, 525: (e2, t2) => {
       t2.read = function(e3, t3, r2, s2, n) {
@@ -3206,13 +3231,13 @@ var algosdk_min = { exports: {} };
             e3[32] = this.block, e3[t4 >> 2] |= h[3 & t4], this.block = e3[32], t4 >= 112 && (this.hashed || this.hash(), e3[0] = this.block, e3[1] = e3[2] = e3[3] = e3[4] = e3[5] = e3[6] = e3[7] = e3[8] = e3[9] = e3[10] = e3[11] = e3[12] = e3[13] = e3[14] = e3[15] = e3[16] = e3[17] = e3[18] = e3[19] = e3[20] = e3[21] = e3[22] = e3[23] = e3[24] = e3[25] = e3[26] = e3[27] = e3[28] = e3[29] = e3[30] = e3[31] = e3[32] = 0), e3[30] = this.hBytes << 3 | this.bytes >>> 29, e3[31] = this.bytes << 3, this.hash();
           }
         }, v.prototype.hash = function() {
-          var e3, t4, r3, s3, n2, i2, o2, a2, c2, u2, l2, h2, d2, f2, g2, m2, y2, w2, b2, v2, x2, A2, _, E, S, T = this.h0h, R = this.h0l, k = this.h1h, I = this.h1l, B = this.h2h, U = this.h2l, P = this.h3h, j = this.h3l, q = this.h4h, D = this.h4l, $ = this.h5h, O = this.h5l, C = this.h6h, L = this.h6l, M = this.h7h, N = this.h7l, F = this.blocks;
+          var e3, t4, r3, s3, n2, i2, o2, a2, c2, u2, l2, h2, d2, f2, g2, m2, y2, w2, b2, v2, x2, A2, _, E, T, S = this.h0h, k = this.h0l, R = this.h1h, I = this.h1l, B = this.h2h, U = this.h2l, P = this.h3h, j = this.h3l, q = this.h4h, D = this.h4l, C = this.h5h, $ = this.h5l, O = this.h6h, L = this.h6l, M = this.h7h, N = this.h7l, F = this.blocks;
           for (e3 = 32; e3 < 160; e3 += 2)
             t4 = ((v2 = F[e3 - 30]) >>> 1 | (x2 = F[e3 - 29]) << 31) ^ (v2 >>> 8 | x2 << 24) ^ v2 >>> 7, r3 = (x2 >>> 1 | v2 << 31) ^ (x2 >>> 8 | v2 << 24) ^ (x2 >>> 7 | v2 << 25), s3 = ((v2 = F[e3 - 4]) >>> 19 | (x2 = F[e3 - 3]) << 13) ^ (x2 >>> 29 | v2 << 3) ^ v2 >>> 6, n2 = (x2 >>> 19 | v2 << 13) ^ (v2 >>> 29 | x2 << 3) ^ (x2 >>> 6 | v2 << 26), v2 = F[e3 - 32], x2 = F[e3 - 31], c2 = ((A2 = F[e3 - 14]) >>> 16) + (v2 >>> 16) + (t4 >>> 16) + (s3 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & t4) + (65535 & s3) + ((o2 = ((_ = F[e3 - 13]) >>> 16) + (x2 >>> 16) + (r3 >>> 16) + (n2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & r3) + (65535 & n2)) >>> 16)) >>> 16)) >>> 16), F[e3] = c2 << 16 | 65535 & a2, F[e3 + 1] = o2 << 16 | 65535 & i2;
-          var W = T, K = R, z = k, V = I, G = B, H = U, Y = P, J = j, X = q, Z = D, Q = $, ee = O, te = C, re = L, se = M, ne = N;
+          var W = S, K = k, z = R, V = I, G = B, H = U, Y = P, J = j, X = q, Z = D, Q = C, ee = $, te = O, re = L, se = M, ne = N;
           for (m2 = z & G, y2 = V & H, e3 = 0; e3 < 160; e3 += 8)
-            t4 = (W >>> 28 | K << 4) ^ (K >>> 2 | W << 30) ^ (K >>> 7 | W << 25), r3 = (K >>> 28 | W << 4) ^ (W >>> 2 | K << 30) ^ (W >>> 7 | K << 25), s3 = (X >>> 14 | Z << 18) ^ (X >>> 18 | Z << 14) ^ (Z >>> 9 | X << 23), n2 = (Z >>> 14 | X << 18) ^ (Z >>> 18 | X << 14) ^ (X >>> 9 | Z << 23), w2 = (u2 = W & z) ^ W & G ^ m2, b2 = (l2 = K & V) ^ K & H ^ y2, E = X & Q ^ ~X & te, S = Z & ee ^ ~Z & re, v2 = F[e3], x2 = F[e3 + 1], v2 = (c2 = ((A2 = p[e3]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (se >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & se) + ((o2 = ((_ = p[e3 + 1]) >>> 16) + (x2 >>> 16) + (S >>> 16) + (n2 >>> 16) + (ne >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & S) + (65535 & n2) + (65535 & ne)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, se = (c2 = (Y >>> 16) + (v2 >>> 16) + ((a2 = (65535 & Y) + (65535 & v2) + ((o2 = (J >>> 16) + (x2 >>> 16) + ((i2 = (65535 & J) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, ne = o2 << 16 | 65535 & i2, t4 = ((Y = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (J = o2 << 16 | 65535 & i2) << 4) ^ (J >>> 2 | Y << 30) ^ (J >>> 7 | Y << 25), r3 = (J >>> 28 | Y << 4) ^ (Y >>> 2 | J << 30) ^ (Y >>> 7 | J << 25), s3 = (se >>> 14 | ne << 18) ^ (se >>> 18 | ne << 14) ^ (ne >>> 9 | se << 23), n2 = (ne >>> 14 | se << 18) ^ (ne >>> 18 | se << 14) ^ (se >>> 9 | ne << 23), w2 = (h2 = Y & W) ^ Y & z ^ u2, b2 = (d2 = J & K) ^ J & V ^ l2, E = se & X ^ ~se & Q, S = ne & Z ^ ~ne & ee, v2 = F[e3 + 2], x2 = F[e3 + 3], v2 = (c2 = ((A2 = p[e3 + 2]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (te >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & te) + ((o2 = ((_ = p[e3 + 3]) >>> 16) + (x2 >>> 16) + (S >>> 16) + (n2 >>> 16) + (re >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & S) + (65535 & n2) + (65535 & re)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, te = (c2 = (G >>> 16) + (v2 >>> 16) + ((a2 = (65535 & G) + (65535 & v2) + ((o2 = (H >>> 16) + (x2 >>> 16) + ((i2 = (65535 & H) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, re = o2 << 16 | 65535 & i2, t4 = ((G = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (H = o2 << 16 | 65535 & i2) << 4) ^ (H >>> 2 | G << 30) ^ (H >>> 7 | G << 25), r3 = (H >>> 28 | G << 4) ^ (G >>> 2 | H << 30) ^ (G >>> 7 | H << 25), s3 = (te >>> 14 | re << 18) ^ (te >>> 18 | re << 14) ^ (re >>> 9 | te << 23), n2 = (re >>> 14 | te << 18) ^ (re >>> 18 | te << 14) ^ (te >>> 9 | re << 23), w2 = (f2 = G & Y) ^ G & W ^ h2, b2 = (g2 = H & J) ^ H & K ^ d2, E = te & se ^ ~te & X, S = re & ne ^ ~re & Z, v2 = F[e3 + 4], x2 = F[e3 + 5], v2 = (c2 = ((A2 = p[e3 + 4]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (Q >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & Q) + ((o2 = ((_ = p[e3 + 5]) >>> 16) + (x2 >>> 16) + (S >>> 16) + (n2 >>> 16) + (ee >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & S) + (65535 & n2) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, Q = (c2 = (z >>> 16) + (v2 >>> 16) + ((a2 = (65535 & z) + (65535 & v2) + ((o2 = (V >>> 16) + (x2 >>> 16) + ((i2 = (65535 & V) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, ee = o2 << 16 | 65535 & i2, t4 = ((z = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (V = o2 << 16 | 65535 & i2) << 4) ^ (V >>> 2 | z << 30) ^ (V >>> 7 | z << 25), r3 = (V >>> 28 | z << 4) ^ (z >>> 2 | V << 30) ^ (z >>> 7 | V << 25), s3 = (Q >>> 14 | ee << 18) ^ (Q >>> 18 | ee << 14) ^ (ee >>> 9 | Q << 23), n2 = (ee >>> 14 | Q << 18) ^ (ee >>> 18 | Q << 14) ^ (Q >>> 9 | ee << 23), w2 = (m2 = z & G) ^ z & Y ^ f2, b2 = (y2 = V & H) ^ V & J ^ g2, E = Q & te ^ ~Q & se, S = ee & re ^ ~ee & ne, v2 = F[e3 + 6], x2 = F[e3 + 7], v2 = (c2 = ((A2 = p[e3 + 6]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (X >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & X) + ((o2 = ((_ = p[e3 + 7]) >>> 16) + (x2 >>> 16) + (S >>> 16) + (n2 >>> 16) + (Z >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & S) + (65535 & n2) + (65535 & Z)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, X = (c2 = (W >>> 16) + (v2 >>> 16) + ((a2 = (65535 & W) + (65535 & v2) + ((o2 = (K >>> 16) + (x2 >>> 16) + ((i2 = (65535 & K) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, Z = o2 << 16 | 65535 & i2, W = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, K = o2 << 16 | 65535 & i2;
-          c2 = (T >>> 16) + (W >>> 16) + ((a2 = (65535 & T) + (65535 & W) + ((o2 = (R >>> 16) + (K >>> 16) + ((i2 = (65535 & R) + (65535 & K)) >>> 16)) >>> 16)) >>> 16), this.h0h = c2 << 16 | 65535 & a2, this.h0l = o2 << 16 | 65535 & i2, c2 = (k >>> 16) + (z >>> 16) + ((a2 = (65535 & k) + (65535 & z) + ((o2 = (I >>> 16) + (V >>> 16) + ((i2 = (65535 & I) + (65535 & V)) >>> 16)) >>> 16)) >>> 16), this.h1h = c2 << 16 | 65535 & a2, this.h1l = o2 << 16 | 65535 & i2, c2 = (B >>> 16) + (G >>> 16) + ((a2 = (65535 & B) + (65535 & G) + ((o2 = (U >>> 16) + (H >>> 16) + ((i2 = (65535 & U) + (65535 & H)) >>> 16)) >>> 16)) >>> 16), this.h2h = c2 << 16 | 65535 & a2, this.h2l = o2 << 16 | 65535 & i2, c2 = (P >>> 16) + (Y >>> 16) + ((a2 = (65535 & P) + (65535 & Y) + ((o2 = (j >>> 16) + (J >>> 16) + ((i2 = (65535 & j) + (65535 & J)) >>> 16)) >>> 16)) >>> 16), this.h3h = c2 << 16 | 65535 & a2, this.h3l = o2 << 16 | 65535 & i2, c2 = (q >>> 16) + (X >>> 16) + ((a2 = (65535 & q) + (65535 & X) + ((o2 = (D >>> 16) + (Z >>> 16) + ((i2 = (65535 & D) + (65535 & Z)) >>> 16)) >>> 16)) >>> 16), this.h4h = c2 << 16 | 65535 & a2, this.h4l = o2 << 16 | 65535 & i2, c2 = ($ >>> 16) + (Q >>> 16) + ((a2 = (65535 & $) + (65535 & Q) + ((o2 = (O >>> 16) + (ee >>> 16) + ((i2 = (65535 & O) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16), this.h5h = c2 << 16 | 65535 & a2, this.h5l = o2 << 16 | 65535 & i2, c2 = (C >>> 16) + (te >>> 16) + ((a2 = (65535 & C) + (65535 & te) + ((o2 = (L >>> 16) + (re >>> 16) + ((i2 = (65535 & L) + (65535 & re)) >>> 16)) >>> 16)) >>> 16), this.h6h = c2 << 16 | 65535 & a2, this.h6l = o2 << 16 | 65535 & i2, c2 = (M >>> 16) + (se >>> 16) + ((a2 = (65535 & M) + (65535 & se) + ((o2 = (N >>> 16) + (ne >>> 16) + ((i2 = (65535 & N) + (65535 & ne)) >>> 16)) >>> 16)) >>> 16), this.h7h = c2 << 16 | 65535 & a2, this.h7l = o2 << 16 | 65535 & i2;
+            t4 = (W >>> 28 | K << 4) ^ (K >>> 2 | W << 30) ^ (K >>> 7 | W << 25), r3 = (K >>> 28 | W << 4) ^ (W >>> 2 | K << 30) ^ (W >>> 7 | K << 25), s3 = (X >>> 14 | Z << 18) ^ (X >>> 18 | Z << 14) ^ (Z >>> 9 | X << 23), n2 = (Z >>> 14 | X << 18) ^ (Z >>> 18 | X << 14) ^ (X >>> 9 | Z << 23), w2 = (u2 = W & z) ^ W & G ^ m2, b2 = (l2 = K & V) ^ K & H ^ y2, E = X & Q ^ ~X & te, T = Z & ee ^ ~Z & re, v2 = F[e3], x2 = F[e3 + 1], v2 = (c2 = ((A2 = p[e3]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (se >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & se) + ((o2 = ((_ = p[e3 + 1]) >>> 16) + (x2 >>> 16) + (T >>> 16) + (n2 >>> 16) + (ne >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & T) + (65535 & n2) + (65535 & ne)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, se = (c2 = (Y >>> 16) + (v2 >>> 16) + ((a2 = (65535 & Y) + (65535 & v2) + ((o2 = (J >>> 16) + (x2 >>> 16) + ((i2 = (65535 & J) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, ne = o2 << 16 | 65535 & i2, t4 = ((Y = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (J = o2 << 16 | 65535 & i2) << 4) ^ (J >>> 2 | Y << 30) ^ (J >>> 7 | Y << 25), r3 = (J >>> 28 | Y << 4) ^ (Y >>> 2 | J << 30) ^ (Y >>> 7 | J << 25), s3 = (se >>> 14 | ne << 18) ^ (se >>> 18 | ne << 14) ^ (ne >>> 9 | se << 23), n2 = (ne >>> 14 | se << 18) ^ (ne >>> 18 | se << 14) ^ (se >>> 9 | ne << 23), w2 = (h2 = Y & W) ^ Y & z ^ u2, b2 = (d2 = J & K) ^ J & V ^ l2, E = se & X ^ ~se & Q, T = ne & Z ^ ~ne & ee, v2 = F[e3 + 2], x2 = F[e3 + 3], v2 = (c2 = ((A2 = p[e3 + 2]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (te >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & te) + ((o2 = ((_ = p[e3 + 3]) >>> 16) + (x2 >>> 16) + (T >>> 16) + (n2 >>> 16) + (re >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & T) + (65535 & n2) + (65535 & re)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, te = (c2 = (G >>> 16) + (v2 >>> 16) + ((a2 = (65535 & G) + (65535 & v2) + ((o2 = (H >>> 16) + (x2 >>> 16) + ((i2 = (65535 & H) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, re = o2 << 16 | 65535 & i2, t4 = ((G = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (H = o2 << 16 | 65535 & i2) << 4) ^ (H >>> 2 | G << 30) ^ (H >>> 7 | G << 25), r3 = (H >>> 28 | G << 4) ^ (G >>> 2 | H << 30) ^ (G >>> 7 | H << 25), s3 = (te >>> 14 | re << 18) ^ (te >>> 18 | re << 14) ^ (re >>> 9 | te << 23), n2 = (re >>> 14 | te << 18) ^ (re >>> 18 | te << 14) ^ (te >>> 9 | re << 23), w2 = (f2 = G & Y) ^ G & W ^ h2, b2 = (g2 = H & J) ^ H & K ^ d2, E = te & se ^ ~te & X, T = re & ne ^ ~re & Z, v2 = F[e3 + 4], x2 = F[e3 + 5], v2 = (c2 = ((A2 = p[e3 + 4]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (Q >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & Q) + ((o2 = ((_ = p[e3 + 5]) >>> 16) + (x2 >>> 16) + (T >>> 16) + (n2 >>> 16) + (ee >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & T) + (65535 & n2) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, Q = (c2 = (z >>> 16) + (v2 >>> 16) + ((a2 = (65535 & z) + (65535 & v2) + ((o2 = (V >>> 16) + (x2 >>> 16) + ((i2 = (65535 & V) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, ee = o2 << 16 | 65535 & i2, t4 = ((z = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2) >>> 28 | (V = o2 << 16 | 65535 & i2) << 4) ^ (V >>> 2 | z << 30) ^ (V >>> 7 | z << 25), r3 = (V >>> 28 | z << 4) ^ (z >>> 2 | V << 30) ^ (z >>> 7 | V << 25), s3 = (Q >>> 14 | ee << 18) ^ (Q >>> 18 | ee << 14) ^ (ee >>> 9 | Q << 23), n2 = (ee >>> 14 | Q << 18) ^ (ee >>> 18 | Q << 14) ^ (Q >>> 9 | ee << 23), w2 = (m2 = z & G) ^ z & Y ^ f2, b2 = (y2 = V & H) ^ V & J ^ g2, E = Q & te ^ ~Q & se, T = ee & re ^ ~ee & ne, v2 = F[e3 + 6], x2 = F[e3 + 7], v2 = (c2 = ((A2 = p[e3 + 6]) >>> 16) + (v2 >>> 16) + (E >>> 16) + (s3 >>> 16) + (X >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + (65535 & E) + (65535 & s3) + (65535 & X) + ((o2 = ((_ = p[e3 + 7]) >>> 16) + (x2 >>> 16) + (T >>> 16) + (n2 >>> 16) + (Z >>> 16) + ((i2 = (65535 & _) + (65535 & x2) + (65535 & T) + (65535 & n2) + (65535 & Z)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, x2 = o2 << 16 | 65535 & i2, A2 = (c2 = (w2 >>> 16) + (t4 >>> 16) + ((a2 = (65535 & w2) + (65535 & t4) + ((o2 = (b2 >>> 16) + (r3 >>> 16) + ((i2 = (65535 & b2) + (65535 & r3)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, _ = o2 << 16 | 65535 & i2, X = (c2 = (W >>> 16) + (v2 >>> 16) + ((a2 = (65535 & W) + (65535 & v2) + ((o2 = (K >>> 16) + (x2 >>> 16) + ((i2 = (65535 & K) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, Z = o2 << 16 | 65535 & i2, W = (c2 = (A2 >>> 16) + (v2 >>> 16) + ((a2 = (65535 & A2) + (65535 & v2) + ((o2 = (_ >>> 16) + (x2 >>> 16) + ((i2 = (65535 & _) + (65535 & x2)) >>> 16)) >>> 16)) >>> 16)) << 16 | 65535 & a2, K = o2 << 16 | 65535 & i2;
+          c2 = (S >>> 16) + (W >>> 16) + ((a2 = (65535 & S) + (65535 & W) + ((o2 = (k >>> 16) + (K >>> 16) + ((i2 = (65535 & k) + (65535 & K)) >>> 16)) >>> 16)) >>> 16), this.h0h = c2 << 16 | 65535 & a2, this.h0l = o2 << 16 | 65535 & i2, c2 = (R >>> 16) + (z >>> 16) + ((a2 = (65535 & R) + (65535 & z) + ((o2 = (I >>> 16) + (V >>> 16) + ((i2 = (65535 & I) + (65535 & V)) >>> 16)) >>> 16)) >>> 16), this.h1h = c2 << 16 | 65535 & a2, this.h1l = o2 << 16 | 65535 & i2, c2 = (B >>> 16) + (G >>> 16) + ((a2 = (65535 & B) + (65535 & G) + ((o2 = (U >>> 16) + (H >>> 16) + ((i2 = (65535 & U) + (65535 & H)) >>> 16)) >>> 16)) >>> 16), this.h2h = c2 << 16 | 65535 & a2, this.h2l = o2 << 16 | 65535 & i2, c2 = (P >>> 16) + (Y >>> 16) + ((a2 = (65535 & P) + (65535 & Y) + ((o2 = (j >>> 16) + (J >>> 16) + ((i2 = (65535 & j) + (65535 & J)) >>> 16)) >>> 16)) >>> 16), this.h3h = c2 << 16 | 65535 & a2, this.h3l = o2 << 16 | 65535 & i2, c2 = (q >>> 16) + (X >>> 16) + ((a2 = (65535 & q) + (65535 & X) + ((o2 = (D >>> 16) + (Z >>> 16) + ((i2 = (65535 & D) + (65535 & Z)) >>> 16)) >>> 16)) >>> 16), this.h4h = c2 << 16 | 65535 & a2, this.h4l = o2 << 16 | 65535 & i2, c2 = (C >>> 16) + (Q >>> 16) + ((a2 = (65535 & C) + (65535 & Q) + ((o2 = ($ >>> 16) + (ee >>> 16) + ((i2 = (65535 & $) + (65535 & ee)) >>> 16)) >>> 16)) >>> 16), this.h5h = c2 << 16 | 65535 & a2, this.h5l = o2 << 16 | 65535 & i2, c2 = (O >>> 16) + (te >>> 16) + ((a2 = (65535 & O) + (65535 & te) + ((o2 = (L >>> 16) + (re >>> 16) + ((i2 = (65535 & L) + (65535 & re)) >>> 16)) >>> 16)) >>> 16), this.h6h = c2 << 16 | 65535 & a2, this.h6l = o2 << 16 | 65535 & i2, c2 = (M >>> 16) + (se >>> 16) + ((a2 = (65535 & M) + (65535 & se) + ((o2 = (N >>> 16) + (ne >>> 16) + ((i2 = (65535 & N) + (65535 & ne)) >>> 16)) >>> 16)) >>> 16), this.h7h = c2 << 16 | 65535 & a2, this.h7l = o2 << 16 | 65535 & i2;
         }, v.prototype.hex = function() {
           this.finalize();
           var e3 = this.h0h, t4 = this.h0l, r3 = this.h1h, s3 = this.h1l, n2 = this.h2h, i2 = this.h2l, o2 = this.h3h, a2 = this.h3l, c2 = this.h4h, u2 = this.h4l, h2 = this.h5h, d2 = this.h5l, p2 = this.h6h, f2 = this.h6l, g2 = this.h7h, m2 = this.h7l, y2 = this.bits, w2 = l[e3 >> 28 & 15] + l[e3 >> 24 & 15] + l[e3 >> 20 & 15] + l[e3 >> 16 & 15] + l[e3 >> 12 & 15] + l[e3 >> 8 & 15] + l[e3 >> 4 & 15] + l[15 & e3] + l[t4 >> 28 & 15] + l[t4 >> 24 & 15] + l[t4 >> 20 & 15] + l[t4 >> 16 & 15] + l[t4 >> 12 & 15] + l[t4 >> 8 & 15] + l[t4 >> 4 & 15] + l[15 & t4] + l[r3 >> 28 & 15] + l[r3 >> 24 & 15] + l[r3 >> 20 & 15] + l[r3 >> 16 & 15] + l[r3 >> 12 & 15] + l[r3 >> 8 & 15] + l[r3 >> 4 & 15] + l[15 & r3] + l[s3 >> 28 & 15] + l[s3 >> 24 & 15] + l[s3 >> 20 & 15] + l[s3 >> 16 & 15] + l[s3 >> 12 & 15] + l[s3 >> 8 & 15] + l[s3 >> 4 & 15] + l[15 & s3] + l[n2 >> 28 & 15] + l[n2 >> 24 & 15] + l[n2 >> 20 & 15] + l[n2 >> 16 & 15] + l[n2 >> 12 & 15] + l[n2 >> 8 & 15] + l[n2 >> 4 & 15] + l[15 & n2] + l[i2 >> 28 & 15] + l[i2 >> 24 & 15] + l[i2 >> 20 & 15] + l[i2 >> 16 & 15] + l[i2 >> 12 & 15] + l[i2 >> 8 & 15] + l[i2 >> 4 & 15] + l[15 & i2] + l[o2 >> 28 & 15] + l[o2 >> 24 & 15] + l[o2 >> 20 & 15] + l[o2 >> 16 & 15] + l[o2 >> 12 & 15] + l[o2 >> 8 & 15] + l[o2 >> 4 & 15] + l[15 & o2];
@@ -3248,9 +3273,9 @@ var algosdk_min = { exports: {} };
           return e3;
         };
         var A = y(512);
-        A.sha512 = A, A.sha384 = y(384), A.sha512_256 = y(256), A.sha512_224 = y(224), A.sha512.hmac = b(512), A.sha384.hmac = b(384), A.sha512_256.hmac = b(256), A.sha512_224.hmac = b(224), a ? e2.exports = A : (i.sha512 = A.sha512, i.sha384 = A.sha384, i.sha512_256 = A.sha512_256, i.sha512_224 = A.sha512_224, c && (void 0 === (s2 = function() {
+        A.sha512 = A, A.sha384 = y(384), A.sha512_256 = y(256), A.sha512_224 = y(224), A.sha512.hmac = b(512), A.sha384.hmac = b(384), A.sha512_256.hmac = b(256), A.sha512_224.hmac = b(224), a ? e2.exports = A : (i.sha512 = A.sha512, i.sha384 = A.sha384, i.sha512_256 = A.sha512_256, i.sha512_224 = A.sha512_224, c && (void 0 === (s2 = (function() {
           return A;
-        }.call(A, r2, A, e2)) || (e2.exports = s2)));
+        }).call(A, r2, A, e2)) || (e2.exports = s2)));
       }();
     }, 360: (e2, t2, r2) => {
       var s2 = r2(592).stringify, n = r2(385);
@@ -3454,9 +3479,9 @@ var algosdk_min = { exports: {} };
         }
         function y(e4, t4, r3, s3) {
           !function(e5, t5, r4, s4) {
-            for (var n2, i2 = 255 & s4[0] | (255 & s4[1]) << 8 | (255 & s4[2]) << 16 | (255 & s4[3]) << 24, o2 = 255 & r4[0] | (255 & r4[1]) << 8 | (255 & r4[2]) << 16 | (255 & r4[3]) << 24, a2 = 255 & r4[4] | (255 & r4[5]) << 8 | (255 & r4[6]) << 16 | (255 & r4[7]) << 24, c2 = 255 & r4[8] | (255 & r4[9]) << 8 | (255 & r4[10]) << 16 | (255 & r4[11]) << 24, u2 = 255 & r4[12] | (255 & r4[13]) << 8 | (255 & r4[14]) << 16 | (255 & r4[15]) << 24, l2 = 255 & s4[4] | (255 & s4[5]) << 8 | (255 & s4[6]) << 16 | (255 & s4[7]) << 24, h2 = 255 & t5[0] | (255 & t5[1]) << 8 | (255 & t5[2]) << 16 | (255 & t5[3]) << 24, d2 = 255 & t5[4] | (255 & t5[5]) << 8 | (255 & t5[6]) << 16 | (255 & t5[7]) << 24, p2 = 255 & t5[8] | (255 & t5[9]) << 8 | (255 & t5[10]) << 16 | (255 & t5[11]) << 24, f2 = 255 & t5[12] | (255 & t5[13]) << 8 | (255 & t5[14]) << 16 | (255 & t5[15]) << 24, g2 = 255 & s4[8] | (255 & s4[9]) << 8 | (255 & s4[10]) << 16 | (255 & s4[11]) << 24, m2 = 255 & r4[16] | (255 & r4[17]) << 8 | (255 & r4[18]) << 16 | (255 & r4[19]) << 24, y2 = 255 & r4[20] | (255 & r4[21]) << 8 | (255 & r4[22]) << 16 | (255 & r4[23]) << 24, w2 = 255 & r4[24] | (255 & r4[25]) << 8 | (255 & r4[26]) << 16 | (255 & r4[27]) << 24, b2 = 255 & r4[28] | (255 & r4[29]) << 8 | (255 & r4[30]) << 16 | (255 & r4[31]) << 24, v2 = 255 & s4[12] | (255 & s4[13]) << 8 | (255 & s4[14]) << 16 | (255 & s4[15]) << 24, x2 = i2, A2 = o2, _2 = a2, E2 = c2, S2 = u2, T2 = l2, R2 = h2, k2 = d2, I2 = p2, B2 = f2, U2 = g2, P2 = m2, j2 = y2, q2 = w2, D2 = b2, $2 = v2, O2 = 0; O2 < 20; O2 += 2)
-              x2 ^= (n2 = (j2 ^= (n2 = (I2 ^= (n2 = (S2 ^= (n2 = x2 + j2 | 0) << 7 | n2 >>> 25) + x2 | 0) << 9 | n2 >>> 23) + S2 | 0) << 13 | n2 >>> 19) + I2 | 0) << 18 | n2 >>> 14, T2 ^= (n2 = (A2 ^= (n2 = (q2 ^= (n2 = (B2 ^= (n2 = T2 + A2 | 0) << 7 | n2 >>> 25) + T2 | 0) << 9 | n2 >>> 23) + B2 | 0) << 13 | n2 >>> 19) + q2 | 0) << 18 | n2 >>> 14, U2 ^= (n2 = (R2 ^= (n2 = (_2 ^= (n2 = (D2 ^= (n2 = U2 + R2 | 0) << 7 | n2 >>> 25) + U2 | 0) << 9 | n2 >>> 23) + D2 | 0) << 13 | n2 >>> 19) + _2 | 0) << 18 | n2 >>> 14, $2 ^= (n2 = (P2 ^= (n2 = (k2 ^= (n2 = (E2 ^= (n2 = $2 + P2 | 0) << 7 | n2 >>> 25) + $2 | 0) << 9 | n2 >>> 23) + E2 | 0) << 13 | n2 >>> 19) + k2 | 0) << 18 | n2 >>> 14, x2 ^= (n2 = (E2 ^= (n2 = (_2 ^= (n2 = (A2 ^= (n2 = x2 + E2 | 0) << 7 | n2 >>> 25) + x2 | 0) << 9 | n2 >>> 23) + A2 | 0) << 13 | n2 >>> 19) + _2 | 0) << 18 | n2 >>> 14, T2 ^= (n2 = (S2 ^= (n2 = (k2 ^= (n2 = (R2 ^= (n2 = T2 + S2 | 0) << 7 | n2 >>> 25) + T2 | 0) << 9 | n2 >>> 23) + R2 | 0) << 13 | n2 >>> 19) + k2 | 0) << 18 | n2 >>> 14, U2 ^= (n2 = (B2 ^= (n2 = (I2 ^= (n2 = (P2 ^= (n2 = U2 + B2 | 0) << 7 | n2 >>> 25) + U2 | 0) << 9 | n2 >>> 23) + P2 | 0) << 13 | n2 >>> 19) + I2 | 0) << 18 | n2 >>> 14, $2 ^= (n2 = (D2 ^= (n2 = (q2 ^= (n2 = (j2 ^= (n2 = $2 + D2 | 0) << 7 | n2 >>> 25) + $2 | 0) << 9 | n2 >>> 23) + j2 | 0) << 13 | n2 >>> 19) + q2 | 0) << 18 | n2 >>> 14;
-            x2 = x2 + i2 | 0, A2 = A2 + o2 | 0, _2 = _2 + a2 | 0, E2 = E2 + c2 | 0, S2 = S2 + u2 | 0, T2 = T2 + l2 | 0, R2 = R2 + h2 | 0, k2 = k2 + d2 | 0, I2 = I2 + p2 | 0, B2 = B2 + f2 | 0, U2 = U2 + g2 | 0, P2 = P2 + m2 | 0, j2 = j2 + y2 | 0, q2 = q2 + w2 | 0, D2 = D2 + b2 | 0, $2 = $2 + v2 | 0, e5[0] = x2 >>> 0 & 255, e5[1] = x2 >>> 8 & 255, e5[2] = x2 >>> 16 & 255, e5[3] = x2 >>> 24 & 255, e5[4] = A2 >>> 0 & 255, e5[5] = A2 >>> 8 & 255, e5[6] = A2 >>> 16 & 255, e5[7] = A2 >>> 24 & 255, e5[8] = _2 >>> 0 & 255, e5[9] = _2 >>> 8 & 255, e5[10] = _2 >>> 16 & 255, e5[11] = _2 >>> 24 & 255, e5[12] = E2 >>> 0 & 255, e5[13] = E2 >>> 8 & 255, e5[14] = E2 >>> 16 & 255, e5[15] = E2 >>> 24 & 255, e5[16] = S2 >>> 0 & 255, e5[17] = S2 >>> 8 & 255, e5[18] = S2 >>> 16 & 255, e5[19] = S2 >>> 24 & 255, e5[20] = T2 >>> 0 & 255, e5[21] = T2 >>> 8 & 255, e5[22] = T2 >>> 16 & 255, e5[23] = T2 >>> 24 & 255, e5[24] = R2 >>> 0 & 255, e5[25] = R2 >>> 8 & 255, e5[26] = R2 >>> 16 & 255, e5[27] = R2 >>> 24 & 255, e5[28] = k2 >>> 0 & 255, e5[29] = k2 >>> 8 & 255, e5[30] = k2 >>> 16 & 255, e5[31] = k2 >>> 24 & 255, e5[32] = I2 >>> 0 & 255, e5[33] = I2 >>> 8 & 255, e5[34] = I2 >>> 16 & 255, e5[35] = I2 >>> 24 & 255, e5[36] = B2 >>> 0 & 255, e5[37] = B2 >>> 8 & 255, e5[38] = B2 >>> 16 & 255, e5[39] = B2 >>> 24 & 255, e5[40] = U2 >>> 0 & 255, e5[41] = U2 >>> 8 & 255, e5[42] = U2 >>> 16 & 255, e5[43] = U2 >>> 24 & 255, e5[44] = P2 >>> 0 & 255, e5[45] = P2 >>> 8 & 255, e5[46] = P2 >>> 16 & 255, e5[47] = P2 >>> 24 & 255, e5[48] = j2 >>> 0 & 255, e5[49] = j2 >>> 8 & 255, e5[50] = j2 >>> 16 & 255, e5[51] = j2 >>> 24 & 255, e5[52] = q2 >>> 0 & 255, e5[53] = q2 >>> 8 & 255, e5[54] = q2 >>> 16 & 255, e5[55] = q2 >>> 24 & 255, e5[56] = D2 >>> 0 & 255, e5[57] = D2 >>> 8 & 255, e5[58] = D2 >>> 16 & 255, e5[59] = D2 >>> 24 & 255, e5[60] = $2 >>> 0 & 255, e5[61] = $2 >>> 8 & 255, e5[62] = $2 >>> 16 & 255, e5[63] = $2 >>> 24 & 255;
+            for (var n2, i2 = 255 & s4[0] | (255 & s4[1]) << 8 | (255 & s4[2]) << 16 | (255 & s4[3]) << 24, o2 = 255 & r4[0] | (255 & r4[1]) << 8 | (255 & r4[2]) << 16 | (255 & r4[3]) << 24, a2 = 255 & r4[4] | (255 & r4[5]) << 8 | (255 & r4[6]) << 16 | (255 & r4[7]) << 24, c2 = 255 & r4[8] | (255 & r4[9]) << 8 | (255 & r4[10]) << 16 | (255 & r4[11]) << 24, u2 = 255 & r4[12] | (255 & r4[13]) << 8 | (255 & r4[14]) << 16 | (255 & r4[15]) << 24, l2 = 255 & s4[4] | (255 & s4[5]) << 8 | (255 & s4[6]) << 16 | (255 & s4[7]) << 24, h2 = 255 & t5[0] | (255 & t5[1]) << 8 | (255 & t5[2]) << 16 | (255 & t5[3]) << 24, d2 = 255 & t5[4] | (255 & t5[5]) << 8 | (255 & t5[6]) << 16 | (255 & t5[7]) << 24, p2 = 255 & t5[8] | (255 & t5[9]) << 8 | (255 & t5[10]) << 16 | (255 & t5[11]) << 24, f2 = 255 & t5[12] | (255 & t5[13]) << 8 | (255 & t5[14]) << 16 | (255 & t5[15]) << 24, g2 = 255 & s4[8] | (255 & s4[9]) << 8 | (255 & s4[10]) << 16 | (255 & s4[11]) << 24, m2 = 255 & r4[16] | (255 & r4[17]) << 8 | (255 & r4[18]) << 16 | (255 & r4[19]) << 24, y2 = 255 & r4[20] | (255 & r4[21]) << 8 | (255 & r4[22]) << 16 | (255 & r4[23]) << 24, w2 = 255 & r4[24] | (255 & r4[25]) << 8 | (255 & r4[26]) << 16 | (255 & r4[27]) << 24, b2 = 255 & r4[28] | (255 & r4[29]) << 8 | (255 & r4[30]) << 16 | (255 & r4[31]) << 24, v2 = 255 & s4[12] | (255 & s4[13]) << 8 | (255 & s4[14]) << 16 | (255 & s4[15]) << 24, x2 = i2, A2 = o2, _2 = a2, E2 = c2, T2 = u2, S2 = l2, k2 = h2, R2 = d2, I2 = p2, B2 = f2, U2 = g2, P2 = m2, j2 = y2, q2 = w2, D2 = b2, C2 = v2, $2 = 0; $2 < 20; $2 += 2)
+              x2 ^= (n2 = (j2 ^= (n2 = (I2 ^= (n2 = (T2 ^= (n2 = x2 + j2 | 0) << 7 | n2 >>> 25) + x2 | 0) << 9 | n2 >>> 23) + T2 | 0) << 13 | n2 >>> 19) + I2 | 0) << 18 | n2 >>> 14, S2 ^= (n2 = (A2 ^= (n2 = (q2 ^= (n2 = (B2 ^= (n2 = S2 + A2 | 0) << 7 | n2 >>> 25) + S2 | 0) << 9 | n2 >>> 23) + B2 | 0) << 13 | n2 >>> 19) + q2 | 0) << 18 | n2 >>> 14, U2 ^= (n2 = (k2 ^= (n2 = (_2 ^= (n2 = (D2 ^= (n2 = U2 + k2 | 0) << 7 | n2 >>> 25) + U2 | 0) << 9 | n2 >>> 23) + D2 | 0) << 13 | n2 >>> 19) + _2 | 0) << 18 | n2 >>> 14, C2 ^= (n2 = (P2 ^= (n2 = (R2 ^= (n2 = (E2 ^= (n2 = C2 + P2 | 0) << 7 | n2 >>> 25) + C2 | 0) << 9 | n2 >>> 23) + E2 | 0) << 13 | n2 >>> 19) + R2 | 0) << 18 | n2 >>> 14, x2 ^= (n2 = (E2 ^= (n2 = (_2 ^= (n2 = (A2 ^= (n2 = x2 + E2 | 0) << 7 | n2 >>> 25) + x2 | 0) << 9 | n2 >>> 23) + A2 | 0) << 13 | n2 >>> 19) + _2 | 0) << 18 | n2 >>> 14, S2 ^= (n2 = (T2 ^= (n2 = (R2 ^= (n2 = (k2 ^= (n2 = S2 + T2 | 0) << 7 | n2 >>> 25) + S2 | 0) << 9 | n2 >>> 23) + k2 | 0) << 13 | n2 >>> 19) + R2 | 0) << 18 | n2 >>> 14, U2 ^= (n2 = (B2 ^= (n2 = (I2 ^= (n2 = (P2 ^= (n2 = U2 + B2 | 0) << 7 | n2 >>> 25) + U2 | 0) << 9 | n2 >>> 23) + P2 | 0) << 13 | n2 >>> 19) + I2 | 0) << 18 | n2 >>> 14, C2 ^= (n2 = (D2 ^= (n2 = (q2 ^= (n2 = (j2 ^= (n2 = C2 + D2 | 0) << 7 | n2 >>> 25) + C2 | 0) << 9 | n2 >>> 23) + j2 | 0) << 13 | n2 >>> 19) + q2 | 0) << 18 | n2 >>> 14;
+            x2 = x2 + i2 | 0, A2 = A2 + o2 | 0, _2 = _2 + a2 | 0, E2 = E2 + c2 | 0, T2 = T2 + u2 | 0, S2 = S2 + l2 | 0, k2 = k2 + h2 | 0, R2 = R2 + d2 | 0, I2 = I2 + p2 | 0, B2 = B2 + f2 | 0, U2 = U2 + g2 | 0, P2 = P2 + m2 | 0, j2 = j2 + y2 | 0, q2 = q2 + w2 | 0, D2 = D2 + b2 | 0, C2 = C2 + v2 | 0, e5[0] = x2 >>> 0 & 255, e5[1] = x2 >>> 8 & 255, e5[2] = x2 >>> 16 & 255, e5[3] = x2 >>> 24 & 255, e5[4] = A2 >>> 0 & 255, e5[5] = A2 >>> 8 & 255, e5[6] = A2 >>> 16 & 255, e5[7] = A2 >>> 24 & 255, e5[8] = _2 >>> 0 & 255, e5[9] = _2 >>> 8 & 255, e5[10] = _2 >>> 16 & 255, e5[11] = _2 >>> 24 & 255, e5[12] = E2 >>> 0 & 255, e5[13] = E2 >>> 8 & 255, e5[14] = E2 >>> 16 & 255, e5[15] = E2 >>> 24 & 255, e5[16] = T2 >>> 0 & 255, e5[17] = T2 >>> 8 & 255, e5[18] = T2 >>> 16 & 255, e5[19] = T2 >>> 24 & 255, e5[20] = S2 >>> 0 & 255, e5[21] = S2 >>> 8 & 255, e5[22] = S2 >>> 16 & 255, e5[23] = S2 >>> 24 & 255, e5[24] = k2 >>> 0 & 255, e5[25] = k2 >>> 8 & 255, e5[26] = k2 >>> 16 & 255, e5[27] = k2 >>> 24 & 255, e5[28] = R2 >>> 0 & 255, e5[29] = R2 >>> 8 & 255, e5[30] = R2 >>> 16 & 255, e5[31] = R2 >>> 24 & 255, e5[32] = I2 >>> 0 & 255, e5[33] = I2 >>> 8 & 255, e5[34] = I2 >>> 16 & 255, e5[35] = I2 >>> 24 & 255, e5[36] = B2 >>> 0 & 255, e5[37] = B2 >>> 8 & 255, e5[38] = B2 >>> 16 & 255, e5[39] = B2 >>> 24 & 255, e5[40] = U2 >>> 0 & 255, e5[41] = U2 >>> 8 & 255, e5[42] = U2 >>> 16 & 255, e5[43] = U2 >>> 24 & 255, e5[44] = P2 >>> 0 & 255, e5[45] = P2 >>> 8 & 255, e5[46] = P2 >>> 16 & 255, e5[47] = P2 >>> 24 & 255, e5[48] = j2 >>> 0 & 255, e5[49] = j2 >>> 8 & 255, e5[50] = j2 >>> 16 & 255, e5[51] = j2 >>> 24 & 255, e5[52] = q2 >>> 0 & 255, e5[53] = q2 >>> 8 & 255, e5[54] = q2 >>> 16 & 255, e5[55] = q2 >>> 24 & 255, e5[56] = D2 >>> 0 & 255, e5[57] = D2 >>> 8 & 255, e5[58] = D2 >>> 16 & 255, e5[59] = D2 >>> 24 & 255, e5[60] = C2 >>> 0 & 255, e5[61] = C2 >>> 8 & 255, e5[62] = C2 >>> 16 & 255, e5[63] = C2 >>> 24 & 255;
           }(e4, t4, r3, s3);
         }
         function w(e4, t4, r3, s3) {
@@ -3521,27 +3546,27 @@ var algosdk_min = { exports: {} };
           var t4, r3, s3, n2, i2, o2, a2, c2;
           this.buffer = new Uint8Array(16), this.r = new Uint16Array(10), this.h = new Uint16Array(10), this.pad = new Uint16Array(8), this.leftover = 0, this.fin = 0, t4 = 255 & e4[0] | (255 & e4[1]) << 8, this.r[0] = 8191 & t4, r3 = 255 & e4[2] | (255 & e4[3]) << 8, this.r[1] = 8191 & (t4 >>> 13 | r3 << 3), s3 = 255 & e4[4] | (255 & e4[5]) << 8, this.r[2] = 7939 & (r3 >>> 10 | s3 << 6), n2 = 255 & e4[6] | (255 & e4[7]) << 8, this.r[3] = 8191 & (s3 >>> 7 | n2 << 9), i2 = 255 & e4[8] | (255 & e4[9]) << 8, this.r[4] = 255 & (n2 >>> 4 | i2 << 12), this.r[5] = i2 >>> 1 & 8190, o2 = 255 & e4[10] | (255 & e4[11]) << 8, this.r[6] = 8191 & (i2 >>> 14 | o2 << 2), a2 = 255 & e4[12] | (255 & e4[13]) << 8, this.r[7] = 8065 & (o2 >>> 11 | a2 << 5), c2 = 255 & e4[14] | (255 & e4[15]) << 8, this.r[8] = 8191 & (a2 >>> 8 | c2 << 8), this.r[9] = c2 >>> 5 & 127, this.pad[0] = 255 & e4[16] | (255 & e4[17]) << 8, this.pad[1] = 255 & e4[18] | (255 & e4[19]) << 8, this.pad[2] = 255 & e4[20] | (255 & e4[21]) << 8, this.pad[3] = 255 & e4[22] | (255 & e4[23]) << 8, this.pad[4] = 255 & e4[24] | (255 & e4[25]) << 8, this.pad[5] = 255 & e4[26] | (255 & e4[27]) << 8, this.pad[6] = 255 & e4[28] | (255 & e4[29]) << 8, this.pad[7] = 255 & e4[30] | (255 & e4[31]) << 8;
         };
-        function S(e4, t4, r3, s3, n2, i2) {
+        function T(e4, t4, r3, s3, n2, i2) {
           var o2 = new E(i2);
           return o2.update(r3, s3, n2), o2.finish(e4, t4), 0;
         }
-        function T(e4, t4, r3, s3, n2, i2) {
+        function S(e4, t4, r3, s3, n2, i2) {
           var o2 = new Uint8Array(16);
-          return S(o2, 0, r3, s3, n2, i2), g(e4, t4, o2, 0);
+          return T(o2, 0, r3, s3, n2, i2), g(e4, t4, o2, 0);
         }
-        function R(e4, t4, r3, s3, n2) {
+        function k(e4, t4, r3, s3, n2) {
           var i2;
           if (r3 < 32)
             return -1;
-          for (_(e4, 0, t4, 0, r3, s3, n2), S(e4, 16, e4, 32, r3 - 32, e4), i2 = 0; i2 < 16; i2++)
+          for (_(e4, 0, t4, 0, r3, s3, n2), T(e4, 16, e4, 32, r3 - 32, e4), i2 = 0; i2 < 16; i2++)
             e4[i2] = 0;
           return 0;
         }
-        function k(e4, t4, r3, s3, n2) {
+        function R(e4, t4, r3, s3, n2) {
           var i2, o2 = new Uint8Array(32);
           if (r3 < 32)
             return -1;
-          if (A(o2, 0, 32, s3, n2), 0 !== T(t4, 16, t4, 32, r3 - 32, o2))
+          if (A(o2, 0, 32, s3, n2), 0 !== S(t4, 16, t4, 32, r3 - 32, o2))
             return -1;
           for (_(e4, 0, t4, 0, r3, s3, n2), i2 = 0; i2 < 32; i2++)
             e4[i2] = 0;
@@ -3588,27 +3613,27 @@ var algosdk_min = { exports: {} };
             e4[r3] = t4[2 * r3] + (t4[2 * r3 + 1] << 8);
           e4[15] &= 32767;
         }
-        function $(e4, t4, r3) {
+        function C(e4, t4, r3) {
           for (var s3 = 0; s3 < 16; s3++)
             e4[s3] = t4[s3] + r3[s3];
         }
-        function O(e4, t4, r3) {
+        function $(e4, t4, r3) {
           for (var s3 = 0; s3 < 16; s3++)
             e4[s3] = t4[s3] - r3[s3];
         }
-        function C(e4, t4, r3) {
-          var s3, n2, i2 = 0, o2 = 0, a2 = 0, c2 = 0, u2 = 0, l2 = 0, h2 = 0, d2 = 0, p2 = 0, f2 = 0, g2 = 0, m2 = 0, y2 = 0, w2 = 0, b2 = 0, v2 = 0, x2 = 0, A2 = 0, _2 = 0, E2 = 0, S2 = 0, T2 = 0, R2 = 0, k2 = 0, I2 = 0, B2 = 0, U2 = 0, P2 = 0, j2 = 0, q2 = 0, D2 = 0, $2 = r3[0], O2 = r3[1], C2 = r3[2], L2 = r3[3], M2 = r3[4], N2 = r3[5], F2 = r3[6], W2 = r3[7], K2 = r3[8], z2 = r3[9], V2 = r3[10], G2 = r3[11], H2 = r3[12], Y2 = r3[13], J2 = r3[14], X2 = r3[15];
-          i2 += (s3 = t4[0]) * $2, o2 += s3 * O2, a2 += s3 * C2, c2 += s3 * L2, u2 += s3 * M2, l2 += s3 * N2, h2 += s3 * F2, d2 += s3 * W2, p2 += s3 * K2, f2 += s3 * z2, g2 += s3 * V2, m2 += s3 * G2, y2 += s3 * H2, w2 += s3 * Y2, b2 += s3 * J2, v2 += s3 * X2, o2 += (s3 = t4[1]) * $2, a2 += s3 * O2, c2 += s3 * C2, u2 += s3 * L2, l2 += s3 * M2, h2 += s3 * N2, d2 += s3 * F2, p2 += s3 * W2, f2 += s3 * K2, g2 += s3 * z2, m2 += s3 * V2, y2 += s3 * G2, w2 += s3 * H2, b2 += s3 * Y2, v2 += s3 * J2, x2 += s3 * X2, a2 += (s3 = t4[2]) * $2, c2 += s3 * O2, u2 += s3 * C2, l2 += s3 * L2, h2 += s3 * M2, d2 += s3 * N2, p2 += s3 * F2, f2 += s3 * W2, g2 += s3 * K2, m2 += s3 * z2, y2 += s3 * V2, w2 += s3 * G2, b2 += s3 * H2, v2 += s3 * Y2, x2 += s3 * J2, A2 += s3 * X2, c2 += (s3 = t4[3]) * $2, u2 += s3 * O2, l2 += s3 * C2, h2 += s3 * L2, d2 += s3 * M2, p2 += s3 * N2, f2 += s3 * F2, g2 += s3 * W2, m2 += s3 * K2, y2 += s3 * z2, w2 += s3 * V2, b2 += s3 * G2, v2 += s3 * H2, x2 += s3 * Y2, A2 += s3 * J2, _2 += s3 * X2, u2 += (s3 = t4[4]) * $2, l2 += s3 * O2, h2 += s3 * C2, d2 += s3 * L2, p2 += s3 * M2, f2 += s3 * N2, g2 += s3 * F2, m2 += s3 * W2, y2 += s3 * K2, w2 += s3 * z2, b2 += s3 * V2, v2 += s3 * G2, x2 += s3 * H2, A2 += s3 * Y2, _2 += s3 * J2, E2 += s3 * X2, l2 += (s3 = t4[5]) * $2, h2 += s3 * O2, d2 += s3 * C2, p2 += s3 * L2, f2 += s3 * M2, g2 += s3 * N2, m2 += s3 * F2, y2 += s3 * W2, w2 += s3 * K2, b2 += s3 * z2, v2 += s3 * V2, x2 += s3 * G2, A2 += s3 * H2, _2 += s3 * Y2, E2 += s3 * J2, S2 += s3 * X2, h2 += (s3 = t4[6]) * $2, d2 += s3 * O2, p2 += s3 * C2, f2 += s3 * L2, g2 += s3 * M2, m2 += s3 * N2, y2 += s3 * F2, w2 += s3 * W2, b2 += s3 * K2, v2 += s3 * z2, x2 += s3 * V2, A2 += s3 * G2, _2 += s3 * H2, E2 += s3 * Y2, S2 += s3 * J2, T2 += s3 * X2, d2 += (s3 = t4[7]) * $2, p2 += s3 * O2, f2 += s3 * C2, g2 += s3 * L2, m2 += s3 * M2, y2 += s3 * N2, w2 += s3 * F2, b2 += s3 * W2, v2 += s3 * K2, x2 += s3 * z2, A2 += s3 * V2, _2 += s3 * G2, E2 += s3 * H2, S2 += s3 * Y2, T2 += s3 * J2, R2 += s3 * X2, p2 += (s3 = t4[8]) * $2, f2 += s3 * O2, g2 += s3 * C2, m2 += s3 * L2, y2 += s3 * M2, w2 += s3 * N2, b2 += s3 * F2, v2 += s3 * W2, x2 += s3 * K2, A2 += s3 * z2, _2 += s3 * V2, E2 += s3 * G2, S2 += s3 * H2, T2 += s3 * Y2, R2 += s3 * J2, k2 += s3 * X2, f2 += (s3 = t4[9]) * $2, g2 += s3 * O2, m2 += s3 * C2, y2 += s3 * L2, w2 += s3 * M2, b2 += s3 * N2, v2 += s3 * F2, x2 += s3 * W2, A2 += s3 * K2, _2 += s3 * z2, E2 += s3 * V2, S2 += s3 * G2, T2 += s3 * H2, R2 += s3 * Y2, k2 += s3 * J2, I2 += s3 * X2, g2 += (s3 = t4[10]) * $2, m2 += s3 * O2, y2 += s3 * C2, w2 += s3 * L2, b2 += s3 * M2, v2 += s3 * N2, x2 += s3 * F2, A2 += s3 * W2, _2 += s3 * K2, E2 += s3 * z2, S2 += s3 * V2, T2 += s3 * G2, R2 += s3 * H2, k2 += s3 * Y2, I2 += s3 * J2, B2 += s3 * X2, m2 += (s3 = t4[11]) * $2, y2 += s3 * O2, w2 += s3 * C2, b2 += s3 * L2, v2 += s3 * M2, x2 += s3 * N2, A2 += s3 * F2, _2 += s3 * W2, E2 += s3 * K2, S2 += s3 * z2, T2 += s3 * V2, R2 += s3 * G2, k2 += s3 * H2, I2 += s3 * Y2, B2 += s3 * J2, U2 += s3 * X2, y2 += (s3 = t4[12]) * $2, w2 += s3 * O2, b2 += s3 * C2, v2 += s3 * L2, x2 += s3 * M2, A2 += s3 * N2, _2 += s3 * F2, E2 += s3 * W2, S2 += s3 * K2, T2 += s3 * z2, R2 += s3 * V2, k2 += s3 * G2, I2 += s3 * H2, B2 += s3 * Y2, U2 += s3 * J2, P2 += s3 * X2, w2 += (s3 = t4[13]) * $2, b2 += s3 * O2, v2 += s3 * C2, x2 += s3 * L2, A2 += s3 * M2, _2 += s3 * N2, E2 += s3 * F2, S2 += s3 * W2, T2 += s3 * K2, R2 += s3 * z2, k2 += s3 * V2, I2 += s3 * G2, B2 += s3 * H2, U2 += s3 * Y2, P2 += s3 * J2, j2 += s3 * X2, b2 += (s3 = t4[14]) * $2, v2 += s3 * O2, x2 += s3 * C2, A2 += s3 * L2, _2 += s3 * M2, E2 += s3 * N2, S2 += s3 * F2, T2 += s3 * W2, R2 += s3 * K2, k2 += s3 * z2, I2 += s3 * V2, B2 += s3 * G2, U2 += s3 * H2, P2 += s3 * Y2, j2 += s3 * J2, q2 += s3 * X2, v2 += (s3 = t4[15]) * $2, o2 += 38 * (A2 += s3 * C2), a2 += 38 * (_2 += s3 * L2), c2 += 38 * (E2 += s3 * M2), u2 += 38 * (S2 += s3 * N2), l2 += 38 * (T2 += s3 * F2), h2 += 38 * (R2 += s3 * W2), d2 += 38 * (k2 += s3 * K2), p2 += 38 * (I2 += s3 * z2), f2 += 38 * (B2 += s3 * V2), g2 += 38 * (U2 += s3 * G2), m2 += 38 * (P2 += s3 * H2), y2 += 38 * (j2 += s3 * Y2), w2 += 38 * (q2 += s3 * J2), b2 += 38 * (D2 += s3 * X2), i2 = (s3 = (i2 += 38 * (x2 += s3 * O2)) + (n2 = 1) + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), o2 = (s3 = o2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), a2 = (s3 = a2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), c2 = (s3 = c2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), u2 = (s3 = u2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), l2 = (s3 = l2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), h2 = (s3 = h2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), d2 = (s3 = d2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), p2 = (s3 = p2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), f2 = (s3 = f2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), g2 = (s3 = g2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), m2 = (s3 = m2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), y2 = (s3 = y2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), w2 = (s3 = w2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), b2 = (s3 = b2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), v2 = (s3 = v2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), i2 = (s3 = (i2 += n2 - 1 + 37 * (n2 - 1)) + (n2 = 1) + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), o2 = (s3 = o2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), a2 = (s3 = a2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), c2 = (s3 = c2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), u2 = (s3 = u2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), l2 = (s3 = l2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), h2 = (s3 = h2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), d2 = (s3 = d2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), p2 = (s3 = p2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), f2 = (s3 = f2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), g2 = (s3 = g2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), m2 = (s3 = m2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), y2 = (s3 = y2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), w2 = (s3 = w2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), b2 = (s3 = b2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), v2 = (s3 = v2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), i2 += n2 - 1 + 37 * (n2 - 1), e4[0] = i2, e4[1] = o2, e4[2] = a2, e4[3] = c2, e4[4] = u2, e4[5] = l2, e4[6] = h2, e4[7] = d2, e4[8] = p2, e4[9] = f2, e4[10] = g2, e4[11] = m2, e4[12] = y2, e4[13] = w2, e4[14] = b2, e4[15] = v2;
+        function O(e4, t4, r3) {
+          var s3, n2, i2 = 0, o2 = 0, a2 = 0, c2 = 0, u2 = 0, l2 = 0, h2 = 0, d2 = 0, p2 = 0, f2 = 0, g2 = 0, m2 = 0, y2 = 0, w2 = 0, b2 = 0, v2 = 0, x2 = 0, A2 = 0, _2 = 0, E2 = 0, T2 = 0, S2 = 0, k2 = 0, R2 = 0, I2 = 0, B2 = 0, U2 = 0, P2 = 0, j2 = 0, q2 = 0, D2 = 0, C2 = r3[0], $2 = r3[1], O2 = r3[2], L2 = r3[3], M2 = r3[4], N2 = r3[5], F2 = r3[6], W2 = r3[7], K2 = r3[8], z2 = r3[9], V2 = r3[10], G2 = r3[11], H2 = r3[12], Y2 = r3[13], J2 = r3[14], X2 = r3[15];
+          i2 += (s3 = t4[0]) * C2, o2 += s3 * $2, a2 += s3 * O2, c2 += s3 * L2, u2 += s3 * M2, l2 += s3 * N2, h2 += s3 * F2, d2 += s3 * W2, p2 += s3 * K2, f2 += s3 * z2, g2 += s3 * V2, m2 += s3 * G2, y2 += s3 * H2, w2 += s3 * Y2, b2 += s3 * J2, v2 += s3 * X2, o2 += (s3 = t4[1]) * C2, a2 += s3 * $2, c2 += s3 * O2, u2 += s3 * L2, l2 += s3 * M2, h2 += s3 * N2, d2 += s3 * F2, p2 += s3 * W2, f2 += s3 * K2, g2 += s3 * z2, m2 += s3 * V2, y2 += s3 * G2, w2 += s3 * H2, b2 += s3 * Y2, v2 += s3 * J2, x2 += s3 * X2, a2 += (s3 = t4[2]) * C2, c2 += s3 * $2, u2 += s3 * O2, l2 += s3 * L2, h2 += s3 * M2, d2 += s3 * N2, p2 += s3 * F2, f2 += s3 * W2, g2 += s3 * K2, m2 += s3 * z2, y2 += s3 * V2, w2 += s3 * G2, b2 += s3 * H2, v2 += s3 * Y2, x2 += s3 * J2, A2 += s3 * X2, c2 += (s3 = t4[3]) * C2, u2 += s3 * $2, l2 += s3 * O2, h2 += s3 * L2, d2 += s3 * M2, p2 += s3 * N2, f2 += s3 * F2, g2 += s3 * W2, m2 += s3 * K2, y2 += s3 * z2, w2 += s3 * V2, b2 += s3 * G2, v2 += s3 * H2, x2 += s3 * Y2, A2 += s3 * J2, _2 += s3 * X2, u2 += (s3 = t4[4]) * C2, l2 += s3 * $2, h2 += s3 * O2, d2 += s3 * L2, p2 += s3 * M2, f2 += s3 * N2, g2 += s3 * F2, m2 += s3 * W2, y2 += s3 * K2, w2 += s3 * z2, b2 += s3 * V2, v2 += s3 * G2, x2 += s3 * H2, A2 += s3 * Y2, _2 += s3 * J2, E2 += s3 * X2, l2 += (s3 = t4[5]) * C2, h2 += s3 * $2, d2 += s3 * O2, p2 += s3 * L2, f2 += s3 * M2, g2 += s3 * N2, m2 += s3 * F2, y2 += s3 * W2, w2 += s3 * K2, b2 += s3 * z2, v2 += s3 * V2, x2 += s3 * G2, A2 += s3 * H2, _2 += s3 * Y2, E2 += s3 * J2, T2 += s3 * X2, h2 += (s3 = t4[6]) * C2, d2 += s3 * $2, p2 += s3 * O2, f2 += s3 * L2, g2 += s3 * M2, m2 += s3 * N2, y2 += s3 * F2, w2 += s3 * W2, b2 += s3 * K2, v2 += s3 * z2, x2 += s3 * V2, A2 += s3 * G2, _2 += s3 * H2, E2 += s3 * Y2, T2 += s3 * J2, S2 += s3 * X2, d2 += (s3 = t4[7]) * C2, p2 += s3 * $2, f2 += s3 * O2, g2 += s3 * L2, m2 += s3 * M2, y2 += s3 * N2, w2 += s3 * F2, b2 += s3 * W2, v2 += s3 * K2, x2 += s3 * z2, A2 += s3 * V2, _2 += s3 * G2, E2 += s3 * H2, T2 += s3 * Y2, S2 += s3 * J2, k2 += s3 * X2, p2 += (s3 = t4[8]) * C2, f2 += s3 * $2, g2 += s3 * O2, m2 += s3 * L2, y2 += s3 * M2, w2 += s3 * N2, b2 += s3 * F2, v2 += s3 * W2, x2 += s3 * K2, A2 += s3 * z2, _2 += s3 * V2, E2 += s3 * G2, T2 += s3 * H2, S2 += s3 * Y2, k2 += s3 * J2, R2 += s3 * X2, f2 += (s3 = t4[9]) * C2, g2 += s3 * $2, m2 += s3 * O2, y2 += s3 * L2, w2 += s3 * M2, b2 += s3 * N2, v2 += s3 * F2, x2 += s3 * W2, A2 += s3 * K2, _2 += s3 * z2, E2 += s3 * V2, T2 += s3 * G2, S2 += s3 * H2, k2 += s3 * Y2, R2 += s3 * J2, I2 += s3 * X2, g2 += (s3 = t4[10]) * C2, m2 += s3 * $2, y2 += s3 * O2, w2 += s3 * L2, b2 += s3 * M2, v2 += s3 * N2, x2 += s3 * F2, A2 += s3 * W2, _2 += s3 * K2, E2 += s3 * z2, T2 += s3 * V2, S2 += s3 * G2, k2 += s3 * H2, R2 += s3 * Y2, I2 += s3 * J2, B2 += s3 * X2, m2 += (s3 = t4[11]) * C2, y2 += s3 * $2, w2 += s3 * O2, b2 += s3 * L2, v2 += s3 * M2, x2 += s3 * N2, A2 += s3 * F2, _2 += s3 * W2, E2 += s3 * K2, T2 += s3 * z2, S2 += s3 * V2, k2 += s3 * G2, R2 += s3 * H2, I2 += s3 * Y2, B2 += s3 * J2, U2 += s3 * X2, y2 += (s3 = t4[12]) * C2, w2 += s3 * $2, b2 += s3 * O2, v2 += s3 * L2, x2 += s3 * M2, A2 += s3 * N2, _2 += s3 * F2, E2 += s3 * W2, T2 += s3 * K2, S2 += s3 * z2, k2 += s3 * V2, R2 += s3 * G2, I2 += s3 * H2, B2 += s3 * Y2, U2 += s3 * J2, P2 += s3 * X2, w2 += (s3 = t4[13]) * C2, b2 += s3 * $2, v2 += s3 * O2, x2 += s3 * L2, A2 += s3 * M2, _2 += s3 * N2, E2 += s3 * F2, T2 += s3 * W2, S2 += s3 * K2, k2 += s3 * z2, R2 += s3 * V2, I2 += s3 * G2, B2 += s3 * H2, U2 += s3 * Y2, P2 += s3 * J2, j2 += s3 * X2, b2 += (s3 = t4[14]) * C2, v2 += s3 * $2, x2 += s3 * O2, A2 += s3 * L2, _2 += s3 * M2, E2 += s3 * N2, T2 += s3 * F2, S2 += s3 * W2, k2 += s3 * K2, R2 += s3 * z2, I2 += s3 * V2, B2 += s3 * G2, U2 += s3 * H2, P2 += s3 * Y2, j2 += s3 * J2, q2 += s3 * X2, v2 += (s3 = t4[15]) * C2, o2 += 38 * (A2 += s3 * O2), a2 += 38 * (_2 += s3 * L2), c2 += 38 * (E2 += s3 * M2), u2 += 38 * (T2 += s3 * N2), l2 += 38 * (S2 += s3 * F2), h2 += 38 * (k2 += s3 * W2), d2 += 38 * (R2 += s3 * K2), p2 += 38 * (I2 += s3 * z2), f2 += 38 * (B2 += s3 * V2), g2 += 38 * (U2 += s3 * G2), m2 += 38 * (P2 += s3 * H2), y2 += 38 * (j2 += s3 * Y2), w2 += 38 * (q2 += s3 * J2), b2 += 38 * (D2 += s3 * X2), i2 = (s3 = (i2 += 38 * (x2 += s3 * $2)) + (n2 = 1) + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), o2 = (s3 = o2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), a2 = (s3 = a2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), c2 = (s3 = c2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), u2 = (s3 = u2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), l2 = (s3 = l2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), h2 = (s3 = h2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), d2 = (s3 = d2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), p2 = (s3 = p2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), f2 = (s3 = f2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), g2 = (s3 = g2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), m2 = (s3 = m2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), y2 = (s3 = y2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), w2 = (s3 = w2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), b2 = (s3 = b2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), v2 = (s3 = v2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), i2 = (s3 = (i2 += n2 - 1 + 37 * (n2 - 1)) + (n2 = 1) + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), o2 = (s3 = o2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), a2 = (s3 = a2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), c2 = (s3 = c2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), u2 = (s3 = u2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), l2 = (s3 = l2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), h2 = (s3 = h2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), d2 = (s3 = d2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), p2 = (s3 = p2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), f2 = (s3 = f2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), g2 = (s3 = g2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), m2 = (s3 = m2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), y2 = (s3 = y2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), w2 = (s3 = w2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), b2 = (s3 = b2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), v2 = (s3 = v2 + n2 + 65535) - 65536 * (n2 = Math.floor(s3 / 65536)), i2 += n2 - 1 + 37 * (n2 - 1), e4[0] = i2, e4[1] = o2, e4[2] = a2, e4[3] = c2, e4[4] = u2, e4[5] = l2, e4[6] = h2, e4[7] = d2, e4[8] = p2, e4[9] = f2, e4[10] = g2, e4[11] = m2, e4[12] = y2, e4[13] = w2, e4[14] = b2, e4[15] = v2;
         }
         function L(e4, t4) {
-          C(e4, t4, t4);
+          O(e4, t4, t4);
         }
         function M(e4, r3) {
           var s3, n2 = t3();
           for (s3 = 0; s3 < 16; s3++)
             n2[s3] = r3[s3];
           for (s3 = 253; s3 >= 0; s3--)
-            L(n2, n2), 2 !== s3 && 4 !== s3 && C(n2, n2, r3);
+            L(n2, n2), 2 !== s3 && 4 !== s3 && O(n2, n2, r3);
           for (s3 = 0; s3 < 16; s3++)
             e4[s3] = n2[s3];
         }
@@ -3617,7 +3642,7 @@ var algosdk_min = { exports: {} };
           for (s3 = 0; s3 < 16; s3++)
             n2[s3] = r3[s3];
           for (s3 = 250; s3 >= 0; s3--)
-            L(n2, n2), 1 !== s3 && C(n2, n2, r3);
+            L(n2, n2), 1 !== s3 && O(n2, n2, r3);
           for (s3 = 0; s3 < 16; s3++)
             e4[s3] = n2[s3];
         }
@@ -3628,11 +3653,11 @@ var algosdk_min = { exports: {} };
           for (o2[31] = 127 & r3[31] | 64, o2[0] &= 248, D(c2, s3), i2 = 0; i2 < 16; i2++)
             l2[i2] = c2[i2], d2[i2] = u2[i2] = h2[i2] = 0;
           for (u2[0] = d2[0] = 1, i2 = 254; i2 >= 0; --i2)
-            U(u2, l2, n2 = o2[i2 >>> 3] >>> (7 & i2) & 1), U(h2, d2, n2), $(p2, u2, h2), O(u2, u2, h2), $(h2, l2, d2), O(l2, l2, d2), L(d2, p2), L(f2, u2), C(u2, h2, u2), C(h2, l2, p2), $(p2, u2, h2), O(u2, u2, h2), L(l2, u2), O(h2, d2, f2), C(u2, h2, a), $(u2, u2, d2), C(h2, h2, u2), C(u2, d2, f2), C(d2, l2, c2), L(l2, p2), U(u2, l2, n2), U(h2, d2, n2);
+            U(u2, l2, n2 = o2[i2 >>> 3] >>> (7 & i2) & 1), U(h2, d2, n2), C(p2, u2, h2), $(u2, u2, h2), C(h2, l2, d2), $(l2, l2, d2), L(d2, p2), L(f2, u2), O(u2, h2, u2), O(h2, l2, p2), C(p2, u2, h2), $(u2, u2, h2), L(l2, u2), $(h2, d2, f2), O(u2, h2, a), C(u2, u2, d2), O(h2, h2, u2), O(u2, d2, f2), O(d2, l2, c2), L(l2, p2), U(u2, l2, n2), U(h2, d2, n2);
           for (i2 = 0; i2 < 16; i2++)
             c2[i2 + 16] = u2[i2], c2[i2 + 32] = h2[i2], c2[i2 + 48] = l2[i2], c2[i2 + 64] = d2[i2];
           var g2 = c2.subarray(32), m2 = c2.subarray(16);
-          return M(g2, g2), C(m2, m2, g2), P(e4, m2), 0;
+          return M(g2, g2), O(m2, m2, g2), P(e4, m2), 0;
         }
         function W(e4, t4) {
           return F(e4, t4, n);
@@ -3645,9 +3670,9 @@ var algosdk_min = { exports: {} };
           return F(n2, r3, t4), w(e4, s2, n2, b);
         }
         E.prototype.blocks = function(e4, t4, r3) {
-          for (var s3, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2, w2, b2, v2, x2, A2 = this.fin ? 0 : 2048, _2 = this.h[0], E2 = this.h[1], S2 = this.h[2], T2 = this.h[3], R2 = this.h[4], k2 = this.h[5], I2 = this.h[6], B2 = this.h[7], U2 = this.h[8], P2 = this.h[9], j2 = this.r[0], q2 = this.r[1], D2 = this.r[2], $2 = this.r[3], O2 = this.r[4], C2 = this.r[5], L2 = this.r[6], M2 = this.r[7], N2 = this.r[8], F2 = this.r[9]; r3 >= 16; )
-            d2 = h2 = 0, d2 += (_2 += 8191 & (s3 = 255 & e4[t4 + 0] | (255 & e4[t4 + 1]) << 8)) * j2, d2 += (E2 += 8191 & (s3 >>> 13 | (n2 = 255 & e4[t4 + 2] | (255 & e4[t4 + 3]) << 8) << 3)) * (5 * F2), d2 += (S2 += 8191 & (n2 >>> 10 | (i2 = 255 & e4[t4 + 4] | (255 & e4[t4 + 5]) << 8) << 6)) * (5 * N2), d2 += (T2 += 8191 & (i2 >>> 7 | (o2 = 255 & e4[t4 + 6] | (255 & e4[t4 + 7]) << 8) << 9)) * (5 * M2), h2 = (d2 += (R2 += 8191 & (o2 >>> 4 | (a2 = 255 & e4[t4 + 8] | (255 & e4[t4 + 9]) << 8) << 12)) * (5 * L2)) >>> 13, d2 &= 8191, d2 += (k2 += a2 >>> 1 & 8191) * (5 * C2), d2 += (I2 += 8191 & (a2 >>> 14 | (c2 = 255 & e4[t4 + 10] | (255 & e4[t4 + 11]) << 8) << 2)) * (5 * O2), d2 += (B2 += 8191 & (c2 >>> 11 | (u2 = 255 & e4[t4 + 12] | (255 & e4[t4 + 13]) << 8) << 5)) * (5 * $2), d2 += (U2 += 8191 & (u2 >>> 8 | (l2 = 255 & e4[t4 + 14] | (255 & e4[t4 + 15]) << 8) << 8)) * (5 * D2), p2 = h2 += (d2 += (P2 += l2 >>> 5 | A2) * (5 * q2)) >>> 13, p2 += _2 * q2, p2 += E2 * j2, p2 += S2 * (5 * F2), p2 += T2 * (5 * N2), h2 = (p2 += R2 * (5 * M2)) >>> 13, p2 &= 8191, p2 += k2 * (5 * L2), p2 += I2 * (5 * C2), p2 += B2 * (5 * O2), p2 += U2 * (5 * $2), h2 += (p2 += P2 * (5 * D2)) >>> 13, p2 &= 8191, f2 = h2, f2 += _2 * D2, f2 += E2 * q2, f2 += S2 * j2, f2 += T2 * (5 * F2), h2 = (f2 += R2 * (5 * N2)) >>> 13, f2 &= 8191, f2 += k2 * (5 * M2), f2 += I2 * (5 * L2), f2 += B2 * (5 * C2), f2 += U2 * (5 * O2), g2 = h2 += (f2 += P2 * (5 * $2)) >>> 13, g2 += _2 * $2, g2 += E2 * D2, g2 += S2 * q2, g2 += T2 * j2, h2 = (g2 += R2 * (5 * F2)) >>> 13, g2 &= 8191, g2 += k2 * (5 * N2), g2 += I2 * (5 * M2), g2 += B2 * (5 * L2), g2 += U2 * (5 * C2), m2 = h2 += (g2 += P2 * (5 * O2)) >>> 13, m2 += _2 * O2, m2 += E2 * $2, m2 += S2 * D2, m2 += T2 * q2, h2 = (m2 += R2 * j2) >>> 13, m2 &= 8191, m2 += k2 * (5 * F2), m2 += I2 * (5 * N2), m2 += B2 * (5 * M2), m2 += U2 * (5 * L2), y2 = h2 += (m2 += P2 * (5 * C2)) >>> 13, y2 += _2 * C2, y2 += E2 * O2, y2 += S2 * $2, y2 += T2 * D2, h2 = (y2 += R2 * q2) >>> 13, y2 &= 8191, y2 += k2 * j2, y2 += I2 * (5 * F2), y2 += B2 * (5 * N2), y2 += U2 * (5 * M2), w2 = h2 += (y2 += P2 * (5 * L2)) >>> 13, w2 += _2 * L2, w2 += E2 * C2, w2 += S2 * O2, w2 += T2 * $2, h2 = (w2 += R2 * D2) >>> 13, w2 &= 8191, w2 += k2 * q2, w2 += I2 * j2, w2 += B2 * (5 * F2), w2 += U2 * (5 * N2), b2 = h2 += (w2 += P2 * (5 * M2)) >>> 13, b2 += _2 * M2, b2 += E2 * L2, b2 += S2 * C2, b2 += T2 * O2, h2 = (b2 += R2 * $2) >>> 13, b2 &= 8191, b2 += k2 * D2, b2 += I2 * q2, b2 += B2 * j2, b2 += U2 * (5 * F2), v2 = h2 += (b2 += P2 * (5 * N2)) >>> 13, v2 += _2 * N2, v2 += E2 * M2, v2 += S2 * L2, v2 += T2 * C2, h2 = (v2 += R2 * O2) >>> 13, v2 &= 8191, v2 += k2 * $2, v2 += I2 * D2, v2 += B2 * q2, v2 += U2 * j2, x2 = h2 += (v2 += P2 * (5 * F2)) >>> 13, x2 += _2 * F2, x2 += E2 * N2, x2 += S2 * M2, x2 += T2 * L2, h2 = (x2 += R2 * C2) >>> 13, x2 &= 8191, x2 += k2 * O2, x2 += I2 * $2, x2 += B2 * D2, x2 += U2 * q2, _2 = d2 = 8191 & (h2 = (h2 = ((h2 += (x2 += P2 * j2) >>> 13) << 2) + h2 | 0) + (d2 &= 8191) | 0), E2 = p2 += h2 >>>= 13, S2 = f2 &= 8191, T2 = g2 &= 8191, R2 = m2 &= 8191, k2 = y2 &= 8191, I2 = w2 &= 8191, B2 = b2 &= 8191, U2 = v2 &= 8191, P2 = x2 &= 8191, t4 += 16, r3 -= 16;
-          this.h[0] = _2, this.h[1] = E2, this.h[2] = S2, this.h[3] = T2, this.h[4] = R2, this.h[5] = k2, this.h[6] = I2, this.h[7] = B2, this.h[8] = U2, this.h[9] = P2;
+          for (var s3, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2, w2, b2, v2, x2, A2 = this.fin ? 0 : 2048, _2 = this.h[0], E2 = this.h[1], T2 = this.h[2], S2 = this.h[3], k2 = this.h[4], R2 = this.h[5], I2 = this.h[6], B2 = this.h[7], U2 = this.h[8], P2 = this.h[9], j2 = this.r[0], q2 = this.r[1], D2 = this.r[2], C2 = this.r[3], $2 = this.r[4], O2 = this.r[5], L2 = this.r[6], M2 = this.r[7], N2 = this.r[8], F2 = this.r[9]; r3 >= 16; )
+            d2 = h2 = 0, d2 += (_2 += 8191 & (s3 = 255 & e4[t4 + 0] | (255 & e4[t4 + 1]) << 8)) * j2, d2 += (E2 += 8191 & (s3 >>> 13 | (n2 = 255 & e4[t4 + 2] | (255 & e4[t4 + 3]) << 8) << 3)) * (5 * F2), d2 += (T2 += 8191 & (n2 >>> 10 | (i2 = 255 & e4[t4 + 4] | (255 & e4[t4 + 5]) << 8) << 6)) * (5 * N2), d2 += (S2 += 8191 & (i2 >>> 7 | (o2 = 255 & e4[t4 + 6] | (255 & e4[t4 + 7]) << 8) << 9)) * (5 * M2), h2 = (d2 += (k2 += 8191 & (o2 >>> 4 | (a2 = 255 & e4[t4 + 8] | (255 & e4[t4 + 9]) << 8) << 12)) * (5 * L2)) >>> 13, d2 &= 8191, d2 += (R2 += a2 >>> 1 & 8191) * (5 * O2), d2 += (I2 += 8191 & (a2 >>> 14 | (c2 = 255 & e4[t4 + 10] | (255 & e4[t4 + 11]) << 8) << 2)) * (5 * $2), d2 += (B2 += 8191 & (c2 >>> 11 | (u2 = 255 & e4[t4 + 12] | (255 & e4[t4 + 13]) << 8) << 5)) * (5 * C2), d2 += (U2 += 8191 & (u2 >>> 8 | (l2 = 255 & e4[t4 + 14] | (255 & e4[t4 + 15]) << 8) << 8)) * (5 * D2), p2 = h2 += (d2 += (P2 += l2 >>> 5 | A2) * (5 * q2)) >>> 13, p2 += _2 * q2, p2 += E2 * j2, p2 += T2 * (5 * F2), p2 += S2 * (5 * N2), h2 = (p2 += k2 * (5 * M2)) >>> 13, p2 &= 8191, p2 += R2 * (5 * L2), p2 += I2 * (5 * O2), p2 += B2 * (5 * $2), p2 += U2 * (5 * C2), h2 += (p2 += P2 * (5 * D2)) >>> 13, p2 &= 8191, f2 = h2, f2 += _2 * D2, f2 += E2 * q2, f2 += T2 * j2, f2 += S2 * (5 * F2), h2 = (f2 += k2 * (5 * N2)) >>> 13, f2 &= 8191, f2 += R2 * (5 * M2), f2 += I2 * (5 * L2), f2 += B2 * (5 * O2), f2 += U2 * (5 * $2), g2 = h2 += (f2 += P2 * (5 * C2)) >>> 13, g2 += _2 * C2, g2 += E2 * D2, g2 += T2 * q2, g2 += S2 * j2, h2 = (g2 += k2 * (5 * F2)) >>> 13, g2 &= 8191, g2 += R2 * (5 * N2), g2 += I2 * (5 * M2), g2 += B2 * (5 * L2), g2 += U2 * (5 * O2), m2 = h2 += (g2 += P2 * (5 * $2)) >>> 13, m2 += _2 * $2, m2 += E2 * C2, m2 += T2 * D2, m2 += S2 * q2, h2 = (m2 += k2 * j2) >>> 13, m2 &= 8191, m2 += R2 * (5 * F2), m2 += I2 * (5 * N2), m2 += B2 * (5 * M2), m2 += U2 * (5 * L2), y2 = h2 += (m2 += P2 * (5 * O2)) >>> 13, y2 += _2 * O2, y2 += E2 * $2, y2 += T2 * C2, y2 += S2 * D2, h2 = (y2 += k2 * q2) >>> 13, y2 &= 8191, y2 += R2 * j2, y2 += I2 * (5 * F2), y2 += B2 * (5 * N2), y2 += U2 * (5 * M2), w2 = h2 += (y2 += P2 * (5 * L2)) >>> 13, w2 += _2 * L2, w2 += E2 * O2, w2 += T2 * $2, w2 += S2 * C2, h2 = (w2 += k2 * D2) >>> 13, w2 &= 8191, w2 += R2 * q2, w2 += I2 * j2, w2 += B2 * (5 * F2), w2 += U2 * (5 * N2), b2 = h2 += (w2 += P2 * (5 * M2)) >>> 13, b2 += _2 * M2, b2 += E2 * L2, b2 += T2 * O2, b2 += S2 * $2, h2 = (b2 += k2 * C2) >>> 13, b2 &= 8191, b2 += R2 * D2, b2 += I2 * q2, b2 += B2 * j2, b2 += U2 * (5 * F2), v2 = h2 += (b2 += P2 * (5 * N2)) >>> 13, v2 += _2 * N2, v2 += E2 * M2, v2 += T2 * L2, v2 += S2 * O2, h2 = (v2 += k2 * $2) >>> 13, v2 &= 8191, v2 += R2 * C2, v2 += I2 * D2, v2 += B2 * q2, v2 += U2 * j2, x2 = h2 += (v2 += P2 * (5 * F2)) >>> 13, x2 += _2 * F2, x2 += E2 * N2, x2 += T2 * M2, x2 += S2 * L2, h2 = (x2 += k2 * O2) >>> 13, x2 &= 8191, x2 += R2 * $2, x2 += I2 * C2, x2 += B2 * D2, x2 += U2 * q2, _2 = d2 = 8191 & (h2 = (h2 = ((h2 += (x2 += P2 * j2) >>> 13) << 2) + h2 | 0) + (d2 &= 8191) | 0), E2 = p2 += h2 >>>= 13, T2 = f2 &= 8191, S2 = g2 &= 8191, k2 = m2 &= 8191, R2 = y2 &= 8191, I2 = w2 &= 8191, B2 = b2 &= 8191, U2 = v2 &= 8191, P2 = x2 &= 8191, t4 += 16, r3 -= 16;
+          this.h[0] = _2, this.h[1] = E2, this.h[2] = T2, this.h[3] = S2, this.h[4] = k2, this.h[5] = R2, this.h[6] = I2, this.h[7] = B2, this.h[8] = U2, this.h[9] = P2;
         }, E.prototype.finish = function(e4, t4) {
           var r3, s3, n2, i2, o2 = new Uint16Array(10);
           if (this.leftover) {
@@ -3681,16 +3706,16 @@ var algosdk_min = { exports: {} };
             this.leftover += r3;
           }
         };
-        var V = R, G = k, H = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591];
+        var V = k, G = R, H = [1116352408, 3609767458, 1899447441, 602891725, 3049323471, 3964484399, 3921009573, 2173295548, 961987163, 4081628472, 1508970993, 3053834265, 2453635748, 2937671579, 2870763221, 3664609560, 3624381080, 2734883394, 310598401, 1164996542, 607225278, 1323610764, 1426881987, 3590304994, 1925078388, 4068182383, 2162078206, 991336113, 2614888103, 633803317, 3248222580, 3479774868, 3835390401, 2666613458, 4022224774, 944711139, 264347078, 2341262773, 604807628, 2007800933, 770255983, 1495990901, 1249150122, 1856431235, 1555081692, 3175218132, 1996064986, 2198950837, 2554220882, 3999719339, 2821834349, 766784016, 2952996808, 2566594879, 3210313671, 3203337956, 3336571891, 1034457026, 3584528711, 2466948901, 113926993, 3758326383, 338241895, 168717936, 666307205, 1188179964, 773529912, 1546045734, 1294757372, 1522805485, 1396182291, 2643833823, 1695183700, 2343527390, 1986661051, 1014477480, 2177026350, 1206759142, 2456956037, 344077627, 2730485921, 1290863460, 2820302411, 3158454273, 3259730800, 3505952657, 3345764771, 106217008, 3516065817, 3606008344, 3600352804, 1432725776, 4094571909, 1467031594, 275423344, 851169720, 430227734, 3100823752, 506948616, 1363258195, 659060556, 3750685593, 883997877, 3785050280, 958139571, 3318307427, 1322822218, 3812723403, 1537002063, 2003034995, 1747873779, 3602036899, 1955562222, 1575990012, 2024104815, 1125592928, 2227730452, 2716904306, 2361852424, 442776044, 2428436474, 593698344, 2756734187, 3733110249, 3204031479, 2999351573, 3329325298, 3815920427, 3391569614, 3928383900, 3515267271, 566280711, 3940187606, 3454069534, 4118630271, 4000239992, 116418474, 1914138554, 174292421, 2731055270, 289380356, 3203993006, 460393269, 320620315, 685471733, 587496836, 852142971, 1086792851, 1017036298, 365543100, 1126000580, 2618297676, 1288033470, 3409855158, 1501505948, 4234509866, 1607167915, 987167468, 1816402316, 1246189591];
         function Y(e4, t4, r3, s3) {
-          for (var n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2, w2, b2, v2, x2, A2, _2, E2, S2, T2, R2, k2, I2, B2 = new Int32Array(16), U2 = new Int32Array(16), P2 = e4[0], j2 = e4[1], q2 = e4[2], D2 = e4[3], $2 = e4[4], O2 = e4[5], C2 = e4[6], L2 = e4[7], M2 = t4[0], N2 = t4[1], F2 = t4[2], W2 = t4[3], K2 = t4[4], z2 = t4[5], V2 = t4[6], G2 = t4[7], Y2 = 0; s3 >= 128; ) {
+          for (var n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2, w2, b2, v2, x2, A2, _2, E2, T2, S2, k2, R2, I2, B2 = new Int32Array(16), U2 = new Int32Array(16), P2 = e4[0], j2 = e4[1], q2 = e4[2], D2 = e4[3], C2 = e4[4], $2 = e4[5], O2 = e4[6], L2 = e4[7], M2 = t4[0], N2 = t4[1], F2 = t4[2], W2 = t4[3], K2 = t4[4], z2 = t4[5], V2 = t4[6], G2 = t4[7], Y2 = 0; s3 >= 128; ) {
             for (A2 = 0; A2 < 16; A2++)
               _2 = 8 * A2 + Y2, B2[A2] = r3[_2 + 0] << 24 | r3[_2 + 1] << 16 | r3[_2 + 2] << 8 | r3[_2 + 3], U2[A2] = r3[_2 + 4] << 24 | r3[_2 + 5] << 16 | r3[_2 + 6] << 8 | r3[_2 + 7];
             for (A2 = 0; A2 < 80; A2++)
-              if (n2 = P2, i2 = j2, o2 = q2, a2 = D2, c2 = $2, u2 = O2, l2 = C2, d2 = M2, p2 = N2, f2 = F2, g2 = W2, m2 = K2, y2 = z2, w2 = V2, T2 = 65535 & (S2 = G2), R2 = S2 >>> 16, k2 = 65535 & (E2 = L2), I2 = E2 >>> 16, T2 += 65535 & (S2 = (K2 >>> 14 | $2 << 18) ^ (K2 >>> 18 | $2 << 14) ^ ($2 >>> 9 | K2 << 23)), R2 += S2 >>> 16, k2 += 65535 & (E2 = ($2 >>> 14 | K2 << 18) ^ ($2 >>> 18 | K2 << 14) ^ (K2 >>> 9 | $2 << 23)), I2 += E2 >>> 16, T2 += 65535 & (S2 = K2 & z2 ^ ~K2 & V2), R2 += S2 >>> 16, k2 += 65535 & (E2 = $2 & O2 ^ ~$2 & C2), I2 += E2 >>> 16, E2 = H[2 * A2], T2 += 65535 & (S2 = H[2 * A2 + 1]), R2 += S2 >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, E2 = B2[A2 % 16], R2 += (S2 = U2[A2 % 16]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16, T2 = 65535 & (S2 = x2 = 65535 & T2 | R2 << 16), R2 = S2 >>> 16, k2 = 65535 & (E2 = v2 = 65535 & k2 | (I2 += k2 >>> 16) << 16), I2 = E2 >>> 16, T2 += 65535 & (S2 = (M2 >>> 28 | P2 << 4) ^ (P2 >>> 2 | M2 << 30) ^ (P2 >>> 7 | M2 << 25)), R2 += S2 >>> 16, k2 += 65535 & (E2 = (P2 >>> 28 | M2 << 4) ^ (M2 >>> 2 | P2 << 30) ^ (M2 >>> 7 | P2 << 25)), I2 += E2 >>> 16, R2 += (S2 = M2 & N2 ^ M2 & F2 ^ N2 & F2) >>> 16, k2 += 65535 & (E2 = P2 & j2 ^ P2 & q2 ^ j2 & q2), I2 += E2 >>> 16, h2 = 65535 & (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) | (I2 += k2 >>> 16) << 16, b2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = g2), R2 = S2 >>> 16, k2 = 65535 & (E2 = a2), I2 = E2 >>> 16, R2 += (S2 = x2) >>> 16, k2 += 65535 & (E2 = v2), I2 += E2 >>> 16, j2 = n2, q2 = i2, D2 = o2, $2 = a2 = 65535 & (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) | (I2 += k2 >>> 16) << 16, O2 = c2, C2 = u2, L2 = l2, P2 = h2, N2 = d2, F2 = p2, W2 = f2, K2 = g2 = 65535 & T2 | R2 << 16, z2 = m2, V2 = y2, G2 = w2, M2 = b2, A2 % 16 == 15)
+              if (n2 = P2, i2 = j2, o2 = q2, a2 = D2, c2 = C2, u2 = $2, l2 = O2, d2 = M2, p2 = N2, f2 = F2, g2 = W2, m2 = K2, y2 = z2, w2 = V2, S2 = 65535 & (T2 = G2), k2 = T2 >>> 16, R2 = 65535 & (E2 = L2), I2 = E2 >>> 16, S2 += 65535 & (T2 = (K2 >>> 14 | C2 << 18) ^ (K2 >>> 18 | C2 << 14) ^ (C2 >>> 9 | K2 << 23)), k2 += T2 >>> 16, R2 += 65535 & (E2 = (C2 >>> 14 | K2 << 18) ^ (C2 >>> 18 | K2 << 14) ^ (K2 >>> 9 | C2 << 23)), I2 += E2 >>> 16, S2 += 65535 & (T2 = K2 & z2 ^ ~K2 & V2), k2 += T2 >>> 16, R2 += 65535 & (E2 = C2 & $2 ^ ~C2 & O2), I2 += E2 >>> 16, E2 = H[2 * A2], S2 += 65535 & (T2 = H[2 * A2 + 1]), k2 += T2 >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, E2 = B2[A2 % 16], k2 += (T2 = U2[A2 % 16]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16, S2 = 65535 & (T2 = x2 = 65535 & S2 | k2 << 16), k2 = T2 >>> 16, R2 = 65535 & (E2 = v2 = 65535 & R2 | (I2 += R2 >>> 16) << 16), I2 = E2 >>> 16, S2 += 65535 & (T2 = (M2 >>> 28 | P2 << 4) ^ (P2 >>> 2 | M2 << 30) ^ (P2 >>> 7 | M2 << 25)), k2 += T2 >>> 16, R2 += 65535 & (E2 = (P2 >>> 28 | M2 << 4) ^ (M2 >>> 2 | P2 << 30) ^ (M2 >>> 7 | P2 << 25)), I2 += E2 >>> 16, k2 += (T2 = M2 & N2 ^ M2 & F2 ^ N2 & F2) >>> 16, R2 += 65535 & (E2 = P2 & j2 ^ P2 & q2 ^ j2 & q2), I2 += E2 >>> 16, h2 = 65535 & (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) | (I2 += R2 >>> 16) << 16, b2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = g2), k2 = T2 >>> 16, R2 = 65535 & (E2 = a2), I2 = E2 >>> 16, k2 += (T2 = x2) >>> 16, R2 += 65535 & (E2 = v2), I2 += E2 >>> 16, j2 = n2, q2 = i2, D2 = o2, C2 = a2 = 65535 & (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) | (I2 += R2 >>> 16) << 16, $2 = c2, O2 = u2, L2 = l2, P2 = h2, N2 = d2, F2 = p2, W2 = f2, K2 = g2 = 65535 & S2 | k2 << 16, z2 = m2, V2 = y2, G2 = w2, M2 = b2, A2 % 16 == 15)
                 for (_2 = 0; _2 < 16; _2++)
-                  E2 = B2[_2], T2 = 65535 & (S2 = U2[_2]), R2 = S2 >>> 16, k2 = 65535 & E2, I2 = E2 >>> 16, E2 = B2[(_2 + 9) % 16], T2 += 65535 & (S2 = U2[(_2 + 9) % 16]), R2 += S2 >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, v2 = B2[(_2 + 1) % 16], T2 += 65535 & (S2 = ((x2 = U2[(_2 + 1) % 16]) >>> 1 | v2 << 31) ^ (x2 >>> 8 | v2 << 24) ^ (x2 >>> 7 | v2 << 25)), R2 += S2 >>> 16, k2 += 65535 & (E2 = (v2 >>> 1 | x2 << 31) ^ (v2 >>> 8 | x2 << 24) ^ v2 >>> 7), I2 += E2 >>> 16, v2 = B2[(_2 + 14) % 16], R2 += (S2 = ((x2 = U2[(_2 + 14) % 16]) >>> 19 | v2 << 13) ^ (v2 >>> 29 | x2 << 3) ^ (x2 >>> 6 | v2 << 26)) >>> 16, k2 += 65535 & (E2 = (v2 >>> 19 | x2 << 13) ^ (x2 >>> 29 | v2 << 3) ^ v2 >>> 6), I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, B2[_2] = 65535 & k2 | I2 << 16, U2[_2] = 65535 & T2 | R2 << 16;
-            T2 = 65535 & (S2 = M2), R2 = S2 >>> 16, k2 = 65535 & (E2 = P2), I2 = E2 >>> 16, E2 = e4[0], R2 += (S2 = t4[0]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[0] = P2 = 65535 & k2 | I2 << 16, t4[0] = M2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = N2), R2 = S2 >>> 16, k2 = 65535 & (E2 = j2), I2 = E2 >>> 16, E2 = e4[1], R2 += (S2 = t4[1]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[1] = j2 = 65535 & k2 | I2 << 16, t4[1] = N2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = F2), R2 = S2 >>> 16, k2 = 65535 & (E2 = q2), I2 = E2 >>> 16, E2 = e4[2], R2 += (S2 = t4[2]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[2] = q2 = 65535 & k2 | I2 << 16, t4[2] = F2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = W2), R2 = S2 >>> 16, k2 = 65535 & (E2 = D2), I2 = E2 >>> 16, E2 = e4[3], R2 += (S2 = t4[3]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[3] = D2 = 65535 & k2 | I2 << 16, t4[3] = W2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = K2), R2 = S2 >>> 16, k2 = 65535 & (E2 = $2), I2 = E2 >>> 16, E2 = e4[4], R2 += (S2 = t4[4]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[4] = $2 = 65535 & k2 | I2 << 16, t4[4] = K2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = z2), R2 = S2 >>> 16, k2 = 65535 & (E2 = O2), I2 = E2 >>> 16, E2 = e4[5], R2 += (S2 = t4[5]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[5] = O2 = 65535 & k2 | I2 << 16, t4[5] = z2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = V2), R2 = S2 >>> 16, k2 = 65535 & (E2 = C2), I2 = E2 >>> 16, E2 = e4[6], R2 += (S2 = t4[6]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[6] = C2 = 65535 & k2 | I2 << 16, t4[6] = V2 = 65535 & T2 | R2 << 16, T2 = 65535 & (S2 = G2), R2 = S2 >>> 16, k2 = 65535 & (E2 = L2), I2 = E2 >>> 16, E2 = e4[7], R2 += (S2 = t4[7]) >>> 16, k2 += 65535 & E2, I2 += E2 >>> 16, I2 += (k2 += (R2 += (T2 += 65535 & S2) >>> 16) >>> 16) >>> 16, e4[7] = L2 = 65535 & k2 | I2 << 16, t4[7] = G2 = 65535 & T2 | R2 << 16, Y2 += 128, s3 -= 128;
+                  E2 = B2[_2], S2 = 65535 & (T2 = U2[_2]), k2 = T2 >>> 16, R2 = 65535 & E2, I2 = E2 >>> 16, E2 = B2[(_2 + 9) % 16], S2 += 65535 & (T2 = U2[(_2 + 9) % 16]), k2 += T2 >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, v2 = B2[(_2 + 1) % 16], S2 += 65535 & (T2 = ((x2 = U2[(_2 + 1) % 16]) >>> 1 | v2 << 31) ^ (x2 >>> 8 | v2 << 24) ^ (x2 >>> 7 | v2 << 25)), k2 += T2 >>> 16, R2 += 65535 & (E2 = (v2 >>> 1 | x2 << 31) ^ (v2 >>> 8 | x2 << 24) ^ v2 >>> 7), I2 += E2 >>> 16, v2 = B2[(_2 + 14) % 16], k2 += (T2 = ((x2 = U2[(_2 + 14) % 16]) >>> 19 | v2 << 13) ^ (v2 >>> 29 | x2 << 3) ^ (x2 >>> 6 | v2 << 26)) >>> 16, R2 += 65535 & (E2 = (v2 >>> 19 | x2 << 13) ^ (x2 >>> 29 | v2 << 3) ^ v2 >>> 6), I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, B2[_2] = 65535 & R2 | I2 << 16, U2[_2] = 65535 & S2 | k2 << 16;
+            S2 = 65535 & (T2 = M2), k2 = T2 >>> 16, R2 = 65535 & (E2 = P2), I2 = E2 >>> 16, E2 = e4[0], k2 += (T2 = t4[0]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[0] = P2 = 65535 & R2 | I2 << 16, t4[0] = M2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = N2), k2 = T2 >>> 16, R2 = 65535 & (E2 = j2), I2 = E2 >>> 16, E2 = e4[1], k2 += (T2 = t4[1]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[1] = j2 = 65535 & R2 | I2 << 16, t4[1] = N2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = F2), k2 = T2 >>> 16, R2 = 65535 & (E2 = q2), I2 = E2 >>> 16, E2 = e4[2], k2 += (T2 = t4[2]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[2] = q2 = 65535 & R2 | I2 << 16, t4[2] = F2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = W2), k2 = T2 >>> 16, R2 = 65535 & (E2 = D2), I2 = E2 >>> 16, E2 = e4[3], k2 += (T2 = t4[3]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[3] = D2 = 65535 & R2 | I2 << 16, t4[3] = W2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = K2), k2 = T2 >>> 16, R2 = 65535 & (E2 = C2), I2 = E2 >>> 16, E2 = e4[4], k2 += (T2 = t4[4]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[4] = C2 = 65535 & R2 | I2 << 16, t4[4] = K2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = z2), k2 = T2 >>> 16, R2 = 65535 & (E2 = $2), I2 = E2 >>> 16, E2 = e4[5], k2 += (T2 = t4[5]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[5] = $2 = 65535 & R2 | I2 << 16, t4[5] = z2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = V2), k2 = T2 >>> 16, R2 = 65535 & (E2 = O2), I2 = E2 >>> 16, E2 = e4[6], k2 += (T2 = t4[6]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[6] = O2 = 65535 & R2 | I2 << 16, t4[6] = V2 = 65535 & S2 | k2 << 16, S2 = 65535 & (T2 = G2), k2 = T2 >>> 16, R2 = 65535 & (E2 = L2), I2 = E2 >>> 16, E2 = e4[7], k2 += (T2 = t4[7]) >>> 16, R2 += 65535 & E2, I2 += E2 >>> 16, I2 += (R2 += (k2 += (S2 += 65535 & T2) >>> 16) >>> 16) >>> 16, e4[7] = L2 = 65535 & R2 | I2 << 16, t4[7] = G2 = 65535 & S2 | k2 << 16, Y2 += 128, s3 -= 128;
           }
           return s3;
         }
@@ -3704,7 +3729,7 @@ var algosdk_min = { exports: {} };
         }
         function X(e4, r3) {
           var s3 = t3(), n2 = t3(), i2 = t3(), o2 = t3(), a2 = t3(), c2 = t3(), l2 = t3(), h2 = t3(), d2 = t3();
-          O(s3, e4[1], e4[0]), O(d2, r3[1], r3[0]), C(s3, s3, d2), $(n2, e4[0], e4[1]), $(d2, r3[0], r3[1]), C(n2, n2, d2), C(i2, e4[3], r3[3]), C(i2, i2, u), C(o2, e4[2], r3[2]), $(o2, o2, o2), O(a2, n2, s3), O(c2, o2, i2), $(l2, o2, i2), $(h2, n2, s3), C(e4[0], a2, c2), C(e4[1], h2, l2), C(e4[2], l2, c2), C(e4[3], a2, h2);
+          $(s3, e4[1], e4[0]), $(d2, r3[1], r3[0]), O(s3, s3, d2), C(n2, e4[0], e4[1]), C(d2, r3[0], r3[1]), O(n2, n2, d2), O(i2, e4[3], r3[3]), O(i2, i2, u), O(o2, e4[2], r3[2]), C(o2, o2, o2), $(a2, n2, s3), $(c2, o2, i2), C(l2, o2, i2), C(h2, n2, s3), O(e4[0], a2, c2), O(e4[1], h2, l2), O(e4[2], l2, c2), O(e4[3], a2, h2);
         }
         function Z(e4, t4, r3) {
           var s3;
@@ -3713,7 +3738,7 @@ var algosdk_min = { exports: {} };
         }
         function Q(e4, r3) {
           var s3 = t3(), n2 = t3(), i2 = t3();
-          M(i2, r3[2]), C(s3, r3[0], i2), C(n2, r3[1], i2), P(e4, n2), e4[31] ^= q(s3) << 7;
+          M(i2, r3[2]), O(s3, r3[0], i2), O(n2, r3[1], i2), P(e4, n2), e4[31] ^= q(s3) << 7;
         }
         function ee(e4, t4, r3) {
           var s3, n2;
@@ -3722,7 +3747,7 @@ var algosdk_min = { exports: {} };
         }
         function te(e4, r3) {
           var s3 = [t3(), t3(), t3(), t3()];
-          I(s3[0], l), I(s3[1], h), I(s3[2], o), C(s3[3], l, h), ee(e4, s3, r3);
+          I(s3[0], l), I(s3[1], h), I(s3[2], o), O(s3[3], l, h), ee(e4, s3, r3);
         }
         function re(e4, s3, n2) {
           var i2, o2 = new Uint8Array(64), a2 = [t3(), t3(), t3(), t3()];
@@ -3778,7 +3803,7 @@ var algosdk_min = { exports: {} };
             return -1;
           if (function(e5, r4) {
             var s4 = t3(), n3 = t3(), a3 = t3(), u3 = t3(), l3 = t3(), h3 = t3(), p3 = t3();
-            return I(e5[2], o), D(e5[1], r4), L(a3, e5[1]), C(u3, a3, c), O(a3, a3, e5[2]), $(u3, e5[2], u3), L(l3, u3), L(h3, l3), C(p3, h3, l3), C(s4, p3, a3), C(s4, s4, u3), N(s4, s4), C(s4, s4, a3), C(s4, s4, u3), C(s4, s4, u3), C(e5[0], s4, u3), L(n3, e5[0]), C(n3, n3, u3), j(n3, a3) && C(e5[0], e5[0], d), L(n3, e5[0]), C(n3, n3, u3), j(n3, a3) ? -1 : (q(e5[0]) === r4[31] >> 7 && O(e5[0], i, e5[0]), C(e5[3], e5[0], e5[1]), 0);
+            return I(e5[2], o), D(e5[1], r4), L(a3, e5[1]), O(u3, a3, c), $(a3, a3, e5[2]), C(u3, e5[2], u3), L(l3, u3), L(h3, l3), O(p3, h3, l3), O(s4, p3, a3), O(s4, s4, u3), N(s4, s4), O(s4, s4, a3), O(s4, s4, u3), O(s4, s4, u3), O(e5[0], s4, u3), L(n3, e5[0]), O(n3, n3, u3), j(n3, a3) && O(e5[0], e5[0], d), L(n3, e5[0]), O(n3, n3, u3), j(n3, a3) ? -1 : (q(e5[0]) === r4[31] >> 7 && $(e5[0], i, e5[0]), O(e5[3], e5[0], e5[1]), 0);
           }(p2, n2))
             return -1;
           for (a2 = 0; a2 < s3; a2++)
@@ -3810,25 +3835,25 @@ var algosdk_min = { exports: {} };
           for (var t4 = 0; t4 < e4.length; t4++)
             e4[t4] = 0;
         }
-        e3.lowlevel = { crypto_core_hsalsa20: w, crypto_stream_xor: _, crypto_stream: A, crypto_stream_salsa20_xor: v, crypto_stream_salsa20: x, crypto_onetimeauth: S, crypto_onetimeauth_verify: T, crypto_verify_16: g, crypto_verify_32: m, crypto_secretbox: R, crypto_secretbox_open: k, crypto_scalarmult: F, crypto_scalarmult_base: W, crypto_box_beforenm: z, crypto_box_afternm: V, crypto_box: function(e4, t4, r3, s3, n2, i2) {
+        e3.lowlevel = { crypto_core_hsalsa20: w, crypto_stream_xor: _, crypto_stream: A, crypto_stream_salsa20_xor: v, crypto_stream_salsa20: x, crypto_onetimeauth: T, crypto_onetimeauth_verify: S, crypto_verify_16: g, crypto_verify_32: m, crypto_secretbox: k, crypto_secretbox_open: R, crypto_scalarmult: F, crypto_scalarmult_base: W, crypto_box_beforenm: z, crypto_box_afternm: V, crypto_box: function(e4, t4, r3, s3, n2, i2) {
           var o2 = new Uint8Array(32);
           return z(o2, n2, i2), V(e4, t4, r3, s3, o2);
         }, crypto_box_open: function(e4, t4, r3, s3, n2, i2) {
           var o2 = new Uint8Array(32);
           return z(o2, n2, i2), G(e4, t4, r3, s3, o2);
-        }, crypto_box_keypair: K, crypto_hash: J, crypto_sign: oe, crypto_sign_keypair: re, crypto_sign_open: ae, crypto_secretbox_KEYBYTES: ce, crypto_secretbox_NONCEBYTES: ue, crypto_secretbox_ZEROBYTES: 32, crypto_secretbox_BOXZEROBYTES: 16, crypto_scalarmult_BYTES: 32, crypto_scalarmult_SCALARBYTES: 32, crypto_box_PUBLICKEYBYTES: 32, crypto_box_SECRETKEYBYTES: 32, crypto_box_BEFORENMBYTES: 32, crypto_box_NONCEBYTES: le, crypto_box_ZEROBYTES: 32, crypto_box_BOXZEROBYTES: 16, crypto_sign_BYTES: he, crypto_sign_PUBLICKEYBYTES: de, crypto_sign_SECRETKEYBYTES: pe, crypto_sign_SEEDBYTES: 32, crypto_hash_BYTES: 64, gf: t3, D: c, L: se, pack25519: P, unpack25519: D, M: C, A: $, S: L, Z: O, pow2523: N, add: X, set25519: I, modL: ne, scalarmult: ee, scalarbase: te }, e3.randomBytes = function(e4) {
+        }, crypto_box_keypair: K, crypto_hash: J, crypto_sign: oe, crypto_sign_keypair: re, crypto_sign_open: ae, crypto_secretbox_KEYBYTES: ce, crypto_secretbox_NONCEBYTES: ue, crypto_secretbox_ZEROBYTES: 32, crypto_secretbox_BOXZEROBYTES: 16, crypto_scalarmult_BYTES: 32, crypto_scalarmult_SCALARBYTES: 32, crypto_box_PUBLICKEYBYTES: 32, crypto_box_SECRETKEYBYTES: 32, crypto_box_BEFORENMBYTES: 32, crypto_box_NONCEBYTES: le, crypto_box_ZEROBYTES: 32, crypto_box_BOXZEROBYTES: 16, crypto_sign_BYTES: he, crypto_sign_PUBLICKEYBYTES: de, crypto_sign_SECRETKEYBYTES: pe, crypto_sign_SEEDBYTES: 32, crypto_hash_BYTES: 64, gf: t3, D: c, L: se, pack25519: P, unpack25519: D, M: O, A: C, S: L, Z: $, pow2523: N, add: X, set25519: I, modL: ne, scalarmult: ee, scalarbase: te }, e3.randomBytes = function(e4) {
           var t4 = new Uint8Array(e4);
           return r2(t4, e4), t4;
         }, e3.secretbox = function(e4, t4, r3) {
           ge(e4, t4, r3), fe(r3, t4);
           for (var s3 = new Uint8Array(32 + e4.length), n2 = new Uint8Array(s3.length), i2 = 0; i2 < e4.length; i2++)
             s3[i2 + 32] = e4[i2];
-          return R(n2, s3, s3.length, t4, r3), n2.subarray(16);
+          return k(n2, s3, s3.length, t4, r3), n2.subarray(16);
         }, e3.secretbox.open = function(e4, t4, r3) {
           ge(e4, t4, r3), fe(r3, t4);
           for (var s3 = new Uint8Array(16 + e4.length), n2 = new Uint8Array(s3.length), i2 = 0; i2 < e4.length; i2++)
             s3[i2 + 16] = e4[i2];
-          return s3.length < 32 || 0 !== k(n2, s3, s3.length, t4, r3) ? null : n2.subarray(32);
+          return s3.length < 32 || 0 !== R(n2, s3, s3.length, t4, r3) ? null : n2.subarray(32);
         }, e3.secretbox.keyLength = ce, e3.secretbox.nonceLength = ue, e3.secretbox.overheadLength = 16, e3.scalarMult = function(e4, t4) {
           if (ge(e4, t4), 32 !== e4.length)
             throw new Error("bad n size");
@@ -3961,51 +3986,51 @@ var algosdk_min = { exports: {} };
     };
     var s = {};
     return (() => {
-      r.r(s), r.d(s, { ABIAddressType: () => Ui, ABIArrayDynamicType: () => $i, ABIArrayStaticType: () => Di, ABIBoolType: () => Pi, ABIByteType: () => ji, ABIContract: () => Gi, ABIInterface: () => Hi, ABIMethod: () => zi, ABIReferenceType: () => Ni, ABIStringType: () => qi, ABITransactionType: () => Mi, ABITupleType: () => Oi, ABIType: () => ki, ABIUfixedType: () => Bi, ABIUintType: () => Ii, ADDR_BYTE_SIZE: () => Ai, ALGORAND_MIN_TX_FEE: () => te, Algodv2: () => ir, AtomicTransactionComposer: () => Zi, AtomicTransactionComposerStatus: () => Ji, DryrunResult: () => Mn, ERROR_INVALID_MICROALGOS: () => co, ERROR_MULTISIG_BAD_SENDER: () => ao, INVALID_MICROALGOS_ERROR_MSG: () => he, Indexer: () => Ds, IntDecoding: () => S, Kmd: () => or, LENGTH_ENCODE_BYTE_SIZE: () => Si, LogicSig: () => wn, LogicSigAccount: () => bn, MAX_LEN: () => xi, MULTISIG_BAD_SENDER_ERROR_MSG: () => eo, OnApplicationComplete: () => ee, SINGLE_BOOL_SIZE: () => Ei, SINGLE_BYTE_SIZE: () => _i, SourceMap: () => In, Transaction: () => se, TransactionType: () => Q, abiCheckTransactionType: () => Wi, abiTypeIsReference: () => Ki, abiTypeIsTransaction: () => Fi, algosToMicroalgos: () => pe, appendSignMultisigTransaction: () => fn, appendSignRawMultisigSignature: () => gn, assignGroupID: () => en, bigIntToBytes: () => Os, bytesToBigInt: () => Cs, computeGroupID: () => Qs, createDryrun: () => Pn, createMultisigTransaction: () => cn, decodeAddress: () => F, decodeObj: () => oo, decodeSignedTransaction: () => ae, decodeUint64: () => B, decodeUnsignedTransaction: () => oe, default: () => uo, encodeAddress: () => K, encodeObj: () => io, encodeUint64: () => I, encodeUnsignedSimulateTransaction: () => ne, encodeUnsignedTransaction: () => ie, generateAccount: () => Ls, getApplicationAddress: () => G, getMethodByName: () => Vi, indexerModels: () => t2, instantiateTxnIfNeeded: () => ce, isTransactionWithSigner: () => vi, isValidAddress: () => W, logicSigFromByte: () => An, makeApplicationCallTxnFromObject: () => gi, makeApplicationClearStateTxn: () => hi, makeApplicationClearStateTxnFromObject: () => di, makeApplicationCloseOutTxn: () => ui, makeApplicationCloseOutTxnFromObject: () => li, makeApplicationCreateTxn: () => ti, makeApplicationCreateTxnFromObject: () => ri, makeApplicationDeleteTxn: () => ii, makeApplicationDeleteTxnFromObject: () => oi, makeApplicationNoOpTxn: () => pi, makeApplicationNoOpTxnFromObject: () => fi, makeApplicationOptInTxn: () => ai, makeApplicationOptInTxnFromObject: () => ci, makeApplicationUpdateTxn: () => si, makeApplicationUpdateTxnFromObject: () => ni, makeAssetConfigTxnWithSuggestedParams: () => Gn, makeAssetConfigTxnWithSuggestedParamsFromObject: () => Hn, makeAssetCreateTxnWithSuggestedParams: () => zn, makeAssetCreateTxnWithSuggestedParamsFromObject: () => Vn, makeAssetDestroyTxnWithSuggestedParams: () => Yn, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => Jn, makeAssetFreezeTxnWithSuggestedParams: () => Xn, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => Zn, makeAssetTransferTxnWithSuggestedParams: () => Qn, makeAssetTransferTxnWithSuggestedParamsFromObject: () => ei, makeBasicAccountTransactionSigner: () => mi, makeEmptyTransactionSigner: () => bi, makeKeyRegistrationTxnWithSuggestedParams: () => Wn, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => Kn, makeLogicSigAccountTransactionSigner: () => yi, makeMultiSigAccountTransactionSigner: () => wi, makePaymentTxnWithSuggestedParams: () => Nn, makePaymentTxnWithSuggestedParamsFromObject: () => Fn, masterDerivationKeyToMnemonic: () => Xs, mergeMultisigTransactions: () => hn, microalgosToAlgos: () => de, mnemonicFromSeed: () => Vs, mnemonicToMasterDerivationKey: () => Js, mnemonicToSecretKey: () => Hs, modelsv2: () => e2, multisigAddress: () => mn, secretKeyToMnemonic: () => Ys, seedFromMnemonic: () => Gs, signBid: () => ro, signBytes: () => so, signLogicSigTransaction: () => xn, signLogicSigTransactionObject: () => vn, signMultisigTransaction: () => pn, signTransaction: () => to, tealSign: () => En, tealSignFromProgram: () => Tn, verifyBytes: () => no, verifyMultisig: () => dn, verifyTealSign: () => Sn, waitForConfirmation: () => $s });
+      r.r(s), r.d(s, { ABIAddressType: () => Ci, ABIArrayDynamicType: () => Ni, ABIArrayStaticType: () => Mi, ABIBoolType: () => $i, ABIByteType: () => Oi, ABIContract: () => Zi, ABIInterface: () => Qi, ABIMethod: () => Ji, ABIReferenceType: () => Vi, ABIStringType: () => Li, ABITransactionType: () => zi, ABITupleType: () => Fi, ABIType: () => ji, ABIUfixedType: () => Di, ABIUintType: () => qi, ADDR_BYTE_SIZE: () => ki, ALGORAND_MIN_TX_FEE: () => te, Algodv2: () => lr, AtomicTransactionComposer: () => so, AtomicTransactionComposerStatus: () => to, DryrunResult: () => zn, ERROR_INVALID_MICROALGOS: () => fo, ERROR_MULTISIG_BAD_SENDER: () => po, INVALID_MICROALGOS_ERROR_MSG: () => he, Indexer: () => Ms, IntDecoding: () => p, Kmd: () => hr, LENGTH_ENCODE_BYTE_SIZE: () => Bi, LogicSig: () => _n, LogicSigAccount: () => En, MAX_LEN: () => Si, MULTISIG_BAD_SENDER_ERROR_MSG: () => io, OnApplicationComplete: () => ee, SINGLE_BOOL_SIZE: () => Ii, SINGLE_BYTE_SIZE: () => Ri, SourceMap: () => qn, Transaction: () => se, TransactionType: () => Q, abiCheckTransactionType: () => Hi, abiTypeIsReference: () => Yi, abiTypeIsTransaction: () => Gi, algosToMicroalgos: () => pe, appendSignMultisigTransaction: () => bn, appendSignRawMultisigSignature: () => vn, assignGroupID: () => on, bigIntToBytes: () => Fs, bytesToBigInt: () => Ws, computeGroupID: () => nn, createDryrun: () => $n, createMultisigTransaction: () => pn, decodeAddress: () => F, decodeObj: () => ho, decodeSignedTransaction: () => ae, decodeUint64: () => B, decodeUnsignedTransaction: () => oe, default: () => go, encodeAddress: () => K, encodeObj: () => lo, encodeUint64: () => I, encodeUnsignedSimulateTransaction: () => ne, encodeUnsignedTransaction: () => ie, generateAccount: () => Ks, getApplicationAddress: () => G, getMethodByName: () => Xi, indexerModels: () => t2, instantiateTxnIfNeeded: () => ce, isTransactionWithSigner: () => Ti, isValidAddress: () => W, logicSigFromByte: () => kn, makeApplicationCallTxnFromObject: () => vi, makeApplicationClearStateTxn: () => mi, makeApplicationClearStateTxnFromObject: () => yi, makeApplicationCloseOutTxn: () => fi, makeApplicationCloseOutTxnFromObject: () => gi, makeApplicationCreateTxn: () => oi, makeApplicationCreateTxnFromObject: () => ai, makeApplicationDeleteTxn: () => li, makeApplicationDeleteTxnFromObject: () => hi, makeApplicationNoOpTxn: () => wi, makeApplicationNoOpTxnFromObject: () => bi, makeApplicationOptInTxn: () => di, makeApplicationOptInTxnFromObject: () => pi, makeApplicationUpdateTxn: () => ci, makeApplicationUpdateTxnFromObject: () => ui, makeAssetConfigTxnWithSuggestedParams: () => Zn, makeAssetConfigTxnWithSuggestedParamsFromObject: () => Qn, makeAssetCreateTxnWithSuggestedParams: () => Jn, makeAssetCreateTxnWithSuggestedParamsFromObject: () => Xn, makeAssetDestroyTxnWithSuggestedParams: () => ei, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => ti, makeAssetFreezeTxnWithSuggestedParams: () => ri, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => si, makeAssetTransferTxnWithSuggestedParams: () => ni, makeAssetTransferTxnWithSuggestedParamsFromObject: () => ii, makeBasicAccountTransactionSigner: () => xi, makeEmptyTransactionSigner: () => Ei, makeKeyRegistrationTxnWithSuggestedParams: () => Hn, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => Yn, makeLogicSigAccountTransactionSigner: () => Ai, makeMultiSigAccountTransactionSigner: () => _i, makePaymentTxnWithSuggestedParams: () => Vn, makePaymentTxnWithSuggestedParamsFromObject: () => Gn, masterDerivationKeyToMnemonic: () => rn, mergeMultisigTransactions: () => mn, microalgosToAlgos: () => de, mnemonicFromSeed: () => Xs, mnemonicToMasterDerivationKey: () => tn, mnemonicToSecretKey: () => Qs, modelsv2: () => e2, multisigAddress: () => xn, secretKeyToMnemonic: () => en, seedFromMnemonic: () => Zs, signBid: () => ao, signBytes: () => co, signLogicSigTransaction: () => Sn, signLogicSigTransactionObject: () => Tn, signMultisigTransaction: () => wn, signTransaction: () => oo, tealSign: () => In, tealSignFromProgram: () => Un, verifyBytes: () => uo, verifyMultisig: () => yn, verifyTealSign: () => Bn, waitForConfirmation: () => Ns });
       var e2 = {};
-      r.r(e2), r.d(e2, { Account: () => Ae, AccountApplicationResponse: () => _e, AccountAssetResponse: () => Ee, AccountParticipation: () => Se, AccountStateDelta: () => Te, Application: () => Re, ApplicationLocalState: () => ke, ApplicationParams: () => Ie, ApplicationStateSchema: () => Be, Asset: () => Ue, AssetHolding: () => Pe, AssetParams: () => je, BlockHashResponse: () => qe, BlockResponse: () => De, Box: () => $e, BoxDescriptor: () => Oe, BoxesResponse: () => Ce, BuildVersion: () => Le, CompileResponse: () => Me, DisassembleResponse: () => Ne, DryrunRequest: () => Fe, DryrunResponse: () => We, DryrunSource: () => Ke, DryrunState: () => ze, DryrunTxnResult: () => Ve, ErrorResponse: () => Ge, EvalDelta: () => He, EvalDeltaKeyValue: () => Ye, GetBlockTimeStampOffsetResponse: () => Je, GetSyncRoundResponse: () => Xe, KvDelta: () => Ze, LedgerStateDeltaForTransactionGroup: () => Qe, LightBlockHeaderProof: () => et, NodeStatusResponse: () => tt, PendingTransactionResponse: () => rt, PendingTransactionsResponse: () => st, PostTransactionsResponse: () => nt, SimulateRequest: () => it, SimulateRequestTransactionGroup: () => ot, SimulateResponse: () => at, SimulateTransactionGroupResult: () => ct, SimulateTransactionResult: () => ut, SimulationEvalOverrides: () => lt, StateProof: () => ht, StateProofMessage: () => dt, SupplyResponse: () => pt, TealKeyValue: () => ft, TealValue: () => gt, TransactionGroupLedgerStateDeltasForRoundResponse: () => mt, TransactionParametersResponse: () => yt, TransactionProofResponse: () => wt, Version: () => bt });
+      r.r(e2), r.d(e2, { Account: () => Ae, AccountApplicationResponse: () => _e, AccountAssetResponse: () => Ee, AccountParticipation: () => Te, AccountStateDelta: () => Se, Application: () => ke, ApplicationLocalState: () => Re, ApplicationParams: () => Ie, ApplicationStateSchema: () => Be, Asset: () => Ue, AssetHolding: () => Pe, AssetParams: () => je, AvmValue: () => qe, BlockHashResponse: () => De, BlockResponse: () => Ce, Box: () => $e, BoxDescriptor: () => Oe, BoxesResponse: () => Le, BuildVersion: () => Me, CompileResponse: () => Ne, DisassembleResponse: () => Fe, DryrunRequest: () => We, DryrunResponse: () => Ke, DryrunSource: () => ze, DryrunState: () => Ve, DryrunTxnResult: () => Ge, ErrorResponse: () => He, EvalDelta: () => Ye, EvalDeltaKeyValue: () => Je, GetBlockTimeStampOffsetResponse: () => Xe, GetSyncRoundResponse: () => Ze, KvDelta: () => Qe, LedgerStateDeltaForTransactionGroup: () => et, LightBlockHeaderProof: () => tt, NodeStatusResponse: () => rt, PendingTransactionResponse: () => st, PendingTransactionsResponse: () => nt, PostTransactionsResponse: () => it, ScratchChange: () => ot, SimulateRequest: () => at, SimulateRequestTransactionGroup: () => ct, SimulateResponse: () => ut, SimulateTraceConfig: () => lt, SimulateTransactionGroupResult: () => ht, SimulateTransactionResult: () => dt, SimulationEvalOverrides: () => pt, SimulationOpcodeTraceUnit: () => ft, SimulationTransactionExecTrace: () => gt, StateProof: () => mt, StateProofMessage: () => yt, SupplyResponse: () => wt, TealKeyValue: () => bt, TealValue: () => vt, TransactionGroupLedgerStateDeltasForRoundResponse: () => xt, TransactionParametersResponse: () => At, TransactionProofResponse: () => _t, Version: () => Et });
       var t2 = {};
-      r.r(t2), r.d(t2, { Account: () => Ar, AccountParticipation: () => _r, AccountResponse: () => Er, AccountStateDelta: () => Sr, AccountsResponse: () => Tr, Application: () => Rr, ApplicationLocalState: () => kr, ApplicationLocalStatesResponse: () => Ir, ApplicationLogData: () => Br, ApplicationLogsResponse: () => Ur, ApplicationParams: () => Pr, ApplicationResponse: () => jr, ApplicationStateSchema: () => qr, ApplicationsResponse: () => Dr, Asset: () => $r, AssetBalancesResponse: () => Or, AssetHolding: () => Cr, AssetHoldingsResponse: () => Lr, AssetParams: () => Mr, AssetResponse: () => Nr, AssetsResponse: () => Fr, Block: () => Wr, BlockRewards: () => Kr, BlockUpgradeState: () => zr, BlockUpgradeVote: () => Vr, Box: () => Gr, BoxDescriptor: () => Hr, BoxesResponse: () => Yr, ErrorResponse: () => Jr, EvalDelta: () => Xr, EvalDeltaKeyValue: () => Zr, HashFactory: () => Qr, HealthCheck: () => es, IndexerStateProofMessage: () => ts, MerkleArrayProof: () => rs, MiniAssetHolding: () => ss, ParticipationUpdates: () => ns, StateProofFields: () => is, StateProofParticipant: () => os, StateProofReveal: () => as, StateProofSigSlot: () => cs, StateProofSignature: () => us, StateProofTracking: () => ls, StateProofVerifier: () => hs, StateSchema: () => ds, TealKeyValue: () => ps, TealValue: () => fs, Transaction: () => gs, TransactionApplication: () => ms, TransactionAssetConfig: () => ys, TransactionAssetFreeze: () => ws, TransactionAssetTransfer: () => bs, TransactionKeyreg: () => vs, TransactionPayment: () => xs, TransactionResponse: () => As, TransactionSignature: () => _s, TransactionSignatureLogicsig: () => Es, TransactionSignatureMultisig: () => Ss, TransactionSignatureMultisigSubsignature: () => Ts, TransactionStateProof: () => Rs, TransactionsResponse: () => ks });
+      r.r(t2), r.d(t2, { Account: () => kr, AccountParticipation: () => Rr, AccountResponse: () => Ir, AccountStateDelta: () => Br, AccountsResponse: () => Ur, Application: () => Pr, ApplicationLocalState: () => jr, ApplicationLocalStatesResponse: () => qr, ApplicationLogData: () => Dr, ApplicationLogsResponse: () => Cr, ApplicationParams: () => $r, ApplicationResponse: () => Or, ApplicationStateSchema: () => Lr, ApplicationsResponse: () => Mr, Asset: () => Nr, AssetBalancesResponse: () => Fr, AssetHolding: () => Wr, AssetHoldingsResponse: () => Kr, AssetParams: () => zr, AssetResponse: () => Vr, AssetsResponse: () => Gr, Block: () => Hr, BlockRewards: () => Yr, BlockUpgradeState: () => Jr, BlockUpgradeVote: () => Xr, Box: () => Zr, BoxDescriptor: () => Qr, BoxesResponse: () => es, ErrorResponse: () => ts, EvalDelta: () => rs, EvalDeltaKeyValue: () => ss, HashFactory: () => ns, HealthCheck: () => is, IndexerStateProofMessage: () => os, MerkleArrayProof: () => as, MiniAssetHolding: () => cs, ParticipationUpdates: () => us, StateProofFields: () => ls, StateProofParticipant: () => hs, StateProofReveal: () => ds, StateProofSigSlot: () => ps, StateProofSignature: () => fs, StateProofTracking: () => gs, StateProofVerifier: () => ms, StateSchema: () => ys, TealKeyValue: () => ws, TealValue: () => bs, Transaction: () => vs, TransactionApplication: () => xs, TransactionAssetConfig: () => As, TransactionAssetFreeze: () => _s, TransactionAssetTransfer: () => Es, TransactionKeyreg: () => Ts, TransactionPayment: () => Ss, TransactionResponse: () => ks, TransactionSignature: () => Rs, TransactionSignatureLogicsig: () => Is, TransactionSignatureMultisig: () => Bs, TransactionSignatureMultisigSubsignature: () => Us, TransactionStateProof: () => Ps, TransactionsResponse: () => js });
       var n = {};
-      r.r(n), r.d(n, { ABIAddressType: () => Ui, ABIArrayDynamicType: () => $i, ABIArrayStaticType: () => Di, ABIBoolType: () => Pi, ABIByteType: () => ji, ABIContract: () => Gi, ABIInterface: () => Hi, ABIMethod: () => zi, ABIReferenceType: () => Ni, ABIStringType: () => qi, ABITransactionType: () => Mi, ABITupleType: () => Oi, ABIType: () => ki, ABIUfixedType: () => Bi, ABIUintType: () => Ii, ADDR_BYTE_SIZE: () => Ai, ALGORAND_MIN_TX_FEE: () => te, Algodv2: () => ir, AtomicTransactionComposer: () => Zi, AtomicTransactionComposerStatus: () => Ji, DryrunResult: () => Mn, ERROR_INVALID_MICROALGOS: () => co, ERROR_MULTISIG_BAD_SENDER: () => ao, INVALID_MICROALGOS_ERROR_MSG: () => he, Indexer: () => Ds, IntDecoding: () => S, Kmd: () => or, LENGTH_ENCODE_BYTE_SIZE: () => Si, LogicSig: () => wn, LogicSigAccount: () => bn, MAX_LEN: () => xi, MULTISIG_BAD_SENDER_ERROR_MSG: () => eo, OnApplicationComplete: () => ee, SINGLE_BOOL_SIZE: () => Ei, SINGLE_BYTE_SIZE: () => _i, SourceMap: () => In, Transaction: () => se, TransactionType: () => Q, abiCheckTransactionType: () => Wi, abiTypeIsReference: () => Ki, abiTypeIsTransaction: () => Fi, algosToMicroalgos: () => pe, appendSignMultisigTransaction: () => fn, appendSignRawMultisigSignature: () => gn, assignGroupID: () => en, bigIntToBytes: () => Os, bytesToBigInt: () => Cs, computeGroupID: () => Qs, createDryrun: () => Pn, createMultisigTransaction: () => cn, decodeAddress: () => F, decodeObj: () => oo, decodeSignedTransaction: () => ae, decodeUint64: () => B, decodeUnsignedTransaction: () => oe, encodeAddress: () => K, encodeObj: () => io, encodeUint64: () => I, encodeUnsignedSimulateTransaction: () => ne, encodeUnsignedTransaction: () => ie, generateAccount: () => Ls, getApplicationAddress: () => G, getMethodByName: () => Vi, indexerModels: () => t2, instantiateTxnIfNeeded: () => ce, isTransactionWithSigner: () => vi, isValidAddress: () => W, logicSigFromByte: () => An, makeApplicationCallTxnFromObject: () => gi, makeApplicationClearStateTxn: () => hi, makeApplicationClearStateTxnFromObject: () => di, makeApplicationCloseOutTxn: () => ui, makeApplicationCloseOutTxnFromObject: () => li, makeApplicationCreateTxn: () => ti, makeApplicationCreateTxnFromObject: () => ri, makeApplicationDeleteTxn: () => ii, makeApplicationDeleteTxnFromObject: () => oi, makeApplicationNoOpTxn: () => pi, makeApplicationNoOpTxnFromObject: () => fi, makeApplicationOptInTxn: () => ai, makeApplicationOptInTxnFromObject: () => ci, makeApplicationUpdateTxn: () => si, makeApplicationUpdateTxnFromObject: () => ni, makeAssetConfigTxnWithSuggestedParams: () => Gn, makeAssetConfigTxnWithSuggestedParamsFromObject: () => Hn, makeAssetCreateTxnWithSuggestedParams: () => zn, makeAssetCreateTxnWithSuggestedParamsFromObject: () => Vn, makeAssetDestroyTxnWithSuggestedParams: () => Yn, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => Jn, makeAssetFreezeTxnWithSuggestedParams: () => Xn, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => Zn, makeAssetTransferTxnWithSuggestedParams: () => Qn, makeAssetTransferTxnWithSuggestedParamsFromObject: () => ei, makeBasicAccountTransactionSigner: () => mi, makeEmptyTransactionSigner: () => bi, makeKeyRegistrationTxnWithSuggestedParams: () => Wn, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => Kn, makeLogicSigAccountTransactionSigner: () => yi, makeMultiSigAccountTransactionSigner: () => wi, makePaymentTxnWithSuggestedParams: () => Nn, makePaymentTxnWithSuggestedParamsFromObject: () => Fn, masterDerivationKeyToMnemonic: () => Xs, mergeMultisigTransactions: () => hn, microalgosToAlgos: () => de, mnemonicFromSeed: () => Vs, mnemonicToMasterDerivationKey: () => Js, mnemonicToSecretKey: () => Hs, modelsv2: () => e2, multisigAddress: () => mn, secretKeyToMnemonic: () => Ys, seedFromMnemonic: () => Gs, signBid: () => ro, signBytes: () => so, signLogicSigTransaction: () => xn, signLogicSigTransactionObject: () => vn, signMultisigTransaction: () => pn, signTransaction: () => to, tealSign: () => En, tealSignFromProgram: () => Tn, verifyBytes: () => no, verifyMultisig: () => dn, verifyTealSign: () => Sn, waitForConfirmation: () => $s });
-      var i = r(486), o = r(765), a = r.n(o), c = r(757), u = r.n(c);
-      function l(e3) {
-        return u().sha512_256.array(e3);
-      }
-      function h(e3) {
-        return a().sign.keyPair.fromSeed(e3);
-      }
-      function d(e3) {
-        return e3 === a().sign.signatureLength;
-      }
-      function p(e3) {
-        return a().sign.keyPair.fromSecretKey(e3);
-      }
-      function f(e3, t3) {
-        return a().sign.detached(e3, t3);
-      }
-      function g(e3, t3) {
-        return a().verify(e3, t3);
-      }
-      function m(e3, t3, r2) {
-        return a().sign.detached.verify(e3, t3, r2);
-      }
-      const y = a().sign.publicKeyLength, w = (a().sign.secretKeyLength, 32), b = 32;
-      var v, x = r(267), A = r.n(x), _ = r(360), E = r.n(_);
+      r.r(n), r.d(n, { ABIAddressType: () => Ci, ABIArrayDynamicType: () => Ni, ABIArrayStaticType: () => Mi, ABIBoolType: () => $i, ABIByteType: () => Oi, ABIContract: () => Zi, ABIInterface: () => Qi, ABIMethod: () => Ji, ABIReferenceType: () => Vi, ABIStringType: () => Li, ABITransactionType: () => zi, ABITupleType: () => Fi, ABIType: () => ji, ABIUfixedType: () => Di, ABIUintType: () => qi, ADDR_BYTE_SIZE: () => ki, ALGORAND_MIN_TX_FEE: () => te, Algodv2: () => lr, AtomicTransactionComposer: () => so, AtomicTransactionComposerStatus: () => to, DryrunResult: () => zn, ERROR_INVALID_MICROALGOS: () => fo, ERROR_MULTISIG_BAD_SENDER: () => po, INVALID_MICROALGOS_ERROR_MSG: () => he, Indexer: () => Ms, IntDecoding: () => p, Kmd: () => hr, LENGTH_ENCODE_BYTE_SIZE: () => Bi, LogicSig: () => _n, LogicSigAccount: () => En, MAX_LEN: () => Si, MULTISIG_BAD_SENDER_ERROR_MSG: () => io, OnApplicationComplete: () => ee, SINGLE_BOOL_SIZE: () => Ii, SINGLE_BYTE_SIZE: () => Ri, SourceMap: () => qn, Transaction: () => se, TransactionType: () => Q, abiCheckTransactionType: () => Hi, abiTypeIsReference: () => Yi, abiTypeIsTransaction: () => Gi, algosToMicroalgos: () => pe, appendSignMultisigTransaction: () => bn, appendSignRawMultisigSignature: () => vn, assignGroupID: () => on, bigIntToBytes: () => Fs, bytesToBigInt: () => Ws, computeGroupID: () => nn, createDryrun: () => $n, createMultisigTransaction: () => pn, decodeAddress: () => F, decodeObj: () => ho, decodeSignedTransaction: () => ae, decodeUint64: () => B, decodeUnsignedTransaction: () => oe, encodeAddress: () => K, encodeObj: () => lo, encodeUint64: () => I, encodeUnsignedSimulateTransaction: () => ne, encodeUnsignedTransaction: () => ie, generateAccount: () => Ks, getApplicationAddress: () => G, getMethodByName: () => Xi, indexerModels: () => t2, instantiateTxnIfNeeded: () => ce, isTransactionWithSigner: () => Ti, isValidAddress: () => W, logicSigFromByte: () => kn, makeApplicationCallTxnFromObject: () => vi, makeApplicationClearStateTxn: () => mi, makeApplicationClearStateTxnFromObject: () => yi, makeApplicationCloseOutTxn: () => fi, makeApplicationCloseOutTxnFromObject: () => gi, makeApplicationCreateTxn: () => oi, makeApplicationCreateTxnFromObject: () => ai, makeApplicationDeleteTxn: () => li, makeApplicationDeleteTxnFromObject: () => hi, makeApplicationNoOpTxn: () => wi, makeApplicationNoOpTxnFromObject: () => bi, makeApplicationOptInTxn: () => di, makeApplicationOptInTxnFromObject: () => pi, makeApplicationUpdateTxn: () => ci, makeApplicationUpdateTxnFromObject: () => ui, makeAssetConfigTxnWithSuggestedParams: () => Zn, makeAssetConfigTxnWithSuggestedParamsFromObject: () => Qn, makeAssetCreateTxnWithSuggestedParams: () => Jn, makeAssetCreateTxnWithSuggestedParamsFromObject: () => Xn, makeAssetDestroyTxnWithSuggestedParams: () => ei, makeAssetDestroyTxnWithSuggestedParamsFromObject: () => ti, makeAssetFreezeTxnWithSuggestedParams: () => ri, makeAssetFreezeTxnWithSuggestedParamsFromObject: () => si, makeAssetTransferTxnWithSuggestedParams: () => ni, makeAssetTransferTxnWithSuggestedParamsFromObject: () => ii, makeBasicAccountTransactionSigner: () => xi, makeEmptyTransactionSigner: () => Ei, makeKeyRegistrationTxnWithSuggestedParams: () => Hn, makeKeyRegistrationTxnWithSuggestedParamsFromObject: () => Yn, makeLogicSigAccountTransactionSigner: () => Ai, makeMultiSigAccountTransactionSigner: () => _i, makePaymentTxnWithSuggestedParams: () => Vn, makePaymentTxnWithSuggestedParamsFromObject: () => Gn, masterDerivationKeyToMnemonic: () => rn, mergeMultisigTransactions: () => mn, microalgosToAlgos: () => de, mnemonicFromSeed: () => Xs, mnemonicToMasterDerivationKey: () => tn, mnemonicToSecretKey: () => Qs, modelsv2: () => e2, multisigAddress: () => xn, secretKeyToMnemonic: () => en, seedFromMnemonic: () => Zs, signBid: () => ao, signBytes: () => co, signLogicSigTransaction: () => Sn, signLogicSigTransactionObject: () => Tn, signMultisigTransaction: () => wn, signTransaction: () => oo, tealSign: () => In, tealSignFromProgram: () => Un, verifyBytes: () => uo, verifyMultisig: () => yn, verifyTealSign: () => Bn, waitForConfirmation: () => Ns });
+      var i, o = r(486), a = r(765), c = r.n(a), u = r(757), l = r.n(u), h = r(360), d = r.n(h);
       !function(e3) {
         e3.DEFAULT = "default", e3.SAFE = "safe", e3.MIXED = "mixed", e3.BIGINT = "bigint";
-      }(v || (v = {}));
-      const S = v, T = E()({ useNativeBigInt: true, strict: true });
-      function R(e3, t3) {
+      }(i || (i = {}));
+      const p = i, f = d()({ useNativeBigInt: true, strict: true });
+      function g(e3, t3) {
         return e3.length === t3.length && Array.from(e3).every((e4, r2) => e4 === t3[r2]);
       }
-      function k(...e3) {
+      function m(...e3) {
         const t3 = e3.reduce((e4, t4) => e4 + t4.length, 0), r2 = new Uint8Array(t3);
         let s2 = 0;
         for (let t4 = 0; t4 < e3.length; t4++)
           r2.set(e3[t4], s2), s2 += e3[t4].length;
         return r2;
       }
+      function y(e3) {
+        return l().sha512_256.array(e3);
+      }
+      function w(e3) {
+        return c().sign.keyPair.fromSeed(e3);
+      }
+      function b(e3) {
+        return e3 === c().sign.signatureLength;
+      }
+      function v(e3) {
+        return c().sign.keyPair.fromSecretKey(e3);
+      }
+      function x(e3, t3) {
+        return c().sign.detached(e3, t3);
+      }
+      function A(e3, t3) {
+        return c().verify(e3, t3);
+      }
+      function _(e3, t3, r2) {
+        return c().sign.detached.verify(e3, t3, r2);
+      }
+      const E = c().sign.publicKeyLength, T = (c().sign.secretKeyLength, 32), S = 32;
+      var k = r(267), R = r.n(k);
       function I(e3) {
         if ("bigint" != typeof e3 && !Number.isInteger(e3) || e3 < 0 || e3 > BigInt("0xffffffffffffffff"))
           throw new Error("Input is not a 64-bit unsigned integer");
@@ -4017,7 +4042,7 @@ var algosdk_min = { exports: {} };
           throw new Error(`Unknown decodingMode option: ${t3}`);
         if (0 === e3.byteLength || e3.byteLength > 8)
           throw new Error(`Data has unacceptable length. Expected length is between 1 and 8, got ${e3.byteLength}`);
-        const r2 = k(new Uint8Array(8 - e3.byteLength), e3), s2 = new DataView(r2.buffer).getBigUint64(0), n2 = s2 > BigInt(Number.MAX_SAFE_INTEGER);
+        const r2 = m(new Uint8Array(8 - e3.byteLength), e3), s2 = new DataView(r2.buffer).getBigUint64(0), n2 = s2 > BigInt(Number.MAX_SAFE_INTEGER);
         if ("safe" === t3) {
           if (n2)
             throw new Error(`Integer exceeds maximum safe integer: ${s2.toString()}. Try decoding with "mixed" or "safe" decodingMode.`);
@@ -4025,16 +4050,16 @@ var algosdk_min = { exports: {} };
         }
         return "mixed" !== t3 || n2 ? s2 : Number(s2);
       }
-      const U = 36, P = 4, j = 58, q = new Uint8Array([77, 117, 108, 116, 105, 115, 105, 103, 65, 100, 100, 114]), D = i.lW.from("appID"), $ = "address seems to be malformed", O = "wrong checksum for address", C = "invalid multisig version", L = "bad multisig threshold", M = "bad multisig public key - wrong length", N = "nacl public key length is not 32 bytes";
+      const U = 36, P = 4, j = 58, q = new Uint8Array([77, 117, 108, 116, 105, 115, 105, 103, 65, 100, 100, 114]), D = o.lW.from("appID"), C = "address seems to be malformed", $ = "wrong checksum for address", O = "invalid multisig version", L = "bad multisig threshold", M = "bad multisig public key - wrong length", N = "nacl public key length is not 32 bytes";
       function F(e3) {
         if ("string" != typeof e3 || e3.length !== j)
-          throw new Error($);
-        const t3 = A().decode.asBytes(e3.toString());
+          throw new Error(C);
+        const t3 = R().decode.asBytes(e3.toString());
         if (t3.length !== U)
+          throw new Error(C);
+        const r2 = new Uint8Array(t3.slice(0, U - P)), s2 = new Uint8Array(t3.slice(E, U));
+        if (!g(y(r2).slice(T - P, T), s2))
           throw new Error($);
-        const r2 = new Uint8Array(t3.slice(0, U - P)), s2 = new Uint8Array(t3.slice(y, U));
-        if (!R(l(r2).slice(w - P, w), s2))
-          throw new Error(O);
         return { publicKey: r2, checksum: s2 };
       }
       function W(e3) {
@@ -4046,16 +4071,16 @@ var algosdk_min = { exports: {} };
         return true;
       }
       function K(e3) {
-        const t3 = l(e3).slice(y - P, y);
-        return A().encode(k(e3, t3)).toString().slice(0, j);
+        const t3 = y(e3).slice(E - P, E);
+        return R().encode(m(e3, t3)).toString().slice(0, j);
       }
       function z({ version: e3, threshold: t3, pks: r2 }) {
         if (1 !== e3 || e3 > 255 || e3 < 0)
-          throw new Error(C);
+          throw new Error(O);
         if (0 === t3 || 0 === r2.length || t3 > r2.length || t3 > 255)
           throw new Error(L);
         const s2 = U - P;
-        if (s2 !== y)
+        if (s2 !== E)
           throw new Error(N);
         const n2 = new Uint8Array(q.length + 2 + s2 * r2.length);
         n2.set(q, 0), n2.set([e3], q.length), n2.set([t3], q.length + 1);
@@ -4064,13 +4089,13 @@ var algosdk_min = { exports: {} };
             throw new Error(M);
           n2.set(r2[e4], q.length + 2 + e4 * s2);
         }
-        return new Uint8Array(l(n2));
+        return new Uint8Array(y(n2));
       }
       function V({ version: e3, threshold: t3, addrs: r2 }) {
         return K(z({ version: e3, threshold: t3, pks: r2.map((e4) => F(e4).publicKey) }));
       }
       function G(e3) {
-        const t3 = l(k(D, I(e3)));
+        const t3 = y(m(D, I(e3)));
         return K(new Uint8Array(t3));
       }
       var H = r(406);
@@ -4103,13 +4128,13 @@ var algosdk_min = { exports: {} };
         if (null == e3)
           return;
         let s2;
-        if ("string" == typeof e3 ? s2 = i.lW.from(e3, "base64") : e3.constructor === Uint8Array ? s2 = i.lW.from(e3) : i.lW.isBuffer(e3) && (s2 = e3), null == s2 || s2.byteLength !== r2)
+        if ("string" == typeof e3 ? s2 = o.lW.from(e3, "base64") : e3.constructor === Uint8Array ? s2 = o.lW.from(e3) : o.lW.isBuffer(e3) && (s2 = e3), null == s2 || s2.byteLength !== r2)
           throw Error(`${t3} must be a ${r2} byte Uint8Array or Buffer or base64 string.`);
         return s2;
       }
       class se {
         constructor({ ...e3 }) {
-          this.name = "Transaction", this.tag = i.lW.from("TX");
+          this.name = "Transaction", this.tag = o.lW.from("TX");
           const t3 = { type: Q.pay, flatFee: false, nonParticipation: false };
           if (void 0 === e3.type && (e3.type = t3.type), void 0 === e3.flatFee && (e3.flatFee = t3.flatFee), e3.type === Q.keyreg && void 0 !== e3.voteKey && void 0 === e3.nonParticipation && (e3.nonParticipation = t3.nonParticipation), void 0 !== e3.suggestedParams) {
             const t4 = e3;
@@ -4118,7 +4143,7 @@ var algosdk_min = { exports: {} };
           const r2 = e3;
           if (r2.from = F(r2.from), void 0 !== r2.to && (r2.to = F(r2.to)), void 0 !== r2.closeRemainderTo && (r2.closeRemainderTo = F(r2.closeRemainderTo)), void 0 !== r2.assetManager && (r2.assetManager = F(r2.assetManager)), void 0 !== r2.assetReserve && (r2.assetReserve = F(r2.assetReserve)), void 0 !== r2.assetFreeze && (r2.assetFreeze = F(r2.assetFreeze)), void 0 !== r2.assetClawback && (r2.assetClawback = F(r2.assetClawback)), void 0 !== r2.assetRevocationTarget && (r2.assetRevocationTarget = F(r2.assetRevocationTarget)), void 0 !== r2.freezeAccount && (r2.freezeAccount = F(r2.freezeAccount)), void 0 !== r2.reKeyTo && (r2.reKeyTo = F(r2.reKeyTo)), void 0 === r2.genesisHash)
             throw Error("genesis hash must be specified and in a base64 string.");
-          if (r2.genesisHash = i.lW.from(r2.genesisHash, "base64"), void 0 !== r2.amount && (!(Number.isSafeInteger(r2.amount) || "bigint" == typeof r2.amount && r2.amount <= BigInt("0xffffffffffffffff")) || r2.amount < 0))
+          if (r2.genesisHash = o.lW.from(r2.genesisHash, "base64"), void 0 !== r2.amount && (!(Number.isSafeInteger(r2.amount) || "bigint" == typeof r2.amount && r2.amount <= BigInt("0xffffffffffffffff")) || r2.amount < 0))
             throw Error("Amount must be a positive number and smaller than 2^64-1. If the number is larger than 2^53-1, use bigint.");
           if (!Number.isSafeInteger(r2.fee) || r2.fee < 0)
             throw Error("fee must be a positive number and smaller than 2^53-1");
@@ -4187,7 +4212,7 @@ var algosdk_min = { exports: {} };
             });
           }
           if (void 0 !== r2.assetMetadataHash && 0 !== r2.assetMetadataHash.length) {
-            if ("string" == typeof r2.assetMetadataHash && (r2.assetMetadataHash = new Uint8Array(i.lW.from(r2.assetMetadataHash))), r2.assetMetadataHash.constructor !== Uint8Array || 32 !== r2.assetMetadataHash.byteLength)
+            if ("string" == typeof r2.assetMetadataHash && (r2.assetMetadataHash = new Uint8Array(o.lW.from(r2.assetMetadataHash))), r2.assetMetadataHash.constructor !== Uint8Array || 32 !== r2.assetMetadataHash.byteLength)
               throw Error("assetMetadataHash must be a 32 byte Uint8Array or string.");
             r2.assetMetadataHash.every((e4) => 0 === e4) && (r2.assetMetadataHash = void 0);
           } else
@@ -4229,86 +4254,86 @@ var algosdk_min = { exports: {} };
         }
         get_obj_for_encoding() {
           if ("pay" === this.type) {
-            const e4 = { amt: this.amount, fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: "pay", gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group };
-            return void 0 !== this.closeRemainderTo && "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ" !== K(this.closeRemainderTo.publicKey) && (e4.close = i.lW.from(this.closeRemainderTo.publicKey)), void 0 !== this.reKeyTo && (e4.rekey = i.lW.from(this.reKeyTo.publicKey)), void 0 !== this.to && (e4.rcv = i.lW.from(this.to.publicKey)), e4.note.length || delete e4.note, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, e4.lx.length || delete e4.lx, e4.rekey || delete e4.rekey, e4;
+            const e4 = { amt: this.amount, fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: "pay", gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group };
+            return void 0 !== this.closeRemainderTo && "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ" !== K(this.closeRemainderTo.publicKey) && (e4.close = o.lW.from(this.closeRemainderTo.publicKey)), void 0 !== this.reKeyTo && (e4.rekey = o.lW.from(this.reKeyTo.publicKey)), void 0 !== this.to && (e4.rcv = o.lW.from(this.to.publicKey)), e4.note.length || delete e4.note, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, e4.lx.length || delete e4.lx, e4.rekey || delete e4.rekey, e4;
           }
           if ("keyreg" === this.type) {
-            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group, votekey: this.voteKey, selkey: this.selectionKey, sprfkey: this.stateProofKey, votefst: this.voteFirst, votelst: this.voteLast, votekd: this.voteKeyDilution };
-            return e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, void 0 !== this.reKeyTo && (e4.rekey = i.lW.from(this.reKeyTo.publicKey)), this.nonParticipation && (e4.nonpart = true), e4.selkey || delete e4.selkey, e4.votekey || delete e4.votekey, e4.sprfkey || delete e4.sprfkey, e4.votefst || delete e4.votefst, e4.votelst || delete e4.votelst, e4.votekd || delete e4.votekd, e4;
+            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group, votekey: this.voteKey, selkey: this.selectionKey, sprfkey: this.stateProofKey, votefst: this.voteFirst, votelst: this.voteLast, votekd: this.voteKeyDilution };
+            return e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, void 0 !== this.reKeyTo && (e4.rekey = o.lW.from(this.reKeyTo.publicKey)), this.nonParticipation && (e4.nonpart = true), e4.selkey || delete e4.selkey, e4.votekey || delete e4.votekey, e4.sprfkey || delete e4.sprfkey, e4.votefst || delete e4.votefst, e4.votelst || delete e4.votelst, e4.votekd || delete e4.votekd, e4;
           }
           if ("acfg" === this.type) {
-            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group, caid: this.assetIndex, apar: { t: this.assetTotal, df: this.assetDefaultFrozen, dc: this.assetDecimals } };
-            return void 0 !== this.assetManager && (e4.apar.m = i.lW.from(this.assetManager.publicKey)), void 0 !== this.assetReserve && (e4.apar.r = i.lW.from(this.assetReserve.publicKey)), void 0 !== this.assetFreeze && (e4.apar.f = i.lW.from(this.assetFreeze.publicKey)), void 0 !== this.assetClawback && (e4.apar.c = i.lW.from(this.assetClawback.publicKey)), void 0 !== this.assetName && (e4.apar.an = this.assetName), void 0 !== this.assetUnitName && (e4.apar.un = this.assetUnitName), void 0 !== this.assetURL && (e4.apar.au = this.assetURL), void 0 !== this.assetMetadataHash && (e4.apar.am = i.lW.from(this.assetMetadataHash)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 !== this.reKeyTo && (e4.rekey = i.lW.from(this.reKeyTo.publicKey)), e4.caid || delete e4.caid, e4.apar.t || e4.apar.un || e4.apar.an || e4.apar.df || e4.apar.m || e4.apar.r || e4.apar.f || e4.apar.c || e4.apar.au || e4.apar.am || e4.apar.dc ? (e4.apar.t || delete e4.apar.t, e4.apar.dc || delete e4.apar.dc, e4.apar.un || delete e4.apar.un, e4.apar.an || delete e4.apar.an, e4.apar.df || delete e4.apar.df, e4.apar.m || delete e4.apar.m, e4.apar.r || delete e4.apar.r, e4.apar.f || delete e4.apar.f, e4.apar.c || delete e4.apar.c, e4.apar.au || delete e4.apar.au, e4.apar.am || delete e4.apar.am) : delete e4.apar, void 0 === e4.grp && delete e4.grp, e4;
+            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group, caid: this.assetIndex, apar: { t: this.assetTotal, df: this.assetDefaultFrozen, dc: this.assetDecimals } };
+            return void 0 !== this.assetManager && (e4.apar.m = o.lW.from(this.assetManager.publicKey)), void 0 !== this.assetReserve && (e4.apar.r = o.lW.from(this.assetReserve.publicKey)), void 0 !== this.assetFreeze && (e4.apar.f = o.lW.from(this.assetFreeze.publicKey)), void 0 !== this.assetClawback && (e4.apar.c = o.lW.from(this.assetClawback.publicKey)), void 0 !== this.assetName && (e4.apar.an = this.assetName), void 0 !== this.assetUnitName && (e4.apar.un = this.assetUnitName), void 0 !== this.assetURL && (e4.apar.au = this.assetURL), void 0 !== this.assetMetadataHash && (e4.apar.am = o.lW.from(this.assetMetadataHash)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 !== this.reKeyTo && (e4.rekey = o.lW.from(this.reKeyTo.publicKey)), e4.caid || delete e4.caid, e4.apar.t || e4.apar.un || e4.apar.an || e4.apar.df || e4.apar.m || e4.apar.r || e4.apar.f || e4.apar.c || e4.apar.au || e4.apar.am || e4.apar.dc ? (e4.apar.t || delete e4.apar.t, e4.apar.dc || delete e4.apar.dc, e4.apar.un || delete e4.apar.un, e4.apar.an || delete e4.apar.an, e4.apar.df || delete e4.apar.df, e4.apar.m || delete e4.apar.m, e4.apar.r || delete e4.apar.r, e4.apar.f || delete e4.apar.f, e4.apar.c || delete e4.apar.c, e4.apar.au || delete e4.apar.au, e4.apar.am || delete e4.apar.am) : delete e4.apar, void 0 === e4.grp && delete e4.grp, e4;
           }
           if ("axfer" === this.type) {
-            const e4 = { aamt: this.amount, fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), arcv: i.lW.from(this.to.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group, xaid: this.assetIndex };
-            return void 0 !== this.closeRemainderTo && (e4.aclose = i.lW.from(this.closeRemainderTo.publicKey)), void 0 !== this.assetRevocationTarget && (e4.asnd = i.lW.from(this.assetRevocationTarget.publicKey)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.aamt || delete e4.aamt, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, e4.aclose || delete e4.aclose, e4.asnd || delete e4.asnd, e4.rekey || delete e4.rekey, void 0 !== this.reKeyTo && (e4.rekey = i.lW.from(this.reKeyTo.publicKey)), e4;
+            const e4 = { aamt: this.amount, fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), arcv: o.lW.from(this.to.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group, xaid: this.assetIndex };
+            return void 0 !== this.closeRemainderTo && (e4.aclose = o.lW.from(this.closeRemainderTo.publicKey)), void 0 !== this.assetRevocationTarget && (e4.asnd = o.lW.from(this.assetRevocationTarget.publicKey)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.aamt || delete e4.aamt, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, void 0 === e4.grp && delete e4.grp, e4.aclose || delete e4.aclose, e4.asnd || delete e4.asnd, e4.rekey || delete e4.rekey, void 0 !== this.reKeyTo && (e4.rekey = o.lW.from(this.reKeyTo.publicKey)), e4;
           }
           if ("afrz" === this.type) {
-            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group, faid: this.assetIndex, afrz: this.freezeState };
-            return void 0 !== this.freezeAccount && (e4.fadd = i.lW.from(this.freezeAccount.publicKey)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, e4.afrz || delete e4.afrz, void 0 === e4.grp && delete e4.grp, void 0 !== this.reKeyTo && (e4.rekey = i.lW.from(this.reKeyTo.publicKey)), e4;
+            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group, faid: this.assetIndex, afrz: this.freezeState };
+            return void 0 !== this.freezeAccount && (e4.fadd = o.lW.from(this.freezeAccount.publicKey)), e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, e4.afrz || delete e4.afrz, void 0 === e4.grp && delete e4.grp, void 0 !== this.reKeyTo && (e4.rekey = o.lW.from(this.reKeyTo.publicKey)), e4;
           }
           if ("appl" === this.type) {
-            const s2 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), grp: this.group, apid: this.appIndex, apan: this.appOnComplete, apls: { nui: this.appLocalInts, nbs: this.appLocalByteSlices }, apgs: { nui: this.appGlobalInts, nbs: this.appGlobalByteSlices }, apfa: this.appForeignApps, apas: this.appForeignAssets, apep: this.extraPages, apbx: (e3 = this.boxes, t3 = this.appForeignApps, r2 = this.appIndex, null == e3 ? [] : e3.map((e4) => function(e5, t4, r3) {
+            const s2 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), grp: this.group, apid: this.appIndex, apan: this.appOnComplete, apls: { nui: this.appLocalInts, nbs: this.appLocalByteSlices }, apgs: { nui: this.appGlobalInts, nbs: this.appGlobalByteSlices }, apfa: this.appForeignApps, apas: this.appForeignAssets, apep: this.extraPages, apbx: (e3 = this.boxes, t3 = this.appForeignApps, r2 = this.appIndex, null == e3 ? [] : e3.map((e4) => function(e5, t4, r3) {
               const s3 = e5.appIndex, n2 = e5.name, i2 = 0 === s3 || s3 === r3;
               let o2 = 0;
               if (null != t4 && (o2 = t4.indexOf(s3) + 1), 0 === o2 && !i2)
                 throw new Error(`Box ref with appId ${s3} not in foreign-apps`);
               return { i: o2, n: n2 };
             }(e4, t3, r2))) };
-            void 0 !== this.reKeyTo && (s2.rekey = i.lW.from(this.reKeyTo.publicKey)), void 0 !== this.appApprovalProgram && (s2.apap = i.lW.from(this.appApprovalProgram)), void 0 !== this.appClearProgram && (s2.apsu = i.lW.from(this.appClearProgram)), void 0 !== this.appArgs && (s2.apaa = this.appArgs.map((e4) => i.lW.from(e4))), void 0 !== this.appAccounts && (s2.apat = this.appAccounts.map((e4) => i.lW.from(e4.publicKey))), s2.note.length || delete s2.note, s2.lx.length || delete s2.lx, s2.amt || delete s2.amt, s2.fee || delete s2.fee, s2.fv || delete s2.fv, s2.gen || delete s2.gen, s2.apid || delete s2.apid, s2.apls.nui || delete s2.apls.nui, s2.apls.nbs || delete s2.apls.nbs, s2.apls.nui || s2.apls.nbs || delete s2.apls, s2.apgs.nui || delete s2.apgs.nui, s2.apgs.nbs || delete s2.apgs.nbs, s2.apaa && s2.apaa.length || delete s2.apaa, s2.apgs.nui || s2.apgs.nbs || delete s2.apgs, s2.apap || delete s2.apap, s2.apsu || delete s2.apsu, s2.apan || delete s2.apan, s2.apfa && s2.apfa.length || delete s2.apfa, s2.apas && s2.apas.length || delete s2.apas;
+            void 0 !== this.reKeyTo && (s2.rekey = o.lW.from(this.reKeyTo.publicKey)), void 0 !== this.appApprovalProgram && (s2.apap = o.lW.from(this.appApprovalProgram)), void 0 !== this.appClearProgram && (s2.apsu = o.lW.from(this.appClearProgram)), void 0 !== this.appArgs && (s2.apaa = this.appArgs.map((e4) => o.lW.from(e4))), void 0 !== this.appAccounts && (s2.apat = this.appAccounts.map((e4) => o.lW.from(e4.publicKey))), s2.note.length || delete s2.note, s2.lx.length || delete s2.lx, s2.amt || delete s2.amt, s2.fee || delete s2.fee, s2.fv || delete s2.fv, s2.gen || delete s2.gen, s2.apid || delete s2.apid, s2.apls.nui || delete s2.apls.nui, s2.apls.nbs || delete s2.apls.nbs, s2.apls.nui || s2.apls.nbs || delete s2.apls, s2.apgs.nui || delete s2.apgs.nui, s2.apgs.nbs || delete s2.apgs.nbs, s2.apaa && s2.apaa.length || delete s2.apaa, s2.apgs.nui || s2.apgs.nbs || delete s2.apgs, s2.apap || delete s2.apap, s2.apsu || delete s2.apsu, s2.apan || delete s2.apan, s2.apfa && s2.apfa.length || delete s2.apfa, s2.apas && s2.apas.length || delete s2.apas;
             for (const e4 of s2.apbx)
               e4.i || delete e4.i, e4.n && e4.n.length || delete e4.n;
             return s2.apbx && s2.apbx.length || delete s2.apbx, s2.apat && s2.apat.length || delete s2.apat, s2.apep || delete s2.apep, void 0 === s2.grp && delete s2.grp, s2;
           }
           var e3, t3, r2;
           if ("stpf" === this.type) {
-            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: i.lW.from(this.note), snd: i.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: i.lW.from(this.lease), sptype: this.stateProofType, spmsg: i.lW.from(this.stateProofMessage), sp: i.lW.from(this.stateProof) };
+            const e4 = { fee: this.fee, fv: this.firstRound, lv: this.lastRound, note: o.lW.from(this.note), snd: o.lW.from(this.from.publicKey), type: this.type, gen: this.genesisID, gh: this.genesisHash, lx: o.lW.from(this.lease), sptype: this.stateProofType, spmsg: o.lW.from(this.stateProofMessage), sp: o.lW.from(this.stateProof) };
             return e4.sptype || delete e4.sptype, e4.note.length || delete e4.note, e4.lx.length || delete e4.lx, e4.amt || delete e4.amt, e4.fee || delete e4.fee, e4.fv || delete e4.fv, e4.gen || delete e4.gen, e4.apid || delete e4.apid, e4.apaa && e4.apaa.length || delete e4.apaa, e4.apap || delete e4.apap, e4.apsu || delete e4.apsu, e4.apan || delete e4.apan, e4.apfa && e4.apfa.length || delete e4.apfa, e4.apas && e4.apas.length || delete e4.apas, e4.apat && e4.apat.length || delete e4.apat, e4.apep || delete e4.apep, void 0 === e4.grp && delete e4.grp, e4;
           }
         }
         static from_obj_for_encoding(e3) {
           const t3 = Object.create(this.prototype);
-          if (t3.name = "Transaction", t3.tag = i.lW.from("TX"), t3.genesisID = e3.gen, t3.genesisHash = i.lW.from(e3.gh), (r2 = e3.type) !== Q.pay && r2 !== Q.keyreg && r2 !== Q.acfg && r2 !== Q.axfer && r2 !== Q.afrz && r2 !== Q.appl && r2 !== Q.stpf)
+          if (t3.name = "Transaction", t3.tag = o.lW.from("TX"), t3.genesisID = e3.gen, t3.genesisHash = o.lW.from(e3.gh), (r2 = e3.type) !== Q.pay && r2 !== Q.keyreg && r2 !== Q.acfg && r2 !== Q.axfer && r2 !== Q.afrz && r2 !== Q.appl && r2 !== Q.stpf)
             throw new Error(`Unrecognized transaction type: ${e3.type}`);
           var r2;
-          return t3.type = e3.type, t3.fee = e3.fee, t3.firstRound = e3.fv, t3.lastRound = e3.lv, t3.note = new Uint8Array(e3.note), t3.lease = new Uint8Array(e3.lx), t3.from = F(K(new Uint8Array(e3.snd))), void 0 !== e3.grp && (t3.group = i.lW.from(e3.grp)), void 0 !== e3.rekey && (t3.reKeyTo = F(K(new Uint8Array(e3.rekey)))), "pay" === e3.type ? (t3.amount = e3.amt, t3.to = F(K(new Uint8Array(e3.rcv))), void 0 !== e3.close && (t3.closeRemainderTo = F(K(e3.close)))) : "keyreg" === e3.type ? (void 0 !== e3.votekey && (t3.voteKey = i.lW.from(e3.votekey)), void 0 !== e3.selkey && (t3.selectionKey = i.lW.from(e3.selkey)), void 0 !== e3.sprfkey && (t3.stateProofKey = i.lW.from(e3.sprfkey)), void 0 !== e3.votekd && (t3.voteKeyDilution = e3.votekd), void 0 !== e3.votefst && (t3.voteFirst = e3.votefst), void 0 !== e3.votelst && (t3.voteLast = e3.votelst), void 0 !== e3.nonpart && (t3.nonParticipation = e3.nonpart)) : "acfg" === e3.type ? (void 0 !== e3.caid && (t3.assetIndex = e3.caid), void 0 !== e3.apar && (t3.assetTotal = e3.apar.t, t3.assetDefaultFrozen = e3.apar.df, void 0 !== e3.apar.dc && (t3.assetDecimals = e3.apar.dc), void 0 !== e3.apar.m && (t3.assetManager = F(K(new Uint8Array(e3.apar.m)))), void 0 !== e3.apar.r && (t3.assetReserve = F(K(new Uint8Array(e3.apar.r)))), void 0 !== e3.apar.f && (t3.assetFreeze = F(K(new Uint8Array(e3.apar.f)))), void 0 !== e3.apar.c && (t3.assetClawback = F(K(new Uint8Array(e3.apar.c)))), void 0 !== e3.apar.un && (t3.assetUnitName = e3.apar.un), void 0 !== e3.apar.an && (t3.assetName = e3.apar.an), void 0 !== e3.apar.au && (t3.assetURL = e3.apar.au), void 0 !== e3.apar.am && (t3.assetMetadataHash = e3.apar.am))) : "axfer" === e3.type ? (void 0 !== e3.xaid && (t3.assetIndex = e3.xaid), void 0 !== e3.aamt && (t3.amount = e3.aamt), void 0 !== e3.aclose && (t3.closeRemainderTo = F(K(new Uint8Array(e3.aclose)))), void 0 !== e3.asnd && (t3.assetRevocationTarget = F(K(new Uint8Array(e3.asnd)))), t3.to = F(K(new Uint8Array(e3.arcv)))) : "afrz" === e3.type ? (void 0 !== e3.afrz && (t3.freezeState = e3.afrz), void 0 !== e3.faid && (t3.assetIndex = e3.faid), t3.freezeAccount = F(K(new Uint8Array(e3.fadd)))) : "appl" === e3.type ? (void 0 !== e3.apid && (t3.appIndex = e3.apid), void 0 !== e3.apan && (t3.appOnComplete = e3.apan), void 0 !== e3.apls && (void 0 !== e3.apls.nui && (t3.appLocalInts = e3.apls.nui), void 0 !== e3.apls.nbs && (t3.appLocalByteSlices = e3.apls.nbs)), void 0 !== e3.apgs && (void 0 !== e3.apgs.nui && (t3.appGlobalInts = e3.apgs.nui), void 0 !== e3.apgs.nbs && (t3.appGlobalByteSlices = e3.apgs.nbs)), void 0 !== e3.apep && (t3.extraPages = e3.apep), void 0 !== e3.apap && (t3.appApprovalProgram = new Uint8Array(e3.apap)), void 0 !== e3.apsu && (t3.appClearProgram = new Uint8Array(e3.apsu)), void 0 !== e3.apaa && (t3.appArgs = e3.apaa.map((e4) => new Uint8Array(e4))), void 0 !== e3.apat && (t3.appAccounts = e3.apat.map((e4) => F(K(new Uint8Array(e4))))), void 0 !== e3.apfa && (t3.appForeignApps = e3.apfa), void 0 !== e3.apas && (t3.appForeignAssets = e3.apas), void 0 !== e3.apbx && (t3.boxes = e3.apbx.map((e4) => ({ appIndex: e4.i ? t3.appForeignApps[e4.i - 1] : 0, name: e4.n })))) : "stpf" === e3.type && (void 0 !== e3.sptype && (t3.stateProofType = e3.sptype), void 0 !== e3.sp && (t3.stateProof = e3.sp), void 0 !== e3.spmsg && (t3.stateProofMessage = e3.spmsg)), t3;
+          return t3.type = e3.type, t3.fee = e3.fee, t3.firstRound = e3.fv, t3.lastRound = e3.lv, t3.note = new Uint8Array(e3.note), t3.lease = new Uint8Array(e3.lx), t3.from = F(K(new Uint8Array(e3.snd))), void 0 !== e3.grp && (t3.group = o.lW.from(e3.grp)), void 0 !== e3.rekey && (t3.reKeyTo = F(K(new Uint8Array(e3.rekey)))), "pay" === e3.type ? (t3.amount = e3.amt, t3.to = F(K(new Uint8Array(e3.rcv))), void 0 !== e3.close && (t3.closeRemainderTo = F(K(e3.close)))) : "keyreg" === e3.type ? (void 0 !== e3.votekey && (t3.voteKey = o.lW.from(e3.votekey)), void 0 !== e3.selkey && (t3.selectionKey = o.lW.from(e3.selkey)), void 0 !== e3.sprfkey && (t3.stateProofKey = o.lW.from(e3.sprfkey)), void 0 !== e3.votekd && (t3.voteKeyDilution = e3.votekd), void 0 !== e3.votefst && (t3.voteFirst = e3.votefst), void 0 !== e3.votelst && (t3.voteLast = e3.votelst), void 0 !== e3.nonpart && (t3.nonParticipation = e3.nonpart)) : "acfg" === e3.type ? (void 0 !== e3.caid && (t3.assetIndex = e3.caid), void 0 !== e3.apar && (t3.assetTotal = e3.apar.t, t3.assetDefaultFrozen = e3.apar.df, void 0 !== e3.apar.dc && (t3.assetDecimals = e3.apar.dc), void 0 !== e3.apar.m && (t3.assetManager = F(K(new Uint8Array(e3.apar.m)))), void 0 !== e3.apar.r && (t3.assetReserve = F(K(new Uint8Array(e3.apar.r)))), void 0 !== e3.apar.f && (t3.assetFreeze = F(K(new Uint8Array(e3.apar.f)))), void 0 !== e3.apar.c && (t3.assetClawback = F(K(new Uint8Array(e3.apar.c)))), void 0 !== e3.apar.un && (t3.assetUnitName = e3.apar.un), void 0 !== e3.apar.an && (t3.assetName = e3.apar.an), void 0 !== e3.apar.au && (t3.assetURL = e3.apar.au), void 0 !== e3.apar.am && (t3.assetMetadataHash = e3.apar.am))) : "axfer" === e3.type ? (void 0 !== e3.xaid && (t3.assetIndex = e3.xaid), void 0 !== e3.aamt && (t3.amount = e3.aamt), void 0 !== e3.aclose && (t3.closeRemainderTo = F(K(new Uint8Array(e3.aclose)))), void 0 !== e3.asnd && (t3.assetRevocationTarget = F(K(new Uint8Array(e3.asnd)))), t3.to = F(K(new Uint8Array(e3.arcv)))) : "afrz" === e3.type ? (void 0 !== e3.afrz && (t3.freezeState = e3.afrz), void 0 !== e3.faid && (t3.assetIndex = e3.faid), t3.freezeAccount = F(K(new Uint8Array(e3.fadd)))) : "appl" === e3.type ? (void 0 !== e3.apid && (t3.appIndex = e3.apid), void 0 !== e3.apan && (t3.appOnComplete = e3.apan), void 0 !== e3.apls && (void 0 !== e3.apls.nui && (t3.appLocalInts = e3.apls.nui), void 0 !== e3.apls.nbs && (t3.appLocalByteSlices = e3.apls.nbs)), void 0 !== e3.apgs && (void 0 !== e3.apgs.nui && (t3.appGlobalInts = e3.apgs.nui), void 0 !== e3.apgs.nbs && (t3.appGlobalByteSlices = e3.apgs.nbs)), void 0 !== e3.apep && (t3.extraPages = e3.apep), void 0 !== e3.apap && (t3.appApprovalProgram = new Uint8Array(e3.apap)), void 0 !== e3.apsu && (t3.appClearProgram = new Uint8Array(e3.apsu)), void 0 !== e3.apaa && (t3.appArgs = e3.apaa.map((e4) => new Uint8Array(e4))), void 0 !== e3.apat && (t3.appAccounts = e3.apat.map((e4) => F(K(new Uint8Array(e4))))), void 0 !== e3.apfa && (t3.appForeignApps = e3.apfa), void 0 !== e3.apas && (t3.appForeignAssets = e3.apas), void 0 !== e3.apbx && (t3.boxes = e3.apbx.map((e4) => ({ appIndex: e4.i ? t3.appForeignApps[e4.i - 1] : 0, name: e4.n })))) : "stpf" === e3.type && (void 0 !== e3.sptype && (t3.stateProofType = e3.sptype), void 0 !== e3.sp && (t3.stateProof = e3.sp), void 0 !== e3.spmsg && (t3.stateProofMessage = e3.spmsg)), t3;
         }
         estimateSize() {
           return this.toByte().length + 75;
         }
         bytesToSign() {
           const e3 = this.toByte();
-          return i.lW.from(k(this.tag, e3));
+          return o.lW.from(m(this.tag, e3));
         }
         toByte() {
           return X(this.get_obj_for_encoding());
         }
         rawSignTxn(e3) {
-          const t3 = f(this.bytesToSign(), e3);
-          return i.lW.from(t3);
+          const t3 = x(this.bytesToSign(), e3);
+          return o.lW.from(t3);
         }
         signTxn(e3) {
-          const t3 = { sig: this.rawSignTxn(e3), txn: this.get_obj_for_encoding() }, r2 = p(e3).publicKey;
-          return K(r2) !== K(this.from.publicKey) && (t3.sgnr = i.lW.from(r2)), new Uint8Array(X(t3));
+          const t3 = { sig: this.rawSignTxn(e3), txn: this.get_obj_for_encoding() }, r2 = v(e3).publicKey;
+          return K(r2) !== K(this.from.publicKey) && (t3.sgnr = o.lW.from(r2)), new Uint8Array(X(t3));
         }
         attachSignature(e3, t3) {
-          if (!d(t3.length))
+          if (!b(t3.length))
             throw new Error("Invalid signature length");
-          const r2 = { sig: i.lW.from(t3), txn: this.get_obj_for_encoding() };
+          const r2 = { sig: o.lW.from(t3), txn: this.get_obj_for_encoding() };
           if (e3 !== K(this.from.publicKey)) {
             const t4 = F(e3).publicKey;
-            r2.sgnr = i.lW.from(t4);
+            r2.sgnr = o.lW.from(t4);
           }
           return new Uint8Array(X(r2));
         }
         rawTxID() {
-          const e3 = this.toByte(), t3 = i.lW.from(k(this.tag, e3));
-          return i.lW.from(l(t3));
+          const e3 = this.toByte(), t3 = o.lW.from(m(this.tag, e3));
+          return o.lW.from(y(t3));
         }
         txID() {
           const e3 = this.rawTxID();
-          return A().encode(e3).slice(0, 52);
+          return R().encode(e3).slice(0, 52);
         }
         addLease(e3, t3 = 0) {
           let r2;
@@ -4354,8 +4379,8 @@ var algosdk_min = { exports: {} };
         return e3 instanceof se ? e3 : new se(e3);
       }
       class ue {
-        constructor({ bidderKey: e3, bidAmount: t3, bidID: r2, auctionKey: s2, auctionID: n2, maxPrice: o2 }) {
-          this.name = "Bid", this.tag = i.lW.from([97, 66]);
+        constructor({ bidderKey: e3, bidAmount: t3, bidID: r2, auctionKey: s2, auctionID: n2, maxPrice: i2 }) {
+          this.name = "Bid", this.tag = o.lW.from([97, 66]);
           const a2 = F(e3), c2 = F(s2);
           if (!Number.isSafeInteger(t3) || t3 < 0)
             throw Error("Bid amount must be positive and 2^53-1");
@@ -4363,13 +4388,13 @@ var algosdk_min = { exports: {} };
             throw Error("BidID must be positive and 2^53-1");
           if (!Number.isSafeInteger(n2) || n2 < 0)
             throw Error("auctionID must be positive");
-          Object.assign(this, { bidderKey: a2, bidAmount: t3, bidID: r2, auctionKey: c2, auctionID: n2, maxPrice: o2 });
+          Object.assign(this, { bidderKey: a2, bidAmount: t3, bidID: r2, auctionKey: c2, auctionID: n2, maxPrice: i2 });
         }
         get_obj_for_encoding() {
-          return { bidder: i.lW.from(this.bidderKey.publicKey), cur: this.bidAmount, price: this.maxPrice, id: this.bidID, auc: i.lW.from(this.auctionKey.publicKey), aid: this.auctionID };
+          return { bidder: o.lW.from(this.bidderKey.publicKey), cur: this.bidAmount, price: this.maxPrice, id: this.bidID, auc: o.lW.from(this.auctionKey.publicKey), aid: this.auctionID };
         }
         signBid(e3) {
-          const t3 = X(this.get_obj_for_encoding()), r2 = f(i.lW.from(k(this.tag, t3)), e3), s2 = { sig: i.lW.from(r2), bid: this.get_obj_for_encoding() };
+          const t3 = X(this.get_obj_for_encoding()), r2 = x(o.lW.from(m(this.tag, t3)), e3), s2 = { sig: o.lW.from(r2), bid: this.get_obj_for_encoding() };
           return new Uint8Array(X({ t: "b", b: s2 }));
         }
       }
@@ -4418,7 +4443,7 @@ var algosdk_min = { exports: {} };
           let t3 = null, r2 = null;
           try {
             t3 = new Uint8Array(await e3.arrayBuffer());
-            const s3 = JSON.parse(i.lW.from(t3).toString());
+            const s3 = JSON.parse(o.lW.from(t3).toString());
             s3.message && (r2 = s3.message);
           } catch (e4) {
           }
@@ -4429,15 +4454,15 @@ var algosdk_min = { exports: {} };
           return await this.checkHttpError(e3), { body: new Uint8Array(await e3.arrayBuffer()), status: e3.status, headers: me.formatFetchResponseHeaders(e3.headers) };
         }
         async get(e3, t3, r2 = {}) {
-          const s2 = { ...this.tokenHeader, ...this.defaultHeaders, ...r2 }, n2 = await (0, fe.fetch)(this.getURL(e3, t3), { mode: "cors", headers: s2 });
+          const s2 = { ...this.tokenHeader, ...this.defaultHeaders, ...r2 }, n2 = await (0, fe.fetch)(this.getURL(e3, t3), { headers: s2 });
           return me.formatFetchResponse(n2);
         }
         async post(e3, t3, r2, s2 = {}) {
-          const n2 = { ...this.tokenHeader, ...this.defaultHeaders, ...s2 }, i2 = await (0, fe.fetch)(this.getURL(e3, r2), { method: "POST", mode: "cors", body: t3, headers: n2 });
+          const n2 = { ...this.tokenHeader, ...this.defaultHeaders, ...s2 }, i2 = await (0, fe.fetch)(this.getURL(e3, r2), { method: "POST", body: t3, headers: n2 });
           return me.formatFetchResponse(i2);
         }
         async delete(e3, t3, r2, s2 = {}) {
-          const n2 = { ...this.tokenHeader, ...this.defaultHeaders, ...s2 }, i2 = await (0, fe.fetch)(this.getURL(e3, r2), { method: "DELETE", mode: "cors", body: t3, headers: n2 });
+          const n2 = { ...this.tokenHeader, ...this.defaultHeaders, ...s2 }, i2 = await (0, fe.fetch)(this.getURL(e3, r2), { method: "DELETE", body: t3, headers: n2 });
           return me.formatFetchResponse(i2);
         }
       }
@@ -4451,8 +4476,8 @@ var algosdk_min = { exports: {} };
         static parseJSON(e3, t3, r2 = {}) {
           try {
             return 0 === Object.keys(r2).length ? e3 && JSON.parse(e3) : e3 && function(e4, t4) {
-              const r3 = t4 && t4.intDecoding ? t4.intDecoding : S.DEFAULT;
-              return T.parse(e4, (e5, t5) => {
+              const r3 = t4 && t4.intDecoding ? t4.intDecoding : p.DEFAULT;
+              return f.parse(e4, (e5, t5) => {
                 if (null != t5 && "object" == typeof t5 && null == Object.getPrototypeOf(t5) && Object.setPrototypeOf(t5, Object.prototype), "bigint" == typeof t5) {
                   if ("safe" === r3 && t5 > Number.MAX_SAFE_INTEGER)
                     throw new Error(`Integer exceeds maximum safe integer: ${t5.toString()}. Try parsing with a different intDecoding option.`);
@@ -4470,16 +4495,16 @@ var algosdk_min = { exports: {} };
           if (!e3)
             return new Uint8Array(0);
           if ("application/json" === t3["content-type"])
-            return new Uint8Array(i.lW.from(JSON.stringify(e3)));
+            return new Uint8Array(o.lW.from(JSON.stringify(e3)));
           if ("string" == typeof e3)
-            return new Uint8Array(i.lW.from(e3));
+            return new Uint8Array(o.lW.from(e3));
           if (e3 instanceof Uint8Array)
             return e3;
           throw new Error("provided data is neither a string nor a Uint8Array and content-type is not application/json");
         }
         static prepareResponse(e3, t3, r2, s2 = {}) {
-          let n2, { body: o2 } = e3;
-          return "application/msgpack" !== t3 && (n2 = o2 && i.lW.from(o2).toString() || ""), r2 && "application/json" === t3 && (o2 = we.parseJSON(n2, e3.status, s2)), { ...e3, body: o2, text: n2, ok: 2 === Math.trunc(e3.status / 100) };
+          let n2, { body: i2 } = e3;
+          return "application/msgpack" !== t3 && (n2 = i2 && o.lW.from(i2).toString() || ""), r2 && "application/json" === t3 && (i2 = we.parseJSON(n2, e3.status, s2)), { ...e3, body: i2, text: n2, ok: 2 === Math.trunc(e3.status / 100) };
         }
         static prepareResponseError(e3) {
           return e3.response && (e3.response = we.prepareResponse(e3.response, "application/json", true), e3.status = e3.response.status), e3;
@@ -4524,7 +4549,7 @@ var algosdk_min = { exports: {} };
               return "" === e4 || (r3[t4] = e4), r3;
             }(t3, e3) : t3, this.c = new we(i2, r2, s2, n2);
           }
-          this.intDecoding = S.DEFAULT;
+          this.intDecoding = p.DEFAULT;
         }
         setIntEncoding(e3) {
           this.intDecoding = e3;
@@ -4536,7 +4561,7 @@ var algosdk_min = { exports: {} };
       function ve(e3, t3) {
         let r2;
         if (e3 instanceof Uint8Array)
-          r2 = t3 ? e3 : i.lW.from(e3).toString("base64");
+          r2 = t3 ? e3 : o.lW.from(e3).toString("base64");
         else if ("function" == typeof e3.get_obj_for_encoding)
           r2 = e3.get_obj_for_encoding(t3);
         else if (Array.isArray(e3)) {
@@ -4596,7 +4621,7 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'total-created-apps': ${e3}`);
           if (void 0 === e3["total-created-assets"])
             throw new Error(`Response is missing required field 'total-created-assets': ${e3}`);
-          return new Ae({ address: e3.address, amount: e3.amount, amountWithoutPendingRewards: e3["amount-without-pending-rewards"], minBalance: e3["min-balance"], pendingRewards: e3["pending-rewards"], rewards: e3.rewards, round: e3.round, status: e3.status, totalAppsOptedIn: e3["total-apps-opted-in"], totalAssetsOptedIn: e3["total-assets-opted-in"], totalCreatedApps: e3["total-created-apps"], totalCreatedAssets: e3["total-created-assets"], appsLocalState: void 0 !== e3["apps-local-state"] ? e3["apps-local-state"].map(ke.from_obj_for_encoding) : void 0, appsTotalExtraPages: e3["apps-total-extra-pages"], appsTotalSchema: void 0 !== e3["apps-total-schema"] ? Be.from_obj_for_encoding(e3["apps-total-schema"]) : void 0, assets: void 0 !== e3.assets ? e3.assets.map(Pe.from_obj_for_encoding) : void 0, authAddr: e3["auth-addr"], createdApps: void 0 !== e3["created-apps"] ? e3["created-apps"].map(Re.from_obj_for_encoding) : void 0, createdAssets: void 0 !== e3["created-assets"] ? e3["created-assets"].map(Ue.from_obj_for_encoding) : void 0, participation: void 0 !== e3.participation ? Se.from_obj_for_encoding(e3.participation) : void 0, rewardBase: e3["reward-base"], sigType: e3["sig-type"], totalBoxBytes: e3["total-box-bytes"], totalBoxes: e3["total-boxes"] });
+          return new Ae({ address: e3.address, amount: e3.amount, amountWithoutPendingRewards: e3["amount-without-pending-rewards"], minBalance: e3["min-balance"], pendingRewards: e3["pending-rewards"], rewards: e3.rewards, round: e3.round, status: e3.status, totalAppsOptedIn: e3["total-apps-opted-in"], totalAssetsOptedIn: e3["total-assets-opted-in"], totalCreatedApps: e3["total-created-apps"], totalCreatedAssets: e3["total-created-assets"], appsLocalState: void 0 !== e3["apps-local-state"] ? e3["apps-local-state"].map(Re.from_obj_for_encoding) : void 0, appsTotalExtraPages: e3["apps-total-extra-pages"], appsTotalSchema: void 0 !== e3["apps-total-schema"] ? Be.from_obj_for_encoding(e3["apps-total-schema"]) : void 0, assets: void 0 !== e3.assets ? e3.assets.map(Pe.from_obj_for_encoding) : void 0, authAddr: e3["auth-addr"], createdApps: void 0 !== e3["created-apps"] ? e3["created-apps"].map(ke.from_obj_for_encoding) : void 0, createdAssets: void 0 !== e3["created-assets"] ? e3["created-assets"].map(Ue.from_obj_for_encoding) : void 0, participation: void 0 !== e3.participation ? Te.from_obj_for_encoding(e3.participation) : void 0, rewardBase: e3["reward-base"], sigType: e3["sig-type"], totalBoxBytes: e3["total-box-bytes"], totalBoxes: e3["total-boxes"] });
         }
       }
       class _e extends xe {
@@ -4606,7 +4631,7 @@ var algosdk_min = { exports: {} };
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.round)
             throw new Error(`Response is missing required field 'round': ${e3}`);
-          return new _e({ round: e3.round, appLocalState: void 0 !== e3["app-local-state"] ? ke.from_obj_for_encoding(e3["app-local-state"]) : void 0, createdApp: void 0 !== e3["created-app"] ? Ie.from_obj_for_encoding(e3["created-app"]) : void 0 });
+          return new _e({ round: e3.round, appLocalState: void 0 !== e3["app-local-state"] ? Re.from_obj_for_encoding(e3["app-local-state"]) : void 0, createdApp: void 0 !== e3["created-app"] ? Ie.from_obj_for_encoding(e3["created-app"]) : void 0 });
         }
       }
       class Ee extends xe {
@@ -4619,9 +4644,9 @@ var algosdk_min = { exports: {} };
           return new Ee({ round: e3.round, assetHolding: void 0 !== e3["asset-holding"] ? Pe.from_obj_for_encoding(e3["asset-holding"]) : void 0, createdAsset: void 0 !== e3["created-asset"] ? je.from_obj_for_encoding(e3["created-asset"]) : void 0 });
         }
       }
-      class Se extends xe {
-        constructor({ selectionParticipationKey: e3, voteFirstValid: t3, voteKeyDilution: r2, voteLastValid: s2, voteParticipationKey: n2, stateProofKey: o2 }) {
-          super(), this.selectionParticipationKey = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.voteFirstValid = t3, this.voteKeyDilution = r2, this.voteLastValid = s2, this.voteParticipationKey = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.stateProofKey = "string" == typeof o2 ? new Uint8Array(i.lW.from(o2, "base64")) : o2, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
+      class Te extends xe {
+        constructor({ selectionParticipationKey: e3, voteFirstValid: t3, voteKeyDilution: r2, voteLastValid: s2, voteParticipationKey: n2, stateProofKey: i2 }) {
+          super(), this.selectionParticipationKey = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.voteFirstValid = t3, this.voteKeyDilution = r2, this.voteLastValid = s2, this.voteParticipationKey = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.stateProofKey = "string" == typeof i2 ? new Uint8Array(o.lW.from(i2, "base64")) : i2, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["selection-participation-key"])
@@ -4634,10 +4659,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'vote-last-valid': ${e3}`);
           if (void 0 === e3["vote-participation-key"])
             throw new Error(`Response is missing required field 'vote-participation-key': ${e3}`);
-          return new Se({ selectionParticipationKey: e3["selection-participation-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"], stateProofKey: e3["state-proof-key"] });
+          return new Te({ selectionParticipationKey: e3["selection-participation-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"], stateProofKey: e3["state-proof-key"] });
         }
       }
-      class Te extends xe {
+      class Se extends xe {
         constructor({ address: e3, delta: t3 }) {
           super(), this.address = e3, this.delta = t3, this.attribute_map = { address: "address", delta: "delta" };
         }
@@ -4646,10 +4671,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'address': ${e3}`);
           if (!Array.isArray(e3.delta))
             throw new Error(`Response is missing required array field 'delta': ${e3}`);
-          return new Te({ address: e3.address, delta: e3.delta.map(Ye.from_obj_for_encoding) });
+          return new Se({ address: e3.address, delta: e3.delta.map(Je.from_obj_for_encoding) });
         }
       }
-      class Re extends xe {
+      class ke extends xe {
         constructor({ id: e3, params: t3 }) {
           super(), this.id = e3, this.params = t3, this.attribute_map = { id: "id", params: "params" };
         }
@@ -4658,10 +4683,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'id': ${e3}`);
           if (void 0 === e3.params)
             throw new Error(`Response is missing required field 'params': ${e3}`);
-          return new Re({ id: e3.id, params: Ie.from_obj_for_encoding(e3.params) });
+          return new ke({ id: e3.id, params: Ie.from_obj_for_encoding(e3.params) });
         }
       }
-      class ke extends xe {
+      class Re extends xe {
         constructor({ id: e3, schema: t3, keyValue: r2 }) {
           super(), this.id = e3, this.schema = t3, this.keyValue = r2, this.attribute_map = { id: "id", schema: "schema", keyValue: "key-value" };
         }
@@ -4670,12 +4695,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'id': ${e3}`);
           if (void 0 === e3.schema)
             throw new Error(`Response is missing required field 'schema': ${e3}`);
-          return new ke({ id: e3.id, schema: Be.from_obj_for_encoding(e3.schema), keyValue: void 0 !== e3["key-value"] ? e3["key-value"].map(ft.from_obj_for_encoding) : void 0 });
+          return new Re({ id: e3.id, schema: Be.from_obj_for_encoding(e3.schema), keyValue: void 0 !== e3["key-value"] ? e3["key-value"].map(bt.from_obj_for_encoding) : void 0 });
         }
       }
       class Ie extends xe {
-        constructor({ approvalProgram: e3, clearStateProgram: t3, creator: r2, extraProgramPages: s2, globalState: n2, globalStateSchema: o2, localStateSchema: a2 }) {
-          super(), this.approvalProgram = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.clearStateProgram = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.creator = r2, this.extraProgramPages = s2, this.globalState = n2, this.globalStateSchema = o2, this.localStateSchema = a2, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
+        constructor({ approvalProgram: e3, clearStateProgram: t3, creator: r2, extraProgramPages: s2, globalState: n2, globalStateSchema: i2, localStateSchema: a2 }) {
+          super(), this.approvalProgram = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.clearStateProgram = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.creator = r2, this.extraProgramPages = s2, this.globalState = n2, this.globalStateSchema = i2, this.localStateSchema = a2, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["approval-program"])
@@ -4684,7 +4709,7 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'clear-state-program': ${e3}`);
           if (void 0 === e3.creator)
             throw new Error(`Response is missing required field 'creator': ${e3}`);
-          return new Ie({ approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], creator: e3.creator, extraProgramPages: e3["extra-program-pages"], globalState: void 0 !== e3["global-state"] ? e3["global-state"].map(ft.from_obj_for_encoding) : void 0, globalStateSchema: void 0 !== e3["global-state-schema"] ? Be.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? Be.from_obj_for_encoding(e3["local-state-schema"]) : void 0 });
+          return new Ie({ approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], creator: e3.creator, extraProgramPages: e3["extra-program-pages"], globalState: void 0 !== e3["global-state"] ? e3["global-state"].map(bt.from_obj_for_encoding) : void 0, globalStateSchema: void 0 !== e3["global-state-schema"] ? Be.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? Be.from_obj_for_encoding(e3["local-state-schema"]) : void 0 });
         }
       }
       class Be extends xe {
@@ -4726,8 +4751,8 @@ var algosdk_min = { exports: {} };
         }
       }
       class je extends xe {
-        constructor({ creator: e3, decimals: t3, total: r2, clawback: s2, defaultFrozen: n2, freeze: o2, manager: a2, metadataHash: c2, name: u2, nameB64: l2, reserve: h2, unitName: d2, unitNameB64: p2, url: f2, urlB64: g2 }) {
-          super(), this.creator = e3, this.decimals = t3, this.total = r2, this.clawback = s2, this.defaultFrozen = n2, this.freeze = o2, this.manager = a2, this.metadataHash = "string" == typeof c2 ? new Uint8Array(i.lW.from(c2, "base64")) : c2, this.name = u2, this.nameB64 = "string" == typeof l2 ? new Uint8Array(i.lW.from(l2, "base64")) : l2, this.reserve = h2, this.unitName = d2, this.unitNameB64 = "string" == typeof p2 ? new Uint8Array(i.lW.from(p2, "base64")) : p2, this.url = f2, this.urlB64 = "string" == typeof g2 ? new Uint8Array(i.lW.from(g2, "base64")) : g2, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
+        constructor({ creator: e3, decimals: t3, total: r2, clawback: s2, defaultFrozen: n2, freeze: i2, manager: a2, metadataHash: c2, name: u2, nameB64: l2, reserve: h2, unitName: d2, unitNameB64: p2, url: f2, urlB64: g2 }) {
+          super(), this.creator = e3, this.decimals = t3, this.total = r2, this.clawback = s2, this.defaultFrozen = n2, this.freeze = i2, this.manager = a2, this.metadataHash = "string" == typeof c2 ? new Uint8Array(o.lW.from(c2, "base64")) : c2, this.name = u2, this.nameB64 = "string" == typeof l2 ? new Uint8Array(o.lW.from(l2, "base64")) : l2, this.reserve = h2, this.unitName = d2, this.unitNameB64 = "string" == typeof p2 ? new Uint8Array(o.lW.from(p2, "base64")) : p2, this.url = f2, this.urlB64 = "string" == typeof g2 ? new Uint8Array(o.lW.from(g2, "base64")) : g2, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.creator)
@@ -4740,40 +4765,52 @@ var algosdk_min = { exports: {} };
         }
       }
       class qe extends xe {
+        constructor({ type: e3, bytes: t3, uint: r2 }) {
+          super(), this.type = e3, this.bytes = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.uint = r2, this.attribute_map = { type: "type", bytes: "bytes", uint: "uint" };
+        }
+        static from_obj_for_encoding(e3) {
+          if (void 0 === e3.type)
+            throw new Error(`Response is missing required field 'type': ${e3}`);
+          return new qe({ type: e3.type, bytes: e3.bytes, uint: e3.uint });
+        }
+      }
+      class De extends xe {
         constructor({ blockhash: e3 }) {
           super(), this.blockhash = e3, this.attribute_map = { blockhash: "blockHash" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.blockHash)
             throw new Error(`Response is missing required field 'blockHash': ${e3}`);
-          return new qe({ blockhash: e3.blockHash });
+          return new De({ blockhash: e3.blockHash });
         }
       }
-      class De extends xe {
+      class Ce extends xe {
         constructor({ block: e3, cert: t3 }) {
           super(), this.block = e3, this.cert = t3, this.attribute_map = { block: "block", cert: "cert" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.block)
             throw new Error(`Response is missing required field 'block': ${e3}`);
-          return new De({ block: e3.block, cert: e3.cert });
+          return new Ce({ block: e3.block, cert: e3.cert });
         }
       }
       class $e extends xe {
-        constructor({ name: e3, value: t3 }) {
-          super(), this.name = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.value = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.attribute_map = { name: "name", value: "value" };
+        constructor({ name: e3, round: t3, value: r2 }) {
+          super(), this.name = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.round = t3, this.value = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.attribute_map = { name: "name", round: "round", value: "value" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.name)
             throw new Error(`Response is missing required field 'name': ${e3}`);
+          if (void 0 === e3.round)
+            throw new Error(`Response is missing required field 'round': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new $e({ name: e3.name, value: e3.value });
+          return new $e({ name: e3.name, round: e3.round, value: e3.value });
         }
       }
       class Oe extends xe {
         constructor({ name: e3 }) {
-          super(), this.name = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.attribute_map = { name: "name" };
+          super(), this.name = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.attribute_map = { name: "name" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.name)
@@ -4781,17 +4818,17 @@ var algosdk_min = { exports: {} };
           return new Oe({ name: e3.name });
         }
       }
-      class Ce extends xe {
+      class Le extends xe {
         constructor({ boxes: e3 }) {
           super(), this.boxes = e3, this.attribute_map = { boxes: "boxes" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3.boxes))
             throw new Error(`Response is missing required array field 'boxes': ${e3}`);
-          return new Ce({ boxes: e3.boxes.map(Oe.from_obj_for_encoding) });
+          return new Le({ boxes: e3.boxes.map(Oe.from_obj_for_encoding) });
         }
       }
-      class Le extends xe {
+      class Me extends xe {
         constructor({ branch: e3, buildNumber: t3, channel: r2, commitHash: s2, major: n2, minor: i2 }) {
           super(), this.branch = e3, this.buildNumber = t3, this.channel = r2, this.commitHash = s2, this.major = n2, this.minor = i2, this.attribute_map = { branch: "branch", buildNumber: "build_number", channel: "channel", commitHash: "commit_hash", major: "major", minor: "minor" };
         }
@@ -4808,10 +4845,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'major': ${e3}`);
           if (void 0 === e3.minor)
             throw new Error(`Response is missing required field 'minor': ${e3}`);
-          return new Le({ branch: e3.branch, buildNumber: e3.build_number, channel: e3.channel, commitHash: e3.commit_hash, major: e3.major, minor: e3.minor });
+          return new Me({ branch: e3.branch, buildNumber: e3.build_number, channel: e3.channel, commitHash: e3.commit_hash, major: e3.major, minor: e3.minor });
         }
       }
-      class Me extends xe {
+      class Ne extends xe {
         constructor({ hash: e3, result: t3, sourcemap: r2 }) {
           super(), this.hash = e3, this.result = t3, this.sourcemap = r2, this.attribute_map = { hash: "hash", result: "result", sourcemap: "sourcemap" };
         }
@@ -4820,20 +4857,20 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'hash': ${e3}`);
           if (void 0 === e3.result)
             throw new Error(`Response is missing required field 'result': ${e3}`);
-          return new Me({ hash: e3.hash, result: e3.result, sourcemap: e3.sourcemap });
+          return new Ne({ hash: e3.hash, result: e3.result, sourcemap: e3.sourcemap });
         }
       }
-      class Ne extends xe {
+      class Fe extends xe {
         constructor({ result: e3 }) {
           super(), this.result = e3, this.attribute_map = { result: "result" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.result)
             throw new Error(`Response is missing required field 'result': ${e3}`);
-          return new Ne({ result: e3.result });
+          return new Fe({ result: e3.result });
         }
       }
-      class Fe extends xe {
+      class We extends xe {
         constructor({ accounts: e3, apps: t3, latestTimestamp: r2, protocolVersion: s2, round: n2, sources: i2, txns: o2 }) {
           super(), this.accounts = e3, this.apps = t3, this.latestTimestamp = r2, this.protocolVersion = s2, this.round = n2, this.sources = i2, this.txns = o2, this.attribute_map = { accounts: "accounts", apps: "apps", latestTimestamp: "latest-timestamp", protocolVersion: "protocol-version", round: "round", sources: "sources", txns: "txns" };
         }
@@ -4852,10 +4889,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'sources': ${e3}`);
           if (!Array.isArray(e3.txns))
             throw new Error(`Response is missing required array field 'txns': ${e3}`);
-          return new Fe({ accounts: e3.accounts.map(Ae.from_obj_for_encoding), apps: e3.apps.map(Re.from_obj_for_encoding), latestTimestamp: e3["latest-timestamp"], protocolVersion: e3["protocol-version"], round: e3.round, sources: e3.sources.map(Ke.from_obj_for_encoding), txns: e3.txns });
+          return new We({ accounts: e3.accounts.map(Ae.from_obj_for_encoding), apps: e3.apps.map(ke.from_obj_for_encoding), latestTimestamp: e3["latest-timestamp"], protocolVersion: e3["protocol-version"], round: e3.round, sources: e3.sources.map(ze.from_obj_for_encoding), txns: e3.txns });
         }
       }
-      class We extends xe {
+      class Ke extends xe {
         constructor({ error: e3, protocolVersion: t3, txns: r2 }) {
           super(), this.error = e3, this.protocolVersion = t3, this.txns = r2, this.attribute_map = { error: "error", protocolVersion: "protocol-version", txns: "txns" };
         }
@@ -4866,10 +4903,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'protocol-version': ${e3}`);
           if (!Array.isArray(e3.txns))
             throw new Error(`Response is missing required array field 'txns': ${e3}`);
-          return new We({ error: e3.error, protocolVersion: e3["protocol-version"], txns: e3.txns.map(Ve.from_obj_for_encoding) });
+          return new Ke({ error: e3.error, protocolVersion: e3["protocol-version"], txns: e3.txns.map(Ge.from_obj_for_encoding) });
         }
       }
-      class Ke extends xe {
+      class ze extends xe {
         constructor({ fieldName: e3, source: t3, txnIndex: r2, appIndex: s2 }) {
           super(), this.fieldName = e3, this.source = t3, this.txnIndex = r2, this.appIndex = s2, this.attribute_map = { fieldName: "field-name", source: "source", txnIndex: "txn-index", appIndex: "app-index" };
         }
@@ -4882,10 +4919,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'txn-index': ${e3}`);
           if (void 0 === e3["app-index"])
             throw new Error(`Response is missing required field 'app-index': ${e3}`);
-          return new Ke({ fieldName: e3["field-name"], source: e3.source, txnIndex: e3["txn-index"], appIndex: e3["app-index"] });
+          return new ze({ fieldName: e3["field-name"], source: e3.source, txnIndex: e3["txn-index"], appIndex: e3["app-index"] });
         }
       }
-      class ze extends xe {
+      class Ve extends xe {
         constructor({ line: e3, pc: t3, stack: r2, error: s2, scratch: n2 }) {
           super(), this.line = e3, this.pc = t3, this.stack = r2, this.error = s2, this.scratch = n2, this.attribute_map = { line: "line", pc: "pc", stack: "stack", error: "error", scratch: "scratch" };
         }
@@ -4896,40 +4933,40 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'pc': ${e3}`);
           if (!Array.isArray(e3.stack))
             throw new Error(`Response is missing required array field 'stack': ${e3}`);
-          return new ze({ line: e3.line, pc: e3.pc, stack: e3.stack.map(gt.from_obj_for_encoding), error: e3.error, scratch: void 0 !== e3.scratch ? e3.scratch.map(gt.from_obj_for_encoding) : void 0 });
+          return new Ve({ line: e3.line, pc: e3.pc, stack: e3.stack.map(vt.from_obj_for_encoding), error: e3.error, scratch: void 0 !== e3.scratch ? e3.scratch.map(vt.from_obj_for_encoding) : void 0 });
         }
       }
-      class Ve extends xe {
+      class Ge extends xe {
         constructor({ disassembly: e3, appCallMessages: t3, appCallTrace: r2, budgetAdded: s2, budgetConsumed: n2, globalDelta: i2, localDeltas: o2, logicSigDisassembly: a2, logicSigMessages: c2, logicSigTrace: u2, logs: l2 }) {
           super(), this.disassembly = e3, this.appCallMessages = t3, this.appCallTrace = r2, this.budgetAdded = s2, this.budgetConsumed = n2, this.globalDelta = i2, this.localDeltas = o2, this.logicSigDisassembly = a2, this.logicSigMessages = c2, this.logicSigTrace = u2, this.logs = l2, this.attribute_map = { disassembly: "disassembly", appCallMessages: "app-call-messages", appCallTrace: "app-call-trace", budgetAdded: "budget-added", budgetConsumed: "budget-consumed", globalDelta: "global-delta", localDeltas: "local-deltas", logicSigDisassembly: "logic-sig-disassembly", logicSigMessages: "logic-sig-messages", logicSigTrace: "logic-sig-trace", logs: "logs" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3.disassembly))
             throw new Error(`Response is missing required array field 'disassembly': ${e3}`);
-          return new Ve({ disassembly: e3.disassembly, appCallMessages: e3["app-call-messages"], appCallTrace: void 0 !== e3["app-call-trace"] ? e3["app-call-trace"].map(ze.from_obj_for_encoding) : void 0, budgetAdded: e3["budget-added"], budgetConsumed: e3["budget-consumed"], globalDelta: void 0 !== e3["global-delta"] ? e3["global-delta"].map(Ye.from_obj_for_encoding) : void 0, localDeltas: void 0 !== e3["local-deltas"] ? e3["local-deltas"].map(Te.from_obj_for_encoding) : void 0, logicSigDisassembly: e3["logic-sig-disassembly"], logicSigMessages: e3["logic-sig-messages"], logicSigTrace: void 0 !== e3["logic-sig-trace"] ? e3["logic-sig-trace"].map(ze.from_obj_for_encoding) : void 0, logs: e3.logs });
+          return new Ge({ disassembly: e3.disassembly, appCallMessages: e3["app-call-messages"], appCallTrace: void 0 !== e3["app-call-trace"] ? e3["app-call-trace"].map(Ve.from_obj_for_encoding) : void 0, budgetAdded: e3["budget-added"], budgetConsumed: e3["budget-consumed"], globalDelta: void 0 !== e3["global-delta"] ? e3["global-delta"].map(Je.from_obj_for_encoding) : void 0, localDeltas: void 0 !== e3["local-deltas"] ? e3["local-deltas"].map(Se.from_obj_for_encoding) : void 0, logicSigDisassembly: e3["logic-sig-disassembly"], logicSigMessages: e3["logic-sig-messages"], logicSigTrace: void 0 !== e3["logic-sig-trace"] ? e3["logic-sig-trace"].map(Ve.from_obj_for_encoding) : void 0, logs: e3.logs });
         }
       }
-      class Ge extends xe {
+      class He extends xe {
         constructor({ message: e3, data: t3 }) {
           super(), this.message = e3, this.data = t3, this.attribute_map = { message: "message", data: "data" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.message)
             throw new Error(`Response is missing required field 'message': ${e3}`);
-          return new Ge({ message: e3.message, data: e3.data });
+          return new He({ message: e3.message, data: e3.data });
         }
       }
-      class He extends xe {
+      class Ye extends xe {
         constructor({ action: e3, bytes: t3, uint: r2 }) {
           super(), this.action = e3, this.bytes = t3, this.uint = r2, this.attribute_map = { action: "action", bytes: "bytes", uint: "uint" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.action)
             throw new Error(`Response is missing required field 'action': ${e3}`);
-          return new He({ action: e3.action, bytes: e3.bytes, uint: e3.uint });
+          return new Ye({ action: e3.action, bytes: e3.bytes, uint: e3.uint });
         }
       }
-      class Ye extends xe {
+      class Je extends xe {
         constructor({ key: e3, value: t3 }) {
           super(), this.key = e3, this.value = t3, this.attribute_map = { key: "key", value: "value" };
         }
@@ -4938,52 +4975,52 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'key': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new Ye({ key: e3.key, value: He.from_obj_for_encoding(e3.value) });
+          return new Je({ key: e3.key, value: Ye.from_obj_for_encoding(e3.value) });
         }
       }
-      class Je extends xe {
+      class Xe extends xe {
         constructor({ offset: e3 }) {
           super(), this.offset = e3, this.attribute_map = { offset: "offset" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.offset)
             throw new Error(`Response is missing required field 'offset': ${e3}`);
-          return new Je({ offset: e3.offset });
+          return new Xe({ offset: e3.offset });
         }
       }
-      class Xe extends xe {
+      class Ze extends xe {
         constructor({ round: e3 }) {
           super(), this.round = e3, this.attribute_map = { round: "round" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.round)
             throw new Error(`Response is missing required field 'round': ${e3}`);
-          return new Xe({ round: e3.round });
-        }
-      }
-      class Ze extends xe {
-        constructor({ key: e3, value: t3 }) {
-          super(), this.key = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.value = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.attribute_map = { key: "key", value: "value" };
-        }
-        static from_obj_for_encoding(e3) {
-          return new Ze({ key: e3.key, value: e3.value });
+          return new Ze({ round: e3.round });
         }
       }
       class Qe extends xe {
-        constructor({ delta: e3, ids: t3 }) {
-          super(), this.delta = e3, this.ids = t3, this.attribute_map = { delta: "delta", ids: "ids" };
+        constructor({ key: e3, value: t3 }) {
+          super(), this.key = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.value = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.attribute_map = { key: "key", value: "value" };
         }
         static from_obj_for_encoding(e3) {
-          if (void 0 === e3.delta)
-            throw new Error(`Response is missing required field 'delta': ${e3}`);
-          if (!Array.isArray(e3.ids))
-            throw new Error(`Response is missing required array field 'ids': ${e3}`);
-          return new Qe({ delta: e3.delta, ids: e3.ids });
+          return new Qe({ key: e3.key, value: e3.value });
         }
       }
       class et extends xe {
+        constructor({ delta: e3, ids: t3 }) {
+          super(), this.delta = e3, this.ids = t3, this.attribute_map = { delta: "Delta", ids: "Ids" };
+        }
+        static from_obj_for_encoding(e3) {
+          if (void 0 === e3.Delta)
+            throw new Error(`Response is missing required field 'Delta': ${e3}`);
+          if (!Array.isArray(e3.Ids))
+            throw new Error(`Response is missing required array field 'Ids': ${e3}`);
+          return new et({ delta: e3.Delta, ids: e3.Ids });
+        }
+      }
+      class tt extends xe {
         constructor({ index: e3, proof: t3, treedepth: r2 }) {
-          super(), this.index = e3, this.proof = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.treedepth = r2, this.attribute_map = { index: "index", proof: "proof", treedepth: "treedepth" };
+          super(), this.index = e3, this.proof = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.treedepth = r2, this.attribute_map = { index: "index", proof: "proof", treedepth: "treedepth" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.index)
@@ -4992,12 +5029,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'proof': ${e3}`);
           if (void 0 === e3.treedepth)
             throw new Error(`Response is missing required field 'treedepth': ${e3}`);
-          return new et({ index: e3.index, proof: e3.proof, treedepth: e3.treedepth });
+          return new tt({ index: e3.index, proof: e3.proof, treedepth: e3.treedepth });
         }
       }
-      class tt extends xe {
-        constructor({ catchupTime: e3, lastRound: t3, lastVersion: r2, nextVersion: s2, nextVersionRound: n2, nextVersionSupported: i2, stoppedAtUnsupportedRound: o2, timeSinceLastRound: a2, catchpoint: c2, catchpointAcquiredBlocks: u2, catchpointProcessedAccounts: l2, catchpointProcessedKvs: h2, catchpointTotalAccounts: d2, catchpointTotalBlocks: p2, catchpointTotalKvs: f2, catchpointVerifiedAccounts: g2, catchpointVerifiedKvs: m2, lastCatchpoint: y2, upgradeDelay: w2, upgradeNextProtocolVoteBefore: b2, upgradeNoVotes: v2, upgradeNodeVote: x2, upgradeVoteRounds: A2, upgradeVotes: _2, upgradeVotesRequired: E2, upgradeYesVotes: S2 }) {
-          super(), this.catchupTime = e3, this.lastRound = t3, this.lastVersion = r2, this.nextVersion = s2, this.nextVersionRound = n2, this.nextVersionSupported = i2, this.stoppedAtUnsupportedRound = o2, this.timeSinceLastRound = a2, this.catchpoint = c2, this.catchpointAcquiredBlocks = u2, this.catchpointProcessedAccounts = l2, this.catchpointProcessedKvs = h2, this.catchpointTotalAccounts = d2, this.catchpointTotalBlocks = p2, this.catchpointTotalKvs = f2, this.catchpointVerifiedAccounts = g2, this.catchpointVerifiedKvs = m2, this.lastCatchpoint = y2, this.upgradeDelay = w2, this.upgradeNextProtocolVoteBefore = b2, this.upgradeNoVotes = v2, this.upgradeNodeVote = x2, this.upgradeVoteRounds = A2, this.upgradeVotes = _2, this.upgradeVotesRequired = E2, this.upgradeYesVotes = S2, this.attribute_map = { catchupTime: "catchup-time", lastRound: "last-round", lastVersion: "last-version", nextVersion: "next-version", nextVersionRound: "next-version-round", nextVersionSupported: "next-version-supported", stoppedAtUnsupportedRound: "stopped-at-unsupported-round", timeSinceLastRound: "time-since-last-round", catchpoint: "catchpoint", catchpointAcquiredBlocks: "catchpoint-acquired-blocks", catchpointProcessedAccounts: "catchpoint-processed-accounts", catchpointProcessedKvs: "catchpoint-processed-kvs", catchpointTotalAccounts: "catchpoint-total-accounts", catchpointTotalBlocks: "catchpoint-total-blocks", catchpointTotalKvs: "catchpoint-total-kvs", catchpointVerifiedAccounts: "catchpoint-verified-accounts", catchpointVerifiedKvs: "catchpoint-verified-kvs", lastCatchpoint: "last-catchpoint", upgradeDelay: "upgrade-delay", upgradeNextProtocolVoteBefore: "upgrade-next-protocol-vote-before", upgradeNoVotes: "upgrade-no-votes", upgradeNodeVote: "upgrade-node-vote", upgradeVoteRounds: "upgrade-vote-rounds", upgradeVotes: "upgrade-votes", upgradeVotesRequired: "upgrade-votes-required", upgradeYesVotes: "upgrade-yes-votes" };
+      class rt extends xe {
+        constructor({ catchupTime: e3, lastRound: t3, lastVersion: r2, nextVersion: s2, nextVersionRound: n2, nextVersionSupported: i2, stoppedAtUnsupportedRound: o2, timeSinceLastRound: a2, catchpoint: c2, catchpointAcquiredBlocks: u2, catchpointProcessedAccounts: l2, catchpointProcessedKvs: h2, catchpointTotalAccounts: d2, catchpointTotalBlocks: p2, catchpointTotalKvs: f2, catchpointVerifiedAccounts: g2, catchpointVerifiedKvs: m2, lastCatchpoint: y2, upgradeDelay: w2, upgradeNextProtocolVoteBefore: b2, upgradeNoVotes: v2, upgradeNodeVote: x2, upgradeVoteRounds: A2, upgradeVotes: _2, upgradeVotesRequired: E2, upgradeYesVotes: T2 }) {
+          super(), this.catchupTime = e3, this.lastRound = t3, this.lastVersion = r2, this.nextVersion = s2, this.nextVersionRound = n2, this.nextVersionSupported = i2, this.stoppedAtUnsupportedRound = o2, this.timeSinceLastRound = a2, this.catchpoint = c2, this.catchpointAcquiredBlocks = u2, this.catchpointProcessedAccounts = l2, this.catchpointProcessedKvs = h2, this.catchpointTotalAccounts = d2, this.catchpointTotalBlocks = p2, this.catchpointTotalKvs = f2, this.catchpointVerifiedAccounts = g2, this.catchpointVerifiedKvs = m2, this.lastCatchpoint = y2, this.upgradeDelay = w2, this.upgradeNextProtocolVoteBefore = b2, this.upgradeNoVotes = v2, this.upgradeNodeVote = x2, this.upgradeVoteRounds = A2, this.upgradeVotes = _2, this.upgradeVotesRequired = E2, this.upgradeYesVotes = T2, this.attribute_map = { catchupTime: "catchup-time", lastRound: "last-round", lastVersion: "last-version", nextVersion: "next-version", nextVersionRound: "next-version-round", nextVersionSupported: "next-version-supported", stoppedAtUnsupportedRound: "stopped-at-unsupported-round", timeSinceLastRound: "time-since-last-round", catchpoint: "catchpoint", catchpointAcquiredBlocks: "catchpoint-acquired-blocks", catchpointProcessedAccounts: "catchpoint-processed-accounts", catchpointProcessedKvs: "catchpoint-processed-kvs", catchpointTotalAccounts: "catchpoint-total-accounts", catchpointTotalBlocks: "catchpoint-total-blocks", catchpointTotalKvs: "catchpoint-total-kvs", catchpointVerifiedAccounts: "catchpoint-verified-accounts", catchpointVerifiedKvs: "catchpoint-verified-kvs", lastCatchpoint: "last-catchpoint", upgradeDelay: "upgrade-delay", upgradeNextProtocolVoteBefore: "upgrade-next-protocol-vote-before", upgradeNoVotes: "upgrade-no-votes", upgradeNodeVote: "upgrade-node-vote", upgradeVoteRounds: "upgrade-vote-rounds", upgradeVotes: "upgrade-votes", upgradeVotesRequired: "upgrade-votes-required", upgradeYesVotes: "upgrade-yes-votes" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["catchup-time"])
@@ -5016,10 +5053,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'stopped-at-unsupported-round': ${e3}`);
           if (void 0 === e3["time-since-last-round"])
             throw new Error(`Response is missing required field 'time-since-last-round': ${e3}`);
-          return new tt({ catchupTime: e3["catchup-time"], lastRound: e3["last-round"], lastVersion: e3["last-version"], nextVersion: e3["next-version"], nextVersionRound: e3["next-version-round"], nextVersionSupported: e3["next-version-supported"], stoppedAtUnsupportedRound: e3["stopped-at-unsupported-round"], timeSinceLastRound: e3["time-since-last-round"], catchpoint: e3.catchpoint, catchpointAcquiredBlocks: e3["catchpoint-acquired-blocks"], catchpointProcessedAccounts: e3["catchpoint-processed-accounts"], catchpointProcessedKvs: e3["catchpoint-processed-kvs"], catchpointTotalAccounts: e3["catchpoint-total-accounts"], catchpointTotalBlocks: e3["catchpoint-total-blocks"], catchpointTotalKvs: e3["catchpoint-total-kvs"], catchpointVerifiedAccounts: e3["catchpoint-verified-accounts"], catchpointVerifiedKvs: e3["catchpoint-verified-kvs"], lastCatchpoint: e3["last-catchpoint"], upgradeDelay: e3["upgrade-delay"], upgradeNextProtocolVoteBefore: e3["upgrade-next-protocol-vote-before"], upgradeNoVotes: e3["upgrade-no-votes"], upgradeNodeVote: e3["upgrade-node-vote"], upgradeVoteRounds: e3["upgrade-vote-rounds"], upgradeVotes: e3["upgrade-votes"], upgradeVotesRequired: e3["upgrade-votes-required"], upgradeYesVotes: e3["upgrade-yes-votes"] });
+          return new rt({ catchupTime: e3["catchup-time"], lastRound: e3["last-round"], lastVersion: e3["last-version"], nextVersion: e3["next-version"], nextVersionRound: e3["next-version-round"], nextVersionSupported: e3["next-version-supported"], stoppedAtUnsupportedRound: e3["stopped-at-unsupported-round"], timeSinceLastRound: e3["time-since-last-round"], catchpoint: e3.catchpoint, catchpointAcquiredBlocks: e3["catchpoint-acquired-blocks"], catchpointProcessedAccounts: e3["catchpoint-processed-accounts"], catchpointProcessedKvs: e3["catchpoint-processed-kvs"], catchpointTotalAccounts: e3["catchpoint-total-accounts"], catchpointTotalBlocks: e3["catchpoint-total-blocks"], catchpointTotalKvs: e3["catchpoint-total-kvs"], catchpointVerifiedAccounts: e3["catchpoint-verified-accounts"], catchpointVerifiedKvs: e3["catchpoint-verified-kvs"], lastCatchpoint: e3["last-catchpoint"], upgradeDelay: e3["upgrade-delay"], upgradeNextProtocolVoteBefore: e3["upgrade-next-protocol-vote-before"], upgradeNoVotes: e3["upgrade-no-votes"], upgradeNodeVote: e3["upgrade-node-vote"], upgradeVoteRounds: e3["upgrade-vote-rounds"], upgradeVotes: e3["upgrade-votes"], upgradeVotesRequired: e3["upgrade-votes-required"], upgradeYesVotes: e3["upgrade-yes-votes"] });
         }
       }
-      class rt extends xe {
+      class st extends xe {
         constructor({ poolError: e3, txn: t3, applicationIndex: r2, assetClosingAmount: s2, assetIndex: n2, closeRewards: i2, closingAmount: o2, confirmedRound: a2, globalStateDelta: c2, innerTxns: u2, localStateDelta: l2, logs: h2, receiverRewards: d2, senderRewards: p2 }) {
           super(), this.poolError = e3, this.txn = t3, this.applicationIndex = r2, this.assetClosingAmount = s2, this.assetIndex = n2, this.closeRewards = i2, this.closingAmount = o2, this.confirmedRound = a2, this.globalStateDelta = c2, this.innerTxns = u2, this.localStateDelta = l2, this.logs = h2, this.receiverRewards = d2, this.senderRewards = p2, this.attribute_map = { poolError: "pool-error", txn: "txn", applicationIndex: "application-index", assetClosingAmount: "asset-closing-amount", assetIndex: "asset-index", closeRewards: "close-rewards", closingAmount: "closing-amount", confirmedRound: "confirmed-round", globalStateDelta: "global-state-delta", innerTxns: "inner-txns", localStateDelta: "local-state-delta", logs: "logs", receiverRewards: "receiver-rewards", senderRewards: "sender-rewards" };
         }
@@ -5028,10 +5065,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'pool-error': ${e3}`);
           if (void 0 === e3.txn)
             throw new Error(`Response is missing required field 'txn': ${e3}`);
-          return new rt({ poolError: e3["pool-error"], txn: e3.txn, applicationIndex: e3["application-index"], assetClosingAmount: e3["asset-closing-amount"], assetIndex: e3["asset-index"], closeRewards: e3["close-rewards"], closingAmount: e3["closing-amount"], confirmedRound: e3["confirmed-round"], globalStateDelta: void 0 !== e3["global-state-delta"] ? e3["global-state-delta"].map(Ye.from_obj_for_encoding) : void 0, innerTxns: void 0 !== e3["inner-txns"] ? e3["inner-txns"].map(rt.from_obj_for_encoding) : void 0, localStateDelta: void 0 !== e3["local-state-delta"] ? e3["local-state-delta"].map(Te.from_obj_for_encoding) : void 0, logs: e3.logs, receiverRewards: e3["receiver-rewards"], senderRewards: e3["sender-rewards"] });
+          return new st({ poolError: e3["pool-error"], txn: e3.txn, applicationIndex: e3["application-index"], assetClosingAmount: e3["asset-closing-amount"], assetIndex: e3["asset-index"], closeRewards: e3["close-rewards"], closingAmount: e3["closing-amount"], confirmedRound: e3["confirmed-round"], globalStateDelta: void 0 !== e3["global-state-delta"] ? e3["global-state-delta"].map(Je.from_obj_for_encoding) : void 0, innerTxns: void 0 !== e3["inner-txns"] ? e3["inner-txns"].map(st.from_obj_for_encoding) : void 0, localStateDelta: void 0 !== e3["local-state-delta"] ? e3["local-state-delta"].map(Se.from_obj_for_encoding) : void 0, logs: e3.logs, receiverRewards: e3["receiver-rewards"], senderRewards: e3["sender-rewards"] });
         }
       }
-      class st extends xe {
+      class nt extends xe {
         constructor({ topTransactions: e3, totalTransactions: t3 }) {
           super(), this.topTransactions = e3, this.totalTransactions = t3, this.attribute_map = { topTransactions: "top-transactions", totalTransactions: "total-transactions" };
         }
@@ -5040,42 +5077,54 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'top-transactions': ${e3}`);
           if (void 0 === e3["total-transactions"])
             throw new Error(`Response is missing required field 'total-transactions': ${e3}`);
-          return new st({ topTransactions: e3["top-transactions"], totalTransactions: e3["total-transactions"] });
+          return new nt({ topTransactions: e3["top-transactions"], totalTransactions: e3["total-transactions"] });
         }
       }
-      class nt extends xe {
+      class it extends xe {
         constructor({ txid: e3 }) {
           super(), this.txid = e3, this.attribute_map = { txid: "txId" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.txId)
             throw new Error(`Response is missing required field 'txId': ${e3}`);
-          return new nt({ txid: e3.txId });
+          return new it({ txid: e3.txId });
         }
       }
-      class it extends xe {
-        constructor({ txnGroups: e3, allowEmptySignatures: t3, allowMoreLogging: r2, extraOpcodeBudget: s2 }) {
-          super(), this.txnGroups = e3, this.allowEmptySignatures = t3, this.allowMoreLogging = r2, this.extraOpcodeBudget = s2, this.attribute_map = { txnGroups: "txn-groups", allowEmptySignatures: "allow-empty-signatures", allowMoreLogging: "allow-more-logging", extraOpcodeBudget: "extra-opcode-budget" };
+      class ot extends xe {
+        constructor({ newValue: e3, slot: t3 }) {
+          super(), this.newValue = e3, this.slot = t3, this.attribute_map = { newValue: "new-value", slot: "slot" };
+        }
+        static from_obj_for_encoding(e3) {
+          if (void 0 === e3["new-value"])
+            throw new Error(`Response is missing required field 'new-value': ${e3}`);
+          if (void 0 === e3.slot)
+            throw new Error(`Response is missing required field 'slot': ${e3}`);
+          return new ot({ newValue: qe.from_obj_for_encoding(e3["new-value"]), slot: e3.slot });
+        }
+      }
+      class at extends xe {
+        constructor({ txnGroups: e3, allowEmptySignatures: t3, allowMoreLogging: r2, execTraceConfig: s2, extraOpcodeBudget: n2 }) {
+          super(), this.txnGroups = e3, this.allowEmptySignatures = t3, this.allowMoreLogging = r2, this.execTraceConfig = s2, this.extraOpcodeBudget = n2, this.attribute_map = { txnGroups: "txn-groups", allowEmptySignatures: "allow-empty-signatures", allowMoreLogging: "allow-more-logging", execTraceConfig: "exec-trace-config", extraOpcodeBudget: "extra-opcode-budget" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3["txn-groups"]))
             throw new Error(`Response is missing required array field 'txn-groups': ${e3}`);
-          return new it({ txnGroups: e3["txn-groups"].map(ot.from_obj_for_encoding), allowEmptySignatures: e3["allow-empty-signatures"], allowMoreLogging: e3["allow-more-logging"], extraOpcodeBudget: e3["extra-opcode-budget"] });
+          return new at({ txnGroups: e3["txn-groups"].map(ct.from_obj_for_encoding), allowEmptySignatures: e3["allow-empty-signatures"], allowMoreLogging: e3["allow-more-logging"], execTraceConfig: void 0 !== e3["exec-trace-config"] ? lt.from_obj_for_encoding(e3["exec-trace-config"]) : void 0, extraOpcodeBudget: e3["extra-opcode-budget"] });
         }
       }
-      class ot extends xe {
+      class ct extends xe {
         constructor({ txns: e3 }) {
           super(), this.txns = e3, this.attribute_map = { txns: "txns" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3.txns))
             throw new Error(`Response is missing required array field 'txns': ${e3}`);
-          return new ot({ txns: e3.txns });
+          return new ct({ txns: e3.txns });
         }
       }
-      class at extends xe {
-        constructor({ lastRound: e3, txnGroups: t3, version: r2, evalOverrides: s2 }) {
-          super(), this.lastRound = e3, this.txnGroups = t3, this.version = r2, this.evalOverrides = s2, this.attribute_map = { lastRound: "last-round", txnGroups: "txn-groups", version: "version", evalOverrides: "eval-overrides" };
+      class ut extends xe {
+        constructor({ lastRound: e3, txnGroups: t3, version: r2, evalOverrides: s2, execTraceConfig: n2 }) {
+          super(), this.lastRound = e3, this.txnGroups = t3, this.version = r2, this.evalOverrides = s2, this.execTraceConfig = n2, this.attribute_map = { lastRound: "last-round", txnGroups: "txn-groups", version: "version", evalOverrides: "eval-overrides", execTraceConfig: "exec-trace-config" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["last-round"])
@@ -5084,52 +5133,78 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'txn-groups': ${e3}`);
           if (void 0 === e3.version)
             throw new Error(`Response is missing required field 'version': ${e3}`);
-          return new at({ lastRound: e3["last-round"], txnGroups: e3["txn-groups"].map(ct.from_obj_for_encoding), version: e3.version, evalOverrides: void 0 !== e3["eval-overrides"] ? lt.from_obj_for_encoding(e3["eval-overrides"]) : void 0 });
+          return new ut({ lastRound: e3["last-round"], txnGroups: e3["txn-groups"].map(ht.from_obj_for_encoding), version: e3.version, evalOverrides: void 0 !== e3["eval-overrides"] ? pt.from_obj_for_encoding(e3["eval-overrides"]) : void 0, execTraceConfig: void 0 !== e3["exec-trace-config"] ? lt.from_obj_for_encoding(e3["exec-trace-config"]) : void 0 });
         }
       }
-      class ct extends xe {
+      class lt extends xe {
+        constructor({ enable: e3, scratchChange: t3, stackChange: r2 }) {
+          super(), this.enable = e3, this.scratchChange = t3, this.stackChange = r2, this.attribute_map = { enable: "enable", scratchChange: "scratch-change", stackChange: "stack-change" };
+        }
+        static from_obj_for_encoding(e3) {
+          return new lt({ enable: e3.enable, scratchChange: e3["scratch-change"], stackChange: e3["stack-change"] });
+        }
+      }
+      class ht extends xe {
         constructor({ txnResults: e3, appBudgetAdded: t3, appBudgetConsumed: r2, failedAt: s2, failureMessage: n2 }) {
           super(), this.txnResults = e3, this.appBudgetAdded = t3, this.appBudgetConsumed = r2, this.failedAt = s2, this.failureMessage = n2, this.attribute_map = { txnResults: "txn-results", appBudgetAdded: "app-budget-added", appBudgetConsumed: "app-budget-consumed", failedAt: "failed-at", failureMessage: "failure-message" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3["txn-results"]))
             throw new Error(`Response is missing required array field 'txn-results': ${e3}`);
-          return new ct({ txnResults: e3["txn-results"].map(ut.from_obj_for_encoding), appBudgetAdded: e3["app-budget-added"], appBudgetConsumed: e3["app-budget-consumed"], failedAt: e3["failed-at"], failureMessage: e3["failure-message"] });
+          return new ht({ txnResults: e3["txn-results"].map(dt.from_obj_for_encoding), appBudgetAdded: e3["app-budget-added"], appBudgetConsumed: e3["app-budget-consumed"], failedAt: e3["failed-at"], failureMessage: e3["failure-message"] });
         }
       }
-      class ut extends xe {
-        constructor({ txnResult: e3, appBudgetConsumed: t3, logicSigBudgetConsumed: r2 }) {
-          super(), this.txnResult = e3, this.appBudgetConsumed = t3, this.logicSigBudgetConsumed = r2, this.attribute_map = { txnResult: "txn-result", appBudgetConsumed: "app-budget-consumed", logicSigBudgetConsumed: "logic-sig-budget-consumed" };
+      class dt extends xe {
+        constructor({ txnResult: e3, appBudgetConsumed: t3, execTrace: r2, logicSigBudgetConsumed: s2 }) {
+          super(), this.txnResult = e3, this.appBudgetConsumed = t3, this.execTrace = r2, this.logicSigBudgetConsumed = s2, this.attribute_map = { txnResult: "txn-result", appBudgetConsumed: "app-budget-consumed", execTrace: "exec-trace", logicSigBudgetConsumed: "logic-sig-budget-consumed" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["txn-result"])
             throw new Error(`Response is missing required field 'txn-result': ${e3}`);
-          return new ut({ txnResult: rt.from_obj_for_encoding(e3["txn-result"]), appBudgetConsumed: e3["app-budget-consumed"], logicSigBudgetConsumed: e3["logic-sig-budget-consumed"] });
+          return new dt({ txnResult: st.from_obj_for_encoding(e3["txn-result"]), appBudgetConsumed: e3["app-budget-consumed"], execTrace: void 0 !== e3["exec-trace"] ? gt.from_obj_for_encoding(e3["exec-trace"]) : void 0, logicSigBudgetConsumed: e3["logic-sig-budget-consumed"] });
         }
       }
-      class lt extends xe {
+      class pt extends xe {
         constructor({ allowEmptySignatures: e3, extraOpcodeBudget: t3, maxLogCalls: r2, maxLogSize: s2 }) {
           super(), this.allowEmptySignatures = e3, this.extraOpcodeBudget = t3, this.maxLogCalls = r2, this.maxLogSize = s2, this.attribute_map = { allowEmptySignatures: "allow-empty-signatures", extraOpcodeBudget: "extra-opcode-budget", maxLogCalls: "max-log-calls", maxLogSize: "max-log-size" };
         }
         static from_obj_for_encoding(e3) {
-          return new lt({ allowEmptySignatures: e3["allow-empty-signatures"], extraOpcodeBudget: e3["extra-opcode-budget"], maxLogCalls: e3["max-log-calls"], maxLogSize: e3["max-log-size"] });
+          return new pt({ allowEmptySignatures: e3["allow-empty-signatures"], extraOpcodeBudget: e3["extra-opcode-budget"], maxLogCalls: e3["max-log-calls"], maxLogSize: e3["max-log-size"] });
         }
       }
-      class ht extends xe {
+      class ft extends xe {
+        constructor({ pc: e3, scratchChanges: t3, spawnedInners: r2, stackAdditions: s2, stackPopCount: n2 }) {
+          super(), this.pc = e3, this.scratchChanges = t3, this.spawnedInners = r2, this.stackAdditions = s2, this.stackPopCount = n2, this.attribute_map = { pc: "pc", scratchChanges: "scratch-changes", spawnedInners: "spawned-inners", stackAdditions: "stack-additions", stackPopCount: "stack-pop-count" };
+        }
+        static from_obj_for_encoding(e3) {
+          if (void 0 === e3.pc)
+            throw new Error(`Response is missing required field 'pc': ${e3}`);
+          return new ft({ pc: e3.pc, scratchChanges: void 0 !== e3["scratch-changes"] ? e3["scratch-changes"].map(ot.from_obj_for_encoding) : void 0, spawnedInners: e3["spawned-inners"], stackAdditions: void 0 !== e3["stack-additions"] ? e3["stack-additions"].map(qe.from_obj_for_encoding) : void 0, stackPopCount: e3["stack-pop-count"] });
+        }
+      }
+      class gt extends xe {
+        constructor({ approvalProgramTrace: e3, clearStateProgramTrace: t3, innerTrace: r2, logicSigTrace: s2 }) {
+          super(), this.approvalProgramTrace = e3, this.clearStateProgramTrace = t3, this.innerTrace = r2, this.logicSigTrace = s2, this.attribute_map = { approvalProgramTrace: "approval-program-trace", clearStateProgramTrace: "clear-state-program-trace", innerTrace: "inner-trace", logicSigTrace: "logic-sig-trace" };
+        }
+        static from_obj_for_encoding(e3) {
+          return new gt({ approvalProgramTrace: void 0 !== e3["approval-program-trace"] ? e3["approval-program-trace"].map(ft.from_obj_for_encoding) : void 0, clearStateProgramTrace: void 0 !== e3["clear-state-program-trace"] ? e3["clear-state-program-trace"].map(ft.from_obj_for_encoding) : void 0, innerTrace: void 0 !== e3["inner-trace"] ? e3["inner-trace"].map(gt.from_obj_for_encoding) : void 0, logicSigTrace: void 0 !== e3["logic-sig-trace"] ? e3["logic-sig-trace"].map(ft.from_obj_for_encoding) : void 0 });
+        }
+      }
+      class mt extends xe {
         constructor({ message: e3, stateproof: t3 }) {
-          super(), this.message = e3, this.stateproof = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.attribute_map = { message: "Message", stateproof: "StateProof" };
+          super(), this.message = e3, this.stateproof = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.attribute_map = { message: "Message", stateproof: "StateProof" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.Message)
             throw new Error(`Response is missing required field 'Message': ${e3}`);
           if (void 0 === e3.StateProof)
             throw new Error(`Response is missing required field 'StateProof': ${e3}`);
-          return new ht({ message: dt.from_obj_for_encoding(e3.Message), stateproof: e3.StateProof });
+          return new mt({ message: yt.from_obj_for_encoding(e3.Message), stateproof: e3.StateProof });
         }
       }
-      class dt extends xe {
+      class yt extends xe {
         constructor({ blockheaderscommitment: e3, firstattestedround: t3, lastattestedround: r2, lnprovenweight: s2, voterscommitment: n2 }) {
-          super(), this.blockheaderscommitment = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.firstattestedround = t3, this.lastattestedround = r2, this.lnprovenweight = s2, this.voterscommitment = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.attribute_map = { blockheaderscommitment: "BlockHeadersCommitment", firstattestedround: "FirstAttestedRound", lastattestedround: "LastAttestedRound", lnprovenweight: "LnProvenWeight", voterscommitment: "VotersCommitment" };
+          super(), this.blockheaderscommitment = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.firstattestedround = t3, this.lastattestedround = r2, this.lnprovenweight = s2, this.voterscommitment = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.attribute_map = { blockheaderscommitment: "BlockHeadersCommitment", firstattestedround: "FirstAttestedRound", lastattestedround: "LastAttestedRound", lnprovenweight: "LnProvenWeight", voterscommitment: "VotersCommitment" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.BlockHeadersCommitment)
@@ -5142,10 +5217,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'LnProvenWeight': ${e3}`);
           if (void 0 === e3.VotersCommitment)
             throw new Error(`Response is missing required field 'VotersCommitment': ${e3}`);
-          return new dt({ blockheaderscommitment: e3.BlockHeadersCommitment, firstattestedround: e3.FirstAttestedRound, lastattestedround: e3.LastAttestedRound, lnprovenweight: e3.LnProvenWeight, voterscommitment: e3.VotersCommitment });
+          return new yt({ blockheaderscommitment: e3.BlockHeadersCommitment, firstattestedround: e3.FirstAttestedRound, lastattestedround: e3.LastAttestedRound, lnprovenweight: e3.LnProvenWeight, voterscommitment: e3.VotersCommitment });
         }
       }
-      class pt extends xe {
+      class wt extends xe {
         constructor({ currentRound: e3, onlineMoney: t3, totalMoney: r2 }) {
           super(), this.currentRound = e3, this.onlineMoney = t3, this.totalMoney = r2, this.attribute_map = { currentRound: "current_round", onlineMoney: "online-money", totalMoney: "total-money" };
         }
@@ -5156,10 +5231,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'online-money': ${e3}`);
           if (void 0 === e3["total-money"])
             throw new Error(`Response is missing required field 'total-money': ${e3}`);
-          return new pt({ currentRound: e3.current_round, onlineMoney: e3["online-money"], totalMoney: e3["total-money"] });
+          return new wt({ currentRound: e3.current_round, onlineMoney: e3["online-money"], totalMoney: e3["total-money"] });
         }
       }
-      class ft extends xe {
+      class bt extends xe {
         constructor({ key: e3, value: t3 }) {
           super(), this.key = e3, this.value = t3, this.attribute_map = { key: "key", value: "value" };
         }
@@ -5168,10 +5243,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'key': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new ft({ key: e3.key, value: gt.from_obj_for_encoding(e3.value) });
+          return new bt({ key: e3.key, value: vt.from_obj_for_encoding(e3.value) });
         }
       }
-      class gt extends xe {
+      class vt extends xe {
         constructor({ type: e3, bytes: t3, uint: r2 }) {
           super(), this.type = e3, this.bytes = t3, this.uint = r2, this.attribute_map = { type: "type", bytes: "bytes", uint: "uint" };
         }
@@ -5182,22 +5257,22 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'bytes': ${e3}`);
           if (void 0 === e3.uint)
             throw new Error(`Response is missing required field 'uint': ${e3}`);
-          return new gt({ type: e3.type, bytes: e3.bytes, uint: e3.uint });
+          return new vt({ type: e3.type, bytes: e3.bytes, uint: e3.uint });
         }
       }
-      class mt extends xe {
+      class xt extends xe {
         constructor({ deltas: e3 }) {
-          super(), this.deltas = e3, this.attribute_map = { deltas: "deltas" };
+          super(), this.deltas = e3, this.attribute_map = { deltas: "Deltas" };
         }
         static from_obj_for_encoding(e3) {
           if (!Array.isArray(e3.Deltas))
             throw new Error(`Response is missing required array field 'Deltas': ${e3}`);
-          return new mt({ deltas: e3.Deltas.map(Qe.from_obj_for_encoding) });
+          return new xt({ deltas: e3.Deltas.map(et.from_obj_for_encoding) });
         }
       }
-      class yt extends xe {
-        constructor({ consensusVersion: e3, fee: t3, genesisHash: r2, genesisId: s2, lastRound: n2, minFee: o2 }) {
-          super(), this.consensusVersion = e3, this.fee = t3, this.genesisHash = "string" == typeof r2 ? new Uint8Array(i.lW.from(r2, "base64")) : r2, this.genesisId = s2, this.lastRound = n2, this.minFee = o2, this.attribute_map = { consensusVersion: "consensus-version", fee: "fee", genesisHash: "genesis-hash", genesisId: "genesis-id", lastRound: "last-round", minFee: "min-fee" };
+      class At extends xe {
+        constructor({ consensusVersion: e3, fee: t3, genesisHash: r2, genesisId: s2, lastRound: n2, minFee: i2 }) {
+          super(), this.consensusVersion = e3, this.fee = t3, this.genesisHash = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.genesisId = s2, this.lastRound = n2, this.minFee = i2, this.attribute_map = { consensusVersion: "consensus-version", fee: "fee", genesisHash: "genesis-hash", genesisId: "genesis-id", lastRound: "last-round", minFee: "min-fee" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["consensus-version"])
@@ -5212,12 +5287,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'last-round': ${e3}`);
           if (void 0 === e3["min-fee"])
             throw new Error(`Response is missing required field 'min-fee': ${e3}`);
-          return new yt({ consensusVersion: e3["consensus-version"], fee: e3.fee, genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], lastRound: e3["last-round"], minFee: e3["min-fee"] });
+          return new At({ consensusVersion: e3["consensus-version"], fee: e3.fee, genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], lastRound: e3["last-round"], minFee: e3["min-fee"] });
         }
       }
-      class wt extends xe {
+      class _t extends xe {
         constructor({ idx: e3, proof: t3, stibhash: r2, treedepth: s2, hashtype: n2 }) {
-          super(), this.idx = e3, this.proof = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.stibhash = "string" == typeof r2 ? new Uint8Array(i.lW.from(r2, "base64")) : r2, this.treedepth = s2, this.hashtype = n2, this.attribute_map = { idx: "idx", proof: "proof", stibhash: "stibhash", treedepth: "treedepth", hashtype: "hashtype" };
+          super(), this.idx = e3, this.proof = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.stibhash = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.treedepth = s2, this.hashtype = n2, this.attribute_map = { idx: "idx", proof: "proof", stibhash: "stibhash", treedepth: "treedepth", hashtype: "hashtype" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.idx)
@@ -5228,12 +5303,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'stibhash': ${e3}`);
           if (void 0 === e3.treedepth)
             throw new Error(`Response is missing required field 'treedepth': ${e3}`);
-          return new wt({ idx: e3.idx, proof: e3.proof, stibhash: e3.stibhash, treedepth: e3.treedepth, hashtype: e3.hashtype });
+          return new _t({ idx: e3.idx, proof: e3.proof, stibhash: e3.stibhash, treedepth: e3.treedepth, hashtype: e3.hashtype });
         }
       }
-      class bt extends xe {
+      class Et extends xe {
         constructor({ build: e3, genesisHashB64: t3, genesisId: r2, versions: s2 }) {
-          super(), this.build = e3, this.genesisHashB64 = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.genesisId = r2, this.versions = s2, this.attribute_map = { build: "build", genesisHashB64: "genesis_hash_b64", genesisId: "genesis_id", versions: "versions" };
+          super(), this.build = e3, this.genesisHashB64 = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.genesisId = r2, this.versions = s2, this.attribute_map = { build: "build", genesisHashB64: "genesis_hash_b64", genesisId: "genesis_id", versions: "versions" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.build)
@@ -5244,12 +5319,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'genesis_id': ${e3}`);
           if (!Array.isArray(e3.versions))
             throw new Error(`Response is missing required array field 'versions': ${e3}`);
-          return new bt({ build: Le.from_obj_for_encoding(e3.build), genesisHashB64: e3.genesis_hash_b64, genesisId: e3.genesis_id, versions: e3.versions });
+          return new Et({ build: Me.from_obj_for_encoding(e3.build), genesisHashB64: e3.genesis_hash_b64, genesisId: e3.genesis_id, versions: e3.versions });
         }
       }
-      class vt {
+      class Tt {
         constructor(e3, t3) {
-          this.c = e3, this.query = {}, this.intDecoding = t3 || S.DEFAULT;
+          this.c = e3, this.query = {}, this.intDecoding = t3 || p.DEFAULT;
         }
         prepare(e3) {
           return e3;
@@ -5269,7 +5344,7 @@ var algosdk_min = { exports: {} };
           return this.intDecoding = e3, this;
         }
       }
-      class xt extends vt {
+      class St extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -5280,7 +5355,7 @@ var algosdk_min = { exports: {} };
           return this.query.exclude = e3, this;
         }
       }
-      class At extends vt {
+      class kt extends Tt {
         constructor(e3, t3, r2, s2) {
           super(e3, t3), this.account = r2, this.assetID = s2, this.account = r2, this.assetID = s2;
         }
@@ -5288,7 +5363,7 @@ var algosdk_min = { exports: {} };
           return `/v2/accounts/${this.account}/assets/${this.assetID}`;
         }
       }
-      class _t extends vt {
+      class Rt extends Tt {
         constructor(e3, t3, r2, s2) {
           super(e3, t3), this.account = r2, this.applicationID = s2, this.account = r2, this.applicationID = s2;
         }
@@ -5296,7 +5371,7 @@ var algosdk_min = { exports: {} };
           return `/v2/accounts/${this.account}/applications/${this.applicationID}`;
         }
       }
-      class Et extends vt {
+      class It extends Tt {
         constructor(e3, t3) {
           if (super(e3), !Number.isInteger(t3))
             throw Error("roundNumber should be an integer");
@@ -5310,11 +5385,11 @@ var algosdk_min = { exports: {} };
             return Z(e3);
         }
       }
-      function St(e3 = {}) {
+      function Bt(e3 = {}) {
         let t3 = e3;
         return Object.keys(t3).every((e4) => "content-type" !== e4.toLowerCase()) && (t3 = { ...e3 }, t3["Content-Type"] = "text/plain"), t3;
       }
-      class Tt extends vt {
+      class Ut extends Tt {
         constructor(e3, t3) {
           super(e3), this.source = t3, this.source = t3;
         }
@@ -5325,11 +5400,11 @@ var algosdk_min = { exports: {} };
           return this.query.sourcemap = e3, this;
         }
         async do(e3 = {}) {
-          const t3 = St(e3);
-          return (await this.c.post(this.path(), i.lW.from(this.source), t3, this.query)).body;
+          const t3 = Bt(e3);
+          return (await this.c.post(this.path(), o.lW.from(this.source), t3, this.query)).body;
         }
       }
-      class Rt extends vt {
+      class Pt extends Tt {
         constructor(e3, t3) {
           super(e3), this.blob = X(t3.get_obj_for_encoding(true));
         }
@@ -5337,16 +5412,16 @@ var algosdk_min = { exports: {} };
           return "/v2/teal/dryrun";
         }
         async do(e3 = {}) {
-          const t3 = St(e3);
-          return (await this.c.post(this.path(), i.lW.from(this.blob), t3)).body;
+          const t3 = Bt(e3);
+          return (await this.c.post(this.path(), o.lW.from(this.blob), t3)).body;
         }
       }
-      class kt extends vt {
+      class jt extends Tt {
         path() {
           return "/genesis";
         }
       }
-      class It extends vt {
+      class qt extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -5354,7 +5429,7 @@ var algosdk_min = { exports: {} };
           return `/v2/assets/${this.index}`;
         }
       }
-      class Bt extends vt {
+      class Dt extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -5362,7 +5437,7 @@ var algosdk_min = { exports: {} };
           return `/v2/applications/${this.index}`;
         }
       }
-      class Ut extends vt {
+      class Ct extends Tt {
         constructor(e3, t3, r2) {
           if (super(e3, t3), !Number.isInteger(r2))
             throw Error("roundNumber should be an integer");
@@ -5372,10 +5447,10 @@ var algosdk_min = { exports: {} };
           return `/v2/blocks/${this.round}/hash`;
         }
       }
-      class Pt extends vt {
+      class $t extends Tt {
         constructor(e3, t3, r2, s2) {
           super(e3, t3), this.index = r2, this.index = r2;
-          const n2 = i.lW.from(s2).toString("base64");
+          const n2 = o.lW.from(s2).toString("base64");
           this.query.name = encodeURI(`b64:${n2}`);
         }
         path() {
@@ -5385,7 +5460,7 @@ var algosdk_min = { exports: {} };
           return $e.from_obj_for_encoding(e3);
         }
       }
-      class jt extends vt {
+      class Ot extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2, this.query.max = 0;
         }
@@ -5396,10 +5471,10 @@ var algosdk_min = { exports: {} };
           return this.query.max = e3, this;
         }
         prepare(e3) {
-          return Ce.from_obj_for_encoding(e3);
+          return Le.from_obj_for_encoding(e3);
         }
       }
-      class qt extends vt {
+      class Lt extends Tt {
         path() {
           return "/health";
         }
@@ -5410,7 +5485,7 @@ var algosdk_min = { exports: {} };
           return {};
         }
       }
-      class Dt extends vt {
+      class Mt extends Tt {
         constructor(e3, t3) {
           super(e3), this.txid = t3, this.txid = t3, this.query.format = "msgpack";
         }
@@ -5425,7 +5500,7 @@ var algosdk_min = { exports: {} };
           return this.query.max = e3, this;
         }
       }
-      class $t extends vt {
+      class Nt extends Tt {
         constructor(e3) {
           super(e3), this.query.format = "msgpack";
         }
@@ -5440,7 +5515,7 @@ var algosdk_min = { exports: {} };
           return this.query.max = e3, this;
         }
       }
-      class Ot extends vt {
+      class Ft extends Tt {
         constructor(e3, t3) {
           super(e3), this.address = t3, this.address = t3, this.query.format = "msgpack";
         }
@@ -5455,7 +5530,7 @@ var algosdk_min = { exports: {} };
           return this.query.max = e3, this;
         }
       }
-      class Ct extends vt {
+      class Wt extends Tt {
         constructor(e3, t3, r2, s2) {
           super(e3, t3), this.round = r2, this.txID = s2, this.round = r2, this.txID = s2;
         }
@@ -5466,18 +5541,18 @@ var algosdk_min = { exports: {} };
           return this.query.hashtype = e3, this;
         }
       }
-      function Lt(e3) {
+      function Kt(e3) {
         return e3 && void 0 !== e3.byteLength;
       }
-      class Mt extends vt {
+      class zt extends Tt {
         constructor(e3, t3) {
           super(e3);
           let r2 = t3;
           if (Array.isArray(t3)) {
-            if (!t3.every(Lt))
+            if (!t3.every(Kt))
               throw new TypeError("Array elements must be byte arrays");
-            r2 = k(...t3);
-          } else if (!Lt(r2))
+            r2 = m(...t3);
+          } else if (!Kt(r2))
             throw new TypeError("Argument must be byte array");
           this.txnBytesToPost = r2;
         }
@@ -5489,15 +5564,15 @@ var algosdk_min = { exports: {} };
             let t4 = e4;
             return Object.keys(t4).every((e5) => "content-type" !== e5.toLowerCase()) && (t4 = { ...e4 }, t4["Content-Type"] = "application/x-binary"), t4;
           }(e3);
-          return (await this.c.post(this.path(), i.lW.from(this.txnBytesToPost), t3)).body;
+          return (await this.c.post(this.path(), o.lW.from(this.txnBytesToPost), t3)).body;
         }
       }
-      class Nt extends vt {
+      class Vt extends Tt {
         path() {
           return "/v2/status";
         }
       }
-      class Ft extends vt {
+      class Gt extends Tt {
         constructor(e3, t3, r2) {
           if (super(e3, t3), this.round = r2, !Number.isInteger(r2))
             throw Error("round should be an integer");
@@ -5507,7 +5582,7 @@ var algosdk_min = { exports: {} };
           return `/v2/status/wait-for-block-after/${this.round}`;
         }
       }
-      class Wt extends vt {
+      class Ht extends Tt {
         path() {
           return "/v2/transactions/params";
         }
@@ -5515,17 +5590,17 @@ var algosdk_min = { exports: {} };
           return { flatFee: false, fee: e3.fee, firstRound: e3["last-round"], lastRound: e3["last-round"] + 1e3, genesisID: e3["genesis-id"], genesisHash: e3["genesis-hash"], minFee: e3["min-fee"] };
         }
       }
-      class Kt extends vt {
+      class Yt extends Tt {
         path() {
           return "/v2/ledger/supply";
         }
       }
-      class zt extends vt {
+      class Jt extends Tt {
         path() {
           return "/versions";
         }
       }
-      class Vt extends vt {
+      class Xt extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2;
         }
@@ -5533,7 +5608,7 @@ var algosdk_min = { exports: {} };
           return `/v2/blocks/${this.round}/lightheader/proof`;
         }
       }
-      class Gt extends vt {
+      class Zt extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2;
         }
@@ -5541,7 +5616,7 @@ var algosdk_min = { exports: {} };
           return `/v2/stateproofs/${this.round}`;
         }
       }
-      class Ht extends vt {
+      class Qt extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2;
         }
@@ -5552,15 +5627,15 @@ var algosdk_min = { exports: {} };
           return (await this.c.post(this.path(), e3)).body;
         }
       }
-      class Yt extends vt {
+      class er extends Tt {
         path() {
           return "/v2/ledger/sync";
         }
         prepare(e3) {
-          return Xe.from_obj_for_encoding(e3);
+          return Ze.from_obj_for_encoding(e3);
         }
       }
-      class Jt extends vt {
+      class tr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.offset = r2, this.offset = r2;
         }
@@ -5571,15 +5646,15 @@ var algosdk_min = { exports: {} };
           return (await this.c.post(this.path(), e3)).body;
         }
       }
-      class Xt extends vt {
+      class rr extends Tt {
         path() {
           return "/v2/devmode/blocks/offset";
         }
         prepare(e3) {
-          return Je.from_obj_for_encoding(e3);
+          return Xe.from_obj_for_encoding(e3);
         }
       }
-      class Zt extends vt {
+      class sr extends Tt {
         constructor(e3, t3) {
           super(e3), this.source = t3, this.source = t3;
         }
@@ -5591,10 +5666,10 @@ var algosdk_min = { exports: {} };
             let t4 = e4;
             return Object.keys(t4).every((e5) => "content-type" !== e5.toLowerCase()) && (t4 = { ...e4 }, t4["Content-Type"] = "text/plain"), t4;
           }(e3);
-          return (await this.c.post(this.path(), i.lW.from(this.source), t3, this.query)).body;
+          return (await this.c.post(this.path(), o.lW.from(this.source), t3, this.query)).body;
         }
       }
-      class Qt extends vt {
+      class nr extends Tt {
         constructor(e3, t3) {
           super(e3), this.query.format = "msgpack", this.requestBytes = J(t3.get_obj_for_encoding(true));
         }
@@ -5605,20 +5680,20 @@ var algosdk_min = { exports: {} };
           const t3 = function(e4 = {}) {
             let t4 = e4;
             return Object.keys(t4).every((e5) => "content-type" !== e5.toLowerCase()) && (t4 = { ...e4 }, t4["Content-Type"] = "application/msgpack"), t4;
-          }(e3), r2 = await this.c.post(this.path(), i.lW.from(this.requestBytes), t3, this.query, false);
+          }(e3), r2 = await this.c.post(this.path(), o.lW.from(this.requestBytes), t3, this.query, false);
           return this.prepare(r2.body);
         }
         prepare(e3) {
           const t3 = Z(e3);
-          return at.from_obj_for_encoding(t3);
+          return ut.from_obj_for_encoding(t3);
         }
       }
-      class er extends vt {
+      class ir extends Tt {
         path() {
           return "/ready";
         }
       }
-      class tr extends vt {
+      class or extends Tt {
         path() {
           return "/v2/ledger/sync";
         }
@@ -5626,7 +5701,7 @@ var algosdk_min = { exports: {} };
           return (await this.c.delete(this.path(), e3)).body;
         }
       }
-      class rr extends vt {
+      class ar extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.id = r2, this.id = r2, this.query = { format: "json" };
         }
@@ -5634,7 +5709,7 @@ var algosdk_min = { exports: {} };
           return `/v2/deltas/txn/group/${this.id}`;
         }
       }
-      class sr extends vt {
+      class cr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2, this.query = { format: "json" };
         }
@@ -5642,7 +5717,7 @@ var algosdk_min = { exports: {} };
           return `/v2/deltas/${this.round}`;
         }
       }
-      class nr extends vt {
+      class ur extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2, this.query = { format: "json" };
         }
@@ -5650,90 +5725,90 @@ var algosdk_min = { exports: {} };
           return `/v2/deltas/${this.round}/txn/group`;
         }
         prepare(e3) {
-          return mt.from_obj_for_encoding(e3);
+          return xt.from_obj_for_encoding(e3);
         }
       }
-      class ir extends be {
+      class lr extends be {
         constructor(e3, t3, r2, s2 = {}) {
           super("X-Algo-API-Token", e3, t3, r2, s2);
         }
         healthCheck() {
-          return new qt(this.c);
+          return new Lt(this.c);
         }
         versionsCheck() {
-          return new zt(this.c);
+          return new Jt(this.c);
         }
         sendRawTransaction(e3) {
-          return new Mt(this.c, e3);
+          return new zt(this.c, e3);
         }
         accountInformation(e3) {
-          return new xt(this.c, this.intDecoding, e3);
+          return new St(this.c, this.intDecoding, e3);
         }
         accountAssetInformation(e3, t3) {
-          return new At(this.c, this.intDecoding, e3, t3);
+          return new kt(this.c, this.intDecoding, e3, t3);
         }
         accountApplicationInformation(e3, t3) {
-          return new _t(this.c, this.intDecoding, e3, t3);
+          return new Rt(this.c, this.intDecoding, e3, t3);
         }
         block(e3) {
-          return new Et(this.c, e3);
+          return new It(this.c, e3);
         }
         getBlockHash(e3) {
-          return new Ut(this.c, this.intDecoding, e3);
+          return new Ct(this.c, this.intDecoding, e3);
         }
         pendingTransactionInformation(e3) {
-          return new Dt(this.c, e3);
+          return new Mt(this.c, e3);
         }
         pendingTransactionsInformation() {
-          return new $t(this.c);
+          return new Nt(this.c);
         }
         pendingTransactionByAddress(e3) {
-          return new Ot(this.c, e3);
+          return new Ft(this.c, e3);
         }
         status() {
-          return new Nt(this.c, this.intDecoding);
+          return new Vt(this.c, this.intDecoding);
         }
         statusAfterBlock(e3) {
-          return new Ft(this.c, this.intDecoding, e3);
+          return new Gt(this.c, this.intDecoding, e3);
         }
         getTransactionParams() {
-          return new Wt(this.c);
+          return new Ht(this.c);
         }
         supply() {
-          return new Kt(this.c, this.intDecoding);
+          return new Yt(this.c, this.intDecoding);
         }
         compile(e3) {
-          return new Tt(this.c, e3);
+          return new Ut(this.c, e3);
         }
         disassemble(e3) {
-          return new Zt(this.c, e3);
+          return new sr(this.c, e3);
         }
         dryrun(e3) {
-          return new Rt(this.c, e3);
+          return new Pt(this.c, e3);
         }
         getAssetByID(e3) {
-          return new It(this.c, this.intDecoding, e3);
+          return new qt(this.c, this.intDecoding, e3);
         }
         getApplicationByID(e3) {
-          return new Bt(this.c, this.intDecoding, e3);
+          return new Dt(this.c, this.intDecoding, e3);
         }
         getApplicationBoxByName(e3, t3) {
-          return new Pt(this.c, this.intDecoding, e3, t3);
+          return new $t(this.c, this.intDecoding, e3, t3);
         }
         getApplicationBoxes(e3) {
-          return new jt(this.c, this.intDecoding, e3);
+          return new Ot(this.c, this.intDecoding, e3);
         }
         genesis() {
-          return new kt(this.c, this.intDecoding);
+          return new jt(this.c, this.intDecoding);
         }
         getTransactionProof(e3, t3) {
-          return new Ct(this.c, this.intDecoding, e3, t3);
+          return new Wt(this.c, this.intDecoding, e3, t3);
         }
         getLightBlockHeaderProof(e3) {
-          return new Vt(this.c, this.intDecoding, e3);
+          return new Xt(this.c, this.intDecoding, e3);
         }
         getStateProof(e3) {
-          return new Gt(this.c, this.intDecoding, e3);
+          return new Zt(this.c, this.intDecoding, e3);
         }
         simulateRawTransactions(e3) {
           const t3 = [];
@@ -5742,41 +5817,41 @@ var algosdk_min = { exports: {} };
               t3.push(Z(r3));
           else
             t3.push(Z(e3));
-          const r2 = new it({ txnGroups: [new ot({ txns: t3 })] });
+          const r2 = new at({ txnGroups: [new ct({ txns: t3 })] });
           return this.simulateTransactions(r2);
         }
         simulateTransactions(e3) {
-          return new Qt(this.c, e3);
+          return new nr(this.c, e3);
         }
         setBlockOffsetTimestamp(e3) {
-          return new Jt(this.c, this.intDecoding, e3);
+          return new tr(this.c, this.intDecoding, e3);
         }
         getBlockOffsetTimestamp() {
-          return new Xt(this.c, this.intDecoding);
+          return new rr(this.c, this.intDecoding);
         }
         setSyncRound(e3) {
-          return new Ht(this.c, this.intDecoding, e3);
+          return new Qt(this.c, this.intDecoding, e3);
         }
         unsetSyncRound() {
-          return new tr(this.c, this.intDecoding);
+          return new or(this.c, this.intDecoding);
         }
         getSyncRound() {
-          return new Yt(this.c, this.intDecoding);
-        }
-        ready() {
           return new er(this.c, this.intDecoding);
         }
+        ready() {
+          return new ir(this.c, this.intDecoding);
+        }
         getLedgerStateDeltaForTransactionGroup(e3) {
-          return new rr(this.c, this.intDecoding, e3);
+          return new ar(this.c, this.intDecoding, e3);
         }
         getLedgerStateDelta(e3) {
-          return new sr(this.c, this.intDecoding, e3);
+          return new cr(this.c, this.intDecoding, e3);
         }
         getTransactionGroupLedgerStateDeltasForRound(e3) {
-          return new nr(this.c, this.intDecoding, e3);
+          return new ur(this.c, this.intDecoding, e3);
         }
       }
-      class or extends be {
+      class hr extends be {
         constructor(e3, t3 = "http://127.0.0.1", r2 = 7833, s2 = {}) {
           super("X-KMD-API-Token", e3, t3, r2, s2);
         }
@@ -5787,7 +5862,7 @@ var algosdk_min = { exports: {} };
           return (await this.c.get("/v1/wallets")).body;
         }
         async createWallet(e3, t3, r2 = new Uint8Array(), s2 = "sqlite") {
-          const n2 = { wallet_name: e3, wallet_driver_name: s2, wallet_password: t3, master_derivation_key: i.lW.from(r2).toString("base64") };
+          const n2 = { wallet_name: e3, wallet_driver_name: s2, wallet_password: t3, master_derivation_key: o.lW.from(r2).toString("base64") };
           return (await this.c.post("/v1/wallet", n2)).body;
         }
         async initWalletHandle(e3, t3) {
@@ -5812,15 +5887,15 @@ var algosdk_min = { exports: {} };
         }
         async exportMasterDerivationKey(e3, t3) {
           const r2 = { wallet_handle_token: e3, wallet_password: t3 }, s2 = await this.c.post("/v1/master-key/export", r2);
-          return { master_derivation_key: i.lW.from(s2.body.master_derivation_key, "base64") };
+          return { master_derivation_key: o.lW.from(s2.body.master_derivation_key, "base64") };
         }
         async importKey(e3, t3) {
-          const r2 = { wallet_handle_token: e3, private_key: i.lW.from(t3).toString("base64") };
+          const r2 = { wallet_handle_token: e3, private_key: o.lW.from(t3).toString("base64") };
           return (await this.c.post("/v1/key/import", r2)).body;
         }
         async exportKey(e3, t3, r2) {
           const s2 = { wallet_handle_token: e3, address: r2, wallet_password: t3 }, n2 = await this.c.post("/v1/key/export", s2);
-          return { private_key: i.lW.from(n2.body.private_key, "base64") };
+          return { private_key: o.lW.from(n2.body.private_key, "base64") };
         }
         async generateKey(e3) {
           const t3 = { wallet_handle_token: e3, display_mnemonic: false };
@@ -5835,12 +5910,12 @@ var algosdk_min = { exports: {} };
           return (await this.c.post("/v1/key/list", t3)).body;
         }
         async signTransaction(e3, t3, r2) {
-          const s2 = ce(r2), n2 = { wallet_handle_token: e3, wallet_password: t3, transaction: i.lW.from(s2.toByte()).toString("base64") }, o2 = await this.c.post("/v1/transaction/sign", n2);
-          return 200 === o2.status ? i.lW.from(o2.body.signed_transaction, "base64") : o2.body;
+          const s2 = ce(r2), n2 = { wallet_handle_token: e3, wallet_password: t3, transaction: o.lW.from(s2.toByte()).toString("base64") }, i2 = await this.c.post("/v1/transaction/sign", n2);
+          return 200 === i2.status ? o.lW.from(i2.body.signed_transaction, "base64") : i2.body;
         }
         async signTransactionWithSpecificPublicKey(e3, t3, r2, s2) {
-          const n2 = ce(r2), o2 = { wallet_handle_token: e3, wallet_password: t3, transaction: i.lW.from(n2.toByte()).toString("base64"), public_key: i.lW.from(s2).toString("base64") }, a2 = await this.c.post("/v1/transaction/sign", o2);
-          return 200 === a2.status ? i.lW.from(a2.body.signed_transaction, "base64") : a2.body;
+          const n2 = ce(r2), i2 = { wallet_handle_token: e3, wallet_password: t3, transaction: o.lW.from(n2.toByte()).toString("base64"), public_key: o.lW.from(s2).toString("base64") }, a2 = await this.c.post("/v1/transaction/sign", i2);
+          return 200 === a2.status ? o.lW.from(a2.body.signed_transaction, "base64") : a2.body;
         }
         async listMultisig(e3) {
           const t3 = { wallet_handle_token: e3 };
@@ -5855,7 +5930,7 @@ var algosdk_min = { exports: {} };
           return (await this.c.post("/v1/multisig/export", r2)).body;
         }
         async signMultisigTransaction(e3, t3, r2, s2, n2) {
-          const o2 = ce(r2), a2 = { wallet_handle_token: e3, transaction: i.lW.from(o2.toByte()).toString("base64"), public_key: i.lW.from(s2).toString("base64"), partial_multisig: n2, wallet_password: t3 };
+          const i2 = ce(r2), a2 = { wallet_handle_token: e3, transaction: o.lW.from(i2.toByte()).toString("base64"), public_key: o.lW.from(s2).toString("base64"), partial_multisig: n2, wallet_password: t3 };
           return (await this.c.post("/v1/multisig/sign", a2)).body;
         }
         async deleteMultisig(e3, t3, r2) {
@@ -5863,12 +5938,12 @@ var algosdk_min = { exports: {} };
           return (await this.c.delete("/v1/multisig", s2)).body;
         }
       }
-      class ar extends vt {
+      class dr extends Tt {
         path() {
           return "/health";
         }
       }
-      class cr extends vt {
+      class pr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -5879,7 +5954,7 @@ var algosdk_min = { exports: {} };
           return this.query.limit = e3, this;
         }
         currencyGreaterThan(e3) {
-          return this.query["currency-greater-than"] = e3, this;
+          return this.query["currency-greater-than"] = e3.toString(), this;
         }
         currencyLessThan(e3) {
           return this.query["currency-less-than"] = e3, this;
@@ -5891,10 +5966,10 @@ var algosdk_min = { exports: {} };
           return this.query["include-all"] = e3, this;
         }
       }
-      function ur(e3) {
-        return "string" == typeof e3 ? e3 : i.lW.from(e3).toString("base64");
+      function fr(e3) {
+        return "string" == typeof e3 ? e3 : o.lW.from(e3).toString("base64");
       }
-      class lr extends vt {
+      class gr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -5902,7 +5977,7 @@ var algosdk_min = { exports: {} };
           return `/v2/accounts/${this.account}/transactions`;
         }
         notePrefix(e3) {
-          return this.query["note-prefix"] = ur(e3), this;
+          return this.query["note-prefix"] = fr(e3), this;
         }
         txType(e3) {
           return this.query["tx-type"] = e3, this;
@@ -5935,7 +6010,7 @@ var algosdk_min = { exports: {} };
           return this.query["after-time"] = e3, this;
         }
         currencyGreaterThan(e3) {
-          return this.query["currency-greater-than"] = e3, this;
+          return this.query["currency-greater-than"] = e3.toString(), this;
         }
         currencyLessThan(e3) {
           return this.query["currency-less-than"] = e3, this;
@@ -5947,7 +6022,7 @@ var algosdk_min = { exports: {} };
           return this.query["rekey-to"] = e3, this;
         }
       }
-      class hr extends vt {
+      class mr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -5955,7 +6030,7 @@ var algosdk_min = { exports: {} };
           return `/v2/assets/${this.index}/transactions`;
         }
         notePrefix(e3) {
-          return this.query["note-prefix"] = ur(e3), this;
+          return this.query["note-prefix"] = fr(e3), this;
         }
         txType(e3) {
           return this.query["tx-type"] = e3, this;
@@ -5985,7 +6060,7 @@ var algosdk_min = { exports: {} };
           return this.query["after-time"] = e3, this;
         }
         currencyGreaterThan(e3) {
-          return this.query["currency-greater-than"] = e3, this;
+          return this.query["currency-greater-than"] = e3.toString(), this;
         }
         currencyLessThan(e3) {
           return this.query["currency-less-than"] = e3, this;
@@ -6006,7 +6081,7 @@ var algosdk_min = { exports: {} };
           return this.query["rekey-to"] = e3, this;
         }
       }
-      class dr extends vt {
+      class yr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.round = r2, this.round = r2;
         }
@@ -6017,7 +6092,7 @@ var algosdk_min = { exports: {} };
           return this.query["header-only"] = e3, this;
         }
       }
-      class pr extends vt {
+      class wr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.txID = r2, this.txID = r2;
         }
@@ -6025,7 +6100,7 @@ var algosdk_min = { exports: {} };
           return `/v2/transactions/${this.txID}`;
         }
       }
-      class fr extends vt {
+      class br extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -6042,7 +6117,7 @@ var algosdk_min = { exports: {} };
           return this.query.exclude = e3, this;
         }
       }
-      class gr extends vt {
+      class vr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -6065,7 +6140,7 @@ var algosdk_min = { exports: {} };
           return this.query["asset-id"] = e3, this;
         }
       }
-      class mr extends vt {
+      class xr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -6088,7 +6163,7 @@ var algosdk_min = { exports: {} };
           return this.query["asset-id"] = e3, this;
         }
       }
-      class yr extends vt {
+      class Ar extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -6111,7 +6186,7 @@ var algosdk_min = { exports: {} };
           return this.query["application-id"] = e3, this;
         }
       }
-      class wr extends vt {
+      class _r extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.account = r2, this.account = r2;
         }
@@ -6134,7 +6209,7 @@ var algosdk_min = { exports: {} };
           return this.query["application-id"] = e3, this;
         }
       }
-      class br extends vt {
+      class Er extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -6145,7 +6220,7 @@ var algosdk_min = { exports: {} };
           return this.query["include-all"] = e3, this;
         }
       }
-      class vr extends vt {
+      class Tr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -6156,7 +6231,7 @@ var algosdk_min = { exports: {} };
           return this.query["include-all"] = e3, this;
         }
       }
-      class xr extends vt {
+      class Sr extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.appID = r2, this.appID = r2;
         }
@@ -6182,9 +6257,9 @@ var algosdk_min = { exports: {} };
           return this.query.txid = e3, this;
         }
       }
-      class Ar extends xe {
-        constructor({ address: e3, amount: t3, amountWithoutPendingRewards: r2, pendingRewards: s2, rewards: n2, round: i2, status: o2, totalAppsOptedIn: a2, totalAssetsOptedIn: c2, totalBoxBytes: u2, totalBoxes: l2, totalCreatedApps: h2, totalCreatedAssets: d2, appsLocalState: p2, appsTotalExtraPages: f2, appsTotalSchema: g2, assets: m2, authAddr: y2, closedAtRound: w2, createdApps: b2, createdAssets: v2, createdAtRound: x2, deleted: A2, participation: _2, rewardBase: E2, sigType: S2 }) {
-          super(), this.address = e3, this.amount = t3, this.amountWithoutPendingRewards = r2, this.pendingRewards = s2, this.rewards = n2, this.round = i2, this.status = o2, this.totalAppsOptedIn = a2, this.totalAssetsOptedIn = c2, this.totalBoxBytes = u2, this.totalBoxes = l2, this.totalCreatedApps = h2, this.totalCreatedAssets = d2, this.appsLocalState = p2, this.appsTotalExtraPages = f2, this.appsTotalSchema = g2, this.assets = m2, this.authAddr = y2, this.closedAtRound = w2, this.createdApps = b2, this.createdAssets = v2, this.createdAtRound = x2, this.deleted = A2, this.participation = _2, this.rewardBase = E2, this.sigType = S2, this.attribute_map = { address: "address", amount: "amount", amountWithoutPendingRewards: "amount-without-pending-rewards", pendingRewards: "pending-rewards", rewards: "rewards", round: "round", status: "status", totalAppsOptedIn: "total-apps-opted-in", totalAssetsOptedIn: "total-assets-opted-in", totalBoxBytes: "total-box-bytes", totalBoxes: "total-boxes", totalCreatedApps: "total-created-apps", totalCreatedAssets: "total-created-assets", appsLocalState: "apps-local-state", appsTotalExtraPages: "apps-total-extra-pages", appsTotalSchema: "apps-total-schema", assets: "assets", authAddr: "auth-addr", closedAtRound: "closed-at-round", createdApps: "created-apps", createdAssets: "created-assets", createdAtRound: "created-at-round", deleted: "deleted", participation: "participation", rewardBase: "reward-base", sigType: "sig-type" };
+      class kr extends xe {
+        constructor({ address: e3, amount: t3, amountWithoutPendingRewards: r2, pendingRewards: s2, rewards: n2, round: i2, status: o2, totalAppsOptedIn: a2, totalAssetsOptedIn: c2, totalBoxBytes: u2, totalBoxes: l2, totalCreatedApps: h2, totalCreatedAssets: d2, appsLocalState: p2, appsTotalExtraPages: f2, appsTotalSchema: g2, assets: m2, authAddr: y2, closedAtRound: w2, createdApps: b2, createdAssets: v2, createdAtRound: x2, deleted: A2, participation: _2, rewardBase: E2, sigType: T2 }) {
+          super(), this.address = e3, this.amount = t3, this.amountWithoutPendingRewards = r2, this.pendingRewards = s2, this.rewards = n2, this.round = i2, this.status = o2, this.totalAppsOptedIn = a2, this.totalAssetsOptedIn = c2, this.totalBoxBytes = u2, this.totalBoxes = l2, this.totalCreatedApps = h2, this.totalCreatedAssets = d2, this.appsLocalState = p2, this.appsTotalExtraPages = f2, this.appsTotalSchema = g2, this.assets = m2, this.authAddr = y2, this.closedAtRound = w2, this.createdApps = b2, this.createdAssets = v2, this.createdAtRound = x2, this.deleted = A2, this.participation = _2, this.rewardBase = E2, this.sigType = T2, this.attribute_map = { address: "address", amount: "amount", amountWithoutPendingRewards: "amount-without-pending-rewards", pendingRewards: "pending-rewards", rewards: "rewards", round: "round", status: "status", totalAppsOptedIn: "total-apps-opted-in", totalAssetsOptedIn: "total-assets-opted-in", totalBoxBytes: "total-box-bytes", totalBoxes: "total-boxes", totalCreatedApps: "total-created-apps", totalCreatedAssets: "total-created-assets", appsLocalState: "apps-local-state", appsTotalExtraPages: "apps-total-extra-pages", appsTotalSchema: "apps-total-schema", assets: "assets", authAddr: "auth-addr", closedAtRound: "closed-at-round", createdApps: "created-apps", createdAssets: "created-assets", createdAtRound: "created-at-round", deleted: "deleted", participation: "participation", rewardBase: "reward-base", sigType: "sig-type" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.address)
@@ -6213,12 +6288,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'total-created-apps': ${e3}`);
           if (void 0 === e3["total-created-assets"])
             throw new Error(`Response is missing required field 'total-created-assets': ${e3}`);
-          return new Ar({ address: e3.address, amount: e3.amount, amountWithoutPendingRewards: e3["amount-without-pending-rewards"], pendingRewards: e3["pending-rewards"], rewards: e3.rewards, round: e3.round, status: e3.status, totalAppsOptedIn: e3["total-apps-opted-in"], totalAssetsOptedIn: e3["total-assets-opted-in"], totalBoxBytes: e3["total-box-bytes"], totalBoxes: e3["total-boxes"], totalCreatedApps: e3["total-created-apps"], totalCreatedAssets: e3["total-created-assets"], appsLocalState: void 0 !== e3["apps-local-state"] ? e3["apps-local-state"].map(kr.from_obj_for_encoding) : void 0, appsTotalExtraPages: e3["apps-total-extra-pages"], appsTotalSchema: void 0 !== e3["apps-total-schema"] ? qr.from_obj_for_encoding(e3["apps-total-schema"]) : void 0, assets: void 0 !== e3.assets ? e3.assets.map(Cr.from_obj_for_encoding) : void 0, authAddr: e3["auth-addr"], closedAtRound: e3["closed-at-round"], createdApps: void 0 !== e3["created-apps"] ? e3["created-apps"].map(Rr.from_obj_for_encoding) : void 0, createdAssets: void 0 !== e3["created-assets"] ? e3["created-assets"].map($r.from_obj_for_encoding) : void 0, createdAtRound: e3["created-at-round"], deleted: e3.deleted, participation: void 0 !== e3.participation ? _r.from_obj_for_encoding(e3.participation) : void 0, rewardBase: e3["reward-base"], sigType: e3["sig-type"] });
+          return new kr({ address: e3.address, amount: e3.amount, amountWithoutPendingRewards: e3["amount-without-pending-rewards"], pendingRewards: e3["pending-rewards"], rewards: e3.rewards, round: e3.round, status: e3.status, totalAppsOptedIn: e3["total-apps-opted-in"], totalAssetsOptedIn: e3["total-assets-opted-in"], totalBoxBytes: e3["total-box-bytes"], totalBoxes: e3["total-boxes"], totalCreatedApps: e3["total-created-apps"], totalCreatedAssets: e3["total-created-assets"], appsLocalState: void 0 !== e3["apps-local-state"] ? e3["apps-local-state"].map(jr.from_obj_for_encoding) : void 0, appsTotalExtraPages: e3["apps-total-extra-pages"], appsTotalSchema: void 0 !== e3["apps-total-schema"] ? Lr.from_obj_for_encoding(e3["apps-total-schema"]) : void 0, assets: void 0 !== e3.assets ? e3.assets.map(Wr.from_obj_for_encoding) : void 0, authAddr: e3["auth-addr"], closedAtRound: e3["closed-at-round"], createdApps: void 0 !== e3["created-apps"] ? e3["created-apps"].map(Pr.from_obj_for_encoding) : void 0, createdAssets: void 0 !== e3["created-assets"] ? e3["created-assets"].map(Nr.from_obj_for_encoding) : void 0, createdAtRound: e3["created-at-round"], deleted: e3.deleted, participation: void 0 !== e3.participation ? Rr.from_obj_for_encoding(e3.participation) : void 0, rewardBase: e3["reward-base"], sigType: e3["sig-type"] });
         }
       }
-      class _r extends xe {
-        constructor({ selectionParticipationKey: e3, voteFirstValid: t3, voteKeyDilution: r2, voteLastValid: s2, voteParticipationKey: n2, stateProofKey: o2 }) {
-          super(), this.selectionParticipationKey = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.voteFirstValid = t3, this.voteKeyDilution = r2, this.voteLastValid = s2, this.voteParticipationKey = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.stateProofKey = "string" == typeof o2 ? new Uint8Array(i.lW.from(o2, "base64")) : o2, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
+      class Rr extends xe {
+        constructor({ selectionParticipationKey: e3, voteFirstValid: t3, voteKeyDilution: r2, voteLastValid: s2, voteParticipationKey: n2, stateProofKey: i2 }) {
+          super(), this.selectionParticipationKey = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.voteFirstValid = t3, this.voteKeyDilution = r2, this.voteLastValid = s2, this.voteParticipationKey = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.stateProofKey = "string" == typeof i2 ? new Uint8Array(o.lW.from(i2, "base64")) : i2, this.attribute_map = { selectionParticipationKey: "selection-participation-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key", stateProofKey: "state-proof-key" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["selection-participation-key"])
@@ -6231,10 +6306,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'vote-last-valid': ${e3}`);
           if (void 0 === e3["vote-participation-key"])
             throw new Error(`Response is missing required field 'vote-participation-key': ${e3}`);
-          return new _r({ selectionParticipationKey: e3["selection-participation-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"], stateProofKey: e3["state-proof-key"] });
+          return new Rr({ selectionParticipationKey: e3["selection-participation-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"], stateProofKey: e3["state-proof-key"] });
         }
       }
-      class Er extends xe {
+      class Ir extends xe {
         constructor({ account: e3, currentRound: t3 }) {
           super(), this.account = e3, this.currentRound = t3, this.attribute_map = { account: "account", currentRound: "current-round" };
         }
@@ -6243,10 +6318,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'account': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Er({ account: Ar.from_obj_for_encoding(e3.account), currentRound: e3["current-round"] });
+          return new Ir({ account: kr.from_obj_for_encoding(e3.account), currentRound: e3["current-round"] });
         }
       }
-      class Sr extends xe {
+      class Br extends xe {
         constructor({ address: e3, delta: t3 }) {
           super(), this.address = e3, this.delta = t3, this.attribute_map = { address: "address", delta: "delta" };
         }
@@ -6255,10 +6330,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'address': ${e3}`);
           if (!Array.isArray(e3.delta))
             throw new Error(`Response is missing required array field 'delta': ${e3}`);
-          return new Sr({ address: e3.address, delta: e3.delta.map(Zr.from_obj_for_encoding) });
+          return new Br({ address: e3.address, delta: e3.delta.map(ss.from_obj_for_encoding) });
         }
       }
-      class Tr extends xe {
+      class Ur extends xe {
         constructor({ accounts: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.accounts = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { accounts: "accounts", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6267,10 +6342,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'accounts': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Tr({ accounts: e3.accounts.map(Ar.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new Ur({ accounts: e3.accounts.map(kr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class Rr extends xe {
+      class Pr extends xe {
         constructor({ id: e3, params: t3, createdAtRound: r2, deleted: s2, deletedAtRound: n2 }) {
           super(), this.id = e3, this.params = t3, this.createdAtRound = r2, this.deleted = s2, this.deletedAtRound = n2, this.attribute_map = { id: "id", params: "params", createdAtRound: "created-at-round", deleted: "deleted", deletedAtRound: "deleted-at-round" };
         }
@@ -6279,10 +6354,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'id': ${e3}`);
           if (void 0 === e3.params)
             throw new Error(`Response is missing required field 'params': ${e3}`);
-          return new Rr({ id: e3.id, params: Pr.from_obj_for_encoding(e3.params), createdAtRound: e3["created-at-round"], deleted: e3.deleted, deletedAtRound: e3["deleted-at-round"] });
+          return new Pr({ id: e3.id, params: $r.from_obj_for_encoding(e3.params), createdAtRound: e3["created-at-round"], deleted: e3.deleted, deletedAtRound: e3["deleted-at-round"] });
         }
       }
-      class kr extends xe {
+      class jr extends xe {
         constructor({ id: e3, schema: t3, closedOutAtRound: r2, deleted: s2, keyValue: n2, optedInAtRound: i2 }) {
           super(), this.id = e3, this.schema = t3, this.closedOutAtRound = r2, this.deleted = s2, this.keyValue = n2, this.optedInAtRound = i2, this.attribute_map = { id: "id", schema: "schema", closedOutAtRound: "closed-out-at-round", deleted: "deleted", keyValue: "key-value", optedInAtRound: "opted-in-at-round" };
         }
@@ -6291,10 +6366,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'id': ${e3}`);
           if (void 0 === e3.schema)
             throw new Error(`Response is missing required field 'schema': ${e3}`);
-          return new kr({ id: e3.id, schema: qr.from_obj_for_encoding(e3.schema), closedOutAtRound: e3["closed-out-at-round"], deleted: e3.deleted, keyValue: void 0 !== e3["key-value"] ? e3["key-value"].map(ps.from_obj_for_encoding) : void 0, optedInAtRound: e3["opted-in-at-round"] });
+          return new jr({ id: e3.id, schema: Lr.from_obj_for_encoding(e3.schema), closedOutAtRound: e3["closed-out-at-round"], deleted: e3.deleted, keyValue: void 0 !== e3["key-value"] ? e3["key-value"].map(ws.from_obj_for_encoding) : void 0, optedInAtRound: e3["opted-in-at-round"] });
         }
       }
-      class Ir extends xe {
+      class qr extends xe {
         constructor({ appsLocalStates: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.appsLocalStates = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { appsLocalStates: "apps-local-states", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6303,10 +6378,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'apps-local-states': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Ir({ appsLocalStates: e3["apps-local-states"].map(kr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new qr({ appsLocalStates: e3["apps-local-states"].map(jr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class Br extends xe {
+      class Dr extends xe {
         constructor({ logs: e3, txid: t3 }) {
           super(), this.logs = e3, this.txid = t3, this.attribute_map = { logs: "logs", txid: "txid" };
         }
@@ -6315,10 +6390,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'logs': ${e3}`);
           if (void 0 === e3.txid)
             throw new Error(`Response is missing required field 'txid': ${e3}`);
-          return new Br({ logs: e3.logs, txid: e3.txid });
+          return new Dr({ logs: e3.logs, txid: e3.txid });
         }
       }
-      class Ur extends xe {
+      class Cr extends xe {
         constructor({ applicationId: e3, currentRound: t3, logData: r2, nextToken: s2 }) {
           super(), this.applicationId = e3, this.currentRound = t3, this.logData = r2, this.nextToken = s2, this.attribute_map = { applicationId: "application-id", currentRound: "current-round", logData: "log-data", nextToken: "next-token" };
         }
@@ -6327,32 +6402,32 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'application-id': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Ur({ applicationId: e3["application-id"], currentRound: e3["current-round"], logData: void 0 !== e3["log-data"] ? e3["log-data"].map(Br.from_obj_for_encoding) : void 0, nextToken: e3["next-token"] });
+          return new Cr({ applicationId: e3["application-id"], currentRound: e3["current-round"], logData: void 0 !== e3["log-data"] ? e3["log-data"].map(Dr.from_obj_for_encoding) : void 0, nextToken: e3["next-token"] });
         }
       }
-      class Pr extends xe {
-        constructor({ approvalProgram: e3, clearStateProgram: t3, creator: r2, extraProgramPages: s2, globalState: n2, globalStateSchema: o2, localStateSchema: a2 }) {
-          super(), this.approvalProgram = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.clearStateProgram = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.creator = r2, this.extraProgramPages = s2, this.globalState = n2, this.globalStateSchema = o2, this.localStateSchema = a2, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
+      class $r extends xe {
+        constructor({ approvalProgram: e3, clearStateProgram: t3, creator: r2, extraProgramPages: s2, globalState: n2, globalStateSchema: i2, localStateSchema: a2 }) {
+          super(), this.approvalProgram = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.clearStateProgram = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.creator = r2, this.extraProgramPages = s2, this.globalState = n2, this.globalStateSchema = i2, this.localStateSchema = a2, this.attribute_map = { approvalProgram: "approval-program", clearStateProgram: "clear-state-program", creator: "creator", extraProgramPages: "extra-program-pages", globalState: "global-state", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["approval-program"])
             throw new Error(`Response is missing required field 'approval-program': ${e3}`);
           if (void 0 === e3["clear-state-program"])
             throw new Error(`Response is missing required field 'clear-state-program': ${e3}`);
-          return new Pr({ approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], creator: e3.creator, extraProgramPages: e3["extra-program-pages"], globalState: void 0 !== e3["global-state"] ? e3["global-state"].map(ps.from_obj_for_encoding) : void 0, globalStateSchema: void 0 !== e3["global-state-schema"] ? qr.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? qr.from_obj_for_encoding(e3["local-state-schema"]) : void 0 });
+          return new $r({ approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], creator: e3.creator, extraProgramPages: e3["extra-program-pages"], globalState: void 0 !== e3["global-state"] ? e3["global-state"].map(ws.from_obj_for_encoding) : void 0, globalStateSchema: void 0 !== e3["global-state-schema"] ? Lr.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? Lr.from_obj_for_encoding(e3["local-state-schema"]) : void 0 });
         }
       }
-      class jr extends xe {
+      class Or extends xe {
         constructor({ currentRound: e3, application: t3 }) {
           super(), this.currentRound = e3, this.application = t3, this.attribute_map = { currentRound: "current-round", application: "application" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new jr({ currentRound: e3["current-round"], application: void 0 !== e3.application ? Rr.from_obj_for_encoding(e3.application) : void 0 });
+          return new Or({ currentRound: e3["current-round"], application: void 0 !== e3.application ? Pr.from_obj_for_encoding(e3.application) : void 0 });
         }
       }
-      class qr extends xe {
+      class Lr extends xe {
         constructor({ numByteSlice: e3, numUint: t3 }) {
           super(), this.numByteSlice = e3, this.numUint = t3, this.attribute_map = { numByteSlice: "num-byte-slice", numUint: "num-uint" };
         }
@@ -6361,10 +6436,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'num-byte-slice': ${e3}`);
           if (void 0 === e3["num-uint"])
             throw new Error(`Response is missing required field 'num-uint': ${e3}`);
-          return new qr({ numByteSlice: e3["num-byte-slice"], numUint: e3["num-uint"] });
+          return new Lr({ numByteSlice: e3["num-byte-slice"], numUint: e3["num-uint"] });
         }
       }
-      class Dr extends xe {
+      class Mr extends xe {
         constructor({ applications: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.applications = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { applications: "applications", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6373,10 +6448,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'applications': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Dr({ applications: e3.applications.map(Rr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new Mr({ applications: e3.applications.map(Pr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class $r extends xe {
+      class Nr extends xe {
         constructor({ index: e3, params: t3, createdAtRound: r2, deleted: s2, destroyedAtRound: n2 }) {
           super(), this.index = e3, this.params = t3, this.createdAtRound = r2, this.deleted = s2, this.destroyedAtRound = n2, this.attribute_map = { index: "index", params: "params", createdAtRound: "created-at-round", deleted: "deleted", destroyedAtRound: "destroyed-at-round" };
         }
@@ -6385,10 +6460,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'index': ${e3}`);
           if (void 0 === e3.params)
             throw new Error(`Response is missing required field 'params': ${e3}`);
-          return new $r({ index: e3.index, params: Mr.from_obj_for_encoding(e3.params), createdAtRound: e3["created-at-round"], deleted: e3.deleted, destroyedAtRound: e3["destroyed-at-round"] });
+          return new Nr({ index: e3.index, params: zr.from_obj_for_encoding(e3.params), createdAtRound: e3["created-at-round"], deleted: e3.deleted, destroyedAtRound: e3["destroyed-at-round"] });
         }
       }
-      class Or extends xe {
+      class Fr extends xe {
         constructor({ balances: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.balances = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { balances: "balances", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6397,10 +6472,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'balances': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Or({ balances: e3.balances.map(ss.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new Fr({ balances: e3.balances.map(cs.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class Cr extends xe {
+      class Wr extends xe {
         constructor({ amount: e3, assetId: t3, isFrozen: r2, deleted: s2, optedInAtRound: n2, optedOutAtRound: i2 }) {
           super(), this.amount = e3, this.assetId = t3, this.isFrozen = r2, this.deleted = s2, this.optedInAtRound = n2, this.optedOutAtRound = i2, this.attribute_map = { amount: "amount", assetId: "asset-id", isFrozen: "is-frozen", deleted: "deleted", optedInAtRound: "opted-in-at-round", optedOutAtRound: "opted-out-at-round" };
         }
@@ -6411,10 +6486,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'asset-id': ${e3}`);
           if (void 0 === e3["is-frozen"])
             throw new Error(`Response is missing required field 'is-frozen': ${e3}`);
-          return new Cr({ amount: e3.amount, assetId: e3["asset-id"], isFrozen: e3["is-frozen"], deleted: e3.deleted, optedInAtRound: e3["opted-in-at-round"], optedOutAtRound: e3["opted-out-at-round"] });
+          return new Wr({ amount: e3.amount, assetId: e3["asset-id"], isFrozen: e3["is-frozen"], deleted: e3.deleted, optedInAtRound: e3["opted-in-at-round"], optedOutAtRound: e3["opted-out-at-round"] });
         }
       }
-      class Lr extends xe {
+      class Kr extends xe {
         constructor({ assets: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.assets = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { assets: "assets", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6423,12 +6498,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'assets': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Lr({ assets: e3.assets.map(Cr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new Kr({ assets: e3.assets.map(Wr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class Mr extends xe {
-        constructor({ creator: e3, decimals: t3, total: r2, clawback: s2, defaultFrozen: n2, freeze: o2, manager: a2, metadataHash: c2, name: u2, nameB64: l2, reserve: h2, unitName: d2, unitNameB64: p2, url: f2, urlB64: g2 }) {
-          super(), this.creator = e3, this.decimals = t3, this.total = r2, this.clawback = s2, this.defaultFrozen = n2, this.freeze = o2, this.manager = a2, this.metadataHash = "string" == typeof c2 ? new Uint8Array(i.lW.from(c2, "base64")) : c2, this.name = u2, this.nameB64 = "string" == typeof l2 ? new Uint8Array(i.lW.from(l2, "base64")) : l2, this.reserve = h2, this.unitName = d2, this.unitNameB64 = "string" == typeof p2 ? new Uint8Array(i.lW.from(p2, "base64")) : p2, this.url = f2, this.urlB64 = "string" == typeof g2 ? new Uint8Array(i.lW.from(g2, "base64")) : g2, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
+      class zr extends xe {
+        constructor({ creator: e3, decimals: t3, total: r2, clawback: s2, defaultFrozen: n2, freeze: i2, manager: a2, metadataHash: c2, name: u2, nameB64: l2, reserve: h2, unitName: d2, unitNameB64: p2, url: f2, urlB64: g2 }) {
+          super(), this.creator = e3, this.decimals = t3, this.total = r2, this.clawback = s2, this.defaultFrozen = n2, this.freeze = i2, this.manager = a2, this.metadataHash = "string" == typeof c2 ? new Uint8Array(o.lW.from(c2, "base64")) : c2, this.name = u2, this.nameB64 = "string" == typeof l2 ? new Uint8Array(o.lW.from(l2, "base64")) : l2, this.reserve = h2, this.unitName = d2, this.unitNameB64 = "string" == typeof p2 ? new Uint8Array(o.lW.from(p2, "base64")) : p2, this.url = f2, this.urlB64 = "string" == typeof g2 ? new Uint8Array(o.lW.from(g2, "base64")) : g2, this.attribute_map = { creator: "creator", decimals: "decimals", total: "total", clawback: "clawback", defaultFrozen: "default-frozen", freeze: "freeze", manager: "manager", metadataHash: "metadata-hash", name: "name", nameB64: "name-b64", reserve: "reserve", unitName: "unit-name", unitNameB64: "unit-name-b64", url: "url", urlB64: "url-b64" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.creator)
@@ -6437,10 +6512,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'decimals': ${e3}`);
           if (void 0 === e3.total)
             throw new Error(`Response is missing required field 'total': ${e3}`);
-          return new Mr({ creator: e3.creator, decimals: e3.decimals, total: e3.total, clawback: e3.clawback, defaultFrozen: e3["default-frozen"], freeze: e3.freeze, manager: e3.manager, metadataHash: e3["metadata-hash"], name: e3.name, nameB64: e3["name-b64"], reserve: e3.reserve, unitName: e3["unit-name"], unitNameB64: e3["unit-name-b64"], url: e3.url, urlB64: e3["url-b64"] });
+          return new zr({ creator: e3.creator, decimals: e3.decimals, total: e3.total, clawback: e3.clawback, defaultFrozen: e3["default-frozen"], freeze: e3.freeze, manager: e3.manager, metadataHash: e3["metadata-hash"], name: e3.name, nameB64: e3["name-b64"], reserve: e3.reserve, unitName: e3["unit-name"], unitNameB64: e3["unit-name-b64"], url: e3.url, urlB64: e3["url-b64"] });
         }
       }
-      class Nr extends xe {
+      class Vr extends xe {
         constructor({ asset: e3, currentRound: t3 }) {
           super(), this.asset = e3, this.currentRound = t3, this.attribute_map = { asset: "asset", currentRound: "current-round" };
         }
@@ -6449,10 +6524,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'asset': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Nr({ asset: $r.from_obj_for_encoding(e3.asset), currentRound: e3["current-round"] });
+          return new Vr({ asset: Nr.from_obj_for_encoding(e3.asset), currentRound: e3["current-round"] });
         }
       }
-      class Fr extends xe {
+      class Gr extends xe {
         constructor({ assets: e3, currentRound: t3, nextToken: r2 }) {
           super(), this.assets = e3, this.currentRound = t3, this.nextToken = r2, this.attribute_map = { assets: "assets", currentRound: "current-round", nextToken: "next-token" };
         }
@@ -6461,12 +6536,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required array field 'assets': ${e3}`);
           if (void 0 === e3["current-round"])
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
-          return new Fr({ assets: e3.assets.map($r.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
+          return new Gr({ assets: e3.assets.map(Nr.from_obj_for_encoding), currentRound: e3["current-round"], nextToken: e3["next-token"] });
         }
       }
-      class Wr extends xe {
-        constructor({ genesisHash: e3, genesisId: t3, previousBlockHash: r2, round: s2, seed: n2, timestamp: o2, transactionsRoot: a2, transactionsRootSha256: c2, participationUpdates: u2, rewards: l2, stateProofTracking: h2, transactions: d2, txnCounter: p2, upgradeState: f2, upgradeVote: g2 }) {
-          super(), this.genesisHash = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.genesisId = t3, this.previousBlockHash = "string" == typeof r2 ? new Uint8Array(i.lW.from(r2, "base64")) : r2, this.round = s2, this.seed = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.timestamp = o2, this.transactionsRoot = "string" == typeof a2 ? new Uint8Array(i.lW.from(a2, "base64")) : a2, this.transactionsRootSha256 = "string" == typeof c2 ? new Uint8Array(i.lW.from(c2, "base64")) : c2, this.participationUpdates = u2, this.rewards = l2, this.stateProofTracking = h2, this.transactions = d2, this.txnCounter = p2, this.upgradeState = f2, this.upgradeVote = g2, this.attribute_map = { genesisHash: "genesis-hash", genesisId: "genesis-id", previousBlockHash: "previous-block-hash", round: "round", seed: "seed", timestamp: "timestamp", transactionsRoot: "transactions-root", transactionsRootSha256: "transactions-root-sha256", participationUpdates: "participation-updates", rewards: "rewards", stateProofTracking: "state-proof-tracking", transactions: "transactions", txnCounter: "txn-counter", upgradeState: "upgrade-state", upgradeVote: "upgrade-vote" };
+      class Hr extends xe {
+        constructor({ genesisHash: e3, genesisId: t3, previousBlockHash: r2, round: s2, seed: n2, timestamp: i2, transactionsRoot: a2, transactionsRootSha256: c2, participationUpdates: u2, rewards: l2, stateProofTracking: h2, transactions: d2, txnCounter: p2, upgradeState: f2, upgradeVote: g2 }) {
+          super(), this.genesisHash = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.genesisId = t3, this.previousBlockHash = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.round = s2, this.seed = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.timestamp = i2, this.transactionsRoot = "string" == typeof a2 ? new Uint8Array(o.lW.from(a2, "base64")) : a2, this.transactionsRootSha256 = "string" == typeof c2 ? new Uint8Array(o.lW.from(c2, "base64")) : c2, this.participationUpdates = u2, this.rewards = l2, this.stateProofTracking = h2, this.transactions = d2, this.txnCounter = p2, this.upgradeState = f2, this.upgradeVote = g2, this.attribute_map = { genesisHash: "genesis-hash", genesisId: "genesis-id", previousBlockHash: "previous-block-hash", round: "round", seed: "seed", timestamp: "timestamp", transactionsRoot: "transactions-root", transactionsRootSha256: "transactions-root-sha256", participationUpdates: "participation-updates", rewards: "rewards", stateProofTracking: "state-proof-tracking", transactions: "transactions", txnCounter: "txn-counter", upgradeState: "upgrade-state", upgradeVote: "upgrade-vote" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["genesis-hash"])
@@ -6485,10 +6560,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'transactions-root': ${e3}`);
           if (void 0 === e3["transactions-root-sha256"])
             throw new Error(`Response is missing required field 'transactions-root-sha256': ${e3}`);
-          return new Wr({ genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], previousBlockHash: e3["previous-block-hash"], round: e3.round, seed: e3.seed, timestamp: e3.timestamp, transactionsRoot: e3["transactions-root"], transactionsRootSha256: e3["transactions-root-sha256"], participationUpdates: void 0 !== e3["participation-updates"] ? ns.from_obj_for_encoding(e3["participation-updates"]) : void 0, rewards: void 0 !== e3.rewards ? Kr.from_obj_for_encoding(e3.rewards) : void 0, stateProofTracking: void 0 !== e3["state-proof-tracking"] ? e3["state-proof-tracking"].map(ls.from_obj_for_encoding) : void 0, transactions: void 0 !== e3.transactions ? e3.transactions.map(gs.from_obj_for_encoding) : void 0, txnCounter: e3["txn-counter"], upgradeState: void 0 !== e3["upgrade-state"] ? zr.from_obj_for_encoding(e3["upgrade-state"]) : void 0, upgradeVote: void 0 !== e3["upgrade-vote"] ? Vr.from_obj_for_encoding(e3["upgrade-vote"]) : void 0 });
+          return new Hr({ genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], previousBlockHash: e3["previous-block-hash"], round: e3.round, seed: e3.seed, timestamp: e3.timestamp, transactionsRoot: e3["transactions-root"], transactionsRootSha256: e3["transactions-root-sha256"], participationUpdates: void 0 !== e3["participation-updates"] ? us.from_obj_for_encoding(e3["participation-updates"]) : void 0, rewards: void 0 !== e3.rewards ? Yr.from_obj_for_encoding(e3.rewards) : void 0, stateProofTracking: void 0 !== e3["state-proof-tracking"] ? e3["state-proof-tracking"].map(gs.from_obj_for_encoding) : void 0, transactions: void 0 !== e3.transactions ? e3.transactions.map(vs.from_obj_for_encoding) : void 0, txnCounter: e3["txn-counter"], upgradeState: void 0 !== e3["upgrade-state"] ? Jr.from_obj_for_encoding(e3["upgrade-state"]) : void 0, upgradeVote: void 0 !== e3["upgrade-vote"] ? Xr.from_obj_for_encoding(e3["upgrade-vote"]) : void 0 });
         }
       }
-      class Kr extends xe {
+      class Yr extends xe {
         constructor({ feeSink: e3, rewardsCalculationRound: t3, rewardsLevel: r2, rewardsPool: s2, rewardsRate: n2, rewardsResidue: i2 }) {
           super(), this.feeSink = e3, this.rewardsCalculationRound = t3, this.rewardsLevel = r2, this.rewardsPool = s2, this.rewardsRate = n2, this.rewardsResidue = i2, this.attribute_map = { feeSink: "fee-sink", rewardsCalculationRound: "rewards-calculation-round", rewardsLevel: "rewards-level", rewardsPool: "rewards-pool", rewardsRate: "rewards-rate", rewardsResidue: "rewards-residue" };
         }
@@ -6505,50 +6580,50 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'rewards-rate': ${e3}`);
           if (void 0 === e3["rewards-residue"])
             throw new Error(`Response is missing required field 'rewards-residue': ${e3}`);
-          return new Kr({ feeSink: e3["fee-sink"], rewardsCalculationRound: e3["rewards-calculation-round"], rewardsLevel: e3["rewards-level"], rewardsPool: e3["rewards-pool"], rewardsRate: e3["rewards-rate"], rewardsResidue: e3["rewards-residue"] });
+          return new Yr({ feeSink: e3["fee-sink"], rewardsCalculationRound: e3["rewards-calculation-round"], rewardsLevel: e3["rewards-level"], rewardsPool: e3["rewards-pool"], rewardsRate: e3["rewards-rate"], rewardsResidue: e3["rewards-residue"] });
         }
       }
-      class zr extends xe {
+      class Jr extends xe {
         constructor({ currentProtocol: e3, nextProtocol: t3, nextProtocolApprovals: r2, nextProtocolSwitchOn: s2, nextProtocolVoteBefore: n2 }) {
           super(), this.currentProtocol = e3, this.nextProtocol = t3, this.nextProtocolApprovals = r2, this.nextProtocolSwitchOn = s2, this.nextProtocolVoteBefore = n2, this.attribute_map = { currentProtocol: "current-protocol", nextProtocol: "next-protocol", nextProtocolApprovals: "next-protocol-approvals", nextProtocolSwitchOn: "next-protocol-switch-on", nextProtocolVoteBefore: "next-protocol-vote-before" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["current-protocol"])
             throw new Error(`Response is missing required field 'current-protocol': ${e3}`);
-          return new zr({ currentProtocol: e3["current-protocol"], nextProtocol: e3["next-protocol"], nextProtocolApprovals: e3["next-protocol-approvals"], nextProtocolSwitchOn: e3["next-protocol-switch-on"], nextProtocolVoteBefore: e3["next-protocol-vote-before"] });
+          return new Jr({ currentProtocol: e3["current-protocol"], nextProtocol: e3["next-protocol"], nextProtocolApprovals: e3["next-protocol-approvals"], nextProtocolSwitchOn: e3["next-protocol-switch-on"], nextProtocolVoteBefore: e3["next-protocol-vote-before"] });
         }
       }
-      class Vr extends xe {
+      class Xr extends xe {
         constructor({ upgradeApprove: e3, upgradeDelay: t3, upgradePropose: r2 }) {
           super(), this.upgradeApprove = e3, this.upgradeDelay = t3, this.upgradePropose = r2, this.attribute_map = { upgradeApprove: "upgrade-approve", upgradeDelay: "upgrade-delay", upgradePropose: "upgrade-propose" };
         }
         static from_obj_for_encoding(e3) {
-          return new Vr({ upgradeApprove: e3["upgrade-approve"], upgradeDelay: e3["upgrade-delay"], upgradePropose: e3["upgrade-propose"] });
+          return new Xr({ upgradeApprove: e3["upgrade-approve"], upgradeDelay: e3["upgrade-delay"], upgradePropose: e3["upgrade-propose"] });
         }
       }
-      class Gr extends xe {
+      class Zr extends xe {
         constructor({ name: e3, value: t3 }) {
-          super(), this.name = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.value = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.attribute_map = { name: "name", value: "value" };
+          super(), this.name = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.value = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.attribute_map = { name: "name", value: "value" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.name)
             throw new Error(`Response is missing required field 'name': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new Gr({ name: e3.name, value: e3.value });
+          return new Zr({ name: e3.name, value: e3.value });
         }
       }
-      class Hr extends xe {
+      class Qr extends xe {
         constructor({ name: e3 }) {
-          super(), this.name = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.attribute_map = { name: "name" };
+          super(), this.name = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.attribute_map = { name: "name" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.name)
             throw new Error(`Response is missing required field 'name': ${e3}`);
-          return new Hr({ name: e3.name });
+          return new Qr({ name: e3.name });
         }
       }
-      class Yr extends xe {
+      class es extends xe {
         constructor({ applicationId: e3, boxes: t3, nextToken: r2 }) {
           super(), this.applicationId = e3, this.boxes = t3, this.nextToken = r2, this.attribute_map = { applicationId: "application-id", boxes: "boxes", nextToken: "next-token" };
         }
@@ -6557,30 +6632,30 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'application-id': ${e3}`);
           if (!Array.isArray(e3.boxes))
             throw new Error(`Response is missing required array field 'boxes': ${e3}`);
-          return new Yr({ applicationId: e3["application-id"], boxes: e3.boxes.map(Hr.from_obj_for_encoding), nextToken: e3["next-token"] });
+          return new es({ applicationId: e3["application-id"], boxes: e3.boxes.map(Qr.from_obj_for_encoding), nextToken: e3["next-token"] });
         }
       }
-      class Jr extends xe {
+      class ts extends xe {
         constructor({ message: e3, data: t3 }) {
           super(), this.message = e3, this.data = t3, this.attribute_map = { message: "message", data: "data" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.message)
             throw new Error(`Response is missing required field 'message': ${e3}`);
-          return new Jr({ message: e3.message, data: e3.data });
+          return new ts({ message: e3.message, data: e3.data });
         }
       }
-      class Xr extends xe {
+      class rs extends xe {
         constructor({ action: e3, bytes: t3, uint: r2 }) {
           super(), this.action = e3, this.bytes = t3, this.uint = r2, this.attribute_map = { action: "action", bytes: "bytes", uint: "uint" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.action)
             throw new Error(`Response is missing required field 'action': ${e3}`);
-          return new Xr({ action: e3.action, bytes: e3.bytes, uint: e3.uint });
+          return new rs({ action: e3.action, bytes: e3.bytes, uint: e3.uint });
         }
       }
-      class Zr extends xe {
+      class ss extends xe {
         constructor({ key: e3, value: t3 }) {
           super(), this.key = e3, this.value = t3, this.attribute_map = { key: "key", value: "value" };
         }
@@ -6589,18 +6664,18 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'key': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new Zr({ key: e3.key, value: Xr.from_obj_for_encoding(e3.value) });
+          return new ss({ key: e3.key, value: rs.from_obj_for_encoding(e3.value) });
         }
       }
-      class Qr extends xe {
+      class ns extends xe {
         constructor({ hashType: e3 }) {
           super(), this.hashType = e3, this.attribute_map = { hashType: "hash-type" };
         }
         static from_obj_for_encoding(e3) {
-          return new Qr({ hashType: e3["hash-type"] });
+          return new ns({ hashType: e3["hash-type"] });
         }
       }
-      class es extends xe {
+      class is extends xe {
         constructor({ dbAvailable: e3, isMigrating: t3, message: r2, round: s2, version: n2, data: i2, errors: o2 }) {
           super(), this.dbAvailable = e3, this.isMigrating = t3, this.message = r2, this.round = s2, this.version = n2, this.data = i2, this.errors = o2, this.attribute_map = { dbAvailable: "db-available", isMigrating: "is-migrating", message: "message", round: "round", version: "version", data: "data", errors: "errors" };
         }
@@ -6615,26 +6690,26 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'round': ${e3}`);
           if (void 0 === e3.version)
             throw new Error(`Response is missing required field 'version': ${e3}`);
-          return new es({ dbAvailable: e3["db-available"], isMigrating: e3["is-migrating"], message: e3.message, round: e3.round, version: e3.version, data: e3.data, errors: e3.errors });
+          return new is({ dbAvailable: e3["db-available"], isMigrating: e3["is-migrating"], message: e3.message, round: e3.round, version: e3.version, data: e3.data, errors: e3.errors });
         }
       }
-      class ts extends xe {
+      class os extends xe {
         constructor({ blockHeadersCommitment: e3, firstAttestedRound: t3, latestAttestedRound: r2, lnProvenWeight: s2, votersCommitment: n2 }) {
-          super(), this.blockHeadersCommitment = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.firstAttestedRound = t3, this.latestAttestedRound = r2, this.lnProvenWeight = s2, this.votersCommitment = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.attribute_map = { blockHeadersCommitment: "block-headers-commitment", firstAttestedRound: "first-attested-round", latestAttestedRound: "latest-attested-round", lnProvenWeight: "ln-proven-weight", votersCommitment: "voters-commitment" };
+          super(), this.blockHeadersCommitment = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.firstAttestedRound = t3, this.latestAttestedRound = r2, this.lnProvenWeight = s2, this.votersCommitment = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.attribute_map = { blockHeadersCommitment: "block-headers-commitment", firstAttestedRound: "first-attested-round", latestAttestedRound: "latest-attested-round", lnProvenWeight: "ln-proven-weight", votersCommitment: "voters-commitment" };
         }
         static from_obj_for_encoding(e3) {
-          return new ts({ blockHeadersCommitment: e3["block-headers-commitment"], firstAttestedRound: e3["first-attested-round"], latestAttestedRound: e3["latest-attested-round"], lnProvenWeight: e3["ln-proven-weight"], votersCommitment: e3["voters-commitment"] });
+          return new os({ blockHeadersCommitment: e3["block-headers-commitment"], firstAttestedRound: e3["first-attested-round"], latestAttestedRound: e3["latest-attested-round"], lnProvenWeight: e3["ln-proven-weight"], votersCommitment: e3["voters-commitment"] });
         }
       }
-      class rs extends xe {
+      class as extends xe {
         constructor({ hashFactory: e3, path: t3, treeDepth: r2 }) {
           super(), this.hashFactory = e3, this.path = t3, this.treeDepth = r2, this.attribute_map = { hashFactory: "hash-factory", path: "path", treeDepth: "tree-depth" };
         }
         static from_obj_for_encoding(e3) {
-          return new rs({ hashFactory: void 0 !== e3["hash-factory"] ? Qr.from_obj_for_encoding(e3["hash-factory"]) : void 0, path: e3.path, treeDepth: e3["tree-depth"] });
+          return new as({ hashFactory: void 0 !== e3["hash-factory"] ? ns.from_obj_for_encoding(e3["hash-factory"]) : void 0, path: e3.path, treeDepth: e3["tree-depth"] });
         }
       }
-      class ss extends xe {
+      class cs extends xe {
         constructor({ address: e3, amount: t3, isFrozen: r2, deleted: s2, optedInAtRound: n2, optedOutAtRound: i2 }) {
           super(), this.address = e3, this.amount = t3, this.isFrozen = r2, this.deleted = s2, this.optedInAtRound = n2, this.optedOutAtRound = i2, this.attribute_map = { address: "address", amount: "amount", isFrozen: "is-frozen", deleted: "deleted", optedInAtRound: "opted-in-at-round", optedOutAtRound: "opted-out-at-round" };
         }
@@ -6645,74 +6720,74 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'amount': ${e3}`);
           if (void 0 === e3["is-frozen"])
             throw new Error(`Response is missing required field 'is-frozen': ${e3}`);
-          return new ss({ address: e3.address, amount: e3.amount, isFrozen: e3["is-frozen"], deleted: e3.deleted, optedInAtRound: e3["opted-in-at-round"], optedOutAtRound: e3["opted-out-at-round"] });
+          return new cs({ address: e3.address, amount: e3.amount, isFrozen: e3["is-frozen"], deleted: e3.deleted, optedInAtRound: e3["opted-in-at-round"], optedOutAtRound: e3["opted-out-at-round"] });
         }
       }
-      class ns extends xe {
+      class us extends xe {
         constructor({ expiredParticipationAccounts: e3 }) {
           super(), this.expiredParticipationAccounts = e3, this.attribute_map = { expiredParticipationAccounts: "expired-participation-accounts" };
         }
         static from_obj_for_encoding(e3) {
-          return new ns({ expiredParticipationAccounts: e3["expired-participation-accounts"] });
+          return new us({ expiredParticipationAccounts: e3["expired-participation-accounts"] });
         }
       }
-      class is extends xe {
-        constructor({ partProofs: e3, positionsToReveal: t3, reveals: r2, saltVersion: s2, sigCommit: n2, sigProofs: o2, signedWeight: a2 }) {
-          super(), this.partProofs = e3, this.positionsToReveal = t3, this.reveals = r2, this.saltVersion = s2, this.sigCommit = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.sigProofs = o2, this.signedWeight = a2, this.attribute_map = { partProofs: "part-proofs", positionsToReveal: "positions-to-reveal", reveals: "reveals", saltVersion: "salt-version", sigCommit: "sig-commit", sigProofs: "sig-proofs", signedWeight: "signed-weight" };
+      class ls extends xe {
+        constructor({ partProofs: e3, positionsToReveal: t3, reveals: r2, saltVersion: s2, sigCommit: n2, sigProofs: i2, signedWeight: a2 }) {
+          super(), this.partProofs = e3, this.positionsToReveal = t3, this.reveals = r2, this.saltVersion = s2, this.sigCommit = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.sigProofs = i2, this.signedWeight = a2, this.attribute_map = { partProofs: "part-proofs", positionsToReveal: "positions-to-reveal", reveals: "reveals", saltVersion: "salt-version", sigCommit: "sig-commit", sigProofs: "sig-proofs", signedWeight: "signed-weight" };
         }
         static from_obj_for_encoding(e3) {
-          return new is({ partProofs: void 0 !== e3["part-proofs"] ? rs.from_obj_for_encoding(e3["part-proofs"]) : void 0, positionsToReveal: e3["positions-to-reveal"], reveals: void 0 !== e3.reveals ? e3.reveals.map(as.from_obj_for_encoding) : void 0, saltVersion: e3["salt-version"], sigCommit: e3["sig-commit"], sigProofs: void 0 !== e3["sig-proofs"] ? rs.from_obj_for_encoding(e3["sig-proofs"]) : void 0, signedWeight: e3["signed-weight"] });
+          return new ls({ partProofs: void 0 !== e3["part-proofs"] ? as.from_obj_for_encoding(e3["part-proofs"]) : void 0, positionsToReveal: e3["positions-to-reveal"], reveals: void 0 !== e3.reveals ? e3.reveals.map(ds.from_obj_for_encoding) : void 0, saltVersion: e3["salt-version"], sigCommit: e3["sig-commit"], sigProofs: void 0 !== e3["sig-proofs"] ? as.from_obj_for_encoding(e3["sig-proofs"]) : void 0, signedWeight: e3["signed-weight"] });
         }
       }
-      class os extends xe {
+      class hs extends xe {
         constructor({ verifier: e3, weight: t3 }) {
           super(), this.verifier = e3, this.weight = t3, this.attribute_map = { verifier: "verifier", weight: "weight" };
         }
         static from_obj_for_encoding(e3) {
-          return new os({ verifier: void 0 !== e3.verifier ? hs.from_obj_for_encoding(e3.verifier) : void 0, weight: e3.weight });
+          return new hs({ verifier: void 0 !== e3.verifier ? ms.from_obj_for_encoding(e3.verifier) : void 0, weight: e3.weight });
         }
       }
-      class as extends xe {
+      class ds extends xe {
         constructor({ participant: e3, position: t3, sigSlot: r2 }) {
           super(), this.participant = e3, this.position = t3, this.sigSlot = r2, this.attribute_map = { participant: "participant", position: "position", sigSlot: "sig-slot" };
         }
         static from_obj_for_encoding(e3) {
-          return new as({ participant: void 0 !== e3.participant ? os.from_obj_for_encoding(e3.participant) : void 0, position: e3.position, sigSlot: void 0 !== e3["sig-slot"] ? cs.from_obj_for_encoding(e3["sig-slot"]) : void 0 });
+          return new ds({ participant: void 0 !== e3.participant ? hs.from_obj_for_encoding(e3.participant) : void 0, position: e3.position, sigSlot: void 0 !== e3["sig-slot"] ? ps.from_obj_for_encoding(e3["sig-slot"]) : void 0 });
         }
       }
-      class cs extends xe {
+      class ps extends xe {
         constructor({ lowerSigWeight: e3, signature: t3 }) {
           super(), this.lowerSigWeight = e3, this.signature = t3, this.attribute_map = { lowerSigWeight: "lower-sig-weight", signature: "signature" };
         }
         static from_obj_for_encoding(e3) {
-          return new cs({ lowerSigWeight: e3["lower-sig-weight"], signature: void 0 !== e3.signature ? us.from_obj_for_encoding(e3.signature) : void 0 });
+          return new ps({ lowerSigWeight: e3["lower-sig-weight"], signature: void 0 !== e3.signature ? fs.from_obj_for_encoding(e3.signature) : void 0 });
         }
       }
-      class us extends xe {
+      class fs extends xe {
         constructor({ falconSignature: e3, merkleArrayIndex: t3, proof: r2, verifyingKey: s2 }) {
-          super(), this.falconSignature = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.merkleArrayIndex = t3, this.proof = r2, this.verifyingKey = "string" == typeof s2 ? new Uint8Array(i.lW.from(s2, "base64")) : s2, this.attribute_map = { falconSignature: "falcon-signature", merkleArrayIndex: "merkle-array-index", proof: "proof", verifyingKey: "verifying-key" };
+          super(), this.falconSignature = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.merkleArrayIndex = t3, this.proof = r2, this.verifyingKey = "string" == typeof s2 ? new Uint8Array(o.lW.from(s2, "base64")) : s2, this.attribute_map = { falconSignature: "falcon-signature", merkleArrayIndex: "merkle-array-index", proof: "proof", verifyingKey: "verifying-key" };
         }
         static from_obj_for_encoding(e3) {
-          return new us({ falconSignature: e3["falcon-signature"], merkleArrayIndex: e3["merkle-array-index"], proof: void 0 !== e3.proof ? rs.from_obj_for_encoding(e3.proof) : void 0, verifyingKey: e3["verifying-key"] });
+          return new fs({ falconSignature: e3["falcon-signature"], merkleArrayIndex: e3["merkle-array-index"], proof: void 0 !== e3.proof ? as.from_obj_for_encoding(e3.proof) : void 0, verifyingKey: e3["verifying-key"] });
         }
       }
-      class ls extends xe {
+      class gs extends xe {
         constructor({ nextRound: e3, onlineTotalWeight: t3, type: r2, votersCommitment: s2 }) {
-          super(), this.nextRound = e3, this.onlineTotalWeight = t3, this.type = r2, this.votersCommitment = "string" == typeof s2 ? new Uint8Array(i.lW.from(s2, "base64")) : s2, this.attribute_map = { nextRound: "next-round", onlineTotalWeight: "online-total-weight", type: "type", votersCommitment: "voters-commitment" };
+          super(), this.nextRound = e3, this.onlineTotalWeight = t3, this.type = r2, this.votersCommitment = "string" == typeof s2 ? new Uint8Array(o.lW.from(s2, "base64")) : s2, this.attribute_map = { nextRound: "next-round", onlineTotalWeight: "online-total-weight", type: "type", votersCommitment: "voters-commitment" };
         }
         static from_obj_for_encoding(e3) {
-          return new ls({ nextRound: e3["next-round"], onlineTotalWeight: e3["online-total-weight"], type: e3.type, votersCommitment: e3["voters-commitment"] });
+          return new gs({ nextRound: e3["next-round"], onlineTotalWeight: e3["online-total-weight"], type: e3.type, votersCommitment: e3["voters-commitment"] });
         }
       }
-      class hs extends xe {
+      class ms extends xe {
         constructor({ commitment: e3, keyLifetime: t3 }) {
-          super(), this.commitment = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.keyLifetime = t3, this.attribute_map = { commitment: "commitment", keyLifetime: "key-lifetime" };
+          super(), this.commitment = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.keyLifetime = t3, this.attribute_map = { commitment: "commitment", keyLifetime: "key-lifetime" };
         }
         static from_obj_for_encoding(e3) {
-          return new hs({ commitment: e3.commitment, keyLifetime: e3["key-lifetime"] });
+          return new ms({ commitment: e3.commitment, keyLifetime: e3["key-lifetime"] });
         }
       }
-      class ds extends xe {
+      class ys extends xe {
         constructor({ numByteSlice: e3, numUint: t3 }) {
           super(), this.numByteSlice = e3, this.numUint = t3, this.attribute_map = { numByteSlice: "num-byte-slice", numUint: "num-uint" };
         }
@@ -6721,10 +6796,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'num-byte-slice': ${e3}`);
           if (void 0 === e3["num-uint"])
             throw new Error(`Response is missing required field 'num-uint': ${e3}`);
-          return new ds({ numByteSlice: e3["num-byte-slice"], numUint: e3["num-uint"] });
+          return new ys({ numByteSlice: e3["num-byte-slice"], numUint: e3["num-uint"] });
         }
       }
-      class ps extends xe {
+      class ws extends xe {
         constructor({ key: e3, value: t3 }) {
           super(), this.key = e3, this.value = t3, this.attribute_map = { key: "key", value: "value" };
         }
@@ -6733,10 +6808,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'key': ${e3}`);
           if (void 0 === e3.value)
             throw new Error(`Response is missing required field 'value': ${e3}`);
-          return new ps({ key: e3.key, value: fs.from_obj_for_encoding(e3.value) });
+          return new ws({ key: e3.key, value: bs.from_obj_for_encoding(e3.value) });
         }
       }
-      class fs extends xe {
+      class bs extends xe {
         constructor({ bytes: e3, type: t3, uint: r2 }) {
           super(), this.bytes = e3, this.type = t3, this.uint = r2, this.attribute_map = { bytes: "bytes", type: "type", uint: "uint" };
         }
@@ -6747,12 +6822,12 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'type': ${e3}`);
           if (void 0 === e3.uint)
             throw new Error(`Response is missing required field 'uint': ${e3}`);
-          return new fs({ bytes: e3.bytes, type: e3.type, uint: e3.uint });
+          return new bs({ bytes: e3.bytes, type: e3.type, uint: e3.uint });
         }
       }
-      class gs extends xe {
-        constructor({ fee: e3, firstValid: t3, lastValid: r2, sender: s2, applicationTransaction: n2, assetConfigTransaction: o2, assetFreezeTransaction: a2, assetTransferTransaction: c2, authAddr: u2, closeRewards: l2, closingAmount: h2, confirmedRound: d2, createdApplicationIndex: p2, createdAssetIndex: f2, genesisHash: g2, genesisId: m2, globalStateDelta: y2, group: w2, id: b2, innerTxns: v2, intraRoundOffset: x2, keyregTransaction: A2, lease: _2, localStateDelta: E2, logs: S2, note: T2, paymentTransaction: R2, receiverRewards: k2, rekeyTo: I2, roundTime: B2, senderRewards: U2, signature: P2, stateProofTransaction: j2, txType: q2 }) {
-          super(), this.fee = e3, this.firstValid = t3, this.lastValid = r2, this.sender = s2, this.applicationTransaction = n2, this.assetConfigTransaction = o2, this.assetFreezeTransaction = a2, this.assetTransferTransaction = c2, this.authAddr = u2, this.closeRewards = l2, this.closingAmount = h2, this.confirmedRound = d2, this.createdApplicationIndex = p2, this.createdAssetIndex = f2, this.genesisHash = "string" == typeof g2 ? new Uint8Array(i.lW.from(g2, "base64")) : g2, this.genesisId = m2, this.globalStateDelta = y2, this.group = "string" == typeof w2 ? new Uint8Array(i.lW.from(w2, "base64")) : w2, this.id = b2, this.innerTxns = v2, this.intraRoundOffset = x2, this.keyregTransaction = A2, this.lease = "string" == typeof _2 ? new Uint8Array(i.lW.from(_2, "base64")) : _2, this.localStateDelta = E2, this.logs = S2, this.note = "string" == typeof T2 ? new Uint8Array(i.lW.from(T2, "base64")) : T2, this.paymentTransaction = R2, this.receiverRewards = k2, this.rekeyTo = I2, this.roundTime = B2, this.senderRewards = U2, this.signature = P2, this.stateProofTransaction = j2, this.txType = q2, this.attribute_map = { fee: "fee", firstValid: "first-valid", lastValid: "last-valid", sender: "sender", applicationTransaction: "application-transaction", assetConfigTransaction: "asset-config-transaction", assetFreezeTransaction: "asset-freeze-transaction", assetTransferTransaction: "asset-transfer-transaction", authAddr: "auth-addr", closeRewards: "close-rewards", closingAmount: "closing-amount", confirmedRound: "confirmed-round", createdApplicationIndex: "created-application-index", createdAssetIndex: "created-asset-index", genesisHash: "genesis-hash", genesisId: "genesis-id", globalStateDelta: "global-state-delta", group: "group", id: "id", innerTxns: "inner-txns", intraRoundOffset: "intra-round-offset", keyregTransaction: "keyreg-transaction", lease: "lease", localStateDelta: "local-state-delta", logs: "logs", note: "note", paymentTransaction: "payment-transaction", receiverRewards: "receiver-rewards", rekeyTo: "rekey-to", roundTime: "round-time", senderRewards: "sender-rewards", signature: "signature", stateProofTransaction: "state-proof-transaction", txType: "tx-type" };
+      class vs extends xe {
+        constructor({ fee: e3, firstValid: t3, lastValid: r2, sender: s2, applicationTransaction: n2, assetConfigTransaction: i2, assetFreezeTransaction: a2, assetTransferTransaction: c2, authAddr: u2, closeRewards: l2, closingAmount: h2, confirmedRound: d2, createdApplicationIndex: p2, createdAssetIndex: f2, genesisHash: g2, genesisId: m2, globalStateDelta: y2, group: w2, id: b2, innerTxns: v2, intraRoundOffset: x2, keyregTransaction: A2, lease: _2, localStateDelta: E2, logs: T2, note: S2, paymentTransaction: k2, receiverRewards: R2, rekeyTo: I2, roundTime: B2, senderRewards: U2, signature: P2, stateProofTransaction: j2, txType: q2 }) {
+          super(), this.fee = e3, this.firstValid = t3, this.lastValid = r2, this.sender = s2, this.applicationTransaction = n2, this.assetConfigTransaction = i2, this.assetFreezeTransaction = a2, this.assetTransferTransaction = c2, this.authAddr = u2, this.closeRewards = l2, this.closingAmount = h2, this.confirmedRound = d2, this.createdApplicationIndex = p2, this.createdAssetIndex = f2, this.genesisHash = "string" == typeof g2 ? new Uint8Array(o.lW.from(g2, "base64")) : g2, this.genesisId = m2, this.globalStateDelta = y2, this.group = "string" == typeof w2 ? new Uint8Array(o.lW.from(w2, "base64")) : w2, this.id = b2, this.innerTxns = v2, this.intraRoundOffset = x2, this.keyregTransaction = A2, this.lease = "string" == typeof _2 ? new Uint8Array(o.lW.from(_2, "base64")) : _2, this.localStateDelta = E2, this.logs = T2, this.note = "string" == typeof S2 ? new Uint8Array(o.lW.from(S2, "base64")) : S2, this.paymentTransaction = k2, this.receiverRewards = R2, this.rekeyTo = I2, this.roundTime = B2, this.senderRewards = U2, this.signature = P2, this.stateProofTransaction = j2, this.txType = q2, this.attribute_map = { fee: "fee", firstValid: "first-valid", lastValid: "last-valid", sender: "sender", applicationTransaction: "application-transaction", assetConfigTransaction: "asset-config-transaction", assetFreezeTransaction: "asset-freeze-transaction", assetTransferTransaction: "asset-transfer-transaction", authAddr: "auth-addr", closeRewards: "close-rewards", closingAmount: "closing-amount", confirmedRound: "confirmed-round", createdApplicationIndex: "created-application-index", createdAssetIndex: "created-asset-index", genesisHash: "genesis-hash", genesisId: "genesis-id", globalStateDelta: "global-state-delta", group: "group", id: "id", innerTxns: "inner-txns", intraRoundOffset: "intra-round-offset", keyregTransaction: "keyreg-transaction", lease: "lease", localStateDelta: "local-state-delta", logs: "logs", note: "note", paymentTransaction: "payment-transaction", receiverRewards: "receiver-rewards", rekeyTo: "rekey-to", roundTime: "round-time", senderRewards: "sender-rewards", signature: "signature", stateProofTransaction: "state-proof-transaction", txType: "tx-type" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.fee)
@@ -6763,28 +6838,28 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'last-valid': ${e3}`);
           if (void 0 === e3.sender)
             throw new Error(`Response is missing required field 'sender': ${e3}`);
-          return new gs({ fee: e3.fee, firstValid: e3["first-valid"], lastValid: e3["last-valid"], sender: e3.sender, applicationTransaction: void 0 !== e3["application-transaction"] ? ms.from_obj_for_encoding(e3["application-transaction"]) : void 0, assetConfigTransaction: void 0 !== e3["asset-config-transaction"] ? ys.from_obj_for_encoding(e3["asset-config-transaction"]) : void 0, assetFreezeTransaction: void 0 !== e3["asset-freeze-transaction"] ? ws.from_obj_for_encoding(e3["asset-freeze-transaction"]) : void 0, assetTransferTransaction: void 0 !== e3["asset-transfer-transaction"] ? bs.from_obj_for_encoding(e3["asset-transfer-transaction"]) : void 0, authAddr: e3["auth-addr"], closeRewards: e3["close-rewards"], closingAmount: e3["closing-amount"], confirmedRound: e3["confirmed-round"], createdApplicationIndex: e3["created-application-index"], createdAssetIndex: e3["created-asset-index"], genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], globalStateDelta: void 0 !== e3["global-state-delta"] ? e3["global-state-delta"].map(Zr.from_obj_for_encoding) : void 0, group: e3.group, id: e3.id, innerTxns: void 0 !== e3["inner-txns"] ? e3["inner-txns"].map(gs.from_obj_for_encoding) : void 0, intraRoundOffset: e3["intra-round-offset"], keyregTransaction: void 0 !== e3["keyreg-transaction"] ? vs.from_obj_for_encoding(e3["keyreg-transaction"]) : void 0, lease: e3.lease, localStateDelta: void 0 !== e3["local-state-delta"] ? e3["local-state-delta"].map(Sr.from_obj_for_encoding) : void 0, logs: e3.logs, note: e3.note, paymentTransaction: void 0 !== e3["payment-transaction"] ? xs.from_obj_for_encoding(e3["payment-transaction"]) : void 0, receiverRewards: e3["receiver-rewards"], rekeyTo: e3["rekey-to"], roundTime: e3["round-time"], senderRewards: e3["sender-rewards"], signature: void 0 !== e3.signature ? _s.from_obj_for_encoding(e3.signature) : void 0, stateProofTransaction: void 0 !== e3["state-proof-transaction"] ? Rs.from_obj_for_encoding(e3["state-proof-transaction"]) : void 0, txType: e3["tx-type"] });
+          return new vs({ fee: e3.fee, firstValid: e3["first-valid"], lastValid: e3["last-valid"], sender: e3.sender, applicationTransaction: void 0 !== e3["application-transaction"] ? xs.from_obj_for_encoding(e3["application-transaction"]) : void 0, assetConfigTransaction: void 0 !== e3["asset-config-transaction"] ? As.from_obj_for_encoding(e3["asset-config-transaction"]) : void 0, assetFreezeTransaction: void 0 !== e3["asset-freeze-transaction"] ? _s.from_obj_for_encoding(e3["asset-freeze-transaction"]) : void 0, assetTransferTransaction: void 0 !== e3["asset-transfer-transaction"] ? Es.from_obj_for_encoding(e3["asset-transfer-transaction"]) : void 0, authAddr: e3["auth-addr"], closeRewards: e3["close-rewards"], closingAmount: e3["closing-amount"], confirmedRound: e3["confirmed-round"], createdApplicationIndex: e3["created-application-index"], createdAssetIndex: e3["created-asset-index"], genesisHash: e3["genesis-hash"], genesisId: e3["genesis-id"], globalStateDelta: void 0 !== e3["global-state-delta"] ? e3["global-state-delta"].map(ss.from_obj_for_encoding) : void 0, group: e3.group, id: e3.id, innerTxns: void 0 !== e3["inner-txns"] ? e3["inner-txns"].map(vs.from_obj_for_encoding) : void 0, intraRoundOffset: e3["intra-round-offset"], keyregTransaction: void 0 !== e3["keyreg-transaction"] ? Ts.from_obj_for_encoding(e3["keyreg-transaction"]) : void 0, lease: e3.lease, localStateDelta: void 0 !== e3["local-state-delta"] ? e3["local-state-delta"].map(Br.from_obj_for_encoding) : void 0, logs: e3.logs, note: e3.note, paymentTransaction: void 0 !== e3["payment-transaction"] ? Ss.from_obj_for_encoding(e3["payment-transaction"]) : void 0, receiverRewards: e3["receiver-rewards"], rekeyTo: e3["rekey-to"], roundTime: e3["round-time"], senderRewards: e3["sender-rewards"], signature: void 0 !== e3.signature ? Rs.from_obj_for_encoding(e3.signature) : void 0, stateProofTransaction: void 0 !== e3["state-proof-transaction"] ? Ps.from_obj_for_encoding(e3["state-proof-transaction"]) : void 0, txType: e3["tx-type"] });
         }
       }
-      class ms extends xe {
-        constructor({ applicationId: e3, accounts: t3, applicationArgs: r2, approvalProgram: s2, clearStateProgram: n2, extraProgramPages: o2, foreignApps: a2, foreignAssets: c2, globalStateSchema: u2, localStateSchema: l2, onCompletion: h2 }) {
-          super(), this.applicationId = e3, this.accounts = t3, this.applicationArgs = r2, this.approvalProgram = "string" == typeof s2 ? new Uint8Array(i.lW.from(s2, "base64")) : s2, this.clearStateProgram = "string" == typeof n2 ? new Uint8Array(i.lW.from(n2, "base64")) : n2, this.extraProgramPages = o2, this.foreignApps = a2, this.foreignAssets = c2, this.globalStateSchema = u2, this.localStateSchema = l2, this.onCompletion = h2, this.attribute_map = { applicationId: "application-id", accounts: "accounts", applicationArgs: "application-args", approvalProgram: "approval-program", clearStateProgram: "clear-state-program", extraProgramPages: "extra-program-pages", foreignApps: "foreign-apps", foreignAssets: "foreign-assets", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema", onCompletion: "on-completion" };
+      class xs extends xe {
+        constructor({ applicationId: e3, accounts: t3, applicationArgs: r2, approvalProgram: s2, clearStateProgram: n2, extraProgramPages: i2, foreignApps: a2, foreignAssets: c2, globalStateSchema: u2, localStateSchema: l2, onCompletion: h2 }) {
+          super(), this.applicationId = e3, this.accounts = t3, this.applicationArgs = r2, this.approvalProgram = "string" == typeof s2 ? new Uint8Array(o.lW.from(s2, "base64")) : s2, this.clearStateProgram = "string" == typeof n2 ? new Uint8Array(o.lW.from(n2, "base64")) : n2, this.extraProgramPages = i2, this.foreignApps = a2, this.foreignAssets = c2, this.globalStateSchema = u2, this.localStateSchema = l2, this.onCompletion = h2, this.attribute_map = { applicationId: "application-id", accounts: "accounts", applicationArgs: "application-args", approvalProgram: "approval-program", clearStateProgram: "clear-state-program", extraProgramPages: "extra-program-pages", foreignApps: "foreign-apps", foreignAssets: "foreign-assets", globalStateSchema: "global-state-schema", localStateSchema: "local-state-schema", onCompletion: "on-completion" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3["application-id"])
             throw new Error(`Response is missing required field 'application-id': ${e3}`);
-          return new ms({ applicationId: e3["application-id"], accounts: e3.accounts, applicationArgs: e3["application-args"], approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], extraProgramPages: e3["extra-program-pages"], foreignApps: e3["foreign-apps"], foreignAssets: e3["foreign-assets"], globalStateSchema: void 0 !== e3["global-state-schema"] ? ds.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? ds.from_obj_for_encoding(e3["local-state-schema"]) : void 0, onCompletion: e3["on-completion"] });
+          return new xs({ applicationId: e3["application-id"], accounts: e3.accounts, applicationArgs: e3["application-args"], approvalProgram: e3["approval-program"], clearStateProgram: e3["clear-state-program"], extraProgramPages: e3["extra-program-pages"], foreignApps: e3["foreign-apps"], foreignAssets: e3["foreign-assets"], globalStateSchema: void 0 !== e3["global-state-schema"] ? ys.from_obj_for_encoding(e3["global-state-schema"]) : void 0, localStateSchema: void 0 !== e3["local-state-schema"] ? ys.from_obj_for_encoding(e3["local-state-schema"]) : void 0, onCompletion: e3["on-completion"] });
         }
       }
-      class ys extends xe {
+      class As extends xe {
         constructor({ assetId: e3, params: t3 }) {
           super(), this.assetId = e3, this.params = t3, this.attribute_map = { assetId: "asset-id", params: "params" };
         }
         static from_obj_for_encoding(e3) {
-          return new ys({ assetId: e3["asset-id"], params: void 0 !== e3.params ? Mr.from_obj_for_encoding(e3.params) : void 0 });
+          return new As({ assetId: e3["asset-id"], params: void 0 !== e3.params ? zr.from_obj_for_encoding(e3.params) : void 0 });
         }
       }
-      class ws extends xe {
+      class _s extends xe {
         constructor({ address: e3, assetId: t3, newFreezeStatus: r2 }) {
           super(), this.address = e3, this.assetId = t3, this.newFreezeStatus = r2, this.attribute_map = { address: "address", assetId: "asset-id", newFreezeStatus: "new-freeze-status" };
         }
@@ -6795,10 +6870,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'asset-id': ${e3}`);
           if (void 0 === e3["new-freeze-status"])
             throw new Error(`Response is missing required field 'new-freeze-status': ${e3}`);
-          return new ws({ address: e3.address, assetId: e3["asset-id"], newFreezeStatus: e3["new-freeze-status"] });
+          return new _s({ address: e3.address, assetId: e3["asset-id"], newFreezeStatus: e3["new-freeze-status"] });
         }
       }
-      class bs extends xe {
+      class Es extends xe {
         constructor({ amount: e3, assetId: t3, receiver: r2, closeAmount: s2, closeTo: n2, sender: i2 }) {
           super(), this.amount = e3, this.assetId = t3, this.receiver = r2, this.closeAmount = s2, this.closeTo = n2, this.sender = i2, this.attribute_map = { amount: "amount", assetId: "asset-id", receiver: "receiver", closeAmount: "close-amount", closeTo: "close-to", sender: "sender" };
         }
@@ -6809,18 +6884,18 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'asset-id': ${e3}`);
           if (void 0 === e3.receiver)
             throw new Error(`Response is missing required field 'receiver': ${e3}`);
-          return new bs({ amount: e3.amount, assetId: e3["asset-id"], receiver: e3.receiver, closeAmount: e3["close-amount"], closeTo: e3["close-to"], sender: e3.sender });
+          return new Es({ amount: e3.amount, assetId: e3["asset-id"], receiver: e3.receiver, closeAmount: e3["close-amount"], closeTo: e3["close-to"], sender: e3.sender });
         }
       }
-      class vs extends xe {
-        constructor({ nonParticipation: e3, selectionParticipationKey: t3, stateProofKey: r2, voteFirstValid: s2, voteKeyDilution: n2, voteLastValid: o2, voteParticipationKey: a2 }) {
-          super(), this.nonParticipation = e3, this.selectionParticipationKey = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.stateProofKey = "string" == typeof r2 ? new Uint8Array(i.lW.from(r2, "base64")) : r2, this.voteFirstValid = s2, this.voteKeyDilution = n2, this.voteLastValid = o2, this.voteParticipationKey = "string" == typeof a2 ? new Uint8Array(i.lW.from(a2, "base64")) : a2, this.attribute_map = { nonParticipation: "non-participation", selectionParticipationKey: "selection-participation-key", stateProofKey: "state-proof-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key" };
+      class Ts extends xe {
+        constructor({ nonParticipation: e3, selectionParticipationKey: t3, stateProofKey: r2, voteFirstValid: s2, voteKeyDilution: n2, voteLastValid: i2, voteParticipationKey: a2 }) {
+          super(), this.nonParticipation = e3, this.selectionParticipationKey = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.stateProofKey = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.voteFirstValid = s2, this.voteKeyDilution = n2, this.voteLastValid = i2, this.voteParticipationKey = "string" == typeof a2 ? new Uint8Array(o.lW.from(a2, "base64")) : a2, this.attribute_map = { nonParticipation: "non-participation", selectionParticipationKey: "selection-participation-key", stateProofKey: "state-proof-key", voteFirstValid: "vote-first-valid", voteKeyDilution: "vote-key-dilution", voteLastValid: "vote-last-valid", voteParticipationKey: "vote-participation-key" };
         }
         static from_obj_for_encoding(e3) {
-          return new vs({ nonParticipation: e3["non-participation"], selectionParticipationKey: e3["selection-participation-key"], stateProofKey: e3["state-proof-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"] });
+          return new Ts({ nonParticipation: e3["non-participation"], selectionParticipationKey: e3["selection-participation-key"], stateProofKey: e3["state-proof-key"], voteFirstValid: e3["vote-first-valid"], voteKeyDilution: e3["vote-key-dilution"], voteLastValid: e3["vote-last-valid"], voteParticipationKey: e3["vote-participation-key"] });
         }
       }
-      class xs extends xe {
+      class Ss extends xe {
         constructor({ amount: e3, receiver: t3, closeAmount: r2, closeRemainderTo: s2 }) {
           super(), this.amount = e3, this.receiver = t3, this.closeAmount = r2, this.closeRemainderTo = s2, this.attribute_map = { amount: "amount", receiver: "receiver", closeAmount: "close-amount", closeRemainderTo: "close-remainder-to" };
         }
@@ -6829,10 +6904,10 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'amount': ${e3}`);
           if (void 0 === e3.receiver)
             throw new Error(`Response is missing required field 'receiver': ${e3}`);
-          return new xs({ amount: e3.amount, receiver: e3.receiver, closeAmount: e3["close-amount"], closeRemainderTo: e3["close-remainder-to"] });
+          return new Ss({ amount: e3.amount, receiver: e3.receiver, closeAmount: e3["close-amount"], closeRemainderTo: e3["close-remainder-to"] });
         }
       }
-      class As extends xe {
+      class ks extends xe {
         constructor({ currentRound: e3, transaction: t3 }) {
           super(), this.currentRound = e3, this.transaction = t3, this.attribute_map = { currentRound: "current-round", transaction: "transaction" };
         }
@@ -6841,52 +6916,52 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
           if (void 0 === e3.transaction)
             throw new Error(`Response is missing required field 'transaction': ${e3}`);
-          return new As({ currentRound: e3["current-round"], transaction: gs.from_obj_for_encoding(e3.transaction) });
+          return new ks({ currentRound: e3["current-round"], transaction: vs.from_obj_for_encoding(e3.transaction) });
         }
       }
-      class _s extends xe {
+      class Rs extends xe {
         constructor({ logicsig: e3, multisig: t3, sig: r2 }) {
-          super(), this.logicsig = e3, this.multisig = t3, this.sig = "string" == typeof r2 ? new Uint8Array(i.lW.from(r2, "base64")) : r2, this.attribute_map = { logicsig: "logicsig", multisig: "multisig", sig: "sig" };
+          super(), this.logicsig = e3, this.multisig = t3, this.sig = "string" == typeof r2 ? new Uint8Array(o.lW.from(r2, "base64")) : r2, this.attribute_map = { logicsig: "logicsig", multisig: "multisig", sig: "sig" };
         }
         static from_obj_for_encoding(e3) {
-          return new _s({ logicsig: void 0 !== e3.logicsig ? Es.from_obj_for_encoding(e3.logicsig) : void 0, multisig: void 0 !== e3.multisig ? Ss.from_obj_for_encoding(e3.multisig) : void 0, sig: e3.sig });
+          return new Rs({ logicsig: void 0 !== e3.logicsig ? Is.from_obj_for_encoding(e3.logicsig) : void 0, multisig: void 0 !== e3.multisig ? Bs.from_obj_for_encoding(e3.multisig) : void 0, sig: e3.sig });
         }
       }
-      class Es extends xe {
+      class Is extends xe {
         constructor({ logic: e3, args: t3, multisigSignature: r2, signature: s2 }) {
-          super(), this.logic = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.args = t3, this.multisigSignature = r2, this.signature = "string" == typeof s2 ? new Uint8Array(i.lW.from(s2, "base64")) : s2, this.attribute_map = { logic: "logic", args: "args", multisigSignature: "multisig-signature", signature: "signature" };
+          super(), this.logic = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.args = t3, this.multisigSignature = r2, this.signature = "string" == typeof s2 ? new Uint8Array(o.lW.from(s2, "base64")) : s2, this.attribute_map = { logic: "logic", args: "args", multisigSignature: "multisig-signature", signature: "signature" };
         }
         static from_obj_for_encoding(e3) {
           if (void 0 === e3.logic)
             throw new Error(`Response is missing required field 'logic': ${e3}`);
-          return new Es({ logic: e3.logic, args: e3.args, multisigSignature: void 0 !== e3["multisig-signature"] ? Ss.from_obj_for_encoding(e3["multisig-signature"]) : void 0, signature: e3.signature });
+          return new Is({ logic: e3.logic, args: e3.args, multisigSignature: void 0 !== e3["multisig-signature"] ? Bs.from_obj_for_encoding(e3["multisig-signature"]) : void 0, signature: e3.signature });
         }
       }
-      class Ss extends xe {
+      class Bs extends xe {
         constructor({ subsignature: e3, threshold: t3, version: r2 }) {
           super(), this.subsignature = e3, this.threshold = t3, this.version = r2, this.attribute_map = { subsignature: "subsignature", threshold: "threshold", version: "version" };
         }
         static from_obj_for_encoding(e3) {
-          return new Ss({ subsignature: void 0 !== e3.subsignature ? e3.subsignature.map(Ts.from_obj_for_encoding) : void 0, threshold: e3.threshold, version: e3.version });
+          return new Bs({ subsignature: void 0 !== e3.subsignature ? e3.subsignature.map(Us.from_obj_for_encoding) : void 0, threshold: e3.threshold, version: e3.version });
         }
       }
-      class Ts extends xe {
+      class Us extends xe {
         constructor({ publicKey: e3, signature: t3 }) {
-          super(), this.publicKey = "string" == typeof e3 ? new Uint8Array(i.lW.from(e3, "base64")) : e3, this.signature = "string" == typeof t3 ? new Uint8Array(i.lW.from(t3, "base64")) : t3, this.attribute_map = { publicKey: "public-key", signature: "signature" };
+          super(), this.publicKey = "string" == typeof e3 ? new Uint8Array(o.lW.from(e3, "base64")) : e3, this.signature = "string" == typeof t3 ? new Uint8Array(o.lW.from(t3, "base64")) : t3, this.attribute_map = { publicKey: "public-key", signature: "signature" };
         }
         static from_obj_for_encoding(e3) {
-          return new Ts({ publicKey: e3["public-key"], signature: e3.signature });
+          return new Us({ publicKey: e3["public-key"], signature: e3.signature });
         }
       }
-      class Rs extends xe {
+      class Ps extends xe {
         constructor({ message: e3, stateProof: t3, stateProofType: r2 }) {
           super(), this.message = e3, this.stateProof = t3, this.stateProofType = r2, this.attribute_map = { message: "message", stateProof: "state-proof", stateProofType: "state-proof-type" };
         }
         static from_obj_for_encoding(e3) {
-          return new Rs({ message: void 0 !== e3.message ? ts.from_obj_for_encoding(e3.message) : void 0, stateProof: void 0 !== e3["state-proof"] ? is.from_obj_for_encoding(e3["state-proof"]) : void 0, stateProofType: e3["state-proof-type"] });
+          return new Ps({ message: void 0 !== e3.message ? os.from_obj_for_encoding(e3.message) : void 0, stateProof: void 0 !== e3["state-proof"] ? ls.from_obj_for_encoding(e3["state-proof"]) : void 0, stateProofType: e3["state-proof-type"] });
         }
       }
-      class ks extends xe {
+      class js extends xe {
         constructor({ currentRound: e3, transactions: t3, nextToken: r2 }) {
           super(), this.currentRound = e3, this.transactions = t3, this.nextToken = r2, this.attribute_map = { currentRound: "current-round", transactions: "transactions", nextToken: "next-token" };
         }
@@ -6895,28 +6970,28 @@ var algosdk_min = { exports: {} };
             throw new Error(`Response is missing required field 'current-round': ${e3}`);
           if (!Array.isArray(e3.transactions))
             throw new Error(`Response is missing required array field 'transactions': ${e3}`);
-          return new ks({ currentRound: e3["current-round"], transactions: e3.transactions.map(gs.from_obj_for_encoding), nextToken: e3["next-token"] });
+          return new js({ currentRound: e3["current-round"], transactions: e3.transactions.map(vs.from_obj_for_encoding), nextToken: e3["next-token"] });
         }
       }
-      class Is extends vt {
+      class qs extends Tt {
         constructor(e3, t3, r2, s2) {
           super(e3, t3), this.index = r2, this.index = r2;
-          const n2 = i.lW.from(s2).toString("base64");
+          const n2 = o.lW.from(s2).toString("base64");
           this.query.name = encodeURI(`b64:${n2}`);
         }
         path() {
           return `/v2/applications/${this.index}/box`;
         }
         prepare(e3) {
-          return Gr.from_obj_for_encoding(e3);
+          return Zr.from_obj_for_encoding(e3);
         }
       }
-      class Bs extends vt {
+      class Ds extends Tt {
         path() {
           return "/v2/accounts";
         }
         currencyGreaterThan(e3) {
-          return this.query["currency-greater-than"] = e3, this;
+          return this.query["currency-greater-than"] = e3.toString(), this;
         }
         currencyLessThan(e3) {
           return this.query["currency-less-than"] = e3, this;
@@ -6946,12 +7021,12 @@ var algosdk_min = { exports: {} };
           return this.query.exclude = e3, this;
         }
       }
-      class Us extends vt {
+      class Cs extends Tt {
         path() {
           return "/v2/transactions";
         }
         notePrefix(e3) {
-          return this.query["note-prefix"] = ur(e3), this;
+          return this.query["note-prefix"] = fr(e3), this;
         }
         txType(e3) {
           return this.query["tx-type"] = e3, this;
@@ -6983,12 +7058,6 @@ var algosdk_min = { exports: {} };
         afterTime(e3) {
           return this.query["after-time"] = e3, this;
         }
-        currencyGreaterThan(e3) {
-          return this.query["currency-greater-than"] = e3, this;
-        }
-        currencyLessThan(e3) {
-          return this.query["currency-less-than"] = e3, this;
-        }
         addressRole(e3) {
           return this.query["address-role"] = e3, this;
         }
@@ -7007,8 +7076,14 @@ var algosdk_min = { exports: {} };
         applicationID(e3) {
           return this.query["application-id"] = e3, this;
         }
+        currencyGreaterThan(e3) {
+          return this.query["currency-greater-than"] = e3.toString(), this;
+        }
+        currencyLessThan(e3) {
+          return this.query["currency-less-than"] = e3, this;
+        }
       }
-      class Ps extends vt {
+      class $s extends Tt {
         path() {
           return "/v2/assets";
         }
@@ -7034,7 +7109,7 @@ var algosdk_min = { exports: {} };
           return this.query["include-all"] = e3, this;
         }
       }
-      class js extends vt {
+      class Os extends Tt {
         path() {
           return "/v2/applications";
         }
@@ -7054,7 +7129,7 @@ var algosdk_min = { exports: {} };
           return this.query["include-all"] = e3, this;
         }
       }
-      class qs extends vt {
+      class Ls extends Tt {
         constructor(e3, t3, r2) {
           super(e3, t3), this.index = r2, this.index = r2;
         }
@@ -7068,75 +7143,75 @@ var algosdk_min = { exports: {} };
           return this.query.limit = e3, this;
         }
         prepare(e3) {
-          return Yr.from_obj_for_encoding(e3);
+          return es.from_obj_for_encoding(e3);
         }
       }
-      class Ds extends be {
+      class Ms extends be {
         constructor(e3, t3 = "http://127.0.0.1", r2 = 8080, s2 = {}) {
           super("X-Indexer-API-Token", e3, t3, r2, s2);
         }
         makeHealthCheck() {
-          return new ar(this.c, this.intDecoding);
+          return new dr(this.c, this.intDecoding);
         }
         lookupAssetBalances(e3) {
-          return new cr(this.c, this.intDecoding, e3);
-        }
-        lookupAssetTransactions(e3) {
-          return new hr(this.c, this.intDecoding, e3);
-        }
-        lookupAccountTransactions(e3) {
-          return new lr(this.c, this.intDecoding, e3);
-        }
-        lookupBlock(e3) {
-          return new dr(this.c, this.intDecoding, e3);
-        }
-        lookupTransactionByID(e3) {
           return new pr(this.c, this.intDecoding, e3);
         }
-        lookupAccountByID(e3) {
-          return new fr(this.c, this.intDecoding, e3);
-        }
-        lookupAccountAssets(e3) {
-          return new gr(this.c, this.intDecoding, e3);
-        }
-        lookupAccountCreatedAssets(e3) {
+        lookupAssetTransactions(e3) {
           return new mr(this.c, this.intDecoding, e3);
         }
-        lookupAccountAppLocalStates(e3) {
+        lookupAccountTransactions(e3) {
+          return new gr(this.c, this.intDecoding, e3);
+        }
+        lookupBlock(e3) {
           return new yr(this.c, this.intDecoding, e3);
         }
-        lookupAccountCreatedApplications(e3) {
+        lookupTransactionByID(e3) {
           return new wr(this.c, this.intDecoding, e3);
         }
-        lookupAssetByID(e3) {
+        lookupAccountByID(e3) {
           return new br(this.c, this.intDecoding, e3);
         }
-        lookupApplications(e3) {
+        lookupAccountAssets(e3) {
           return new vr(this.c, this.intDecoding, e3);
         }
-        lookupApplicationLogs(e3) {
+        lookupAccountCreatedAssets(e3) {
           return new xr(this.c, this.intDecoding, e3);
         }
+        lookupAccountAppLocalStates(e3) {
+          return new Ar(this.c, this.intDecoding, e3);
+        }
+        lookupAccountCreatedApplications(e3) {
+          return new _r(this.c, this.intDecoding, e3);
+        }
+        lookupAssetByID(e3) {
+          return new Er(this.c, this.intDecoding, e3);
+        }
+        lookupApplications(e3) {
+          return new Tr(this.c, this.intDecoding, e3);
+        }
+        lookupApplicationLogs(e3) {
+          return new Sr(this.c, this.intDecoding, e3);
+        }
         searchAccounts() {
-          return new Bs(this.c, this.intDecoding);
+          return new Ds(this.c, this.intDecoding);
         }
         searchForTransactions() {
-          return new Us(this.c, this.intDecoding);
+          return new Cs(this.c, this.intDecoding);
         }
         searchForAssets() {
-          return new Ps(this.c, this.intDecoding);
+          return new $s(this.c, this.intDecoding);
         }
         searchForApplications() {
-          return new js(this.c, this.intDecoding);
+          return new Os(this.c, this.intDecoding);
         }
         searchForApplicationBoxes(e3) {
-          return new qs(this.c, this.intDecoding, e3);
+          return new Ls(this.c, this.intDecoding, e3);
         }
         lookupApplicationBoxByIDandName(e3, t3) {
-          return new Is(this.c, this.intDecoding, e3, t3);
+          return new qs(this.c, this.intDecoding, e3, t3);
         }
       }
-      async function $s(e3, t3, r2) {
+      async function Ns(e3, t3, r2) {
         const s2 = await e3.status().do();
         if (void 0 === s2)
           throw new Error("Unable to get node status");
@@ -7158,7 +7233,7 @@ var algosdk_min = { exports: {} };
         }
         throw new Error(`Transaction not confirmed after ${r2} rounds`);
       }
-      function Os(e3, t3) {
+      function Fs(e3, t3) {
         let r2 = e3.toString(16);
         r2.length !== 2 * t3 && (r2 = r2.padStart(2 * t3, "0"));
         const s2 = new Uint8Array(r2.length / 2);
@@ -7166,43 +7241,46 @@ var algosdk_min = { exports: {} };
           s2[e4] = parseInt(r2.slice(t4, t4 + 2), 16);
         return s2;
       }
-      function Cs(e3) {
+      function Ws(e3) {
         let t3 = BigInt(0);
-        const r2 = i.lW.from(e3);
+        const r2 = o.lW.from(e3);
         for (let s2 = 0; s2 < e3.length; s2++)
           t3 = BigInt(Number(r2.readUIntBE(s2, 1))) + t3 * BigInt(256);
         return t3;
       }
-      function Ls() {
-        const e3 = h((t3 = a().box.secretKeyLength, a().randomBytes(t3)));
+      function Ks() {
+        const e3 = w((t3 = c().box.secretKeyLength, function() {
+          const { navigator: e4 } = globalThis;
+          return "object" == typeof e4 && "ReactNative" === e4.product;
+        }() && console.warn("It looks like you're running in react-native. In order to perform common crypto operations you will need to polyfill common operations such as crypto.getRandomValues"), c().randomBytes(t3)));
         var t3;
         return { addr: K(e3.publicKey), sk: e3.secretKey };
       }
-      const Ms = ["abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom", "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk", "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "busy", "butter", "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart", "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "cereal", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "chase", "chat", "cheap", "check", "cheese", "chef", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "city", "civil", "claim", "clap", "clarify", "claw", "clay", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock", "clog", "close", "cloth", "cloud", "clown", "club", "clump", "cluster", "clutch", "coach", "coast", "coconut", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "congress", "connect", "consider", "control", "convince", "cook", "cool", "copper", "copy", "coral", "core", "corn", "correct", "cost", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "cram", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "crew", "cricket", "crime", "crisp", "critic", "crop", "cross", "crouch", "crowd", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "cry", "crystal", "cube", "culture", "cup", "cupboard", "curious", "current", "curtain", "curve", "cushion", "custom", "cute", "cycle", "dad", "damage", "damp", "dance", "danger", "daring", "dash", "daughter", "dawn", "day", "deal", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "deer", "defense", "define", "defy", "degree", "delay", "deliver", "demand", "demise", "denial", "dentist", "deny", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "desk", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "dial", "diamond", "diary", "dice", "diesel", "diet", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "distance", "divert", "divide", "divorce", "dizzy", "doctor", "document", "dog", "doll", "dolphin", "domain", "donate", "donkey", "donor", "door", "dose", "double", "dove", "draft", "dragon", "drama", "drastic", "draw", "dream", "dress", "drift", "drill", "drink", "drip", "drive", "drop", "drum", "dry", "duck", "dumb", "dune", "during", "dust", "dutch", "duty", "dwarf", "dynamic", "eager", "eagle", "early", "earn", "earth", "easily", "east", "easy", "echo", "ecology", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "else", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "end", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "era", "erase", "erode", "erosion", "error", "erupt", "escape", "essay", "essence", "estate", "eternal", "ethics", "evidence", "evil", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exit", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eye", "eyebrow", "fabric", "face", "faculty", "fade", "faint", "faith", "fall", "false", "fame", "family", "famous", "fan", "fancy", "fantasy", "farm", "fashion", "fat", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "fee", "feed", "feel", "female", "fence", "festival", "fetch", "fever", "few", "fiber", "fiction", "field", "figure", "file", "film", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first", "fiscal", "fish", "fit", "fitness", "fix", "flag", "flame", "flash", "flat", "flavor", "flee", "flight", "flip", "float", "flock", "floor", "flower", "fluid", "flush", "fly", "foam", "focus", "fog", "foil", "fold", "follow", "food", "foot", "force", "forest", "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "fox", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "frog", "front", "frost", "frown", "frozen", "fruit", "fuel", "fun", "funny", "furnace", "fury", "future", "gadget", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden", "garlic", "garment", "gas", "gasp", "gate", "gather", "gauge", "gaze", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "gift", "giggle", "ginger", "giraffe", "girl", "give", "glad", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "glow", "glue", "goat", "goddess", "gold", "good", "goose", "gorilla", "gospel", "gossip", "govern", "gown", "grab", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grid", "grief", "grit", "grocery", "group", "grow", "grunt", "guard", "guess", "guide", "guilt", "guitar", "gun", "gym", "habit", "hair", "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "harsh", "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "help", "hen", "hero", "hidden", "high", "hill", "hint", "hip", "hire", "history", "hobby", "hockey", "hold", "hole", "holiday", "hollow", "home", "honey", "hood", "hope", "horn", "horror", "horse", "hospital", "host", "hotel", "hour", "hover", "hub", "huge", "human", "humble", "humor", "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "husband", "hybrid", "ice", "icon", "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "inch", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "into", "invest", "invite", "involve", "iron", "island", "isolate", "issue", "item", "ivory", "jacket", "jaguar", "jar", "jazz", "jealous", "jeans", "jelly", "jewel", "job", "join", "joke", "journey", "joy", "judge", "juice", "jump", "jungle", "junior", "junk", "just", "kangaroo", "keen", "keep", "ketchup", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit", "kitchen", "kite", "kitten", "kiwi", "knee", "knife", "knock", "know", "lab", "label", "labor", "ladder", "lady", "lake", "lamp", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "lava", "law", "lawn", "lawsuit", "layer", "lazy", "leader", "leaf", "learn", "leave", "lecture", "left", "leg", "legal", "legend", "leisure", "lemon", "lend", "length", "lens", "leopard", "lesson", "letter", "level", "liar", "liberty", "library", "license", "life", "lift", "light", "like", "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "lizard", "load", "loan", "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lottery", "loud", "lounge", "love", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "mad", "magic", "magnet", "maid", "mail", "main", "major", "make", "mammal", "man", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum", "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melt", "member", "memory", "mention", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal", "method", "middle", "midnight", "milk", "million", "mimic", "mind", "minimum", "minor", "minute", "miracle", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixture", "mobile", "model", "modify", "mom", "moment", "monitor", "monkey", "monster", "month", "moon", "moral", "more", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "move", "movie", "much", "muffin", "mule", "multiply", "muscle", "museum", "mushroom", "music", "must", "mutual", "myself", "mystery", "myth", "naive", "name", "napkin", "narrow", "nasty", "nation", "nature", "near", "neck", "need", "negative", "neglect", "neither", "nephew", "nerve", "nest", "net", "network", "neutral", "never", "news", "next", "nice", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "nose", "notable", "note", "nothing", "notice", "novel", "now", "nuclear", "number", "nurse", "nut", "oak", "obey", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "odor", "off", "offer", "office", "often", "oil", "okay", "old", "olive", "olympic", "omit", "once", "one", "onion", "online", "only", "open", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "oval", "oven", "over", "own", "owner", "oxygen", "oyster", "ozone", "pact", "paddle", "page", "pair", "palace", "palm", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "park", "parrot", "party", "pass", "patch", "path", "patient", "patrol", "pattern", "pause", "pave", "payment", "peace", "peanut", "pear", "peasant", "pelican", "pen", "penalty", "pencil", "people", "pepper", "perfect", "permit", "person", "pet", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pig", "pigeon", "pill", "pilot", "pink", "pioneer", "pipe", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "play", "please", "pledge", "pluck", "plug", "plunge", "poem", "poet", "point", "polar", "pole", "police", "pond", "pony", "pool", "popular", "portion", "position", "possible", "post", "potato", "pottery", "poverty", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prosper", "protect", "proud", "provide", "public", "pudding", "pull", "pulp", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purpose", "purse", "push", "put", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quit", "quiz", "quote", "rabbit", "raccoon", "race", "rack", "radar", "radio", "rail", "rain", "raise", "rally", "ramp", "ranch", "random", "range", "rapid", "rare", "rate", "rather", "raven", "raw", "razor", "ready", "real", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "recycle", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely", "remain", "remember", "remind", "remove", "render", "renew", "rent", "reopen", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "rib", "ribbon", "rice", "rich", "ride", "ridge", "rifle", "right", "rigid", "ring", "riot", "ripple", "risk", "ritual", "rival", "river", "road", "roast", "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough", "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "runway", "rural", "sad", "saddle", "sadness", "safe", "sail", "salad", "salmon", "salon", "salt", "salute", "same", "sample", "sand", "satisfy", "satoshi", "sauce", "sausage", "save", "say", "scale", "scan", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "scrap", "screen", "script", "scrub", "sea", "search", "season", "seat", "second", "secret", "section", "security", "seed", "seek", "segment", "select", "sell", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shed", "shell", "sheriff", "shield", "shift", "shine", "ship", "shiver", "shock", "shoe", "shoot", "shop", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "shy", "sibling", "sick", "side", "siege", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "since", "sing", "siren", "sister", "situate", "six", "size", "skate", "sketch", "ski", "skill", "skin", "skirt", "skull", "slab", "slam", "sleep", "slender", "slice", "slide", "slight", "slim", "slogan", "slot", "slow", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "snap", "sniff", "snow", "soap", "soccer", "social", "sock", "soda", "soft", "solar", "soldier", "solid", "solution", "solve", "someone", "song", "soon", "sorry", "sort", "soul", "sound", "soup", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spin", "spirit", "split", "spoil", "sponsor", "spoon", "sport", "spot", "spray", "spread", "spring", "spy", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stairs", "stamp", "stand", "start", "state", "stay", "steak", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "such", "sudden", "suffer", "sugar", "suggest", "suit", "summer", "sun", "sunny", "sunset", "super", "supply", "supreme", "sure", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swap", "swarm", "swear", "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syrup", "system", "table", "tackle", "tag", "tail", "talent", "talk", "tank", "tape", "target", "task", "taste", "tattoo", "taxi", "teach", "team", "tell", "ten", "tenant", "tennis", "tent", "term", "test", "text", "thank", "that", "theme", "then", "theory", "there", "they", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tide", "tiger", "tilt", "timber", "time", "tiny", "tip", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "toe", "together", "toilet", "token", "tomato", "tomorrow", "tone", "tongue", "tonight", "tool", "tooth", "top", "topic", "topple", "torch", "tornado", "tortoise", "toss", "total", "tourist", "toward", "tower", "town", "toy", "track", "trade", "traffic", "tragic", "train", "transfer", "trap", "trash", "travel", "tray", "treat", "tree", "trend", "trial", "tribe", "trick", "trigger", "trim", "trip", "trophy", "trouble", "truck", "true", "truly", "trumpet", "trust", "truth", "try", "tube", "tuition", "tumble", "tuna", "tunnel", "turkey", "turn", "turtle", "twelve", "twenty", "twice", "twin", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "undo", "unfair", "unfold", "unhappy", "uniform", "unique", "unit", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "upon", "upper", "upset", "urban", "urge", "usage", "use", "used", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "van", "vanish", "vapor", "various", "vast", "vault", "vehicle", "velvet", "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "view", "village", "vintage", "violin", "virtual", "virus", "visa", "visit", "visual", "vital", "vivid", "vocal", "voice", "void", "volcano", "volume", "vote", "voyage", "wage", "wagon", "wait", "walk", "wall", "walnut", "want", "warfare", "warm", "warrior", "wash", "wasp", "waste", "water", "wave", "way", "wealth", "weapon", "wear", "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale", "what", "wheat", "wheel", "when", "where", "whip", "whisper", "wide", "width", "wife", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter", "wire", "wisdom", "wise", "wish", "witness", "wolf", "woman", "wonder", "wood", "wool", "word", "work", "world", "worry", "worth", "wrap", "wreck", "wrestle", "wrist", "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"], Ns = "failed to decode mnemonic", Fs = "the mnemonic contains a word that is not in the wordlist";
-      function Ws(e3) {
+      const zs = ["abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bomb", "bone", "bonus", "book", "boost", "border", "boring", "borrow", "boss", "bottom", "bounce", "box", "boy", "bracket", "brain", "brand", "brass", "brave", "bread", "breeze", "brick", "bridge", "brief", "bright", "bring", "brisk", "broccoli", "broken", "bronze", "broom", "brother", "brown", "brush", "bubble", "buddy", "budget", "buffalo", "build", "bulb", "bulk", "bullet", "bundle", "bunker", "burden", "burger", "burst", "bus", "business", "busy", "butter", "buyer", "buzz", "cabbage", "cabin", "cable", "cactus", "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy", "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card", "cargo", "carpet", "carry", "cart", "case", "cash", "casino", "castle", "casual", "cat", "catalog", "catch", "category", "cattle", "caught", "cause", "caution", "cave", "ceiling", "celery", "cement", "census", "century", "cereal", "certain", "chair", "chalk", "champion", "change", "chaos", "chapter", "charge", "chase", "chat", "cheap", "check", "cheese", "chef", "cherry", "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk", "churn", "cigar", "cinnamon", "circle", "citizen", "city", "civil", "claim", "clap", "clarify", "claw", "clay", "clean", "clerk", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock", "clog", "close", "cloth", "cloud", "clown", "club", "clump", "cluster", "clutch", "coach", "coast", "coconut", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come", "comfort", "comic", "common", "company", "concert", "conduct", "confirm", "congress", "connect", "consider", "control", "convince", "cook", "cool", "copper", "copy", "coral", "core", "corn", "correct", "cost", "cotton", "couch", "country", "couple", "course", "cousin", "cover", "coyote", "crack", "cradle", "craft", "cram", "crane", "crash", "crater", "crawl", "crazy", "cream", "credit", "creek", "crew", "cricket", "crime", "crisp", "critic", "crop", "cross", "crouch", "crowd", "crucial", "cruel", "cruise", "crumble", "crunch", "crush", "cry", "crystal", "cube", "culture", "cup", "cupboard", "curious", "current", "curtain", "curve", "cushion", "custom", "cute", "cycle", "dad", "damage", "damp", "dance", "danger", "daring", "dash", "daughter", "dawn", "day", "deal", "debate", "debris", "decade", "december", "decide", "decline", "decorate", "decrease", "deer", "defense", "define", "defy", "degree", "delay", "deliver", "demand", "demise", "denial", "dentist", "deny", "depart", "depend", "deposit", "depth", "deputy", "derive", "describe", "desert", "design", "desk", "despair", "destroy", "detail", "detect", "develop", "device", "devote", "diagram", "dial", "diamond", "diary", "dice", "diesel", "diet", "differ", "digital", "dignity", "dilemma", "dinner", "dinosaur", "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "distance", "divert", "divide", "divorce", "dizzy", "doctor", "document", "dog", "doll", "dolphin", "domain", "donate", "donkey", "donor", "door", "dose", "double", "dove", "draft", "dragon", "drama", "drastic", "draw", "dream", "dress", "drift", "drill", "drink", "drip", "drive", "drop", "drum", "dry", "duck", "dumb", "dune", "during", "dust", "dutch", "duty", "dwarf", "dynamic", "eager", "eagle", "early", "earn", "earth", "easily", "east", "easy", "echo", "ecology", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow", "elder", "electric", "elegant", "element", "elephant", "elevator", "elite", "else", "embark", "embody", "embrace", "emerge", "emotion", "employ", "empower", "empty", "enable", "enact", "end", "endless", "endorse", "enemy", "energy", "enforce", "engage", "engine", "enhance", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure", "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "era", "erase", "erode", "erosion", "error", "erupt", "escape", "essay", "essence", "estate", "eternal", "ethics", "evidence", "evil", "evoke", "evolve", "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust", "exhibit", "exile", "exist", "exit", "exotic", "expand", "expect", "expire", "explain", "expose", "express", "extend", "extra", "eye", "eyebrow", "fabric", "face", "faculty", "fade", "faint", "faith", "fall", "false", "fame", "family", "famous", "fan", "fancy", "fantasy", "farm", "fashion", "fat", "fatal", "father", "fatigue", "fault", "favorite", "feature", "february", "federal", "fee", "feed", "feel", "female", "fence", "festival", "fetch", "fever", "few", "fiber", "fiction", "field", "figure", "file", "film", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first", "fiscal", "fish", "fit", "fitness", "fix", "flag", "flame", "flash", "flat", "flavor", "flee", "flight", "flip", "float", "flock", "floor", "flower", "fluid", "flush", "fly", "foam", "focus", "fog", "foil", "fold", "follow", "food", "foot", "force", "forest", "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "fox", "fragile", "frame", "frequent", "fresh", "friend", "fringe", "frog", "front", "frost", "frown", "frozen", "fruit", "fuel", "fun", "funny", "furnace", "fury", "future", "gadget", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden", "garlic", "garment", "gas", "gasp", "gate", "gather", "gauge", "gaze", "general", "genius", "genre", "gentle", "genuine", "gesture", "ghost", "giant", "gift", "giggle", "ginger", "giraffe", "girl", "give", "glad", "glance", "glare", "glass", "glide", "glimpse", "globe", "gloom", "glory", "glove", "glow", "glue", "goat", "goddess", "gold", "good", "goose", "gorilla", "gospel", "gossip", "govern", "gown", "grab", "grace", "grain", "grant", "grape", "grass", "gravity", "great", "green", "grid", "grief", "grit", "grocery", "group", "grow", "grunt", "guard", "guess", "guide", "guilt", "guitar", "gun", "gym", "habit", "hair", "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "harsh", "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog", "height", "hello", "helmet", "help", "hen", "hero", "hidden", "high", "hill", "hint", "hip", "hire", "history", "hobby", "hockey", "hold", "hole", "holiday", "hollow", "home", "honey", "hood", "hope", "horn", "horror", "horse", "hospital", "host", "hotel", "hour", "hover", "hub", "huge", "human", "humble", "humor", "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "husband", "hybrid", "ice", "icon", "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense", "immune", "impact", "impose", "improve", "impulse", "inch", "include", "income", "increase", "index", "indicate", "indoor", "industry", "infant", "inflict", "inform", "inhale", "inherit", "initial", "inject", "injury", "inmate", "inner", "innocent", "input", "inquiry", "insane", "insect", "inside", "inspire", "install", "intact", "interest", "into", "invest", "invite", "involve", "iron", "island", "isolate", "issue", "item", "ivory", "jacket", "jaguar", "jar", "jazz", "jealous", "jeans", "jelly", "jewel", "job", "join", "joke", "journey", "joy", "judge", "juice", "jump", "jungle", "junior", "junk", "just", "kangaroo", "keen", "keep", "ketchup", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit", "kitchen", "kite", "kitten", "kiwi", "knee", "knife", "knock", "know", "lab", "label", "labor", "ladder", "lady", "lake", "lamp", "language", "laptop", "large", "later", "latin", "laugh", "laundry", "lava", "law", "lawn", "lawsuit", "layer", "lazy", "leader", "leaf", "learn", "leave", "lecture", "left", "leg", "legal", "legend", "leisure", "lemon", "lend", "length", "lens", "leopard", "lesson", "letter", "level", "liar", "liberty", "library", "license", "life", "lift", "light", "like", "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "lizard", "load", "loan", "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lottery", "loud", "lounge", "love", "loyal", "lucky", "luggage", "lumber", "lunar", "lunch", "luxury", "lyrics", "machine", "mad", "magic", "magnet", "maid", "mail", "main", "major", "make", "mammal", "man", "manage", "mandate", "mango", "mansion", "manual", "maple", "marble", "march", "margin", "marine", "market", "marriage", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum", "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melt", "member", "memory", "mention", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal", "method", "middle", "midnight", "milk", "million", "mimic", "mind", "minimum", "minor", "minute", "miracle", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixture", "mobile", "model", "modify", "mom", "moment", "monitor", "monkey", "monster", "month", "moon", "moral", "more", "morning", "mosquito", "mother", "motion", "motor", "mountain", "mouse", "move", "movie", "much", "muffin", "mule", "multiply", "muscle", "museum", "mushroom", "music", "must", "mutual", "myself", "mystery", "myth", "naive", "name", "napkin", "narrow", "nasty", "nation", "nature", "near", "neck", "need", "negative", "neglect", "neither", "nephew", "nerve", "nest", "net", "network", "neutral", "never", "news", "next", "nice", "night", "noble", "noise", "nominee", "noodle", "normal", "north", "nose", "notable", "note", "nothing", "notice", "novel", "now", "nuclear", "number", "nurse", "nut", "oak", "obey", "object", "oblige", "obscure", "observe", "obtain", "obvious", "occur", "ocean", "october", "odor", "off", "offer", "office", "often", "oil", "okay", "old", "olive", "olympic", "omit", "once", "one", "onion", "online", "only", "open", "opera", "opinion", "oppose", "option", "orange", "orbit", "orchard", "order", "ordinary", "organ", "orient", "original", "orphan", "ostrich", "other", "outdoor", "outer", "output", "outside", "oval", "oven", "over", "own", "owner", "oxygen", "oyster", "ozone", "pact", "paddle", "page", "pair", "palace", "palm", "panda", "panel", "panic", "panther", "paper", "parade", "parent", "park", "parrot", "party", "pass", "patch", "path", "patient", "patrol", "pattern", "pause", "pave", "payment", "peace", "peanut", "pear", "peasant", "pelican", "pen", "penalty", "pencil", "people", "pepper", "perfect", "permit", "person", "pet", "phone", "photo", "phrase", "physical", "piano", "picnic", "picture", "piece", "pig", "pigeon", "pill", "pilot", "pink", "pioneer", "pipe", "pistol", "pitch", "pizza", "place", "planet", "plastic", "plate", "play", "please", "pledge", "pluck", "plug", "plunge", "poem", "poet", "point", "polar", "pole", "police", "pond", "pony", "pool", "popular", "portion", "position", "possible", "post", "potato", "pottery", "poverty", "powder", "power", "practice", "praise", "predict", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride", "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit", "program", "project", "promote", "proof", "property", "prosper", "protect", "proud", "provide", "public", "pudding", "pull", "pulp", "pulse", "pumpkin", "punch", "pupil", "puppy", "purchase", "purity", "purpose", "purse", "push", "put", "puzzle", "pyramid", "quality", "quantum", "quarter", "question", "quick", "quit", "quiz", "quote", "rabbit", "raccoon", "race", "rack", "radar", "radio", "rail", "rain", "raise", "rally", "ramp", "ranch", "random", "range", "rapid", "rare", "rate", "rather", "raven", "raw", "razor", "ready", "real", "reason", "rebel", "rebuild", "recall", "receive", "recipe", "record", "recycle", "reduce", "reflect", "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely", "remain", "remember", "remind", "remove", "render", "renew", "rent", "reopen", "repair", "repeat", "replace", "report", "require", "rescue", "resemble", "resist", "resource", "response", "result", "retire", "retreat", "return", "reunion", "reveal", "review", "reward", "rhythm", "rib", "ribbon", "rice", "rich", "ride", "ridge", "rifle", "right", "rigid", "ring", "riot", "ripple", "risk", "ritual", "rival", "river", "road", "roast", "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough", "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "runway", "rural", "sad", "saddle", "sadness", "safe", "sail", "salad", "salmon", "salon", "salt", "salute", "same", "sample", "sand", "satisfy", "satoshi", "sauce", "sausage", "save", "say", "scale", "scan", "scare", "scatter", "scene", "scheme", "school", "science", "scissors", "scorpion", "scout", "scrap", "screen", "script", "scrub", "sea", "search", "season", "seat", "second", "secret", "section", "security", "seed", "seek", "segment", "select", "sell", "seminar", "senior", "sense", "sentence", "series", "service", "session", "settle", "setup", "seven", "shadow", "shaft", "shallow", "share", "shed", "shell", "sheriff", "shield", "shift", "shine", "ship", "shiver", "shock", "shoe", "shoot", "shop", "short", "shoulder", "shove", "shrimp", "shrug", "shuffle", "shy", "sibling", "sick", "side", "siege", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "since", "sing", "siren", "sister", "situate", "six", "size", "skate", "sketch", "ski", "skill", "skin", "skirt", "skull", "slab", "slam", "sleep", "slender", "slice", "slide", "slight", "slim", "slogan", "slot", "slow", "slush", "small", "smart", "smile", "smoke", "smooth", "snack", "snake", "snap", "sniff", "snow", "soap", "soccer", "social", "sock", "soda", "soft", "solar", "soldier", "solid", "solution", "solve", "someone", "song", "soon", "sorry", "sort", "soul", "sound", "soup", "source", "south", "space", "spare", "spatial", "spawn", "speak", "special", "speed", "spell", "spend", "sphere", "spice", "spider", "spike", "spin", "spirit", "split", "spoil", "sponsor", "spoon", "sport", "spot", "spray", "spread", "spring", "spy", "square", "squeeze", "squirrel", "stable", "stadium", "staff", "stage", "stairs", "stamp", "stand", "start", "state", "stay", "steak", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stock", "stomach", "stone", "stool", "story", "stove", "strategy", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject", "submit", "subway", "success", "such", "sudden", "suffer", "sugar", "suggest", "suit", "summer", "sun", "sunny", "sunset", "super", "supply", "supreme", "sure", "surface", "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "swap", "swarm", "swear", "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syrup", "system", "table", "tackle", "tag", "tail", "talent", "talk", "tank", "tape", "target", "task", "taste", "tattoo", "taxi", "teach", "team", "tell", "ten", "tenant", "tennis", "tent", "term", "test", "text", "thank", "that", "theme", "then", "theory", "there", "they", "thing", "this", "thought", "three", "thrive", "throw", "thumb", "thunder", "ticket", "tide", "tiger", "tilt", "timber", "time", "tiny", "tip", "tired", "tissue", "title", "toast", "tobacco", "today", "toddler", "toe", "together", "toilet", "token", "tomato", "tomorrow", "tone", "tongue", "tonight", "tool", "tooth", "top", "topic", "topple", "torch", "tornado", "tortoise", "toss", "total", "tourist", "toward", "tower", "town", "toy", "track", "trade", "traffic", "tragic", "train", "transfer", "trap", "trash", "travel", "tray", "treat", "tree", "trend", "trial", "tribe", "trick", "trigger", "trim", "trip", "trophy", "trouble", "truck", "true", "truly", "trumpet", "trust", "truth", "try", "tube", "tuition", "tumble", "tuna", "tunnel", "turkey", "turn", "turtle", "twelve", "twenty", "twice", "twin", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncle", "uncover", "under", "undo", "unfair", "unfold", "unhappy", "uniform", "unique", "unit", "universe", "unknown", "unlock", "until", "unusual", "unveil", "update", "upgrade", "uphold", "upon", "upper", "upset", "urban", "urge", "usage", "use", "used", "useful", "useless", "usual", "utility", "vacant", "vacuum", "vague", "valid", "valley", "valve", "van", "vanish", "vapor", "various", "vast", "vault", "vehicle", "velvet", "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "viable", "vibrant", "vicious", "victory", "video", "view", "village", "vintage", "violin", "virtual", "virus", "visa", "visit", "visual", "vital", "vivid", "vocal", "voice", "void", "volcano", "volume", "vote", "voyage", "wage", "wagon", "wait", "walk", "wall", "walnut", "want", "warfare", "warm", "warrior", "wash", "wasp", "waste", "water", "wave", "way", "wealth", "weapon", "wear", "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale", "what", "wheat", "wheel", "when", "where", "whip", "whisper", "wide", "width", "wife", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter", "wire", "wisdom", "wise", "wish", "witness", "wolf", "woman", "wonder", "wood", "wool", "word", "work", "world", "worry", "worth", "wrap", "wreck", "wrestle", "wrist", "write", "wrong", "yard", "year", "yellow", "you", "young", "youth", "zebra", "zero", "zone", "zoo"], Vs = "failed to decode mnemonic", Gs = "the mnemonic contains a word that is not in the wordlist";
+      function Hs(e3) {
         const t3 = [];
         let r2 = 0, s2 = 0;
         return e3.forEach(function(e4) {
           r2 |= e4 << s2, s2 += 8, s2 >= 11 && (t3.push(2047 & r2), r2 >>= 11, s2 -= 11);
         }), s2 && t3.push(r2), t3;
       }
-      function Ks(e3) {
-        return e3.map((e4) => Ms[e4]);
+      function Ys(e3) {
+        return e3.map((e4) => zs[e4]);
       }
-      function zs(e3) {
-        return Ks(Ws(l(e3)))[0];
+      function Js(e3) {
+        return Ys(Hs(y(e3)))[0];
       }
-      function Vs(e3) {
-        if (e3.length !== b)
-          throw new RangeError(`Seed length must be ${b}`);
-        const t3 = Ks(Ws(e3)), r2 = zs(e3);
+      function Xs(e3) {
+        if (e3.length !== S)
+          throw new RangeError(`Seed length must be ${S}`);
+        const t3 = Ys(Hs(e3)), r2 = Js(e3);
         return `${t3.join(" ")} ${r2}`;
       }
-      function Gs(e3) {
+      function Zs(e3) {
         const t3 = e3.split(" "), r2 = t3.slice(0, 24);
         for (const e4 of r2)
-          if (-1 === Ms.indexOf(e4))
-            throw new Error(Fs);
+          if (-1 === zs.indexOf(e4))
+            throw new Error(Gs);
         const s2 = t3[t3.length - 1];
         let n2 = function(e4) {
           const t4 = [];
@@ -7211,31 +7289,31 @@ var algosdk_min = { exports: {} };
             for (r3 |= e5 << s3, s3 += 11; s3 >= 8; )
               t4.push(255 & r3), r3 >>= 8, s3 -= 8;
           }), s3 && t4.push(r3), new Uint8Array(t4);
-        }(r2.map((e4) => Ms.indexOf(e4)));
+        }(r2.map((e4) => zs.indexOf(e4)));
         if (33 !== n2.length)
-          throw new Error(Ns);
+          throw new Error(Vs);
         if (0 !== n2[n2.length - 1])
-          throw new Error(Ns);
-        if (n2 = n2.slice(0, n2.length - 1), zs(n2) === s2)
+          throw new Error(Vs);
+        if (n2 = n2.slice(0, n2.length - 1), Js(n2) === s2)
           return n2;
-        throw new Error(Ns);
+        throw new Error(Vs);
       }
-      function Hs(e3) {
-        const t3 = h(Gs(e3));
+      function Qs(e3) {
+        const t3 = w(Zs(e3));
         return { addr: K(t3.publicKey), sk: t3.secretKey };
       }
-      function Ys(e3) {
-        return Vs(e3.slice(0, b));
+      function en(e3) {
+        return Xs(e3.slice(0, S));
       }
-      function Js(e3) {
-        return Gs(e3);
+      function tn(e3) {
+        return Zs(e3);
       }
-      function Xs(e3) {
-        return Vs(e3);
+      function rn(e3) {
+        return Xs(e3);
       }
-      class Zs {
+      class sn {
         constructor(e3) {
-          if (this.name = "Transaction group", this.tag = i.lW.from("TG"), e3.length > 16) {
+          if (this.name = "Transaction group", this.tag = o.lW.from("TG"), e3.length > 16) {
             const t3 = `${e3.length.toString()} transactions grouped together but max group size is ${16 .toString()}`;
             throw Error(t3);
           }
@@ -7246,97 +7324,97 @@ var algosdk_min = { exports: {} };
         }
         static from_obj_for_encoding(e3) {
           const t3 = Object.create(this.prototype);
-          t3.name = "Transaction group", t3.tag = i.lW.from("TG"), t3.txGroupHashes = [];
+          t3.name = "Transaction group", t3.tag = o.lW.from("TG"), t3.txGroupHashes = [];
           for (const r2 of e3.txlist)
-            t3.txGroupHashes.push(i.lW.from(r2));
+            t3.txGroupHashes.push(o.lW.from(r2));
           return t3;
         }
         toByte() {
           return X(this.get_obj_for_encoding());
         }
       }
-      function Qs(e3) {
+      function nn(e3) {
         const t3 = [];
         for (const r3 of e3) {
           const e4 = ce(r3);
           t3.push(e4.rawTxID());
         }
-        const r2 = new Zs(t3), s2 = r2.toByte(), n2 = l(i.lW.from(k(r2.tag, s2)));
-        return i.lW.from(n2);
+        const r2 = new sn(t3), s2 = r2.toByte(), n2 = y(o.lW.from(m(r2.tag, s2)));
+        return o.lW.from(n2);
       }
-      function en(e3, t3) {
-        const r2 = Qs(e3), s2 = [];
+      function on(e3, t3) {
+        const r2 = nn(e3), s2 = [];
         for (const n2 of e3) {
           const e4 = ce(n2);
           t3 && K(e4.from.publicKey) !== t3 || (e4.group = r2, s2.push(e4));
         }
         return s2;
       }
-      const tn = "Not enough multisig transactions to merge. Need at least two", rn = "Cannot merge txs. txIDs differ", sn = "Cannot merge txs. Auth addrs differ", nn = "Cannot merge txs. Multisig preimages differ", on = "Cannot merge txs. subsigs are mismatched.", an = "Cannot mutate a multisig field as it would invalidate all existing signatures.";
-      function cn(e3, { version: t3, threshold: r2, addrs: s2 }) {
-        const n2 = s2.map((e4) => F(e4).publicKey), o2 = { v: t3, thr: r2, subsig: n2.map((e4) => ({ pk: i.lW.from(e4) })) }, a2 = e3.get_obj_for_encoding(), c2 = { msig: o2, txn: a2 }, u2 = z({ version: t3, threshold: r2, pks: n2 });
-        return K(a2.snd) !== K(u2) && (c2.sgnr = i.lW.from(u2)), new Uint8Array(X(c2));
+      const an = "Not enough multisig transactions to merge. Need at least two", cn = "Cannot merge txs. txIDs differ", un = "Cannot merge txs. Auth addrs differ", ln = "Cannot merge txs. Multisig preimages differ", hn = "Cannot merge txs. subsigs are mismatched.", dn = "Cannot mutate a multisig field as it would invalidate all existing signatures.";
+      function pn(e3, { version: t3, threshold: r2, addrs: s2 }) {
+        const n2 = s2.map((e4) => F(e4).publicKey), i2 = { v: t3, thr: r2, subsig: n2.map((e4) => ({ pk: o.lW.from(e4) })) }, a2 = e3.get_obj_for_encoding(), c2 = { msig: i2, txn: a2 }, u2 = z({ version: t3, threshold: r2, pks: n2 });
+        return K(a2.snd) !== K(u2) && (c2.sgnr = o.lW.from(u2)), new Uint8Array(X(c2));
       }
-      function un(e3, { rawSig: t3, myPk: r2 }, { version: s2, threshold: n2, pks: o2 }) {
-        const a2 = Z(cn(e3, { version: s2, threshold: n2, addrs: o2.map((e4) => K(e4)) }));
+      function fn(e3, { rawSig: t3, myPk: r2 }, { version: s2, threshold: n2, pks: i2 }) {
+        const a2 = Z(pn(e3, { version: s2, threshold: n2, addrs: i2.map((e4) => K(e4)) }));
         let c2 = false;
         if (a2.msig.subsig.forEach((e4, s3) => {
-          g(e4.pk, r2) && (c2 = true, a2.msig.subsig[s3].s = t3);
+          A(e4.pk, r2) && (c2 = true, a2.msig.subsig[s3].s = t3);
         }), false === c2)
           throw new Error("Key does not exist");
-        const u2 = z({ version: s2, threshold: n2, pks: o2 });
-        return K(a2.txn.snd) !== K(u2) && (a2.sgnr = i.lW.from(u2)), new Uint8Array(X(a2));
+        const u2 = z({ version: s2, threshold: n2, pks: i2 });
+        return K(a2.txn.snd) !== K(u2) && (a2.sgnr = o.lW.from(u2)), new Uint8Array(X(a2));
       }
-      class ln extends se {
+      class gn extends se {
         addLease() {
-          throw new Error(an);
+          throw new Error(dn);
         }
         addRekey() {
-          throw new Error(an);
+          throw new Error(dn);
         }
         signTxn(e3) {
           throw new Error("Cannot sign a multisig transaction using `signTxn`. Use `partialSignTxn` instead.");
         }
         partialSignTxn({ version: e3, threshold: t3, pks: r2 }, s2) {
-          const n2 = p(s2).publicKey;
-          return un(this, { rawSig: this.rawSignTxn(s2), myPk: n2 }, { version: e3, threshold: t3, pks: r2 });
+          const n2 = v(s2).publicKey;
+          return fn(this, { rawSig: this.rawSignTxn(s2), myPk: n2 }, { version: e3, threshold: t3, pks: r2 });
         }
         partialSignWithMultisigSignature(e3, t3, r2) {
-          if (!d(r2.length))
+          if (!b(r2.length))
             throw new Error("Cannot add multisig signature. Signature is not of the correct length.");
-          return un(this, { rawSig: r2, myPk: F(t3).publicKey }, e3);
+          return fn(this, { rawSig: r2, myPk: F(t3).publicKey }, e3);
         }
         static from_obj_for_encoding(e3) {
           return super.from_obj_for_encoding(e3);
         }
       }
-      function hn(e3) {
+      function mn(e3) {
         if (e3.length < 2)
-          throw new Error(tn);
-        const t3 = Z(e3[0]), r2 = ln.from_obj_for_encoding(t3.txn).txID(), s2 = t3.sgnr ? K(t3.sgnr) : void 0, n2 = K(z({ version: t3.msig.v, threshold: t3.msig.thr, pks: t3.msig.subsig.map((e4) => e4.pk) })), o2 = t3.msig.subsig.map((e4) => ({ ...e4 }));
+          throw new Error(an);
+        const t3 = Z(e3[0]), r2 = gn.from_obj_for_encoding(t3.txn).txID(), s2 = t3.sgnr ? K(t3.sgnr) : void 0, n2 = K(z({ version: t3.msig.v, threshold: t3.msig.thr, pks: t3.msig.subsig.map((e4) => e4.pk) })), i2 = t3.msig.subsig.map((e4) => ({ ...e4 }));
         for (let a3 = 1; a3 < e3.length; a3++) {
           const c2 = Z(e3[a3]);
-          if (ln.from_obj_for_encoding(c2.txn).txID() !== r2)
-            throw new Error(rn);
+          if (gn.from_obj_for_encoding(c2.txn).txID() !== r2)
+            throw new Error(cn);
           if (s2 !== (c2.sgnr ? K(c2.sgnr) : void 0))
-            throw new Error(sn);
+            throw new Error(un);
           if (c2.msig.subsig.length !== t3.msig.subsig.length)
-            throw new Error(nn);
+            throw new Error(ln);
           if (n2 !== K(z({ version: c2.msig.v, threshold: c2.msig.thr, pks: c2.msig.subsig.map((e4) => e4.pk) })))
-            throw new Error(nn);
+            throw new Error(ln);
           c2.msig.subsig.forEach((e4, t4) => {
             if (!e4.s)
               return;
-            const r3 = o2[t4];
-            if (r3.s && 0 !== i.lW.compare(i.lW.from(e4.s), i.lW.from(r3.s)))
-              throw new Error(on);
+            const r3 = i2[t4];
+            if (r3.s && 0 !== o.lW.compare(o.lW.from(e4.s), o.lW.from(r3.s)))
+              throw new Error(hn);
             r3.s = e4.s;
           });
         }
-        const a2 = { msig: { v: t3.msig.v, thr: t3.msig.thr, subsig: o2 }, txn: t3.txn };
-        return void 0 !== s2 && (a2.sgnr = i.lW.from(F(s2).publicKey)), new Uint8Array(X(a2));
+        const a2 = { msig: { v: t3.msig.v, thr: t3.msig.thr, subsig: i2 }, txn: t3.txn };
+        return void 0 !== s2 && (a2.sgnr = o.lW.from(F(s2).publicKey)), new Uint8Array(X(a2));
       }
-      function dn(e3, t3, r2) {
+      function yn(e3, t3, r2) {
         const s2 = t3.v, n2 = t3.thr, i2 = t3.subsig, o2 = i2.map((e4) => e4.pk);
         if (t3.subsig.length < n2)
           return false;
@@ -7346,7 +7424,7 @@ var algosdk_min = { exports: {} };
         } catch (e4) {
           return false;
         }
-        if (!R(a2, r2))
+        if (!g(a2, r2))
           return false;
         let c2 = 0;
         for (const e4 of i2)
@@ -7355,68 +7433,68 @@ var algosdk_min = { exports: {} };
           return false;
         let u2 = 0;
         for (const t4 of i2)
-          void 0 !== t4.s && m(e3, t4.s, t4.pk) && (u2 += 1);
+          void 0 !== t4.s && _(e3, t4.s, t4.pk) && (u2 += 1);
         return !(u2 < n2);
       }
-      function pn(e3, { version: t3, threshold: r2, addrs: s2 }, n2) {
+      function wn(e3, { version: t3, threshold: r2, addrs: s2 }, n2) {
         const i2 = V({ version: t3, threshold: r2, addrs: s2 });
         Object.prototype.hasOwnProperty.call(e3, "from") || (e3.from = i2);
         const o2 = s2.map((e4) => F(e4).publicKey);
         let a2, c2;
-        return e3 instanceof se ? (a2 = e3, c2 = ln.prototype.partialSignTxn.call(a2, { version: t3, threshold: r2, pks: o2 }, n2)) : (a2 = new ln(e3), c2 = a2.partialSignTxn({ version: t3, threshold: r2, pks: o2 }, n2)), { txID: a2.txID().toString(), blob: c2 };
+        return e3 instanceof se ? (a2 = e3, c2 = gn.prototype.partialSignTxn.call(a2, { version: t3, threshold: r2, pks: o2 }, n2)) : (a2 = new gn(e3), c2 = a2.partialSignTxn({ version: t3, threshold: r2, pks: o2 }, n2)), { txID: a2.txID().toString(), blob: c2 };
       }
-      function fn(e3, { version: t3, threshold: r2, addrs: s2 }, n2) {
-        const i2 = s2.map((e4) => F(e4).publicKey), o2 = Z(e3), a2 = ln.from_obj_for_encoding(o2.txn), c2 = a2.partialSignTxn({ version: t3, threshold: r2, pks: i2 }, n2);
-        return { txID: a2.txID().toString(), blob: hn([e3, c2]) };
+      function bn(e3, { version: t3, threshold: r2, addrs: s2 }, n2) {
+        const i2 = s2.map((e4) => F(e4).publicKey), o2 = Z(e3), a2 = gn.from_obj_for_encoding(o2.txn), c2 = a2.partialSignTxn({ version: t3, threshold: r2, pks: i2 }, n2);
+        return { txID: a2.txID().toString(), blob: mn([e3, c2]) };
       }
-      function gn(e3, { version: t3, threshold: r2, addrs: s2 }, n2, i2) {
-        const o2 = s2.map((e4) => F(e4).publicKey), a2 = Z(e3), c2 = ln.from_obj_for_encoding(a2.txn), u2 = c2.partialSignWithMultisigSignature({ version: t3, threshold: r2, pks: o2 }, n2, i2);
-        return { txID: c2.txID().toString(), blob: hn([e3, u2]) };
+      function vn(e3, { version: t3, threshold: r2, addrs: s2 }, n2, i2) {
+        const o2 = s2.map((e4) => F(e4).publicKey), a2 = Z(e3), c2 = gn.from_obj_for_encoding(a2.txn), u2 = c2.partialSignWithMultisigSignature({ version: t3, threshold: r2, pks: o2 }, n2, i2);
+        return { txID: c2.txID().toString(), blob: mn([e3, u2]) };
       }
-      function mn({ version: e3, threshold: t3, addrs: r2 }) {
+      function xn({ version: e3, threshold: t3, addrs: r2 }) {
         return V({ version: e3, threshold: t3, addrs: r2 });
       }
-      function yn(e3) {
+      function An(e3) {
         if (!e3 || 0 === e3.length)
           throw new Error("empty program");
         const t3 = "\n".charCodeAt(0), r2 = " ".charCodeAt(0), s2 = "~".charCodeAt(0);
         if (e3.every((e4) => e4 === t3 || ((e5) => r2 <= e5 && e5 <= s2)(e4))) {
-          const t4 = i.lW.from(e3).toString();
+          const t4 = o.lW.from(e3).toString();
           if (W(t4))
             throw new Error("requesting program bytes, get Algorand address");
-          if (i.lW.from(t4, "base64").toString("base64") === t4)
+          if (o.lW.from(t4, "base64").toString("base64") === t4)
             throw new Error("program should not be b64 encoded");
           throw new Error("program bytes are all ASCII printable characters, not looking like Teal byte code");
         }
       }
-      class wn {
+      class _n {
         constructor(e3, t3) {
-          if (this.tag = i.lW.from("Program"), t3 && (!Array.isArray(t3) || !t3.every((e4) => e4.constructor === Uint8Array || i.lW.isBuffer(e4))))
+          if (this.tag = o.lW.from("Program"), t3 && (!Array.isArray(t3) || !t3.every((e4) => e4.constructor === Uint8Array || o.lW.isBuffer(e4))))
             throw new TypeError("Invalid arguments");
           let r2;
-          null != t3 && (r2 = t3.map((e4) => new Uint8Array(e4))), yn(e3), this.logic = e3, this.args = r2, this.sig = void 0, this.msig = void 0;
+          null != t3 && (r2 = t3.map((e4) => new Uint8Array(e4))), An(e3), this.logic = e3, this.args = r2, this.sig = void 0, this.msig = void 0;
         }
         get_obj_for_encoding() {
           const e3 = { l: this.logic };
           return this.args && (e3.arg = this.args), this.sig ? e3.sig = this.sig : this.msig && (e3.msig = this.msig), e3;
         }
         static from_obj_for_encoding(e3) {
-          const t3 = new wn(e3.l, e3.arg);
+          const t3 = new _n(e3.l, e3.arg);
           return t3.sig = e3.sig, t3.msig = e3.msig, t3;
         }
         verify(e3) {
           if (this.sig && this.msig)
             return false;
           try {
-            yn(this.logic);
+            An(this.logic);
           } catch (e4) {
             return false;
           }
-          const t3 = k(this.tag, this.logic);
-          return this.sig || this.msig ? this.sig ? m(t3, this.sig, e3) : dn(t3, this.msig, e3) : R(l(t3), e3);
+          const t3 = m(this.tag, this.logic);
+          return this.sig || this.msig ? this.sig ? _(t3, this.sig, e3) : yn(t3, this.msig, e3) : g(y(t3), e3);
         }
         address() {
-          const e3 = l(k(this.tag, this.logic));
+          const e3 = y(m(this.tag, this.logic));
           return K(new Uint8Array(e3));
         }
         sign(e3, t3) {
@@ -7436,14 +7514,14 @@ var algosdk_min = { exports: {} };
           this.msig.subsig[r2].s = t3;
         }
         signProgram(e3) {
-          return f(k(this.tag, this.logic), e3);
+          return x(m(this.tag, this.logic), e3);
         }
         singleSignMultisig(e3, t3) {
           let r2 = -1;
-          const s2 = p(e3).publicKey;
+          const s2 = v(e3).publicKey;
           for (let e4 = 0; e4 < t3.subsig.length; e4++) {
             const { pk: n2 } = t3.subsig[e4];
-            if (R(n2, s2)) {
+            if (g(n2, s2)) {
               r2 = e4;
               break;
             }
@@ -7457,27 +7535,27 @@ var algosdk_min = { exports: {} };
         }
         static fromByte(e3) {
           const t3 = Z(e3);
-          return wn.from_obj_for_encoding(t3);
+          return _n.from_obj_for_encoding(t3);
         }
       }
-      class bn {
+      class En {
         constructor(e3, t3) {
-          this.lsig = new wn(e3, t3), this.sigkey = void 0;
+          this.lsig = new _n(e3, t3), this.sigkey = void 0;
         }
         get_obj_for_encoding() {
           const e3 = { lsig: this.lsig.get_obj_for_encoding() };
           return this.sigkey && (e3.sigkey = this.sigkey), e3;
         }
         static from_obj_for_encoding(e3) {
-          const t3 = new bn(e3.lsig.l, e3.lsig.arg);
-          return t3.lsig = wn.from_obj_for_encoding(e3.lsig), t3.sigkey = e3.sigkey, t3;
+          const t3 = new En(e3.lsig.l, e3.lsig.arg);
+          return t3.lsig = _n.from_obj_for_encoding(e3.lsig), t3.sigkey = e3.sigkey, t3;
         }
         toByte() {
           return X(this.get_obj_for_encoding());
         }
         static fromByte(e3) {
           const t3 = Z(e3);
-          return bn.from_obj_for_encoding(t3);
+          return En.from_obj_for_encoding(t3);
         }
         isDelegated() {
           return !(!this.lsig.sig && !this.lsig.msig);
@@ -7503,41 +7581,41 @@ var algosdk_min = { exports: {} };
           this.lsig.appendToMultisig(e3);
         }
         sign(e3) {
-          this.lsig.sign(e3), this.sigkey = p(e3).publicKey;
+          this.lsig.sign(e3), this.sigkey = v(e3).publicKey;
         }
       }
-      function vn(e3, t3) {
+      function Tn(e3, t3) {
         let r2, s2;
-        return t3 instanceof bn ? (r2 = t3.lsig, s2 = F(t3.address()).publicKey) : (r2 = t3, s2 = r2.sig ? e3.from.publicKey : r2.msig ? z({ version: r2.msig.v, threshold: r2.msig.thr, pks: r2.msig.subsig.map((e4) => e4.pk) }) : F(r2.address()).publicKey), function(e4, t4, r3) {
+        return t3 instanceof En ? (r2 = t3.lsig, s2 = F(t3.address()).publicKey) : (r2 = t3, s2 = r2.sig ? e3.from.publicKey : r2.msig ? z({ version: r2.msig.v, threshold: r2.msig.thr, pks: r2.msig.subsig.map((e4) => e4.pk) }) : F(r2.address()).publicKey), function(e4, t4, r3) {
           if (!t4.verify(r3))
             throw new Error("Logic signature verification failed. Ensure the program and signature are valid.");
           const s3 = { lsig: t4.get_obj_for_encoding(), txn: e4.get_obj_for_encoding() };
-          return g(r3, e4.from.publicKey) || (s3.sgnr = i.lW.from(r3)), { txID: e4.txID().toString(), blob: X(s3) };
+          return A(r3, e4.from.publicKey) || (s3.sgnr = o.lW.from(r3)), { txID: e4.txID().toString(), blob: X(s3) };
         }(e3, r2, s2);
       }
-      function xn(e3, t3) {
-        return vn(ce(e3), t3);
+      function Sn(e3, t3) {
+        return Tn(ce(e3), t3);
       }
-      function An(e3) {
-        return wn.fromByte(e3);
+      function kn(e3) {
+        return _n.fromByte(e3);
       }
-      const _n = i.lW.from("ProgData");
-      function En(e3, t3, r2) {
-        const s2 = k(F(r2).publicKey, t3);
-        return f(i.lW.from(k(_n, s2)), e3);
+      const Rn = o.lW.from("ProgData");
+      function In(e3, t3, r2) {
+        const s2 = m(F(r2).publicKey, t3);
+        return x(o.lW.from(m(Rn, s2)), e3);
       }
-      function Sn(e3, t3, r2, s2) {
-        const n2 = k(F(t3).publicKey, e3);
-        return m(i.lW.from(k(_n, n2)), r2, s2);
+      function Bn(e3, t3, r2, s2) {
+        const n2 = m(F(t3).publicKey, e3);
+        return _(o.lW.from(m(Rn, n2)), r2, s2);
       }
-      function Tn(e3, t3, r2) {
-        return En(e3, t3, new wn(r2).address());
+      function Un(e3, t3, r2) {
+        return In(e3, t3, new _n(r2).address());
       }
-      let Rn = {};
+      let Pn = {};
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("").forEach(function(e3, t3) {
-        Rn[e3] = t3;
+        Pn[e3] = t3;
       });
-      class In {
+      class qn {
         constructor({ version: e3, sources: t3, names: r2, mappings: s2 }) {
           if (this.version = e3, this.sources = t3, this.names = r2, this.mappings = s2, 3 !== this.version)
             throw new Error(`Only version 3 is supported, got ${this.version}`);
@@ -7547,7 +7625,7 @@ var algosdk_min = { exports: {} };
             const t4 = function(e5) {
               let t5 = [], r3 = 0, s3 = 0;
               for (let n3 = 0; n3 < e5.length; n3 += 1) {
-                let i3 = Rn[e5[n3]];
+                let i3 = Pn[e5[n3]];
                 if (void 0 === i3)
                   throw new Error("Invalid character (" + e5[n3] + ")");
                 const o2 = 32 & i3;
@@ -7575,14 +7653,14 @@ var algosdk_min = { exports: {} };
           return this.lineToPc[e3];
         }
       }
-      const Bn = 1380011588;
-      function Un(e3) {
-        return e3.params["approval-program"] = i.lW.from(e3.params["approval-program"].toString(), "base64"), e3.params["clear-state-program"] = i.lW.from(e3.params["clear-state-program"].toString(), "base64"), e3;
+      const Dn = 1380011588;
+      function Cn(e3) {
+        return e3.params["approval-program"] = o.lW.from(e3.params["approval-program"].toString(), "base64"), e3.params["clear-state-program"] = o.lW.from(e3.params["clear-state-program"].toString(), "base64"), e3;
       }
-      async function Pn({ client: e3, txns: t3, protocolVersion: r2, latestTimestamp: s2, round: n2, sources: i2 }) {
+      async function $n({ client: e3, txns: t3, protocolVersion: r2, latestTimestamp: s2, round: n2, sources: i2 }) {
         const o2 = [], a2 = [], c2 = [], u2 = [], l2 = [];
         for (const e4 of t3)
-          e4.txn.type === Q.appl && (l2.push(K(e4.txn.from.publicKey)), e4.txn.appAccounts && l2.push(...e4.txn.appAccounts.map((e5) => K(e5.publicKey))), e4.txn.appForeignApps && (c2.push(...e4.txn.appForeignApps), l2.push(...e4.txn.appForeignApps.map((e5) => G(e5)))), e4.txn.appForeignAssets && u2.push(...e4.txn.appForeignAssets), void 0 === e4.txn.appIndex || 0 === e4.txn.appIndex ? o2.push(new Re({ id: Bn, params: new Ie({ creator: K(e4.txn.from.publicKey), approvalProgram: e4.txn.appApprovalProgram, clearStateProgram: e4.txn.appClearProgram, localStateSchema: new Be({ numUint: e4.txn.appLocalInts, numByteSlice: e4.txn.appLocalByteSlices }), globalStateSchema: new Be({ numUint: e4.txn.appGlobalInts, numByteSlice: e4.txn.appGlobalByteSlices }) }) })) : (c2.push(e4.txn.appIndex), l2.push(G(e4.txn.appIndex))));
+          e4.txn.type === Q.appl && (l2.push(K(e4.txn.from.publicKey)), e4.txn.appAccounts && l2.push(...e4.txn.appAccounts.map((e5) => K(e5.publicKey))), e4.txn.appForeignApps && (c2.push(...e4.txn.appForeignApps), l2.push(...e4.txn.appForeignApps.map((e5) => G(e5)))), e4.txn.appForeignAssets && u2.push(...e4.txn.appForeignAssets), void 0 === e4.txn.appIndex || 0 === e4.txn.appIndex ? o2.push(new ke({ id: Dn, params: new Ie({ creator: K(e4.txn.from.publicKey), approvalProgram: e4.txn.appApprovalProgram, clearStateProgram: e4.txn.appClearProgram, localStateSchema: new Be({ numUint: e4.txn.appLocalInts, numByteSlice: e4.txn.appLocalByteSlices }), globalStateSchema: new Be({ numUint: e4.txn.appGlobalInts, numByteSlice: e4.txn.appGlobalByteSlices }) }) })) : (c2.push(e4.txn.appIndex), l2.push(G(e4.txn.appIndex))));
         const h2 = [];
         for (const t4 of [...new Set(u2)])
           h2.push(e3.getAssetByID(t4).do().then((e4) => {
@@ -7592,39 +7670,39 @@ var algosdk_min = { exports: {} };
         const d2 = [];
         for (const t4 of [...new Set(c2)])
           d2.push(e3.getApplicationByID(t4).do().then((e4) => {
-            const t5 = Un(e4);
+            const t5 = Cn(e4);
             o2.push(t5), l2.push(t5.params.creator);
           }));
         await Promise.all(d2);
         const p2 = [];
         for (const t4 of [...new Set(l2)])
           p2.push(e3.accountInformation(t4).do().then((e4) => {
-            "created-apps" in e4 && (e4["created-apps"] = e4["created-apps"].map((e5) => Un(e5))), a2.push(e4);
+            "created-apps" in e4 && (e4["created-apps"] = e4["created-apps"].map((e5) => Cn(e5))), a2.push(e4);
           }));
-        return await Promise.all(p2), new Fe({ txns: t3.map((e4) => ({ ...e4, txn: e4.txn.get_obj_for_encoding() })), accounts: a2, apps: o2, latestTimestamp: s2, round: n2, protocolVersion: r2, sources: i2 });
+        return await Promise.all(p2), new We({ txns: t3.map((e4) => ({ ...e4, txn: e4.txn.get_obj_for_encoding() })), accounts: a2, apps: o2, latestTimestamp: s2, round: n2, protocolVersion: r2, sources: i2 });
       }
-      class jn {
+      class On {
         constructor(e3) {
           this.type = 0, this.bytes = "", this.uint = 0, this.type = e3.type, this.bytes = e3.bytes, this.uint = e3.uint;
         }
         toString() {
-          return 1 === this.type ? `0x${i.lW.from(this.bytes, "base64").toString("hex")}` : this.uint.toString();
+          return 1 === this.type ? `0x${o.lW.from(this.bytes, "base64").toString("hex")}` : this.uint.toString();
         }
       }
-      class qn {
+      class Ln {
         constructor(e3) {
-          this.error = "", this.line = 0, this.pc = 0, this.scratch = [], this.stack = [], this.error = void 0 === e3.error ? "" : e3.error, this.line = e3.line, this.pc = e3.pc, this.scratch = e3.scratch, this.stack = e3.stack.map((e4) => new jn(e4));
+          this.error = "", this.line = 0, this.pc = 0, this.scratch = [], this.stack = [], this.error = void 0 === e3.error ? "" : e3.error, this.line = e3.line, this.pc = e3.pc, this.scratch = e3.scratch, this.stack = e3.stack.map((e4) => new On(e4));
         }
       }
-      class Dn {
+      class Mn {
         constructor(e3) {
-          this.trace = [], null != e3 && (this.trace = e3.map((e4) => new qn(e4)));
+          this.trace = [], null != e3 && (this.trace = e3.map((e4) => new Ln(e4)));
         }
       }
-      function $n(e3, t3) {
+      function Nn(e3, t3) {
         return e3.length > t3 && t3 > 0 ? `${e3.slice(0, t3)}...` : e3;
       }
-      function On(e3, t3) {
+      function Fn(e3, t3) {
         if (0 === t3.length)
           return "";
         let r2 = null;
@@ -7633,13 +7711,13 @@ var algosdk_min = { exports: {} };
         if (null == r2)
           return "";
         const s2 = t3[r2];
-        return s2.bytes.length > 0 ? `${r2} = 0x${i.lW.from(s2.bytes, "base64").toString("hex")}` : `${r2} = ${s2.uint.toString()}`;
+        return s2.bytes.length > 0 ? `${r2} = 0x${o.lW.from(s2.bytes, "base64").toString("hex")}` : `${r2} = ${s2.uint.toString()}`;
       }
-      function Cn(e3, t3) {
+      function Wn(e3, t3) {
         return `[${(t3 ? e3.reverse() : e3).map((e4) => {
           switch (e4.type) {
             case 1:
-              return `0x${i.lW.from(e4.bytes, "base64").toString("hex")}`;
+              return `0x${o.lW.from(e4.bytes, "base64").toString("hex")}`;
             case 2:
               return `${e4.uint.toString()}`;
             default:
@@ -7647,9 +7725,9 @@ var algosdk_min = { exports: {} };
           }
         }).join(", ")}]`;
       }
-      class Ln {
+      class Kn {
         constructor(e3) {
-          this.disassembly = [], this.appCallMessages = [], this.localDeltas = [], this.globalDelta = [], this.cost = 0, this.logicSigMessages = [], this.logicSigDisassembly = [], this.logs = [], this.appCallTrace = void 0, this.logicSigTrace = void 0, this.required = ["disassembly"], this.optionals = ["app-call-messages", "local-deltas", "global-delta", "cost", "logic-sig-messages", "logic-sig-disassembly", "logs"], this.traces = ["app-call-trace", "logic-sig-trace"], this.disassembly = e3.disassembly, this.appCallMessages = e3["app-call-messages"], this.localDeltas = e3["local-deltas"], this.globalDelta = e3["global-delta"], this.cost = e3.cost, this.logicSigMessages = e3["logic-sig-messages"], this.logicSigDisassembly = e3["logic-sig-disassembly"], this.logs = e3.logs, this.appCallTrace = new Dn(e3["app-call-trace"]), this.logicSigTrace = new Dn(e3["logic-sig-trace"]);
+          this.disassembly = [], this.appCallMessages = [], this.localDeltas = [], this.globalDelta = [], this.cost = 0, this.logicSigMessages = [], this.logicSigDisassembly = [], this.logs = [], this.appCallTrace = void 0, this.logicSigTrace = void 0, this.required = ["disassembly"], this.optionals = ["app-call-messages", "local-deltas", "global-delta", "cost", "logic-sig-messages", "logic-sig-disassembly", "logs"], this.traces = ["app-call-trace", "logic-sig-trace"], this.disassembly = e3.disassembly, this.appCallMessages = e3["app-call-messages"], this.localDeltas = e3["local-deltas"], this.globalDelta = e3["global-delta"], this.cost = e3.cost, this.logicSigMessages = e3["logic-sig-messages"], this.logicSigDisassembly = e3["logic-sig-disassembly"], this.logs = e3.logs, this.appCallTrace = new Mn(e3["app-call-trace"]), this.logicSigTrace = new Mn(e3["logic-sig-trace"]);
         }
         appCallRejected() {
           return void 0 !== this.appCallMessages && this.appCallMessages.includes("REJECT");
@@ -7661,7 +7739,7 @@ var algosdk_min = { exports: {} };
           const s2 = r2.maxValueWidth || 30, n2 = [["pc#", "ln#", "source", "scratch", "stack"]];
           for (let i3 = 0; i3 < e3.trace.length; i3++) {
             const { line: o2, error: a2, pc: c2, scratch: u2, stack: l2 } = e3.trace[i3], h2 = void 0 !== u2 ? u2 : [], d2 = i3 > 0 && void 0 !== e3.trace[i3 - 1].scratch ? e3.trace[i3 - 1].scratch : [], p2 = "" === a2 ? t3[o2] : `!! ${a2} !!`;
-            n2.push([c2.toString().padEnd(3, " "), o2.toString().padEnd(3, " "), $n(p2, s2), $n(On(d2, h2), s2), $n(Cn(l2, r2.topOfStackFirst), s2)]);
+            n2.push([c2.toString().padEnd(3, " "), o2.toString().padEnd(3, " "), Nn(p2, s2), Nn(Fn(d2, h2), s2), Nn(Wn(l2, r2.topOfStackFirst), s2)]);
           }
           const i2 = n2.reduce((e4, t4) => {
             const r3 = new Array(n2[0].length).fill(0);
@@ -7676,125 +7754,125 @@ var algosdk_min = { exports: {} };
           if (void 0 === this.appCallTrace || !this.disassembly)
             return "";
           let t3 = e3;
-          return void 0 === e3 && (t3 = { maxValueWidth: 30, topOfStackFirst: false }), Ln.trace(this.appCallTrace, this.disassembly, t3);
+          return void 0 === e3 && (t3 = { maxValueWidth: 30, topOfStackFirst: false }), Kn.trace(this.appCallTrace, this.disassembly, t3);
         }
         lsigTrace(e3) {
           if (void 0 === this.logicSigTrace || void 0 === this.logicSigDisassembly)
             return "";
           let t3 = e3;
-          return void 0 === e3 && (t3 = { maxValueWidth: 30, topOfStackFirst: true }), Ln.trace(this.logicSigTrace, this.logicSigDisassembly, t3);
+          return void 0 === e3 && (t3 = { maxValueWidth: 30, topOfStackFirst: true }), Kn.trace(this.logicSigTrace, this.logicSigDisassembly, t3);
         }
       }
-      class Mn {
+      class zn {
         constructor(e3) {
-          this.error = "", this.protocolVersion = "", this.txns = [], this.error = e3.error, this.protocolVersion = e3["protocol-version"], this.txns = e3.txns.map((e4) => new Ln(e4));
+          this.error = "", this.protocolVersion = "", this.txns = [], this.error = e3.error, this.protocolVersion = e3["protocol-version"], this.txns = e3.txns.map((e4) => new Kn(e4));
         }
       }
-      function Nn(e3, t3, r2, s2, n2, i2, o2) {
+      function Vn(e3, t3, r2, s2, n2, i2, o2) {
         const a2 = { from: e3, to: t3, amount: r2, closeRemainderTo: s2, note: n2, suggestedParams: i2, type: Q.pay, reKeyTo: o2 };
         return new se(a2);
       }
-      function Fn(e3) {
-        return Nn(e3.from, e3.to, e3.amount, e3.closeRemainderTo, e3.note, e3.suggestedParams, e3.rekeyTo);
+      function Gn(e3) {
+        return Vn(e3.from, e3.to, e3.amount, e3.closeRemainderTo, e3.note, e3.suggestedParams, e3.rekeyTo);
       }
-      function Wn(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2 = false, l2 = void 0) {
+      function Hn(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2 = false, l2 = void 0) {
         const h2 = { from: e3, note: t3, voteKey: r2, selectionKey: s2, voteFirst: n2, voteLast: i2, voteKeyDilution: o2, suggestedParams: a2, type: Q.keyreg, reKeyTo: c2, nonParticipation: u2, stateProofKey: l2 };
         return new se(h2);
       }
-      function Kn(e3) {
-        return Wn(e3.from, e3.note, e3.voteKey, e3.selectionKey, e3.voteFirst, e3.voteLast, e3.voteKeyDilution, e3.suggestedParams, e3.rekeyTo, e3.nonParticipation, e3.stateProofKey);
+      function Yn(e3) {
+        return Hn(e3.from, e3.note, e3.voteKey, e3.selectionKey, e3.voteFirst, e3.voteLast, e3.voteKeyDilution, e3.suggestedParams, e3.rekeyTo, e3.nonParticipation, e3.stateProofKey);
       }
-      function zn(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2) {
+      function Jn(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2) {
         const g2 = { from: e3, note: t3, suggestedParams: p2, assetTotal: r2, assetDecimals: s2, assetDefaultFrozen: n2, assetUnitName: u2, assetName: l2, assetURL: h2, assetMetadataHash: d2, assetManager: i2, assetReserve: o2, assetFreeze: a2, assetClawback: c2, type: Q.acfg, reKeyTo: f2 };
         return new se(g2);
       }
-      function Vn(e3) {
-        return zn(e3.from, e3.note, e3.total, e3.decimals, e3.defaultFrozen, e3.manager, e3.reserve, e3.freeze, e3.clawback, e3.unitName, e3.assetName, e3.assetURL, e3.assetMetadataHash, e3.suggestedParams, e3.rekeyTo);
+      function Xn(e3) {
+        return Jn(e3.from, e3.note, e3.total, e3.decimals, e3.defaultFrozen, e3.manager, e3.reserve, e3.freeze, e3.clawback, e3.unitName, e3.assetName, e3.assetURL, e3.assetMetadataHash, e3.suggestedParams, e3.rekeyTo);
       }
-      function Gn(e3, t3, r2, s2, n2, i2, o2, a2, c2 = true, u2) {
+      function Zn(e3, t3, r2, s2, n2, i2, o2, a2, c2 = true, u2) {
         if (c2 && (void 0 === s2 || void 0 === n2 || void 0 === i2 || void 0 === o2))
           throw Error("strict empty address checking was turned on, but at least one empty address was provided");
         const l2 = { from: e3, suggestedParams: a2, assetIndex: r2, assetManager: s2, assetReserve: n2, assetFreeze: i2, assetClawback: o2, type: Q.acfg, note: t3, reKeyTo: u2 };
         return new se(l2);
       }
-      function Hn(e3) {
-        return Gn(e3.from, e3.note, e3.assetIndex, e3.manager, e3.reserve, e3.freeze, e3.clawback, e3.suggestedParams, e3.strictEmptyAddressChecking, e3.rekeyTo);
+      function Qn(e3) {
+        return Zn(e3.from, e3.note, e3.assetIndex, e3.manager, e3.reserve, e3.freeze, e3.clawback, e3.suggestedParams, e3.strictEmptyAddressChecking, e3.rekeyTo);
       }
-      function Yn(e3, t3, r2, s2, n2) {
+      function ei(e3, t3, r2, s2, n2) {
         const i2 = { from: e3, suggestedParams: s2, assetIndex: r2, type: Q.acfg, note: t3, reKeyTo: n2 };
         return new se(i2);
       }
-      function Jn(e3) {
-        return Yn(e3.from, e3.note, e3.assetIndex, e3.suggestedParams, e3.rekeyTo);
+      function ti(e3) {
+        return ei(e3.from, e3.note, e3.assetIndex, e3.suggestedParams, e3.rekeyTo);
       }
-      function Xn(e3, t3, r2, s2, n2, i2, o2) {
+      function ri(e3, t3, r2, s2, n2, i2, o2) {
         const a2 = { from: e3, type: Q.afrz, freezeAccount: s2, assetIndex: r2, freezeState: n2, note: t3, suggestedParams: i2, reKeyTo: o2 };
         return new se(a2);
       }
-      function Zn(e3) {
-        return Xn(e3.from, e3.note, e3.assetIndex, e3.freezeTarget, e3.freezeState, e3.suggestedParams, e3.rekeyTo);
+      function si(e3) {
+        return ri(e3.from, e3.note, e3.assetIndex, e3.freezeTarget, e3.freezeState, e3.suggestedParams, e3.rekeyTo);
       }
-      function Qn(e3, t3, r2, s2, n2, i2, o2, a2, c2) {
+      function ni(e3, t3, r2, s2, n2, i2, o2, a2, c2) {
         const u2 = { type: Q.axfer, from: e3, to: t3, amount: n2, suggestedParams: a2, assetIndex: o2, note: i2, assetRevocationTarget: s2, closeRemainderTo: r2, reKeyTo: c2 };
         return new se(u2);
       }
-      function ei(e3) {
-        return Qn(e3.from, e3.to, e3.closeRemainderTo, e3.revocationTarget, e3.amount, e3.note, e3.assetIndex, e3.suggestedParams, e3.rekeyTo);
+      function ii(e3) {
+        return ni(e3.from, e3.to, e3.closeRemainderTo, e3.revocationTarget, e3.amount, e3.note, e3.assetIndex, e3.suggestedParams, e3.rekeyTo);
       }
-      function ti(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2) {
+      function oi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2, p2, f2, g2, m2, y2) {
         const w2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: 0, appOnComplete: r2, appLocalInts: i2, appLocalByteSlices: o2, appGlobalInts: a2, appGlobalByteSlices: c2, appApprovalProgram: s2, appClearProgram: n2, appArgs: u2, appAccounts: l2, appForeignApps: h2, appForeignAssets: d2, boxes: y2, note: p2, lease: f2, reKeyTo: g2, extraPages: m2 };
         return new se(w2);
       }
-      function ri(e3) {
-        return ti(e3.from, e3.suggestedParams, e3.onComplete, e3.approvalProgram, e3.clearProgram, e3.numLocalInts, e3.numLocalByteSlices, e3.numGlobalInts, e3.numGlobalByteSlices, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.extraPages, e3.boxes);
+      function ai(e3) {
+        return oi(e3.from, e3.suggestedParams, e3.onComplete, e3.approvalProgram, e3.clearProgram, e3.numLocalInts, e3.numLocalByteSlices, e3.numGlobalInts, e3.numGlobalByteSlices, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.extraPages, e3.boxes);
       }
-      function si(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2) {
+      function ci(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2, h2, d2) {
         const p2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appApprovalProgram: s2, appOnComplete: ee.UpdateApplicationOC, appClearProgram: n2, appArgs: i2, appAccounts: o2, appForeignApps: a2, appForeignAssets: c2, boxes: d2, note: u2, lease: l2, reKeyTo: h2 };
         return new se(p2);
       }
-      function ni(e3) {
-        return si(e3.from, e3.suggestedParams, e3.appIndex, e3.approvalProgram, e3.clearProgram, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function ui(e3) {
+        return ci(e3.from, e3.suggestedParams, e3.appIndex, e3.approvalProgram, e3.clearProgram, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function ii(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
+      function li(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
         const h2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appOnComplete: ee.DeleteApplicationOC, appArgs: s2, appAccounts: n2, appForeignApps: i2, appForeignAssets: o2, boxes: l2, note: a2, lease: c2, reKeyTo: u2 };
         return new se(h2);
       }
-      function oi(e3) {
-        return ii(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function hi(e3) {
+        return li(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function ai(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
+      function di(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
         const h2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appOnComplete: ee.OptInOC, appArgs: s2, appAccounts: n2, appForeignApps: i2, appForeignAssets: o2, boxes: l2, note: a2, lease: c2, reKeyTo: u2 };
         return new se(h2);
       }
-      function ci(e3) {
-        return ai(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function pi(e3) {
+        return di(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function ui(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
+      function fi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
         const h2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appOnComplete: ee.CloseOutOC, appArgs: s2, appAccounts: n2, appForeignApps: i2, appForeignAssets: o2, boxes: l2, note: a2, lease: c2, reKeyTo: u2 };
         return new se(h2);
       }
-      function li(e3) {
-        return ui(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function gi(e3) {
+        return fi(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function hi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
+      function mi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
         const h2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appOnComplete: ee.ClearStateOC, appArgs: s2, appAccounts: n2, appForeignApps: i2, appForeignAssets: o2, boxes: l2, note: a2, lease: c2, reKeyTo: u2 };
         return new se(h2);
       }
-      function di(e3) {
-        return hi(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function yi(e3) {
+        return mi(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function pi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
+      function wi(e3, t3, r2, s2, n2, i2, o2, a2, c2, u2, l2) {
         const h2 = { type: Q.appl, from: e3, suggestedParams: t3, appIndex: r2, appOnComplete: ee.NoOpOC, appArgs: s2, appAccounts: n2, appForeignApps: i2, appForeignAssets: o2, boxes: l2, note: a2, lease: c2, reKeyTo: u2 };
         return new se(h2);
       }
-      function fi(e3) {
-        return pi(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
+      function bi(e3) {
+        return wi(e3.from, e3.suggestedParams, e3.appIndex, e3.appArgs, e3.accounts, e3.foreignApps, e3.foreignAssets, e3.note, e3.lease, e3.rekeyTo, e3.boxes);
       }
-      function gi(e3) {
+      function vi(e3) {
         const t3 = { type: Q.appl, from: e3.from, suggestedParams: e3.suggestedParams, appIndex: e3.appIndex, appOnComplete: e3.onComplete, appLocalInts: e3.numLocalInts, appLocalByteSlices: e3.numLocalByteSlices, appGlobalInts: e3.numGlobalInts, appGlobalByteSlices: e3.numGlobalByteSlices, appApprovalProgram: e3.approvalProgram, appClearProgram: e3.clearProgram, appArgs: e3.appArgs, appAccounts: e3.accounts, appForeignApps: e3.foreignApps, appForeignAssets: e3.foreignAssets, boxes: e3.boxes, note: e3.note, lease: e3.lease, reKeyTo: e3.rekeyTo, extraPages: e3.extraPages };
         return new se(t3);
       }
-      function mi(e3) {
+      function xi(e3) {
         return (t3, r2) => {
           const s2 = [];
           for (const n2 of r2)
@@ -7802,31 +7880,31 @@ var algosdk_min = { exports: {} };
           return Promise.resolve(s2);
         };
       }
-      function yi(e3) {
+      function Ai(e3) {
         return (t3, r2) => {
           const s2 = [];
           for (const n2 of r2) {
-            const { blob: r3 } = vn(t3[n2], e3);
+            const { blob: r3 } = Tn(t3[n2], e3);
             s2.push(r3);
           }
           return Promise.resolve(s2);
         };
       }
-      function wi(e3, t3) {
+      function _i(e3, t3) {
         return (r2, s2) => {
           const n2 = [];
           for (const i2 of s2) {
             const s3 = r2[i2], o2 = [];
             for (const r3 of t3) {
-              const { blob: t4 } = pn(s3, e3, r3);
+              const { blob: t4 } = wn(s3, e3, r3);
               o2.push(t4);
             }
-            n2.push(hn(o2));
+            n2.push(mn(o2));
           }
           return Promise.resolve(n2);
         };
       }
-      function bi() {
+      function Ei() {
         return (e3, t3) => {
           const r2 = [];
           for (const s2 of t3)
@@ -7834,62 +7912,62 @@ var algosdk_min = { exports: {} };
           return Promise.resolve(r2);
         };
       }
-      function vi(e3) {
+      function Ti(e3) {
         return "object" == typeof e3 && 2 === Object.keys(e3).length && "object" == typeof e3.txn && "function" == typeof e3.signer;
       }
-      const xi = 65535, Ai = 32, _i = 1, Ei = 1, Si = 2, Ti = /^([a-z\d[\](),]+)\[(0|[1-9][\d]*)]$/, Ri = /^ufixed([1-9][\d]*)x([1-9][\d]*)$/;
-      class ki {
+      const Si = 65535, ki = 32, Ri = 1, Ii = 1, Bi = 2, Ui = /^([a-z\d[\](),]+)\[(0|[1-9][\d]*)]$/, Pi = /^ufixed([1-9][\d]*)x([1-9][\d]*)$/;
+      class ji {
         static from(e3) {
           if (e3.endsWith("[]")) {
-            const t3 = ki.from(e3.slice(0, e3.length - 2));
-            return new $i(t3);
+            const t3 = ji.from(e3.slice(0, e3.length - 2));
+            return new Ni(t3);
           }
           if (e3.endsWith("]")) {
-            const t3 = e3.match(Ti);
+            const t3 = e3.match(Ui);
             if (3 !== t3.length)
               throw new Error(`malformed static array string: ${e3}`);
             const r2 = t3[2], s2 = parseInt(r2, 10);
-            if (s2 > xi)
-              throw new Error(`array length exceeds limit ${xi}`);
-            const n2 = ki.from(t3[1]);
-            return new Di(n2, s2);
+            if (s2 > Si)
+              throw new Error(`array length exceeds limit ${Si}`);
+            const n2 = ji.from(t3[1]);
+            return new Mi(n2, s2);
           }
           if (e3.startsWith("uint")) {
             const t3 = (e4) => [...e4].every((e5) => "0123456789".includes(e5)), r2 = e3.slice(4, e3.length);
             if (!t3(r2))
               throw new Error(`malformed uint string: ${r2}`);
             const s2 = parseInt(r2, 10);
-            if (s2 > xi)
+            if (s2 > Si)
               throw new Error(`malformed uint string: ${s2}`);
-            return new Ii(s2);
+            return new qi(s2);
           }
           if ("byte" === e3)
-            return new ji();
+            return new Oi();
           if (e3.startsWith("ufixed")) {
-            const t3 = e3.match(Ri);
+            const t3 = e3.match(Pi);
             if (3 !== t3.length)
               throw new Error(`malformed ufixed type: ${e3}`);
             const r2 = parseInt(t3[1], 10), s2 = parseInt(t3[2], 10);
-            return new Bi(r2, s2);
+            return new Di(r2, s2);
           }
           if ("bool" === e3)
-            return new Pi();
+            return new $i();
           if ("address" === e3)
-            return new Ui();
+            return new Ci();
           if ("string" === e3)
-            return new qi();
+            return new Li();
           if (e3.length >= 2 && "(" === e3[0] && ")" === e3[e3.length - 1]) {
-            const t3 = Oi.parseTupleContent(e3.slice(1, e3.length - 1)), r2 = [];
+            const t3 = Fi.parseTupleContent(e3.slice(1, e3.length - 1)), r2 = [];
             for (let e4 = 0; e4 < t3.length; e4++) {
-              const s2 = ki.from(t3[e4]);
+              const s2 = ji.from(t3[e4]);
               r2.push(s2);
             }
-            return new Oi(r2);
+            return new Fi(r2);
           }
           throw new Error(`cannot convert a string ${e3} to an ABI type`);
         }
       }
-      class Ii extends ki {
+      class qi extends ji {
         constructor(e3) {
           if (super(), e3 % 8 != 0 || e3 < 8 || e3 > 512)
             throw new Error(`unsupported uint type bitSize: ${e3}`);
@@ -7899,7 +7977,7 @@ var algosdk_min = { exports: {} };
           return `uint${this.bitSize}`;
         }
         equals(e3) {
-          return e3 instanceof Ii && this.bitSize === e3.bitSize;
+          return e3 instanceof qi && this.bitSize === e3.bitSize;
         }
         isDynamic() {
           return false;
@@ -7914,15 +7992,15 @@ var algosdk_min = { exports: {} };
             throw new Error(`${e3} is not a non-negative int or too big to fit in size uint${this.bitSize}`);
           if ("number" == typeof e3 && !Number.isSafeInteger(e3))
             throw new Error(`${e3} should be converted into a BigInt before it is encoded`);
-          return Os(e3, this.bitSize / 8);
+          return Fs(e3, this.bitSize / 8);
         }
         decode(e3) {
           if (e3.length !== this.bitSize / 8)
             throw new Error(`byte string must correspond to a uint${this.bitSize}`);
-          return Cs(e3);
+          return Ws(e3);
         }
       }
-      class Bi extends ki {
+      class Di extends ji {
         constructor(e3, t3) {
           if (super(), e3 % 8 != 0 || e3 < 8 || e3 > 512)
             throw new Error(`unsupported ufixed type bitSize: ${e3}`);
@@ -7934,7 +8012,7 @@ var algosdk_min = { exports: {} };
           return `ufixed${this.bitSize}x${this.precision}`;
         }
         equals(e3) {
-          return e3 instanceof Bi && this.bitSize === e3.bitSize && this.precision === e3.precision;
+          return e3 instanceof Di && this.bitSize === e3.bitSize && this.precision === e3.precision;
         }
         isDynamic() {
           return false;
@@ -7949,26 +8027,26 @@ var algosdk_min = { exports: {} };
             throw new Error(`${e3} is not a non-negative int or too big to fit in size ${this.toString()}`);
           if ("number" == typeof e3 && !Number.isSafeInteger(e3))
             throw new Error(`${e3} should be converted into a BigInt before it is encoded`);
-          return Os(e3, this.bitSize / 8);
+          return Fs(e3, this.bitSize / 8);
         }
         decode(e3) {
           if (e3.length !== this.bitSize / 8)
             throw new Error(`byte string must correspond to a ${this.toString()}`);
-          return Cs(e3);
+          return Ws(e3);
         }
       }
-      class Ui extends ki {
+      class Ci extends ji {
         toString() {
           return "address";
         }
         equals(e3) {
-          return e3 instanceof Ui;
+          return e3 instanceof Ci;
         }
         isDynamic() {
           return false;
         }
         byteLen() {
-          return Ai;
+          return ki;
         }
         encode(e3) {
           if ("string" != typeof e3 && !(e3 instanceof Uint8Array))
@@ -7985,18 +8063,18 @@ var algosdk_min = { exports: {} };
           return K(e3);
         }
       }
-      class Pi extends ki {
+      class $i extends ji {
         toString() {
           return "bool";
         }
         equals(e3) {
-          return e3 instanceof Pi;
+          return e3 instanceof $i;
         }
         isDynamic() {
           return false;
         }
         byteLen() {
-          return Ei;
+          return Ii;
         }
         encode(e3) {
           if ("boolean" != typeof e3)
@@ -8014,18 +8092,18 @@ var algosdk_min = { exports: {} };
           throw new Error("boolean could not be decoded from the byte string");
         }
       }
-      class ji extends ki {
+      class Oi extends ji {
         toString() {
           return "byte";
         }
         equals(e3) {
-          return e3 instanceof ji;
+          return e3 instanceof Oi;
         }
         isDynamic() {
           return false;
         }
         byteLen() {
-          return _i;
+          return Ri;
         }
         encode(e3) {
           if ("number" != typeof e3 && "bigint" != typeof e3)
@@ -8040,12 +8118,12 @@ var algosdk_min = { exports: {} };
           return e3[0];
         }
       }
-      class qi extends ki {
+      class Li extends ji {
         toString() {
           return "string";
         }
         equals(e3) {
-          return e3 instanceof qi;
+          return e3 instanceof Li;
         }
         isDynamic() {
           return true;
@@ -8056,19 +8134,19 @@ var algosdk_min = { exports: {} };
         encode(e3) {
           if ("string" != typeof e3 && !(e3 instanceof Uint8Array))
             throw new Error(`Cannot encode value as string: ${e3}`);
-          const t3 = i.lW.from(e3), r2 = Os(t3.length, Si), s2 = new Uint8Array(t3.length + Si);
-          return s2.set(r2), s2.set(t3, Si), s2;
+          const t3 = o.lW.from(e3), r2 = Fs(t3.length, Bi), s2 = new Uint8Array(t3.length + Bi);
+          return s2.set(r2), s2.set(t3, Bi), s2;
         }
         decode(e3) {
-          if (e3.length < Si)
-            throw new Error(`byte string is too short to be decoded. Actual length is ${e3.length}, but expected at least ${Si}`);
-          const t3 = i.lW.from(e3).readUIntBE(0, Si), r2 = e3.slice(Si, e3.length);
+          if (e3.length < Bi)
+            throw new Error(`byte string is too short to be decoded. Actual length is ${e3.length}, but expected at least ${Bi}`);
+          const t3 = o.lW.from(e3).readUIntBE(0, Bi), r2 = e3.slice(Bi, e3.length);
           if (t3 !== r2.length)
             throw new Error(`string length bytes do not match the actual length of string. Expected ${t3}, got ${r2.length}`);
-          return i.lW.from(r2).toString("utf-8");
+          return o.lW.from(r2).toString("utf-8");
         }
       }
-      class Di extends ki {
+      class Mi extends ji {
         constructor(e3, t3) {
           if (super(), t3 < 0)
             throw new Error(`static array must have a non negative length: ${t3}`);
@@ -8078,13 +8156,13 @@ var algosdk_min = { exports: {} };
           return `${this.childType.toString()}[${this.staticLength}]`;
         }
         equals(e3) {
-          return e3 instanceof Di && this.staticLength === e3.staticLength && this.childType.equals(e3.childType);
+          return e3 instanceof Mi && this.staticLength === e3.staticLength && this.childType.equals(e3.childType);
         }
         isDynamic() {
           return this.childType.isDynamic();
         }
         byteLen() {
-          return this.childType.constructor === Pi ? Math.ceil(this.staticLength / 8) : this.staticLength * this.childType.byteLen();
+          return this.childType.constructor === $i ? Math.ceil(this.staticLength / 8) : this.staticLength * this.childType.byteLen();
         }
         encode(e3) {
           if (!(Array.isArray(e3) || e3 instanceof Uint8Array))
@@ -8097,10 +8175,10 @@ var algosdk_min = { exports: {} };
           return this.toABITupleType().decode(e3);
         }
         toABITupleType() {
-          return new Oi(Array(this.staticLength).fill(this.childType));
+          return new Fi(Array(this.staticLength).fill(this.childType));
         }
       }
-      class $i extends ki {
+      class Ni extends ji {
         constructor(e3) {
           super(), this.childType = e3;
         }
@@ -8108,7 +8186,7 @@ var algosdk_min = { exports: {} };
           return `${this.childType.toString()}[]`;
         }
         equals(e3) {
-          return e3 instanceof $i && this.childType.equals(e3.childType);
+          return e3 instanceof Ni && this.childType.equals(e3.childType);
         }
         isDynamic() {
           return true;
@@ -8120,19 +8198,19 @@ var algosdk_min = { exports: {} };
           if (!(Array.isArray(e3) || e3 instanceof Uint8Array))
             throw new Error(`Cannot encode value as ${this.toString()}: ${e3}`);
           const t3 = this.toABITupleType(e3.length), r2 = t3.encode(e3);
-          return k(Os(t3.childTypes.length, Si), r2);
+          return m(Fs(t3.childTypes.length, Bi), r2);
         }
         decode(e3) {
-          const t3 = i.lW.from(e3).readUIntBE(0, Si);
-          return this.toABITupleType(t3).decode(e3.slice(Si, e3.length));
+          const t3 = o.lW.from(e3).readUIntBE(0, Bi);
+          return this.toABITupleType(t3).decode(e3.slice(Bi, e3.length));
         }
         toABITupleType(e3) {
-          return new Oi(Array(e3).fill(this.childType));
+          return new Fi(Array(e3).fill(this.childType));
         }
       }
-      class Oi extends ki {
+      class Fi extends ji {
         constructor(e3) {
-          if (super(), e3.length >= xi)
+          if (super(), e3.length >= Si)
             throw new Error("tuple type child type number larger than maximum uint16 error");
           this.childTypes = e3;
         }
@@ -8143,7 +8221,7 @@ var algosdk_min = { exports: {} };
           return `(${e3.join(",")})`;
         }
         equals(e3) {
-          return e3 instanceof Oi && this.childTypes.length === e3.childTypes.length && this.childTypes.every((t3, r2) => t3.equals(e3.childTypes[r2]));
+          return e3 instanceof Fi && this.childTypes.length === e3.childTypes.length && this.childTypes.every((t3, r2) => t3.equals(e3.childTypes[r2]));
         }
         isDynamic() {
           return this.childTypes.some((e3) => e3.isDynamic());
@@ -8151,8 +8229,8 @@ var algosdk_min = { exports: {} };
         byteLen() {
           let e3 = 0;
           for (let t3 = 0; t3 < this.childTypes.length; t3++)
-            if (this.childTypes[t3].constructor === Pi) {
-              const r2 = Li(this.childTypes, t3, 1), s2 = r2 + 1;
+            if (this.childTypes[t3].constructor === $i) {
+              const r2 = Ki(this.childTypes, t3, 1), s2 = r2 + 1;
               t3 += r2, e3 += Math.trunc((s2 + 7) / 8);
             } else
               e3 += this.childTypes[t3].byteLen();
@@ -8162,7 +8240,7 @@ var algosdk_min = { exports: {} };
           if (!(Array.isArray(e3) || e3 instanceof Uint8Array))
             throw new Error(`Cannot encode value as ${this.toString()}: ${e3}`);
           const t3 = Array.from(e3);
-          if (e3.length > xi)
+          if (e3.length > Si)
             throw new Error("length of tuple array should not exceed a uint16");
           const r2 = this.childTypes, s2 = [], n2 = [], i2 = /* @__PURE__ */ new Map();
           let o2 = 0;
@@ -8171,14 +8249,14 @@ var algosdk_min = { exports: {} };
             if (e4.isDynamic())
               i2.set(s2.length, true), s2.push(new Uint8Array([0, 0])), n2.push(e4.encode(t3[o2]));
             else {
-              if (e4.constructor === Pi) {
-                const e5 = Li(r2, o2, -1);
-                let n3 = Li(r2, o2, 1);
+              if (e4.constructor === $i) {
+                const e5 = Ki(r2, o2, -1);
+                let n3 = Ki(r2, o2, 1);
                 if (e5 % 8 != 0)
                   throw new Error("expected before index should have number of bool mod 8 equal 0");
                 n3 = Math.min(7, n3);
-                const i3 = Ci(t3.slice(o2, o2 + n3 + 1));
-                s2.push(Os(i3, 1)), o2 += n3;
+                const i3 = Wi(t3.slice(o2, o2 + n3 + 1));
+                s2.push(Fs(i3, 1)), o2 += n3;
               } else {
                 const r3 = e4.encode(t3[o2]);
                 s2.push(r3);
@@ -8194,48 +8272,48 @@ var algosdk_min = { exports: {} };
           for (let e4 = 0; e4 < s2.length; e4++) {
             if (i2.get(e4)) {
               const t4 = a2 + c2;
-              if (t4 > xi)
+              if (t4 > Si)
                 throw new Error(`byte length of ${t4} should not exceed a uint16`);
-              s2[e4] = Os(t4, Si);
+              s2[e4] = Fs(t4, Bi);
             }
             c2 += n2[e4].length;
           }
-          return k(...s2, ...n2);
+          return m(...s2, ...n2);
         }
         decode(e3) {
           const t3 = this.childTypes, r2 = [], s2 = [];
-          let n2 = 0, o2 = 0;
-          const a2 = i.lW.from(e3);
+          let n2 = 0, i2 = 0;
+          const a2 = o.lW.from(e3);
           for (; n2 < t3.length; ) {
-            const i2 = t3[n2];
-            if (i2.isDynamic()) {
-              if (e3.slice(o2, e3.length).length < Si)
+            const o2 = t3[n2];
+            if (o2.isDynamic()) {
+              if (e3.slice(i2, e3.length).length < Bi)
                 throw new Error("dynamic type in tuple is too short to be decoded");
-              const t4 = a2.readUIntBE(o2, Si);
+              const t4 = a2.readUIntBE(i2, Bi);
               if (r2.length > 0 && (r2[r2.length - 1].right = t4, t4 < r2[r2.length - 1].left))
                 throw new Error("dynamic index segment miscalculation: left is greater than right index");
               const n3 = { left: t4, right: -1 };
-              r2.push(n3), s2.push(null), o2 += Si;
-            } else if (i2.constructor === Pi) {
-              const t4 = Li(this.childTypes, n2, -1);
-              let r3 = Li(this.childTypes, n2, 1);
+              r2.push(n3), s2.push(null), i2 += Bi;
+            } else if (o2.constructor === $i) {
+              const t4 = Ki(this.childTypes, n2, -1);
+              let r3 = Ki(this.childTypes, n2, 1);
               if (t4 % 8 != 0)
                 throw new Error("expected before bool number mod 8 === 0");
               r3 = Math.min(7, r3);
               for (let t5 = 0; t5 <= r3; t5++) {
                 const r4 = 128 >> t5;
-                (e3[o2] & r4) > 0 ? s2.push(new Uint8Array([128])) : s2.push(new Uint8Array([0]));
+                (e3[i2] & r4) > 0 ? s2.push(new Uint8Array([128])) : s2.push(new Uint8Array([0]));
               }
-              n2 += r3, o2 += 1;
+              n2 += r3, i2 += 1;
             } else {
-              const t4 = i2.byteLen();
-              s2.push(e3.slice(o2, o2 + t4)), o2 += t4;
+              const t4 = o2.byteLen();
+              s2.push(e3.slice(i2, i2 + t4)), i2 += t4;
             }
-            if (n2 !== t3.length - 1 && o2 >= e3.length)
+            if (n2 !== t3.length - 1 && i2 >= e3.length)
               throw new Error("input byte not enough to decode");
             n2 += 1;
           }
-          if (r2.length > 0 && (r2[r2.length - 1].right = e3.length, o2 = e3.length), o2 < e3.length)
+          if (r2.length > 0 && (r2[r2.length - 1].right = e3.length, i2 = e3.length), i2 < e3.length)
             throw new Error("input byte not fully consumed");
           for (let e4 = 0; e4 < r2.length; e4++) {
             const t4 = r2[e4];
@@ -8270,7 +8348,7 @@ var algosdk_min = { exports: {} };
           return t3;
         }
       }
-      function Ci(e3) {
+      function Wi(e3) {
         let t3 = 0;
         if (e3.length > 8)
           throw new Error("value list passed in should be no greater than length 8");
@@ -8282,11 +8360,11 @@ var algosdk_min = { exports: {} };
         }
         return t3;
       }
-      function Li(e3, t3, r2) {
+      function Ki(e3, t3, r2) {
         let s2 = 0;
         for (; ; ) {
           const n2 = t3 + r2 * s2;
-          if (e3[n2].constructor !== Pi) {
+          if (e3[n2].constructor !== $i) {
             s2 -= 1;
             break;
           }
@@ -8300,39 +8378,39 @@ var algosdk_min = { exports: {} };
         }
         return s2;
       }
-      var Mi, Ni;
-      function Fi(e3) {
-        return e3 === Mi.any || e3 === Mi.pay || e3 === Mi.keyreg || e3 === Mi.acfg || e3 === Mi.axfer || e3 === Mi.afrz || e3 === Mi.appl;
+      var zi, Vi;
+      function Gi(e3) {
+        return e3 === zi.any || e3 === zi.pay || e3 === zi.keyreg || e3 === zi.acfg || e3 === zi.axfer || e3 === zi.afrz || e3 === zi.appl;
       }
-      function Wi(e3, t3) {
-        return e3 === Mi.any || t3.type && t3.type.toString() === e3.toString();
+      function Hi(e3, t3) {
+        return e3 === zi.any || t3.type && t3.type.toString() === e3.toString();
       }
-      function Ki(e3) {
-        return e3 === Ni.account || e3 === Ni.application || e3 === Ni.asset;
+      function Yi(e3) {
+        return e3 === Vi.account || e3 === Vi.application || e3 === Vi.asset;
       }
       !function(e3) {
         e3.any = "txn", e3.pay = "pay", e3.keyreg = "keyreg", e3.acfg = "acfg", e3.axfer = "axfer", e3.afrz = "afrz", e3.appl = "appl";
-      }(Mi || (Mi = {})), function(e3) {
+      }(zi || (zi = {})), function(e3) {
         e3.account = "account", e3.application = "application", e3.asset = "asset";
-      }(Ni || (Ni = {}));
-      class zi {
+      }(Vi || (Vi = {}));
+      class Ji {
         constructor(e3) {
           if ("string" != typeof e3.name || "object" != typeof e3.returns || !Array.isArray(e3.args))
             throw new Error("Invalid ABIMethod parameters");
-          this.name = e3.name, this.description = e3.desc, this.args = e3.args.map(({ type: e4, name: t3, desc: r2 }) => Fi(e4) || Ki(e4) ? { type: e4, name: t3, description: r2 } : { type: ki.from(e4), name: t3, description: r2 }), this.returns = { type: "void" === e3.returns.type ? e3.returns.type : ki.from(e3.returns.type), description: e3.returns.desc };
+          this.name = e3.name, this.description = e3.desc, this.args = e3.args.map(({ type: e4, name: t3, desc: r2 }) => Gi(e4) || Yi(e4) ? { type: e4, name: t3, description: r2 } : { type: ji.from(e4), name: t3, description: r2 }), this.returns = { type: "void" === e3.returns.type ? e3.returns.type : ji.from(e3.returns.type), description: e3.returns.desc };
         }
         getSignature() {
           const e3 = this.args.map((e4) => e4.type.toString()).join(","), t3 = this.returns.type.toString();
           return `${this.name}(${e3})${t3}`;
         }
         getSelector() {
-          const e3 = l(this.getSignature());
+          const e3 = y(this.getSignature());
           return new Uint8Array(e3.slice(0, 4));
         }
         txnCount() {
           let e3 = 1;
           for (const t3 of this.args)
-            "string" == typeof t3.type && Fi(t3.type) && (e3 += 1);
+            "string" == typeof t3.type && Gi(t3.type) && (e3 += 1);
           return e3;
         }
         toJSON() {
@@ -8359,13 +8437,13 @@ var algosdk_min = { exports: {} };
             }
             if (-1 === r3)
               throw new Error(`Invalid method signature: ${e4}`);
-            return { name: e4.slice(0, t4), args: Oi.parseTupleContent(e4.slice(t4 + 1, r3)), returns: e4.slice(r3 + 1) };
+            return { name: e4.slice(0, t4), args: Fi.parseTupleContent(e4.slice(t4 + 1, r3)), returns: e4.slice(r3 + 1) };
           }(e3);
-          return new zi({ name: t3, args: r2.map((e4) => ({ type: e4 })), returns: { type: s2 } });
+          return new Ji({ name: t3, args: r2.map((e4) => ({ type: e4 })), returns: { type: s2 } });
         }
       }
-      function Vi(e3, t3) {
-        if (null === e3 || !Array.isArray(e3) || !e3.every((e4) => e4 instanceof zi))
+      function Xi(e3, t3) {
+        if (null === e3 || !Array.isArray(e3) || !e3.every((e4) => e4 instanceof Ji))
           throw new Error("Methods list provided is null or not the correct type");
         const r2 = e3.filter((e4) => e4.name === t3);
         if (r2.length > 1)
@@ -8374,35 +8452,35 @@ var algosdk_min = { exports: {} };
           throw new Error(`found 0 methods with the name ${t3}`);
         return r2[0];
       }
-      class Gi {
+      class Zi {
         constructor(e3) {
           if ("string" != typeof e3.name || !Array.isArray(e3.methods) || e3.networks && "object" != typeof e3.networks)
             throw new Error("Invalid ABIContract parameters");
-          this.name = e3.name, this.description = e3.desc, this.networks = e3.networks ? { ...e3.networks } : {}, this.methods = e3.methods.map((e4) => new zi(e4));
+          this.name = e3.name, this.description = e3.desc, this.networks = e3.networks ? { ...e3.networks } : {}, this.methods = e3.methods.map((e4) => new Ji(e4));
         }
         toJSON() {
           return { name: this.name, desc: this.description, networks: this.networks, methods: this.methods.map((e3) => e3.toJSON()) };
         }
         getMethodByName(e3) {
-          return Vi(this.methods, e3);
+          return Xi(this.methods, e3);
         }
       }
-      class Hi {
+      class Qi {
         constructor(e3) {
           if ("string" != typeof e3.name || !Array.isArray(e3.methods))
             throw new Error("Invalid ABIInterface parameters");
-          this.name = e3.name, this.description = e3.desc, this.methods = e3.methods.map((e4) => new zi(e4));
+          this.name = e3.name, this.description = e3.desc, this.methods = e3.methods.map((e4) => new Ji(e4));
         }
         toJSON() {
           return { name: this.name, desc: this.description, methods: this.methods.map((e3) => e3.toJSON()) };
         }
         getMethodByName(e3) {
-          return Vi(this.methods, e3);
+          return Xi(this.methods, e3);
         }
       }
-      const Yi = i.lW.from([21, 31, 124, 117]);
-      var Ji;
-      function Xi(e3, t3, r2) {
+      const eo = o.lW.from([21, 31, 124, 117]);
+      var to;
+      function ro(e3, t3, r2) {
         if (null != r2 && e3 === r2)
           return 0;
         const s2 = null == r2 ? 0 : 1;
@@ -8413,10 +8491,10 @@ var algosdk_min = { exports: {} };
       }
       !function(e3) {
         e3[e3.BUILDING = 0] = "BUILDING", e3[e3.BUILT = 1] = "BUILT", e3[e3.SIGNED = 2] = "SIGNED", e3[e3.SUBMITTED = 3] = "SUBMITTED", e3[e3.COMMITTED = 4] = "COMMITTED";
-      }(Ji || (Ji = {}));
-      class Zi {
+      }(to || (to = {}));
+      class so {
         constructor() {
-          this.status = Ji.BUILDING, this.transactions = [], this.methodCalls = /* @__PURE__ */ new Map(), this.signedTxns = [], this.txIDs = [];
+          this.status = to.BUILDING, this.transactions = [], this.methodCalls = /* @__PURE__ */ new Map(), this.signedTxns = [], this.txIDs = [];
         }
         getStatus() {
           return this.status;
@@ -8425,23 +8503,23 @@ var algosdk_min = { exports: {} };
           return this.transactions.length;
         }
         clone() {
-          const e3 = new Zi();
+          const e3 = new so();
           return e3.transactions = this.transactions.map(({ txn: e4, signer: t3 }) => ({ txn: se.from_obj_for_encoding({ ...e4.get_obj_for_encoding(), grp: void 0 }), signer: t3 })), e3.methodCalls = new Map(this.methodCalls), e3;
         }
         addTransaction(e3) {
-          if (this.status !== Ji.BUILDING)
+          if (this.status !== to.BUILDING)
             throw new Error("Cannot add transactions when composer status is not BUILDING");
-          if (this.transactions.length === Zi.MAX_GROUP_SIZE)
-            throw new Error(`Adding an additional transaction exceeds the maximum atomic group size of ${Zi.MAX_GROUP_SIZE}`);
+          if (this.transactions.length === so.MAX_GROUP_SIZE)
+            throw new Error(`Adding an additional transaction exceeds the maximum atomic group size of ${so.MAX_GROUP_SIZE}`);
           if (e3.txn.group && e3.txn.group.some((e4) => 0 !== e4))
             throw new Error("Cannot add a transaction with nonzero group ID");
           this.transactions.push(e3);
         }
         addMethodCall({ appID: e3, method: t3, methodArgs: r2, sender: s2, suggestedParams: n2, onComplete: i2, approvalProgram: o2, clearProgram: a2, numGlobalInts: c2, numGlobalByteSlices: u2, numLocalInts: l2, numLocalByteSlices: h2, extraPages: d2, appAccounts: p2, appForeignApps: f2, appForeignAssets: g2, boxes: m2, note: y2, lease: w2, rekeyTo: b2, signer: v2 }) {
-          if (this.status !== Ji.BUILDING)
+          if (this.status !== to.BUILDING)
             throw new Error("Cannot add transactions when composer status is not BUILDING");
-          if (this.transactions.length + t3.txnCount() > Zi.MAX_GROUP_SIZE)
-            throw new Error(`Adding additional transactions exceeds the maximum atomic group size of ${Zi.MAX_GROUP_SIZE}`);
+          if (this.transactions.length + t3.txnCount() > so.MAX_GROUP_SIZE)
+            throw new Error(`Adding additional transactions exceeds the maximum atomic group size of ${so.MAX_GROUP_SIZE}`);
           if (0 === e3) {
             if (null == o2 || null == a2 || null == c2 || null == u2 || null == l2 || null == h2)
               throw new Error("One of the following required parameters for application creation is missing: approvalProgram, clearProgram, numGlobalInts, numGlobalByteSlices, numLocalInts, numLocalByteSlices");
@@ -8455,75 +8533,75 @@ var algosdk_min = { exports: {} };
           if (null == r2 && (r2 = []), r2.length !== t3.args.length)
             throw new Error(`Incorrect number of method arguments. Expected ${t3.args.length}, got ${r2.length}`);
           let x2 = [], A2 = [];
-          const _2 = [], E2 = [], S2 = [], T2 = /* @__PURE__ */ new Map(), R2 = m2 || [];
+          const _2 = [], E2 = [], T2 = [], S2 = /* @__PURE__ */ new Map(), k2 = m2 || [];
           for (let e4 = 0; e4 < r2.length; e4++) {
             let s3 = t3.args[e4].type;
             const n3 = r2[e4];
-            if (Fi(s3)) {
-              if (!vi(n3) || !Wi(s3, n3.txn))
+            if (Gi(s3)) {
+              if (!Ti(n3) || !Hi(s3, n3.txn))
                 throw new Error(`Expected ${s3} TransactionWithSigner for argument at index ${e4}`);
               if (n3.txn.group && n3.txn.group.some((e5) => 0 !== e5))
                 throw new Error("Cannot add a transaction with nonzero group ID");
               _2.push(n3);
             } else {
-              if (vi(n3))
+              if (Ti(n3))
                 throw new Error(`Expected non-transaction value for argument at index ${e4}`);
-              if (Ki(s3) && (T2.set(E2.length, x2.length), E2.push(s3), S2.push(n3), s3 = new Ii(8)), "string" == typeof s3)
+              if (Yi(s3) && (S2.set(E2.length, x2.length), E2.push(s3), T2.push(n3), s3 = new qi(8)), "string" == typeof s3)
                 throw new Error(`Unknown ABI type: ${s3}`);
               x2.push(s3), A2.push(n3);
             }
           }
-          const k2 = [], I2 = null == p2 ? [] : p2.slice(), B2 = null == f2 ? [] : f2.slice(), U2 = null == g2 ? [] : g2.slice();
+          const R2 = [], I2 = null == p2 ? [] : p2.slice(), B2 = null == f2 ? [] : f2.slice(), U2 = null == g2 ? [] : g2.slice();
           for (let t4 = 0; t4 < E2.length; t4++) {
-            const r3 = E2[t4], n3 = S2[t4];
+            const r3 = E2[t4], n3 = T2[t4];
             let i3 = 0;
             switch (r3) {
-              case Ni.account: {
-                const e4 = new Ui();
-                i3 = Xi(e4.decode(e4.encode(n3)), I2, s2);
+              case Vi.account: {
+                const e4 = new Ci();
+                i3 = ro(e4.decode(e4.encode(n3)), I2, s2);
                 break;
               }
-              case Ni.application: {
-                const t5 = new Ii(64), r4 = t5.decode(t5.encode(n3));
+              case Vi.application: {
+                const t5 = new qi(64), r4 = t5.decode(t5.encode(n3));
                 if (r4 > Number.MAX_SAFE_INTEGER)
                   throw new Error(`Expected safe integer for application value, got ${r4}`);
-                i3 = Xi(Number(r4), B2, e3);
+                i3 = ro(Number(r4), B2, e3);
                 break;
               }
-              case Ni.asset: {
-                const e4 = new Ii(64), t5 = e4.decode(e4.encode(n3));
+              case Vi.asset: {
+                const e4 = new qi(64), t5 = e4.decode(e4.encode(n3));
                 if (t5 > Number.MAX_SAFE_INTEGER)
                   throw new Error(`Expected safe integer for asset value, got ${t5}`);
-                i3 = Xi(Number(t5), U2);
+                i3 = ro(Number(t5), U2);
                 break;
               }
               default:
                 throw new Error(`Unknown reference type: ${r3}`);
             }
-            k2.push(i3);
+            R2.push(i3);
           }
-          for (let e4 = 0; e4 < k2.length; e4++)
-            A2[T2.get(e4)] = k2[e4];
+          for (let e4 = 0; e4 < R2.length; e4++)
+            A2[S2.get(e4)] = R2[e4];
           if (x2.length > 15) {
             const e4 = x2.slice(14), t4 = A2.slice(14);
-            x2 = x2.slice(0, 14), A2 = A2.slice(0, 14), x2.push(new Oi(e4)), A2.push(t4);
+            x2 = x2.slice(0, 14), A2 = A2.slice(0, 14), x2.push(new Fi(e4)), A2.push(t4);
           }
           const P2 = [t3.getSelector()];
           for (let e4 = 0; e4 < x2.length; e4++)
             P2.push(x2[e4].encode(A2[e4]));
-          const j2 = { txn: gi({ from: s2, appIndex: e3, appArgs: P2, accounts: I2, foreignApps: B2, foreignAssets: U2, boxes: R2, onComplete: null == i2 ? ee.NoOpOC : i2, approvalProgram: o2, clearProgram: a2, numGlobalInts: c2, numGlobalByteSlices: u2, numLocalInts: l2, numLocalByteSlices: h2, extraPages: d2, lease: w2, note: y2, rekeyTo: b2, suggestedParams: n2 }), signer: v2 };
+          const j2 = { txn: vi({ from: s2, appIndex: e3, appArgs: P2, accounts: I2, foreignApps: B2, foreignAssets: U2, boxes: k2, onComplete: null == i2 ? ee.NoOpOC : i2, approvalProgram: o2, clearProgram: a2, numGlobalInts: c2, numGlobalByteSlices: u2, numLocalInts: l2, numLocalByteSlices: h2, extraPages: d2, lease: w2, note: y2, rekeyTo: b2, suggestedParams: n2 }), signer: v2 };
           this.transactions.push(..._2, j2), this.methodCalls.set(this.transactions.length - 1, t3);
         }
         buildGroup() {
-          if (this.status === Ji.BUILDING) {
+          if (this.status === to.BUILDING) {
             if (0 === this.transactions.length)
               throw new Error("Cannot build a group with 0 transactions");
-            this.transactions.length > 1 && en(this.transactions.map((e3) => e3.txn)), this.status = Ji.BUILT;
+            this.transactions.length > 1 && on(this.transactions.map((e3) => e3.txn)), this.status = to.BUILT;
           }
           return this.transactions;
         }
         async gatherSignatures() {
-          if (this.status >= Ji.SIGNED)
+          if (this.status >= to.SIGNED)
             return this.signedTxns;
           const e3 = this.buildGroup(), t3 = e3.map((e4) => e4.txn), r2 = /* @__PURE__ */ new Map();
           for (let t4 = 0; t4 < e3.length; t4++) {
@@ -8545,40 +8623,40 @@ var algosdk_min = { exports: {} };
               throw new Error(`Cannot decode signed transaction at index ${t4}. ${e5}`);
             }
           });
-          return this.signedTxns = i2, this.txIDs = o2, this.status = Ji.SIGNED, i2;
+          return this.signedTxns = i2, this.txIDs = o2, this.status = to.SIGNED, i2;
         }
         async submit(e3) {
-          if (this.status > Ji.SUBMITTED)
+          if (this.status > to.SUBMITTED)
             throw new Error("Transaction group cannot be resubmitted");
           const t3 = await this.gatherSignatures();
-          return await e3.sendRawTransaction(t3).do(), this.status = Ji.SUBMITTED, this.txIDs;
+          return await e3.sendRawTransaction(t3).do(), this.status = to.SUBMITTED, this.txIDs;
         }
         async simulate(e3, t3) {
-          if (this.status > Ji.SUBMITTED)
+          if (this.status > to.SUBMITTED)
             throw new Error("Simulated Transaction group has already been submitted to the network");
-          const r2 = (await this.gatherSignatures()).map((e4) => Z(e4)), s2 = null == t3 ? new it({ txnGroups: [] }) : t3;
-          s2.txnGroups = [new ot({ txns: r2 })];
+          const r2 = (await this.gatherSignatures()).map((e4) => Z(e4)), s2 = null == t3 ? new at({ txnGroups: [] }) : t3;
+          s2.txnGroups = [new ct({ txns: r2 })];
           const n2 = await e3.simulateTransactions(s2).do(), i2 = [];
           for (const [e4, t4] of this.methodCalls) {
             const r3 = this.txIDs[e4], s3 = n2.txnGroups[0].txnResults[e4].txnResult, o2 = { txID: r3, rawReturnValue: new Uint8Array(), method: t4 };
-            i2.push(Zi.parseMethodResponse(t4, o2, s3.get_obj_for_encoding()));
+            i2.push(so.parseMethodResponse(t4, o2, s3.get_obj_for_encoding()));
           }
           return { methodResults: i2, simulateResponse: n2 };
         }
         async execute(e3, t3) {
-          if (this.status === Ji.COMMITTED)
+          if (this.status === to.COMMITTED)
             throw new Error("Transaction group has already been executed successfully");
           const r2 = await this.submit(e3);
-          this.status = Ji.SUBMITTED;
-          const s2 = this.transactions.findIndex((e4, t4) => this.methodCalls.has(t4)), n2 = -1 === s2 ? 0 : s2, i2 = await $s(e3, r2[n2], t3);
-          this.status = Ji.COMMITTED;
+          this.status = to.SUBMITTED;
+          const s2 = this.transactions.findIndex((e4, t4) => this.methodCalls.has(t4)), n2 = -1 === s2 ? 0 : s2, i2 = await Ns(e3, r2[n2], t3);
+          this.status = to.COMMITTED;
           const o2 = i2["confirmed-round"], a2 = [];
           for (const [t4, n3] of this.methodCalls) {
             const o3 = r2[t4];
             let c2 = { txID: o3, rawReturnValue: new Uint8Array(), method: n3 };
             try {
               const r3 = t4 === s2 ? i2 : await e3.pendingTransactionInformation(o3).do();
-              c2 = Zi.parseMethodResponse(n3, c2, r3);
+              c2 = so.parseMethodResponse(n3, c2, r3);
             } catch (e4) {
               c2.decodeError = e4;
             }
@@ -8593,10 +8671,10 @@ var algosdk_min = { exports: {} };
               const n2 = r2.logs || [];
               if (0 === n2.length)
                 throw new Error("App call transaction did not log a return value");
-              const o2 = i.lW.from(n2[n2.length - 1], "base64");
-              if (o2.byteLength < 4 || !o2.slice(0, 4).equals(Yi))
+              const i2 = o.lW.from(n2[n2.length - 1], "base64");
+              if (i2.byteLength < 4 || !i2.slice(0, 4).equals(eo))
                 throw new Error("App call transaction did not log a return value");
-              s2.rawReturnValue = new Uint8Array(o2.slice(4)), s2.returnValue = e3.returns.type.decode(t3.rawReturnValue);
+              s2.rawReturnValue = new Uint8Array(i2.slice(4)), s2.returnValue = e3.returns.type.decode(t3.rawReturnValue);
             }
           } catch (e4) {
             s2.decodeError = e4;
@@ -8604,32 +8682,32 @@ var algosdk_min = { exports: {} };
           return s2;
         }
       }
-      Zi.MAX_GROUP_SIZE = 16;
-      const Qi = i.lW.from([77, 88]), eo = "The transaction sender address and multisig preimage do not match.";
-      function to(e3, t3) {
+      so.MAX_GROUP_SIZE = 16;
+      const no = o.lW.from([77, 88]), io = "The transaction sender address and multisig preimage do not match.";
+      function oo(e3, t3) {
         if (void 0 === e3.from) {
-          const r3 = p(t3);
+          const r3 = v(t3);
           e3.from = K(r3.publicKey);
         }
         const r2 = ce(e3);
         return { txID: r2.txID().toString(), blob: r2.signTxn(t3) };
       }
-      function ro(e3, t3) {
+      function ao(e3, t3) {
         return new ue(e3).signBid(t3);
       }
-      function so(e3, t3) {
-        return f(i.lW.from(k(Qi, e3)), t3);
+      function co(e3, t3) {
+        return x(o.lW.from(m(no, e3)), t3);
       }
-      function no(e3, t3, r2) {
-        return m(i.lW.from(k(Qi, e3)), t3, F(r2).publicKey);
+      function uo(e3, t3, r2) {
+        return _(o.lW.from(m(no, e3)), t3, F(r2).publicKey);
       }
-      function io(e3) {
+      function lo(e3) {
         return new Uint8Array(X(e3));
       }
-      function oo(e3) {
+      function ho(e3) {
         return Z(e3);
       }
-      const ao = new Error(eo), co = new Error(he), uo = n;
+      const po = new Error(io), fo = new Error(he), go = n;
     })(), s;
   })());
 })(algosdk_min);

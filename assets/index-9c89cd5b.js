@@ -244,9 +244,9 @@ function requireLottieWebLight() {
             this._cbs[eventName] = [];
           }
           this._cbs[eventName].push(callback);
-          return function() {
+          return (function() {
             this.removeEventListener(eventName, callback);
-          }.bind(this);
+          }).bind(this);
         },
         removeEventListener: function(eventName, callback) {
           if (!callback) {
@@ -4460,14 +4460,14 @@ function requireLottieWebLight() {
         }
         function testImageLoaded(img) {
           var _count = 0;
-          var intervalId = setInterval(function() {
+          var intervalId = setInterval((function() {
             var box = img.getBBox();
             if (box.width || _count > 500) {
               this._imageLoaded();
               clearInterval(intervalId);
             }
             _count += 1;
-          }.bind(this), 50);
+          }).bind(this), 50);
         }
         function createImageData(assetData) {
           var path = getAssetsPath(assetData, this.assetsPath, this.path);
@@ -4477,10 +4477,10 @@ function requireLottieWebLight() {
           } else {
             img.addEventListener("load", this._imageLoaded, false);
           }
-          img.addEventListener("error", function() {
+          img.addEventListener("error", (function() {
             ob.img = proxyImage;
             this._imageLoaded();
-          }.bind(this), false);
+          }).bind(this), false);
           img.setAttributeNS("http://www.w3.org/1999/xlink", "href", path);
           if (this._elementHelper.append) {
             this._elementHelper.append(img);
@@ -4498,10 +4498,10 @@ function requireLottieWebLight() {
           var img = createTag("img");
           img.crossOrigin = "anonymous";
           img.addEventListener("load", this._imageLoaded, false);
-          img.addEventListener("error", function() {
+          img.addEventListener("error", (function() {
             ob.img = proxyImage;
             this._imageLoaded();
-          }.bind(this), false);
+          }).bind(this), false);
           img.src = path;
           var ob = {
             img,
@@ -4514,13 +4514,13 @@ function requireLottieWebLight() {
             assetData: data
           };
           var path = getAssetsPath(data, this.assetsPath, this.path);
-          dataManager.loadData(path, function(footageData) {
+          dataManager.loadData(path, (function(footageData) {
             ob.img = footageData;
             this._footageLoaded();
-          }.bind(this), function() {
+          }).bind(this), (function() {
             ob.img = {};
             this._footageLoaded();
-          }.bind(this));
+          }).bind(this));
           return ob;
         }
         function loadAssets(assets, cb) {
@@ -8729,9 +8729,9 @@ function requireLottieWebLight() {
         this.timeCompleted = segment.time * this.frameRate;
         var segmentPath = this.path + this.fileName + "_" + this.segmentPos + ".json";
         this.segmentPos += 1;
-        dataManager.loadData(segmentPath, this.includeLayers.bind(this), function() {
+        dataManager.loadData(segmentPath, this.includeLayers.bind(this), (function() {
           this.trigger("data_failed");
-        }.bind(this));
+        }).bind(this));
       };
       AnimationItem.prototype.loadSegments = function() {
         var segments = this.animationData.segments;
@@ -8800,9 +8800,9 @@ function requireLottieWebLight() {
             expressionsPlugin.initExpressions(this);
           }
           this.renderer.initItems();
-          setTimeout(function() {
+          setTimeout((function() {
             this.trigger("DOMLoaded");
-          }.bind(this), 0);
+          }).bind(this), 0);
           this.gotoFrame();
           if (this.autoplay) {
             this.play();

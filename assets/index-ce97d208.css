@@ -1,5 +1,5 @@
 
-header[data-v-8437e3b6] {
+header[data-v-c69686f0] {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -10,7 +10,7 @@ header[data-v-8437e3b6] {
 	align-items: center;
 	justify-content: flex-end;
 }
-.wallet-list[data-v-8437e3b6] {
+.wallet-list[data-v-c69686f0] {
 	position: absolute;
 	top: 48px;
 	right: 20px;
@@ -22,19 +22,19 @@ header[data-v-8437e3b6] {
 	box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 	border-radius: 6px;
 }
-.wallet-list-item[data-v-8437e3b6] {
+.wallet-list-item[data-v-c69686f0] {
 	display: flex;
 	align-items: center;
 	border-top: 1px solid rgba(0,0,0,0.5);
 	color: #000;
 	font-weight: bold;
 }
-.active-account-details[data-v-8437e3b6] {
+.active-account-details[data-v-c69686f0] {
 	width: 300px;
 	margin: 0 auto 1em;
 	color: #000;
 }
-button[data-v-8437e3b6] {
+button[data-v-c69686f0] {
 	padding: 0 12px;
 	margin: 2px;
 	--h: 48px;

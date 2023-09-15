@@ -1,4 +1,4 @@
-import { c as commonjsRequire, r as require$$0 } from "./index-7454982e.js";
+import { c as commonjsRequire, r as require$$0 } from "./index-ba02b125.js";
 var algosdk_min = { exports: {} };
 /*! For license information please see algosdk.min.js.LICENSE.txt */
 (function(module, exports) {
@@ -26,9 +26,9 @@ var algosdk_min = { exports: {} };
           var s2 = /* @__PURE__ */ Object.create(null);
           if (r2.r(s2), Object.defineProperty(s2, "default", { enumerable: true, value: e4 }), 2 & t3 && "string" != typeof e4)
             for (var n in e4)
-              r2.d(s2, n, function(t4) {
+              r2.d(s2, n, (function(t4) {
                 return e4[t4];
-              }.bind(null, n));
+              }).bind(null, n));
           return s2;
         }, r2.n = function(e4) {
           var t3 = e4 && e4.__esModule ? function() {
@@ -1908,9 +1908,9 @@ var algosdk_min = { exports: {} };
           }, B.valueOf = B.toJSON = function() {
             return H(this);
           }, B._isBigNumber = true, null != t3 && W.set(t3), W;
-        }(), i.default = i.BigNumber = i, void 0 === (s2 = function() {
+        }(), i.default = i.BigNumber = i, void 0 === (s2 = (function() {
           return i;
-        }.call(t2, r2, t2, e2)) || (e2.exports = s2);
+        }).call(t2, r2, t2, e2)) || (e2.exports = s2);
       }();
     }, 486: (e2, t2, r2) => {
       const s2 = r2(155), n = r2(525), i = "function" == typeof Symbol && "function" == typeof Symbol.for ? Symbol.for("nodejs.util.inspect.custom") : null;
@@ -3096,9 +3096,9 @@ var algosdk_min = { exports: {} };
             return h2;
           }(e3);
         }, decode: h };
-        h.asBytes = l, n ? e2.exports = d : (t3.base32 = d, i && (void 0 === (s2 = function() {
+        h.asBytes = l, n ? e2.exports = d : (t3.base32 = d, i && (void 0 === (s2 = (function() {
           return d;
-        }.call(d, r2, d, e2)) || (e2.exports = s2)));
+        }).call(d, r2, d, e2)) || (e2.exports = s2)));
       }();
     }, 525: (e2, t2) => {
       t2.read = function(e3, t3, r2, s2, n) {
@@ -3273,9 +3273,9 @@ var algosdk_min = { exports: {} };
           return e3;
         };
         var A = y(512);
-        A.sha512 = A, A.sha384 = y(384), A.sha512_256 = y(256), A.sha512_224 = y(224), A.sha512.hmac = b(512), A.sha384.hmac = b(384), A.sha512_256.hmac = b(256), A.sha512_224.hmac = b(224), a ? e2.exports = A : (i.sha512 = A.sha512, i.sha384 = A.sha384, i.sha512_256 = A.sha512_256, i.sha512_224 = A.sha512_224, c && (void 0 === (s2 = function() {
+        A.sha512 = A, A.sha384 = y(384), A.sha512_256 = y(256), A.sha512_224 = y(224), A.sha512.hmac = b(512), A.sha384.hmac = b(384), A.sha512_256.hmac = b(256), A.sha512_224.hmac = b(224), a ? e2.exports = A : (i.sha512 = A.sha512, i.sha384 = A.sha384, i.sha512_256 = A.sha512_256, i.sha512_224 = A.sha512_224, c && (void 0 === (s2 = (function() {
           return A;
-        }.call(A, r2, A, e2)) || (e2.exports = s2)));
+        }).call(A, r2, A, e2)) || (e2.exports = s2)));
       }();
     }, 360: (e2, t2, r2) => {
       var s2 = r2(592).stringify, n = r2(385);
