@@ -7,8 +7,8 @@ export default defineConfig({
 	format: ['esm', 'cjs' ],
 	tsconfig: './tsconfig.json',
 	outDir: './dist',
-	dts: true, // requires typescript peer dep
 	clean: true, // cleans outDir before build
+	dts: true, // requires typescript peer dep
 
 	// iife / global build
 	// if doing this, add tp pkg.json
@@ -29,17 +29,16 @@ export default defineConfig({
 		...Object.keys(pkg.devDependencies),
 	],
 
-	// platform: 'browser', // turn on to make lib browser compatible (auto shims require, buffer, process, etc -- is this true?)
 	platform: 'neutral',
-	// keepNames: false,
-	// splitting: true,
+	keepNames: false,
+	splitting: true,
 	minify: true, // makes built file ~31kb
-	// treeshake: true,
+	treeshake: true,
 	// sourcemap: true,
 
 	// === DEV CONFIG ===
-	keepNames: true,
-	splitting: false,
+	// keepNames: true,
+	// splitting: false,
 	// minify: false,
-	treeshake: false,
+	// treeshake: false,
 });

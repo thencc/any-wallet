@@ -54,6 +54,10 @@
 		<button v-if="awState.activeWallet !== null" @click="doTxnSimpleAlgJs" :disabled="!(awState.activeWallet !== null)">
 			sign transaction test
 		</button>
+		<br />
+		<button v-if="awState.activeWallet !== null" @click="doTxnSimpleAlgosdk" :disabled="!(awState.activeWallet !== null)">
+			sign transaction test (algosdk)
+		</button>
 
 		<!-- <br />
 		<button @click="doUnsub">
@@ -69,16 +73,23 @@ import {
 	WALLET_ID,
 } from '@thencc/any-wallet';
 
-// helper lib for constructing + submitting txns
+// algonautjs - helper lib for constructing + submitting txns
 import { Algonaut } from '@thencc/algonautjs';
 const algonaut = new Algonaut();;
-// https://testnet-api.algonode.cloud
-// https://mainnet-api.algonode.cloud
-
 const awState = new AnyWalletState({
 	storageKey: 'state1',
 });
 
+// algosdk - main algorand sdk
+import algosdk from 'algosdk';
+const algodClient = new algosdk.Algodv2(
+	'', 
+	'https://testnet-api.algonode.cloud', 
+	''
+);
+
+// https://testnet-api.algonode.cloud
+// https://mainnet-api.algonode.cloud
 
 const unsubAcctChange1 = awState.subscribeToAccountChanges(
 	(acct) => {
@@ -142,10 +153,55 @@ export default defineComponent({
 			});
 			console.log('txn', txn);
 
-			const txnArr = txn.transaction.toByte();
+			const txnBytes = txn.transaction.toByte();
+			const txnArray = [
+				txnBytes
+			];
 
 			try {
-				let res = await awState.signTransactions([txnArr]);
+				let res = await awState.signTransactions(txnArray);
+				console.log('res', res);
+			} catch(e) {
+				console.warn(e);
+			}
+
+			// send it!
+			// 	const groupedTxn = await algonaut.algodClient.sendRawTransaction(inkeyRes.signedTxns).do();
+			// 	console.log('groupedTxn', groupedTxn);
+			// 	console.log('id: ', groupedTxn.txId);
+		},
+
+		async doTxnSimpleAlgosdk() {
+			console.log('doTxnSimpleAlgosdk');
+
+			let addr = awState.activeAddress;
+			// hardcoding addr is possible but often not the correct dapp flow
+			// FYI when hardcoding addr, it must match the desired authd wallet acct addr
+			// let addr = 'ORYM5ELCOF6IDSMPOXMUPYSQFEWWAWMZ5YTGW55YJDOR3E4P7ATSS4JXLY';
+
+			if (!addr) {
+				alert('no .to address provided');
+				return;
+			}
+
+			const suggestedParams = await algodClient.getTransactionParams().do();
+			console.log('suggestedParams', suggestedParams);
+
+			const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+				from: addr,
+				to: addr,
+				amount: 1000,
+				suggestedParams
+			});
+			console.log('transaction', transaction);
+
+			const txnBytes = transaction.toByte();
+			const txnArray = [
+				txnBytes
+			];
+
+			try {
+				let res = await awState.signTransactions(txnArray);
 				console.log('res', res);
 			} catch(e) {
 				console.warn(e);

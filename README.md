@@ -13,13 +13,13 @@ any-wallet provides a common interface layer between the dapp and the wallet so 
 
 currently supported chains + wallets:
 - algorand
-	- pera
-	- inkey
-	- myalgo
-	- algosigner
-	- exodus
-	- defly
-	- mnemonic (not "safe" but helpful for development)
+	- ✅ Pera
+	- ✅ Inkey
+	- ✅ MyAlgo
+	- ✅ AlgoSigner 
+	- ✅ Exodus 
+	- ✅ Defly
+	- ✅⚠️ Mnemonic (not secure client-side)
 
 
 ## usage
@@ -53,8 +53,8 @@ const accts = await awState.connectWallet('inkey');
 
 ### signing transactions
 ```ts
-import {
-	awState
+import { 
+	AnyWalletState
 } from '@thencc/any-wallet';
 
 const awState = new AnyWalletState();
@@ -128,7 +128,7 @@ let accts = await awState.connectWallet('mnemonic', 'uniform eager witness salt 
 
 
 
-## vue!
+## vue
 when used with vue, you might need to re-render a component's `<template>` computations if you are displaying information stored in `AnyWalletState` because these deep object changes arent tracked by the vue runtime. for this, there are 2 helpful functions: `subscribeToAccountChanges` and `subscribeToStateChanges` which allow you to define a callback when say the active account changes or when anything in the state tree changes.
 
 ```ts
@@ -162,4 +162,4 @@ export default defineComponent({
 
 ## Attributions
 
-big thanks to `txnlab/use-wallet` for developing the react groundwork for this pkg
+big thanks to [`txnlab/use-wallet`](https://github.com/TxnLab/use-wallet) for developing the react groundwork for this pkg
