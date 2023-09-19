@@ -10638,6 +10638,406 @@ var sha512$1 = { exports: {} };
 })(sha512$1);
 var sha512Exports = sha512$1.exports;
 const sha512 = /* @__PURE__ */ getDefaultExportFromCjs(sha512Exports);
+function genericHash(arr) {
+  return sha512.sha512_256.array(arr);
+}
+function randomBytes(length) {
+  return nacl.randomBytes(length);
+}
+function keyPairFromSeed(seed) {
+  return nacl.sign.keyPair.fromSeed(seed);
+}
+function keyPair() {
+  const seed = randomBytes(nacl.box.secretKeyLength);
+  return keyPairFromSeed(seed);
+}
+function isValidSignatureLength(len) {
+  return len === nacl.sign.signatureLength;
+}
+function keyPairFromSecretKey(sk) {
+  return nacl.sign.keyPair.fromSecretKey(sk);
+}
+function sign(msg, secretKey) {
+  return nacl.sign.detached(msg, secretKey);
+}
+function bytesEqual(a, b2) {
+  return nacl.verify(a, b2);
+}
+function verify(message, signature, verifyKey) {
+  return nacl.sign.detached.verify(message, signature, verifyKey);
+}
+const PUBLIC_KEY_LENGTH = nacl.sign.publicKeyLength;
+nacl.sign.secretKeyLength;
+const HASH_BYTES_LENGTH = 32;
+const SEED_BTYES_LENGTH = 32;
+var base32$1 = { exports: {} };
+/*
+ * [hi-base32]{@link https://github.com/emn178/hi-base32}
+ *
+ * @version 0.5.0
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2018
+ * @license MIT
+ */
+(function(module) {
+  (function() {
+    var root = typeof window === "object" ? window : {};
+    var NODE_JS = !root.HI_BASE32_NO_NODE_JS && typeof process === "object" && process.versions && process.versions.node;
+    if (NODE_JS) {
+      root = commonjsGlobal;
+    }
+    var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && true && module.exports;
+    var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
+    var BASE32_DECODE_CHAR = {
+      "A": 0,
+      "B": 1,
+      "C": 2,
+      "D": 3,
+      "E": 4,
+      "F": 5,
+      "G": 6,
+      "H": 7,
+      "I": 8,
+      "J": 9,
+      "K": 10,
+      "L": 11,
+      "M": 12,
+      "N": 13,
+      "O": 14,
+      "P": 15,
+      "Q": 16,
+      "R": 17,
+      "S": 18,
+      "T": 19,
+      "U": 20,
+      "V": 21,
+      "W": 22,
+      "X": 23,
+      "Y": 24,
+      "Z": 25,
+      "2": 26,
+      "3": 27,
+      "4": 28,
+      "5": 29,
+      "6": 30,
+      "7": 31
+    };
+    var blocks = [0, 0, 0, 0, 0, 0, 0, 0];
+    var throwInvalidUtf8 = function(position, partial) {
+      if (partial.length > 10) {
+        partial = "..." + partial.substr(-10);
+      }
+      var err = new Error("Decoded data is not valid UTF-8. Maybe try base32.decode.asBytes()? Partial data after reading " + position + " bytes: " + partial + " <-");
+      err.position = position;
+      throw err;
+    };
+    var toUtf8String = function(bytes) {
+      var str = "", length = bytes.length, i = 0, followingChars = 0, b2, c;
+      while (i < length) {
+        b2 = bytes[i++];
+        if (b2 <= 127) {
+          str += String.fromCharCode(b2);
+          continue;
+        } else if (b2 > 191 && b2 <= 223) {
+          c = b2 & 31;
+          followingChars = 1;
+        } else if (b2 <= 239) {
+          c = b2 & 15;
+          followingChars = 2;
+        } else if (b2 <= 247) {
+          c = b2 & 7;
+          followingChars = 3;
+        } else {
+          throwInvalidUtf8(i, str);
+        }
+        for (var j2 = 0; j2 < followingChars; ++j2) {
+          b2 = bytes[i++];
+          if (b2 < 128 || b2 > 191) {
+            throwInvalidUtf8(i, str);
+          }
+          c <<= 6;
+          c += b2 & 63;
+        }
+        if (c >= 55296 && c <= 57343) {
+          throwInvalidUtf8(i, str);
+        }
+        if (c > 1114111) {
+          throwInvalidUtf8(i, str);
+        }
+        if (c <= 65535) {
+          str += String.fromCharCode(c);
+        } else {
+          c -= 65536;
+          str += String.fromCharCode((c >> 10) + 55296);
+          str += String.fromCharCode((c & 1023) + 56320);
+        }
+      }
+      return str;
+    };
+    var decodeAsBytes = function(base32Str) {
+      if (base32Str === "") {
+        return [];
+      } else if (!/^[A-Z2-7=]+$/.test(base32Str)) {
+        throw new Error("Invalid base32 characters");
+      }
+      base32Str = base32Str.replace(/=/g, "");
+      var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index2 = 0, length = base32Str.length;
+      for (var i = 0, count = length >> 3 << 3; i < count; ) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
+        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
+        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
+        bytes[index2++] = (v5 << 7 | v6 << 2 | v7 >>> 3) & 255;
+        bytes[index2++] = (v7 << 5 | v8) & 255;
+      }
+      var remain = length - count;
+      if (remain === 2) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
+      } else if (remain === 4) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
+        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
+      } else if (remain === 5) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
+        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
+        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
+      } else if (remain === 7) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
+        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
+        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
+        bytes[index2++] = (v5 << 7 | v6 << 2 | v7 >>> 3) & 255;
+      }
+      return bytes;
+    };
+    var encodeAscii = function(str) {
+      var v1, v2, v3, v4, v5, base32Str = "", length = str.length;
+      for (var i = 0, count = parseInt(length / 5) * 5; i < count; ) {
+        v1 = str.charCodeAt(i++);
+        v2 = str.charCodeAt(i++);
+        v3 = str.charCodeAt(i++);
+        v4 = str.charCodeAt(i++);
+        v5 = str.charCodeAt(i++);
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
+      }
+      var remain = length - count;
+      if (remain === 1) {
+        v1 = str.charCodeAt(i);
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+      } else if (remain === 2) {
+        v1 = str.charCodeAt(i++);
+        v2 = str.charCodeAt(i);
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+      } else if (remain === 3) {
+        v1 = str.charCodeAt(i++);
+        v2 = str.charCodeAt(i++);
+        v3 = str.charCodeAt(i);
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+      } else if (remain === 4) {
+        v1 = str.charCodeAt(i++);
+        v2 = str.charCodeAt(i++);
+        v3 = str.charCodeAt(i++);
+        v4 = str.charCodeAt(i);
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+      }
+      return base32Str;
+    };
+    var encodeUtf8 = function(str) {
+      var v1, v2, v3, v4, v5, code2, end = false, base32Str = "", index2 = 0, i, start = 0, length = str.length;
+      if (str === "") {
+        return base32Str;
+      }
+      do {
+        blocks[0] = blocks[5];
+        blocks[1] = blocks[6];
+        blocks[2] = blocks[7];
+        for (i = start; index2 < length && i < 5; ++index2) {
+          code2 = str.charCodeAt(index2);
+          if (code2 < 128) {
+            blocks[i++] = code2;
+          } else if (code2 < 2048) {
+            blocks[i++] = 192 | code2 >> 6;
+            blocks[i++] = 128 | code2 & 63;
+          } else if (code2 < 55296 || code2 >= 57344) {
+            blocks[i++] = 224 | code2 >> 12;
+            blocks[i++] = 128 | code2 >> 6 & 63;
+            blocks[i++] = 128 | code2 & 63;
+          } else {
+            code2 = 65536 + ((code2 & 1023) << 10 | str.charCodeAt(++index2) & 1023);
+            blocks[i++] = 240 | code2 >> 18;
+            blocks[i++] = 128 | code2 >> 12 & 63;
+            blocks[i++] = 128 | code2 >> 6 & 63;
+            blocks[i++] = 128 | code2 & 63;
+          }
+        }
+        start = i - 5;
+        if (index2 === length) {
+          ++index2;
+        }
+        if (index2 > length && i < 6) {
+          end = true;
+        }
+        v1 = blocks[0];
+        if (i > 4) {
+          v2 = blocks[1];
+          v3 = blocks[2];
+          v4 = blocks[3];
+          v5 = blocks[4];
+          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
+        } else if (i === 1) {
+          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+        } else if (i === 2) {
+          v2 = blocks[1];
+          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+        } else if (i === 3) {
+          v2 = blocks[1];
+          v3 = blocks[2];
+          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+        } else {
+          v2 = blocks[1];
+          v3 = blocks[2];
+          v4 = blocks[3];
+          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+        }
+      } while (!end);
+      return base32Str;
+    };
+    var encodeBytes = function(bytes) {
+      var v1, v2, v3, v4, v5, base32Str = "", length = bytes.length;
+      for (var i = 0, count = parseInt(length / 5) * 5; i < count; ) {
+        v1 = bytes[i++];
+        v2 = bytes[i++];
+        v3 = bytes[i++];
+        v4 = bytes[i++];
+        v5 = bytes[i++];
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
+      }
+      var remain = length - count;
+      if (remain === 1) {
+        v1 = bytes[i];
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
+      } else if (remain === 2) {
+        v1 = bytes[i++];
+        v2 = bytes[i];
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
+      } else if (remain === 3) {
+        v1 = bytes[i++];
+        v2 = bytes[i++];
+        v3 = bytes[i];
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
+      } else if (remain === 4) {
+        v1 = bytes[i++];
+        v2 = bytes[i++];
+        v3 = bytes[i++];
+        v4 = bytes[i];
+        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
+      }
+      return base32Str;
+    };
+    var encode2 = function(input, asciiOnly) {
+      var notString = typeof input !== "string";
+      if (notString && input.constructor === ArrayBuffer) {
+        input = new Uint8Array(input);
+      }
+      if (notString) {
+        return encodeBytes(input);
+      } else if (asciiOnly) {
+        return encodeAscii(input);
+      } else {
+        return encodeUtf8(input);
+      }
+    };
+    var decode2 = function(base32Str, asciiOnly) {
+      if (!asciiOnly) {
+        return toUtf8String(decodeAsBytes(base32Str));
+      }
+      if (base32Str === "") {
+        return "";
+      } else if (!/^[A-Z2-7=]+$/.test(base32Str)) {
+        throw new Error("Invalid base32 characters");
+      }
+      var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
+      if (length === -1) {
+        length = base32Str.length;
+      }
+      for (var i = 0, count = length >> 3 << 3; i < count; ) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255) + String.fromCharCode((v5 << 7 | v6 << 2 | v7 >>> 3) & 255) + String.fromCharCode((v7 << 5 | v8) & 255);
+      }
+      var remain = length - count;
+      if (remain === 2) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255);
+      } else if (remain === 4) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255);
+      } else if (remain === 5) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255);
+      } else if (remain === 7) {
+        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
+        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255) + String.fromCharCode((v5 << 7 | v6 << 2 | v7 >>> 3) & 255);
+      }
+      return str;
+    };
+    var exports = {
+      encode: encode2,
+      decode: decode2
+    };
+    decode2.asBytes = decodeAsBytes;
+    if (COMMON_JS) {
+      module.exports = exports;
+    } else {
+      root.base32 = exports;
+    }
+  })();
+})(base32$1);
+var base32Exports = base32$1.exports;
+const base32 = /* @__PURE__ */ getDefaultExportFromCjs(base32Exports);
 var jsonBigint = { exports: {} };
 var stringify = { exports: {} };
 var bignumber = { exports: {} };
@@ -10928,10 +11328,10 @@ var bignumber = { exports: {} };
         throw Error(bignumberError + "Invalid BigNumber: " + v);
       };
       BigNumber3.maximum = BigNumber3.max = function() {
-        return maxOrMin(arguments, P2.lt);
+        return maxOrMin(arguments, -1);
       };
       BigNumber3.minimum = BigNumber3.min = function() {
-        return maxOrMin(arguments, P2.gt);
+        return maxOrMin(arguments, 1);
       };
       BigNumber3.random = function() {
         var pow2_53 = 9007199254740992;
@@ -11290,18 +11690,15 @@ var bignumber = { exports: {} };
         }
         return n.s < 0 && c02 ? "-" + str : str;
       }
-      function maxOrMin(args, method) {
-        var n, i = 1, m2 = new BigNumber3(args[0]);
+      function maxOrMin(args, n) {
+        var k2, y2, i = 1, x2 = new BigNumber3(args[0]);
         for (; i < args.length; i++) {
-          n = new BigNumber3(args[i]);
-          if (!n.s) {
-            m2 = n;
-            break;
-          } else if (method.call(m2, n)) {
-            m2 = n;
+          y2 = new BigNumber3(args[i]);
+          if (!y2.s || (k2 = compare(x2, y2)) === n || k2 === 0 && x2.s === n) {
+            x2 = y2;
           }
         }
-        return m2;
+        return x2;
       }
       function normalise(n, c, e) {
         var i = 1, j2 = c.length;
@@ -11357,7 +11754,7 @@ var bignumber = { exports: {} };
               i += LOG_BASE;
               j2 = sd2;
               n = xc2[ni2 = 0];
-              rd2 = n / pows10[d2 - j2 - 1] % 10 | 0;
+              rd2 = mathfloor(n / pows10[d2 - j2 - 1] % 10);
             } else {
               ni2 = mathceil((i + 1) / LOG_BASE);
               if (ni2 >= xc2.length) {
@@ -11377,7 +11774,7 @@ var bignumber = { exports: {} };
                   ;
                 i %= LOG_BASE;
                 j2 = i - LOG_BASE + d2;
-                rd2 = j2 < 0 ? 0 : n / pows10[d2 - j2 - 1] % 10 | 0;
+                rd2 = j2 < 0 ? 0 : mathfloor(n / pows10[d2 - j2 - 1] % 10);
               }
             }
             r = r || sd2 < 0 || // Are there any non-zero digits after the rounding digit?
@@ -12565,416 +12962,6 @@ function removeUndefinedProperties(obj) {
   });
   return mutableCopy;
 }
-function isReactNative() {
-  const { navigator } = globalThis;
-  if (typeof navigator === "object" && navigator.product === "ReactNative") {
-    return true;
-  }
-  return false;
-}
-function genericHash(arr) {
-  return sha512.sha512_256.array(arr);
-}
-function randomBytes(length) {
-  if (isReactNative()) {
-    console.warn(`It looks like you're running in react-native. In order to perform common crypto operations you will need to polyfill common operations such as crypto.getRandomValues`);
-  }
-  return nacl.randomBytes(length);
-}
-function keyPairFromSeed(seed) {
-  return nacl.sign.keyPair.fromSeed(seed);
-}
-function keyPair() {
-  const seed = randomBytes(nacl.box.secretKeyLength);
-  return keyPairFromSeed(seed);
-}
-function isValidSignatureLength(len) {
-  return len === nacl.sign.signatureLength;
-}
-function keyPairFromSecretKey(sk) {
-  return nacl.sign.keyPair.fromSecretKey(sk);
-}
-function sign(msg, secretKey) {
-  return nacl.sign.detached(msg, secretKey);
-}
-function bytesEqual(a, b2) {
-  return nacl.verify(a, b2);
-}
-function verify(message, signature, verifyKey) {
-  return nacl.sign.detached.verify(message, signature, verifyKey);
-}
-const PUBLIC_KEY_LENGTH = nacl.sign.publicKeyLength;
-nacl.sign.secretKeyLength;
-const HASH_BYTES_LENGTH = 32;
-const SEED_BTYES_LENGTH = 32;
-var base32$1 = { exports: {} };
-/*
- * [hi-base32]{@link https://github.com/emn178/hi-base32}
- *
- * @version 0.5.0
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2018
- * @license MIT
- */
-(function(module) {
-  (function() {
-    var root = typeof window === "object" ? window : {};
-    var NODE_JS = !root.HI_BASE32_NO_NODE_JS && typeof process === "object" && process.versions && process.versions.node;
-    if (NODE_JS) {
-      root = commonjsGlobal;
-    }
-    var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && true && module.exports;
-    var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
-    var BASE32_DECODE_CHAR = {
-      "A": 0,
-      "B": 1,
-      "C": 2,
-      "D": 3,
-      "E": 4,
-      "F": 5,
-      "G": 6,
-      "H": 7,
-      "I": 8,
-      "J": 9,
-      "K": 10,
-      "L": 11,
-      "M": 12,
-      "N": 13,
-      "O": 14,
-      "P": 15,
-      "Q": 16,
-      "R": 17,
-      "S": 18,
-      "T": 19,
-      "U": 20,
-      "V": 21,
-      "W": 22,
-      "X": 23,
-      "Y": 24,
-      "Z": 25,
-      "2": 26,
-      "3": 27,
-      "4": 28,
-      "5": 29,
-      "6": 30,
-      "7": 31
-    };
-    var blocks = [0, 0, 0, 0, 0, 0, 0, 0];
-    var throwInvalidUtf8 = function(position, partial) {
-      if (partial.length > 10) {
-        partial = "..." + partial.substr(-10);
-      }
-      var err = new Error("Decoded data is not valid UTF-8. Maybe try base32.decode.asBytes()? Partial data after reading " + position + " bytes: " + partial + " <-");
-      err.position = position;
-      throw err;
-    };
-    var toUtf8String = function(bytes) {
-      var str = "", length = bytes.length, i = 0, followingChars = 0, b2, c;
-      while (i < length) {
-        b2 = bytes[i++];
-        if (b2 <= 127) {
-          str += String.fromCharCode(b2);
-          continue;
-        } else if (b2 > 191 && b2 <= 223) {
-          c = b2 & 31;
-          followingChars = 1;
-        } else if (b2 <= 239) {
-          c = b2 & 15;
-          followingChars = 2;
-        } else if (b2 <= 247) {
-          c = b2 & 7;
-          followingChars = 3;
-        } else {
-          throwInvalidUtf8(i, str);
-        }
-        for (var j2 = 0; j2 < followingChars; ++j2) {
-          b2 = bytes[i++];
-          if (b2 < 128 || b2 > 191) {
-            throwInvalidUtf8(i, str);
-          }
-          c <<= 6;
-          c += b2 & 63;
-        }
-        if (c >= 55296 && c <= 57343) {
-          throwInvalidUtf8(i, str);
-        }
-        if (c > 1114111) {
-          throwInvalidUtf8(i, str);
-        }
-        if (c <= 65535) {
-          str += String.fromCharCode(c);
-        } else {
-          c -= 65536;
-          str += String.fromCharCode((c >> 10) + 55296);
-          str += String.fromCharCode((c & 1023) + 56320);
-        }
-      }
-      return str;
-    };
-    var decodeAsBytes = function(base32Str) {
-      if (base32Str === "") {
-        return [];
-      } else if (!/^[A-Z2-7=]+$/.test(base32Str)) {
-        throw new Error("Invalid base32 characters");
-      }
-      base32Str = base32Str.replace(/=/g, "");
-      var v1, v2, v3, v4, v5, v6, v7, v8, bytes = [], index2 = 0, length = base32Str.length;
-      for (var i = 0, count = length >> 3 << 3; i < count; ) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
-        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
-        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
-        bytes[index2++] = (v5 << 7 | v6 << 2 | v7 >>> 3) & 255;
-        bytes[index2++] = (v7 << 5 | v8) & 255;
-      }
-      var remain = length - count;
-      if (remain === 2) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
-      } else if (remain === 4) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
-        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
-      } else if (remain === 5) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
-        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
-        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
-      } else if (remain === 7) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        bytes[index2++] = (v1 << 3 | v2 >>> 2) & 255;
-        bytes[index2++] = (v2 << 6 | v3 << 1 | v4 >>> 4) & 255;
-        bytes[index2++] = (v4 << 4 | v5 >>> 1) & 255;
-        bytes[index2++] = (v5 << 7 | v6 << 2 | v7 >>> 3) & 255;
-      }
-      return bytes;
-    };
-    var encodeAscii = function(str) {
-      var v1, v2, v3, v4, v5, base32Str = "", length = str.length;
-      for (var i = 0, count = parseInt(length / 5) * 5; i < count; ) {
-        v1 = str.charCodeAt(i++);
-        v2 = str.charCodeAt(i++);
-        v3 = str.charCodeAt(i++);
-        v4 = str.charCodeAt(i++);
-        v5 = str.charCodeAt(i++);
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
-      }
-      var remain = length - count;
-      if (remain === 1) {
-        v1 = str.charCodeAt(i);
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-      } else if (remain === 2) {
-        v1 = str.charCodeAt(i++);
-        v2 = str.charCodeAt(i);
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-      } else if (remain === 3) {
-        v1 = str.charCodeAt(i++);
-        v2 = str.charCodeAt(i++);
-        v3 = str.charCodeAt(i);
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-      } else if (remain === 4) {
-        v1 = str.charCodeAt(i++);
-        v2 = str.charCodeAt(i++);
-        v3 = str.charCodeAt(i++);
-        v4 = str.charCodeAt(i);
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-      }
-      return base32Str;
-    };
-    var encodeUtf8 = function(str) {
-      var v1, v2, v3, v4, v5, code2, end = false, base32Str = "", index2 = 0, i, start = 0, length = str.length;
-      if (str === "") {
-        return base32Str;
-      }
-      do {
-        blocks[0] = blocks[5];
-        blocks[1] = blocks[6];
-        blocks[2] = blocks[7];
-        for (i = start; index2 < length && i < 5; ++index2) {
-          code2 = str.charCodeAt(index2);
-          if (code2 < 128) {
-            blocks[i++] = code2;
-          } else if (code2 < 2048) {
-            blocks[i++] = 192 | code2 >> 6;
-            blocks[i++] = 128 | code2 & 63;
-          } else if (code2 < 55296 || code2 >= 57344) {
-            blocks[i++] = 224 | code2 >> 12;
-            blocks[i++] = 128 | code2 >> 6 & 63;
-            blocks[i++] = 128 | code2 & 63;
-          } else {
-            code2 = 65536 + ((code2 & 1023) << 10 | str.charCodeAt(++index2) & 1023);
-            blocks[i++] = 240 | code2 >> 18;
-            blocks[i++] = 128 | code2 >> 12 & 63;
-            blocks[i++] = 128 | code2 >> 6 & 63;
-            blocks[i++] = 128 | code2 & 63;
-          }
-        }
-        start = i - 5;
-        if (index2 === length) {
-          ++index2;
-        }
-        if (index2 > length && i < 6) {
-          end = true;
-        }
-        v1 = blocks[0];
-        if (i > 4) {
-          v2 = blocks[1];
-          v3 = blocks[2];
-          v4 = blocks[3];
-          v5 = blocks[4];
-          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
-        } else if (i === 1) {
-          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-        } else if (i === 2) {
-          v2 = blocks[1];
-          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-        } else if (i === 3) {
-          v2 = blocks[1];
-          v3 = blocks[2];
-          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-        } else {
-          v2 = blocks[1];
-          v3 = blocks[2];
-          v4 = blocks[3];
-          base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-        }
-      } while (!end);
-      return base32Str;
-    };
-    var encodeBytes = function(bytes) {
-      var v1, v2, v3, v4, v5, base32Str = "", length = bytes.length;
-      for (var i = 0, count = parseInt(length / 5) * 5; i < count; ) {
-        v1 = bytes[i++];
-        v2 = bytes[i++];
-        v3 = bytes[i++];
-        v4 = bytes[i++];
-        v5 = bytes[i++];
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[(v4 << 3 | v5 >>> 5) & 31] + BASE32_ENCODE_CHAR[v5 & 31];
-      }
-      var remain = length - count;
-      if (remain === 1) {
-        v1 = bytes[i];
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[v1 << 2 & 31] + "======";
-      } else if (remain === 2) {
-        v1 = bytes[i++];
-        v2 = bytes[i];
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[v2 << 4 & 31] + "====";
-      } else if (remain === 3) {
-        v1 = bytes[i++];
-        v2 = bytes[i++];
-        v3 = bytes[i];
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[v3 << 1 & 31] + "===";
-      } else if (remain === 4) {
-        v1 = bytes[i++];
-        v2 = bytes[i++];
-        v3 = bytes[i++];
-        v4 = bytes[i];
-        base32Str += BASE32_ENCODE_CHAR[v1 >>> 3] + BASE32_ENCODE_CHAR[(v1 << 2 | v2 >>> 6) & 31] + BASE32_ENCODE_CHAR[v2 >>> 1 & 31] + BASE32_ENCODE_CHAR[(v2 << 4 | v3 >>> 4) & 31] + BASE32_ENCODE_CHAR[(v3 << 1 | v4 >>> 7) & 31] + BASE32_ENCODE_CHAR[v4 >>> 2 & 31] + BASE32_ENCODE_CHAR[v4 << 3 & 31] + "=";
-      }
-      return base32Str;
-    };
-    var encode2 = function(input, asciiOnly) {
-      var notString = typeof input !== "string";
-      if (notString && input.constructor === ArrayBuffer) {
-        input = new Uint8Array(input);
-      }
-      if (notString) {
-        return encodeBytes(input);
-      } else if (asciiOnly) {
-        return encodeAscii(input);
-      } else {
-        return encodeUtf8(input);
-      }
-    };
-    var decode2 = function(base32Str, asciiOnly) {
-      if (!asciiOnly) {
-        return toUtf8String(decodeAsBytes(base32Str));
-      }
-      if (base32Str === "") {
-        return "";
-      } else if (!/^[A-Z2-7=]+$/.test(base32Str)) {
-        throw new Error("Invalid base32 characters");
-      }
-      var v1, v2, v3, v4, v5, v6, v7, v8, str = "", length = base32Str.indexOf("=");
-      if (length === -1) {
-        length = base32Str.length;
-      }
-      for (var i = 0, count = length >> 3 << 3; i < count; ) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v8 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255) + String.fromCharCode((v5 << 7 | v6 << 2 | v7 >>> 3) & 255) + String.fromCharCode((v7 << 5 | v8) & 255);
-      }
-      var remain = length - count;
-      if (remain === 2) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255);
-      } else if (remain === 4) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255);
-      } else if (remain === 5) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255);
-      } else if (remain === 7) {
-        v1 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v2 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v3 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v4 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v5 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v6 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        v7 = BASE32_DECODE_CHAR[base32Str.charAt(i++)];
-        str += String.fromCharCode((v1 << 3 | v2 >>> 2) & 255) + String.fromCharCode((v2 << 6 | v3 << 1 | v4 >>> 4) & 255) + String.fromCharCode((v4 << 4 | v5 >>> 1) & 255) + String.fromCharCode((v5 << 7 | v6 << 2 | v7 >>> 3) & 255);
-      }
-      return str;
-    };
-    var exports = {
-      encode: encode2,
-      decode: decode2
-    };
-    decode2.asBytes = decodeAsBytes;
-    if (COMMON_JS) {
-      module.exports = exports;
-    } else {
-      root.base32 = exports;
-    }
-  })();
-})(base32$1);
-var base32Exports = base32$1.exports;
-const base32 = /* @__PURE__ */ getDefaultExportFromCjs(base32Exports);
 function encodeUint64(num) {
   const isInteger = typeof num === "bigint" || Number.isInteger(num);
   if (!isInteger || num < 0 || num > BigInt("0xffffffffffffffff")) {
@@ -15398,22 +15385,21 @@ function algosToMicroalgos(algos) {
 }
 var browserPonyfill = { exports: {} };
 (function(module, exports) {
-  var __global__ = typeof globalThis !== "undefined" && globalThis || typeof self !== "undefined" && self || typeof commonjsGlobal !== "undefined" && commonjsGlobal;
-  var __globalThis__ = function() {
+  var global2 = typeof self !== "undefined" ? self : commonjsGlobal;
+  var __self__ = function() {
     function F2() {
       this.fetch = false;
-      this.DOMException = __global__.DOMException;
+      this.DOMException = global2.DOMException;
     }
-    F2.prototype = __global__;
+    F2.prototype = global2;
     return new F2();
   }();
-  (function(globalThis2) {
+  (function(self2) {
     (function(exports2) {
-      var global2 = typeof globalThis2 !== "undefined" && globalThis2 || typeof self !== "undefined" && self || typeof global2 !== "undefined" && global2;
       var support = {
-        searchParams: "URLSearchParams" in global2,
-        iterable: "Symbol" in global2 && "iterator" in Symbol,
-        blob: "FileReader" in global2 && "Blob" in global2 && function() {
+        searchParams: "URLSearchParams" in self2,
+        iterable: "Symbol" in self2 && "iterator" in Symbol,
+        blob: "FileReader" in self2 && "Blob" in self2 && function() {
           try {
             new Blob();
             return true;
@@ -15421,8 +15407,8 @@ var browserPonyfill = { exports: {} };
             return false;
           }
         }(),
-        formData: "FormData" in global2,
-        arrayBuffer: "ArrayBuffer" in global2
+        formData: "FormData" in self2,
+        arrayBuffer: "ArrayBuffer" in self2
       };
       function isDataView(obj) {
         return obj && DataView.prototype.isPrototypeOf(obj);
@@ -15447,8 +15433,8 @@ var browserPonyfill = { exports: {} };
         if (typeof name !== "string") {
           name = String(name);
         }
-        if (/[^a-z0-9\-#$%&'*+.^_`|~!]/i.test(name) || name === "") {
-          throw new TypeError('Invalid character in header field name: "' + name + '"');
+        if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
+          throw new TypeError("Invalid character in header field name");
         }
         return name.toLowerCase();
       }
@@ -15586,7 +15572,6 @@ var browserPonyfill = { exports: {} };
       function Body() {
         this.bodyUsed = false;
         this._initBody = function(body) {
-          this.bodyUsed = this.bodyUsed;
           this._bodyInit = body;
           if (!body) {
             this._bodyText = "";
@@ -15634,20 +15619,7 @@ var browserPonyfill = { exports: {} };
           };
           this.arrayBuffer = function() {
             if (this._bodyArrayBuffer) {
-              var isConsumed = consumed(this);
-              if (isConsumed) {
-                return isConsumed;
-              }
-              if (ArrayBuffer.isView(this._bodyArrayBuffer)) {
-                return Promise.resolve(
-                  this._bodyArrayBuffer.buffer.slice(
-                    this._bodyArrayBuffer.byteOffset,
-                    this._bodyArrayBuffer.byteOffset + this._bodyArrayBuffer.byteLength
-                  )
-                );
-              } else {
-                return Promise.resolve(this._bodyArrayBuffer);
-              }
+              return consumed(this) || Promise.resolve(this._bodyArrayBuffer);
             } else {
               return this.blob().then(readBlobAsArrayBuffer);
             }
@@ -15684,9 +15656,6 @@ var browserPonyfill = { exports: {} };
         return methods.indexOf(upcased) > -1 ? upcased : method;
       }
       function Request(input, options) {
-        if (!(this instanceof Request)) {
-          throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
-        }
         options = options || {};
         var body = options.body;
         if (input instanceof Request) {
@@ -15720,17 +15689,6 @@ var browserPonyfill = { exports: {} };
           throw new TypeError("Body not allowed for GET or HEAD requests");
         }
         this._initBody(body);
-        if (this.method === "GET" || this.method === "HEAD") {
-          if (options.cache === "no-store" || options.cache === "no-cache") {
-            var reParamSearch = /([?&])_=[^&]*/;
-            if (reParamSearch.test(this.url)) {
-              this.url = this.url.replace(reParamSearch, "$1_=" + (/* @__PURE__ */ new Date()).getTime());
-            } else {
-              var reQueryString = /\?/;
-              this.url += (reQueryString.test(this.url) ? "&" : "?") + "_=" + (/* @__PURE__ */ new Date()).getTime();
-            }
-          }
-        }
       }
       Request.prototype.clone = function() {
         return new Request(this, { body: this._bodyInit });
@@ -15750,9 +15708,7 @@ var browserPonyfill = { exports: {} };
       function parseHeaders(rawHeaders) {
         var headers = new Headers();
         var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, " ");
-        preProcessedHeaders.split("\r").map(function(header) {
-          return header.indexOf("\n") === 0 ? header.substr(1, header.length) : header;
-        }).forEach(function(line) {
+        preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
           var parts = line.split(":");
           var key = parts.shift().trim();
           if (key) {
@@ -15764,16 +15720,13 @@ var browserPonyfill = { exports: {} };
       }
       Body.call(Request.prototype);
       function Response(bodyInit, options) {
-        if (!(this instanceof Response)) {
-          throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
-        }
         if (!options) {
           options = {};
         }
         this.type = "default";
         this.status = options.status === void 0 ? 200 : options.status;
         this.ok = this.status >= 200 && this.status < 300;
-        this.statusText = options.statusText === void 0 ? "" : "" + options.statusText;
+        this.statusText = "statusText" in options ? options.statusText : "OK";
         this.headers = new Headers(options.headers);
         this.url = options.url || "";
         this._initBody(bodyInit);
@@ -15799,7 +15752,7 @@ var browserPonyfill = { exports: {} };
         }
         return new Response(null, { status, headers: { location: url } });
       };
-      exports2.DOMException = global2.DOMException;
+      exports2.DOMException = self2.DOMException;
       try {
         new exports2.DOMException();
       } catch (err) {
@@ -15830,54 +15783,29 @@ var browserPonyfill = { exports: {} };
             };
             options.url = "responseURL" in xhr ? xhr.responseURL : options.headers.get("X-Request-URL");
             var body = "response" in xhr ? xhr.response : xhr.responseText;
-            setTimeout(function() {
-              resolve(new Response(body, options));
-            }, 0);
+            resolve(new Response(body, options));
           };
           xhr.onerror = function() {
-            setTimeout(function() {
-              reject(new TypeError("Network request failed"));
-            }, 0);
+            reject(new TypeError("Network request failed"));
           };
           xhr.ontimeout = function() {
-            setTimeout(function() {
-              reject(new TypeError("Network request failed"));
-            }, 0);
+            reject(new TypeError("Network request failed"));
           };
           xhr.onabort = function() {
-            setTimeout(function() {
-              reject(new exports2.DOMException("Aborted", "AbortError"));
-            }, 0);
+            reject(new exports2.DOMException("Aborted", "AbortError"));
           };
-          function fixUrl(url) {
-            try {
-              return url === "" && global2.location.href ? global2.location.href : url;
-            } catch (e) {
-              return url;
-            }
-          }
-          xhr.open(request.method, fixUrl(request.url), true);
+          xhr.open(request.method, request.url, true);
           if (request.credentials === "include") {
             xhr.withCredentials = true;
           } else if (request.credentials === "omit") {
             xhr.withCredentials = false;
           }
-          if ("responseType" in xhr) {
-            if (support.blob) {
-              xhr.responseType = "blob";
-            } else if (support.arrayBuffer && request.headers.get("Content-Type") && request.headers.get("Content-Type").indexOf("application/octet-stream") !== -1) {
-              xhr.responseType = "arraybuffer";
-            }
+          if ("responseType" in xhr && support.blob) {
+            xhr.responseType = "blob";
           }
-          if (init && typeof init.headers === "object" && !(init.headers instanceof Headers)) {
-            Object.getOwnPropertyNames(init.headers).forEach(function(name) {
-              xhr.setRequestHeader(name, normalizeValue(init.headers[name]));
-            });
-          } else {
-            request.headers.forEach(function(value, name) {
-              xhr.setRequestHeader(name, value);
-            });
-          }
+          request.headers.forEach(function(value, name) {
+            xhr.setRequestHeader(name, value);
+          });
           if (request.signal) {
             request.signal.addEventListener("abort", abortXhr);
             xhr.onreadystatechange = function() {
@@ -15890,22 +15818,23 @@ var browserPonyfill = { exports: {} };
         });
       }
       fetch2.polyfill = true;
-      if (!global2.fetch) {
-        global2.fetch = fetch2;
-        global2.Headers = Headers;
-        global2.Request = Request;
-        global2.Response = Response;
+      if (!self2.fetch) {
+        self2.fetch = fetch2;
+        self2.Headers = Headers;
+        self2.Request = Request;
+        self2.Response = Response;
       }
       exports2.Headers = Headers;
       exports2.Request = Request;
       exports2.Response = Response;
       exports2.fetch = fetch2;
+      Object.defineProperty(exports2, "__esModule", { value: true });
       return exports2;
     })({});
-  })(__globalThis__);
-  __globalThis__.fetch.ponyfill = true;
-  delete __globalThis__.fetch.polyfill;
-  var ctx = __global__.fetch ? __global__ : __globalThis__;
+  })(__self__);
+  __self__.fetch.ponyfill = true;
+  delete __self__.fetch.polyfill;
+  var ctx = __self__;
   exports = ctx.fetch;
   exports.default = ctx.fetch;
   exports.fetch = ctx.fetch;
@@ -16008,6 +15937,7 @@ class URLTokenBaseHTTPClient {
       ...requestHeaders
     };
     const res = await browserPonyfillExports.fetch(this.getURL(relativePath, query), {
+      mode: "cors",
       headers
     });
     return URLTokenBaseHTTPClient.formatFetchResponse(res);
@@ -16020,6 +15950,7 @@ class URLTokenBaseHTTPClient {
     };
     const res = await browserPonyfillExports.fetch(this.getURL(relativePath, query), {
       method: "POST",
+      mode: "cors",
       body: data,
       headers
     });
@@ -16033,6 +15964,7 @@ class URLTokenBaseHTTPClient {
     };
     const res = await browserPonyfillExports.fetch(this.getURL(relativePath, query), {
       method: "DELETE",
+      mode: "cors",
       body: data,
       headers
     });
@@ -16880,35 +16812,6 @@ let AssetParams$1 = class AssetParams extends BaseModel {
     });
   }
 };
-class AvmValue extends BaseModel {
-  /**
-   * Creates a new `AvmValue` object.
-   * @param type - value type. Value `1` refers to **bytes**, value `2` refers to **uint64**
-   * @param bytes - bytes value.
-   * @param uint - uint value.
-   */
-  constructor({ type, bytes, uint }) {
-    super();
-    this.type = type;
-    this.bytes = typeof bytes === "string" ? new Uint8Array(buffer.Buffer.from(bytes, "base64")) : bytes;
-    this.uint = uint;
-    this.attribute_map = {
-      type: "type",
-      bytes: "bytes",
-      uint: "uint"
-    };
-  }
-  // eslint-disable-next-line camelcase
-  static from_obj_for_encoding(data) {
-    if (typeof data["type"] === "undefined")
-      throw new Error(`Response is missing required field 'type': ${data}`);
-    return new AvmValue({
-      type: data["type"],
-      bytes: data["bytes"],
-      uint: data["uint"]
-    });
-  }
-}
 class BlockHashResponse extends BaseModel {
   /**
    * Creates a new `BlockHashResponse` object.
@@ -16960,17 +16863,14 @@ let Box$1 = class Box extends BaseModel {
   /**
    * Creates a new `Box` object.
    * @param name - (name) box name, base64 encoded
-   * @param round - The round for which this information is relevant
    * @param value - (value) box value, base64 encoded.
    */
-  constructor({ name, round, value }) {
+  constructor({ name, value }) {
     super();
     this.name = typeof name === "string" ? new Uint8Array(buffer.Buffer.from(name, "base64")) : name;
-    this.round = round;
     this.value = typeof value === "string" ? new Uint8Array(buffer.Buffer.from(value, "base64")) : value;
     this.attribute_map = {
       name: "name",
-      round: "round",
       value: "value"
     };
   }
@@ -16978,13 +16878,10 @@ let Box$1 = class Box extends BaseModel {
   static from_obj_for_encoding(data) {
     if (typeof data["name"] === "undefined")
       throw new Error(`Response is missing required field 'name': ${data}`);
-    if (typeof data["round"] === "undefined")
-      throw new Error(`Response is missing required field 'round': ${data}`);
     if (typeof data["value"] === "undefined")
       throw new Error(`Response is missing required field 'value': ${data}`);
     return new Box({
       name: data["name"],
-      round: data["round"],
       value: data["value"]
     });
   }
@@ -17527,19 +17424,19 @@ class LedgerStateDeltaForTransactionGroup extends BaseModel {
     this.delta = delta;
     this.ids = ids;
     this.attribute_map = {
-      delta: "Delta",
-      ids: "Ids"
+      delta: "delta",
+      ids: "ids"
     };
   }
   // eslint-disable-next-line camelcase
   static from_obj_for_encoding(data) {
-    if (typeof data["Delta"] === "undefined")
-      throw new Error(`Response is missing required field 'Delta': ${data}`);
-    if (!Array.isArray(data["Ids"]))
-      throw new Error(`Response is missing required array field 'Ids': ${data}`);
+    if (typeof data["delta"] === "undefined")
+      throw new Error(`Response is missing required field 'delta': ${data}`);
+    if (!Array.isArray(data["ids"]))
+      throw new Error(`Response is missing required array field 'ids': ${data}`);
     return new LedgerStateDeltaForTransactionGroup({
-      delta: data["Delta"],
-      ids: data["Ids"]
+      delta: data["delta"],
+      ids: data["ids"]
     });
   }
 }
@@ -17848,33 +17745,6 @@ class PostTransactionsResponse extends BaseModel {
     });
   }
 }
-class ScratchChange extends BaseModel {
-  /**
-   * Creates a new `ScratchChange` object.
-   * @param newValue - Represents an AVM value.
-   * @param slot - The scratch slot written.
-   */
-  constructor({ newValue, slot }) {
-    super();
-    this.newValue = newValue;
-    this.slot = slot;
-    this.attribute_map = {
-      newValue: "new-value",
-      slot: "slot"
-    };
-  }
-  // eslint-disable-next-line camelcase
-  static from_obj_for_encoding(data) {
-    if (typeof data["new-value"] === "undefined")
-      throw new Error(`Response is missing required field 'new-value': ${data}`);
-    if (typeof data["slot"] === "undefined")
-      throw new Error(`Response is missing required field 'slot': ${data}`);
-    return new ScratchChange({
-      newValue: AvmValue.from_obj_for_encoding(data["new-value"]),
-      slot: data["slot"]
-    });
-  }
-}
 class SimulateRequest extends BaseModel {
   /**
    * Creates a new `SimulateRequest` object.
@@ -17882,21 +17752,18 @@ class SimulateRequest extends BaseModel {
    * @param allowEmptySignatures - Allow transactions without signatures to be simulated as if they had correct
    * signatures.
    * @param allowMoreLogging - Lifts limits on log opcode usage during simulation.
-   * @param execTraceConfig - An object that configures simulation execution trace.
    * @param extraOpcodeBudget - Applies extra opcode budget during simulation for each transaction group.
    */
-  constructor({ txnGroups, allowEmptySignatures, allowMoreLogging, execTraceConfig, extraOpcodeBudget }) {
+  constructor({ txnGroups, allowEmptySignatures, allowMoreLogging, extraOpcodeBudget }) {
     super();
     this.txnGroups = txnGroups;
     this.allowEmptySignatures = allowEmptySignatures;
     this.allowMoreLogging = allowMoreLogging;
-    this.execTraceConfig = execTraceConfig;
     this.extraOpcodeBudget = extraOpcodeBudget;
     this.attribute_map = {
       txnGroups: "txn-groups",
       allowEmptySignatures: "allow-empty-signatures",
       allowMoreLogging: "allow-more-logging",
-      execTraceConfig: "exec-trace-config",
       extraOpcodeBudget: "extra-opcode-budget"
     };
   }
@@ -17908,7 +17775,6 @@ class SimulateRequest extends BaseModel {
       txnGroups: data["txn-groups"].map(SimulateRequestTransactionGroup.from_obj_for_encoding),
       allowEmptySignatures: data["allow-empty-signatures"],
       allowMoreLogging: data["allow-more-logging"],
-      execTraceConfig: typeof data["exec-trace-config"] !== "undefined" ? SimulateTraceConfig.from_obj_for_encoding(data["exec-trace-config"]) : void 0,
       extraOpcodeBudget: data["extra-opcode-budget"]
     });
   }
@@ -17944,21 +17810,18 @@ class SimulateResponse extends BaseModel {
    * @param evalOverrides - The set of parameters and limits override during simulation. If this set of
    * parameters is present, then evaluation parameters may differ from standard
    * evaluation in certain ways.
-   * @param execTraceConfig - An object that configures simulation execution trace.
    */
-  constructor({ lastRound, txnGroups, version: version2, evalOverrides, execTraceConfig }) {
+  constructor({ lastRound, txnGroups, version: version2, evalOverrides }) {
     super();
     this.lastRound = lastRound;
     this.txnGroups = txnGroups;
     this.version = version2;
     this.evalOverrides = evalOverrides;
-    this.execTraceConfig = execTraceConfig;
     this.attribute_map = {
       lastRound: "last-round",
       txnGroups: "txn-groups",
       version: "version",
-      evalOverrides: "eval-overrides",
-      execTraceConfig: "exec-trace-config"
+      evalOverrides: "eval-overrides"
     };
   }
   // eslint-disable-next-line camelcase
@@ -17973,37 +17836,7 @@ class SimulateResponse extends BaseModel {
       lastRound: data["last-round"],
       txnGroups: data["txn-groups"].map(SimulateTransactionGroupResult.from_obj_for_encoding),
       version: data["version"],
-      evalOverrides: typeof data["eval-overrides"] !== "undefined" ? SimulationEvalOverrides.from_obj_for_encoding(data["eval-overrides"]) : void 0,
-      execTraceConfig: typeof data["exec-trace-config"] !== "undefined" ? SimulateTraceConfig.from_obj_for_encoding(data["exec-trace-config"]) : void 0
-    });
-  }
-}
-class SimulateTraceConfig extends BaseModel {
-  /**
-   * Creates a new `SimulateTraceConfig` object.
-   * @param enable - A boolean option for opting in execution trace features simulation endpoint.
-   * @param scratchChange - A boolean option enabling returning scratch slot changes together with execution
-   * trace during simulation.
-   * @param stackChange - A boolean option enabling returning stack changes together with execution trace
-   * during simulation.
-   */
-  constructor({ enable, scratchChange, stackChange }) {
-    super();
-    this.enable = enable;
-    this.scratchChange = scratchChange;
-    this.stackChange = stackChange;
-    this.attribute_map = {
-      enable: "enable",
-      scratchChange: "scratch-change",
-      stackChange: "stack-change"
-    };
-  }
-  // eslint-disable-next-line camelcase
-  static from_obj_for_encoding(data) {
-    return new SimulateTraceConfig({
-      enable: data["enable"],
-      scratchChange: data["scratch-change"],
-      stackChange: data["stack-change"]
+      evalOverrides: typeof data["eval-overrides"] !== "undefined" ? SimulationEvalOverrides.from_obj_for_encoding(data["eval-overrides"]) : void 0
     });
   }
 }
@@ -18055,20 +17888,16 @@ class SimulateTransactionResult extends BaseModel {
    * includes confirmation details like the round and reward details.
    * @param appBudgetConsumed - Budget used during execution of an app call transaction. This value includes
    * budged used by inner app calls spawned by this transaction.
-   * @param execTrace - The execution trace of calling an app or a logic sig, containing the inner app
-   * call trace in a recursive way.
    * @param logicSigBudgetConsumed - Budget used during execution of a logic sig transaction.
    */
-  constructor({ txnResult, appBudgetConsumed, execTrace, logicSigBudgetConsumed }) {
+  constructor({ txnResult, appBudgetConsumed, logicSigBudgetConsumed }) {
     super();
     this.txnResult = txnResult;
     this.appBudgetConsumed = appBudgetConsumed;
-    this.execTrace = execTrace;
     this.logicSigBudgetConsumed = logicSigBudgetConsumed;
     this.attribute_map = {
       txnResult: "txn-result",
       appBudgetConsumed: "app-budget-consumed",
-      execTrace: "exec-trace",
       logicSigBudgetConsumed: "logic-sig-budget-consumed"
     };
   }
@@ -18079,7 +17908,6 @@ class SimulateTransactionResult extends BaseModel {
     return new SimulateTransactionResult({
       txnResult: PendingTransactionResponse.from_obj_for_encoding(data["txn-result"]),
       appBudgetConsumed: data["app-budget-consumed"],
-      execTrace: typeof data["exec-trace"] !== "undefined" ? SimulationTransactionExecTrace.from_obj_for_encoding(data["exec-trace"]) : void 0,
       logicSigBudgetConsumed: data["logic-sig-budget-consumed"]
     });
   }
@@ -18113,75 +17941,6 @@ class SimulationEvalOverrides extends BaseModel {
       extraOpcodeBudget: data["extra-opcode-budget"],
       maxLogCalls: data["max-log-calls"],
       maxLogSize: data["max-log-size"]
-    });
-  }
-}
-class SimulationOpcodeTraceUnit extends BaseModel {
-  /**
-   * Creates a new `SimulationOpcodeTraceUnit` object.
-   * @param pc - The program counter of the current opcode being evaluated.
-   * @param scratchChanges - The writes into scratch slots.
-   * @param spawnedInners - The indexes of the traces for inner transactions spawned by this opcode, if any.
-   * @param stackAdditions - The values added by this opcode to the stack.
-   * @param stackPopCount - The number of deleted stack values by this opcode.
-   */
-  constructor({ pc: pc2, scratchChanges, spawnedInners, stackAdditions, stackPopCount }) {
-    super();
-    this.pc = pc2;
-    this.scratchChanges = scratchChanges;
-    this.spawnedInners = spawnedInners;
-    this.stackAdditions = stackAdditions;
-    this.stackPopCount = stackPopCount;
-    this.attribute_map = {
-      pc: "pc",
-      scratchChanges: "scratch-changes",
-      spawnedInners: "spawned-inners",
-      stackAdditions: "stack-additions",
-      stackPopCount: "stack-pop-count"
-    };
-  }
-  // eslint-disable-next-line camelcase
-  static from_obj_for_encoding(data) {
-    if (typeof data["pc"] === "undefined")
-      throw new Error(`Response is missing required field 'pc': ${data}`);
-    return new SimulationOpcodeTraceUnit({
-      pc: data["pc"],
-      scratchChanges: typeof data["scratch-changes"] !== "undefined" ? data["scratch-changes"].map(ScratchChange.from_obj_for_encoding) : void 0,
-      spawnedInners: data["spawned-inners"],
-      stackAdditions: typeof data["stack-additions"] !== "undefined" ? data["stack-additions"].map(AvmValue.from_obj_for_encoding) : void 0,
-      stackPopCount: data["stack-pop-count"]
-    });
-  }
-}
-class SimulationTransactionExecTrace extends BaseModel {
-  /**
-   * Creates a new `SimulationTransactionExecTrace` object.
-   * @param approvalProgramTrace - Program trace that contains a trace of opcode effects in an approval program.
-   * @param clearStateProgramTrace - Program trace that contains a trace of opcode effects in a clear state program.
-   * @param innerTrace - An array of SimulationTransactionExecTrace representing the execution trace of
-   * any inner transactions executed.
-   * @param logicSigTrace - Program trace that contains a trace of opcode effects in a logic sig.
-   */
-  constructor({ approvalProgramTrace, clearStateProgramTrace, innerTrace, logicSigTrace }) {
-    super();
-    this.approvalProgramTrace = approvalProgramTrace;
-    this.clearStateProgramTrace = clearStateProgramTrace;
-    this.innerTrace = innerTrace;
-    this.logicSigTrace = logicSigTrace;
-    this.attribute_map = {
-      approvalProgramTrace: "approval-program-trace",
-      clearStateProgramTrace: "clear-state-program-trace",
-      innerTrace: "inner-trace",
-      logicSigTrace: "logic-sig-trace"
-    };
-  }
-  // eslint-disable-next-line camelcase
-  static from_obj_for_encoding(data) {
-    return new SimulationTransactionExecTrace({
-      approvalProgramTrace: typeof data["approval-program-trace"] !== "undefined" ? data["approval-program-trace"].map(SimulationOpcodeTraceUnit.from_obj_for_encoding) : void 0,
-      clearStateProgramTrace: typeof data["clear-state-program-trace"] !== "undefined" ? data["clear-state-program-trace"].map(SimulationOpcodeTraceUnit.from_obj_for_encoding) : void 0,
-      innerTrace: typeof data["inner-trace"] !== "undefined" ? data["inner-trace"].map(SimulationTransactionExecTrace.from_obj_for_encoding) : void 0,
-      logicSigTrace: typeof data["logic-sig-trace"] !== "undefined" ? data["logic-sig-trace"].map(SimulationOpcodeTraceUnit.from_obj_for_encoding) : void 0
     });
   }
 }
@@ -18361,7 +18120,7 @@ class TransactionGroupLedgerStateDeltasForRoundResponse extends BaseModel {
     super();
     this.deltas = deltas;
     this.attribute_map = {
-      deltas: "Deltas"
+      deltas: "deltas"
     };
   }
   // eslint-disable-next-line camelcase
@@ -18528,7 +18287,6 @@ const types$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   Asset: Asset$1,
   AssetHolding: AssetHolding$1,
   AssetParams: AssetParams$1,
-  AvmValue,
   BlockHashResponse,
   BlockResponse,
   Box: Box$1,
@@ -18554,16 +18312,12 @@ const types$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   PendingTransactionResponse,
   PendingTransactionsResponse,
   PostTransactionsResponse,
-  ScratchChange,
   SimulateRequest,
   SimulateRequestTransactionGroup,
   SimulateResponse,
-  SimulateTraceConfig,
   SimulateTransactionGroupResult,
   SimulateTransactionResult,
   SimulationEvalOverrides,
-  SimulationOpcodeTraceUnit,
-  SimulationTransactionExecTrace,
   StateProof: StateProof$1,
   StateProofMessage,
   SupplyResponse,
@@ -20347,7 +20101,7 @@ class LookupAssetBalances extends JSONRequest {
    * @category query
    */
   currencyGreaterThan(greater) {
-    this.query["currency-greater-than"] = greater.toString();
+    this.query["currency-greater-than"] = greater;
     return this;
   }
   /**
@@ -20699,12 +20453,14 @@ class LookupAccountTransactions extends JSONRequest {
    *        .currencyGreaterThan(minBalance - 1)
    *        .do();
    * ```
+   * @remarks
+   * If you are looking for transactions with the currency amount greater than 0, simply construct the query without `currencyGreaterThan` because it doesn't accept `-1`, and passing the `0` `currency-greater-than` value would exclude transactions with a 0 amount.
    *
    * @param greater
    * @category query
    */
   currencyGreaterThan(greater) {
-    this.query["currency-greater-than"] = greater.toString();
+    this.query["currency-greater-than"] = greater;
     return this;
   }
   /**
@@ -21024,11 +20780,14 @@ class LookupAssetTransactions extends JSONRequest {
    *        .do();
    * ```
    *
+   * @remarks
+   * If you are looking for transactions with the currency amount greater than 0, simply construct the query without `currencyGreaterThan` because it doesn't accept `-1`, and passing the `0` `currency-greater-than` value would exclude transactions with a 0 amount.
+   *
    * @param greater
    * @category query
    */
   currencyGreaterThan(greater) {
-    this.query["currency-greater-than"] = greater.toString();
+    this.query["currency-greater-than"] = greater;
     return this;
   }
   /**
@@ -24698,7 +24457,7 @@ class SearchAccounts extends JSONRequest {
    * @category query
    */
   currencyGreaterThan(greater) {
-    this.query["currency-greater-than"] = greater.toString();
+    this.query["currency-greater-than"] = greater;
     return this;
   }
   /**
@@ -25125,6 +24884,68 @@ class SearchForTransactions extends JSONRequest {
     return this;
   }
   /**
+   * Filtered results should have an amount greater than this value, as int, representing microAlgos, unless an asset-id is provided, in which case units are in the asset's units.
+   *
+   * #### Example 1
+   * ```typescript
+   * const minBalance = 300000;
+   * const txns = await indexerClient
+   *        .searchForTransactions()
+   *        .currencyGreaterThan(minBalance - 1)
+   *        .do();
+   * ```
+   *
+   * #### Example 2
+   * ```typescript
+   * const assetID = 163650;
+   * const minBalance = 300000;
+   * const txns = await indexerClient
+   *        .searchForTransactions()
+   *        .assetID(assetID)
+   *        .currencyGreaterThan(minBalance - 1)
+   *        .do();
+   * ```
+   * @remarks
+   * If you are looking for transactions with the currency amount greater than 0, simply construct the query without `currencyGreaterThan` because it doesn't accept `-1`, and passing the `0` `currency-greater-than` value would exclude transactions with a 0 amount.
+   *
+   * @param greater
+   * @category query
+   */
+  currencyGreaterThan(greater) {
+    this.query["currency-greater-than"] = greater;
+    return this;
+  }
+  /**
+   * Filtered results should have an amount less than this value, as int, representing microAlgos, unless an asset-id is provided, in which case units are in the asset's units.
+   *
+   * #### Example 1
+   * ```typescript
+   * const maxBalance = 500000;
+   * const txns = await indexerClient
+   *        .searchForTransactions()
+   *        .currencyLessThan(maxBalance + 1)
+   *        .do();
+   * ```
+   *
+   * #### Example 2
+   * ```typescript
+   * const assetID = 163650;
+   * const maxBalance = 500000;
+   * const txns = await indexerClient
+   *        .searchForTransactions()
+   *        .assetID(assetID)
+   *        .currencyLessThan(maxBalance + 1)
+   *        .do();
+   * ```
+   *
+   * @param lesser
+   * @category query
+   */
+  currencyLessThan(lesser) {
+    this.query["currency-less-than"] = lesser;
+    return this;
+  }
+  /**
    * Combined with address, defines what address to filter on, as string.
    *
    * #### Example
@@ -25243,66 +25064,6 @@ class SearchForTransactions extends JSONRequest {
    */
   applicationID(applicationID) {
     this.query["application-id"] = applicationID;
-    return this;
-  }
-  /**
-   * Filtered results should have an amount greater than this value, as int, representing microAlgos, unless an asset-id is provided, in which case units are in the asset's units.
-   *
-   * #### Example 1
-   * ```typescript
-   * const minBalance = 300000;
-   * const txns = await indexerClient
-   *        .searchForTransactions()
-   *        .currencyGreaterThan(minBalance - 1)
-   *        .do();
-   * ```
-   *
-   * #### Example 2
-   * ```typescript
-   * const assetID = 163650;
-   * const minBalance = 300000;
-   * const txns = await indexerClient
-   *        .searchForTransactions()
-   *        .assetID(assetID)
-   *        .currencyGreaterThan(minBalance - 1)
-   *        .do();
-   * ```
-   *
-   * @param greater
-   * @category query
-   */
-  currencyGreaterThan(greater) {
-    this.query["currency-greater-than"] = greater.toString();
-    return this;
-  }
-  /**
-   * Filtered results should have an amount less than this value, as int, representing microAlgos, unless an asset-id is provided, in which case units are in the asset's units.
-   *
-   * #### Example 1
-   * ```typescript
-   * const maxBalance = 500000;
-   * const txns = await indexerClient
-   *        .searchForTransactions()
-   *        .currencyLessThan(maxBalance + 1)
-   *        .do();
-   * ```
-   *
-   * #### Example 2
-   * ```typescript
-   * const assetID = 163650;
-   * const maxBalance = 500000;
-   * const txns = await indexerClient
-   *        .searchForTransactions()
-   *        .assetID(assetID)
-   *        .currencyLessThan(maxBalance + 1)
-   *        .do();
-   * ```
-   *
-   * @param lesser
-   * @category query
-   */
-  currencyLessThan(lesser) {
-    this.query["currency-less-than"] = lesser;
     return this;
   }
 }
@@ -31260,12 +31021,14 @@ var Atom = /* @__PURE__ */ function() {
     this.isPendingUnobservation_ = false;
     this.isBeingObserved_ = false;
     this.observers_ = /* @__PURE__ */ new Set();
+    this.batchId_ = void 0;
     this.diffValue_ = 0;
     this.lastAccessedBy_ = 0;
     this.lowestObserverState_ = IDerivationState_.NOT_TRACKING_;
     this.onBOL = void 0;
     this.onBUOL = void 0;
     this.name_ = name_;
+    this.batchId_ = globalState.inBatch ? globalState.batchId : NaN;
   }
   var _proto = Atom2.prototype;
   _proto.onBO = function onBO() {
@@ -31286,9 +31049,12 @@ var Atom = /* @__PURE__ */ function() {
     return reportObserved(this);
   };
   _proto.reportChanged = function reportChanged() {
+    if (!globalState.inBatch || this.batchId_ !== globalState.batchId) {
+      globalState.stateVersion = globalState.stateVersion < Number.MAX_SAFE_INTEGER ? globalState.stateVersion + 1 : Number.MIN_SAFE_INTEGER;
+      this.batchId_ = NaN;
+    }
     startBatch();
     propagateChanged(this);
-    globalState.stateVersion = globalState.stateVersion < Number.MAX_SAFE_INTEGER ? globalState.stateVersion + 1 : Number.MIN_SAFE_INTEGER;
     endBatch();
   };
   _proto.toString = function toString2() {
@@ -31717,7 +31483,9 @@ var observableFactories = {
     return new ObservableSet(initialValues, getEnhancerFromOptions(o), o.name);
   },
   object: function object(props, decorators, options) {
-    return extendObservable(globalState.useProxies === false || (options == null ? void 0 : options.proxy) === false ? asObservableObject({}, options) : asDynamicObservableObject({}, options), props, decorators);
+    return initObservable(function() {
+      return extendObservable(globalState.useProxies === false || (options == null ? void 0 : options.proxy) === false ? asObservableObject({}, options) : asDynamicObservableObject({}, options), props, decorators);
+    });
   },
   ref: /* @__PURE__ */ createDecoratorAnnotation(observableRefAnnotation),
   shallow: /* @__PURE__ */ createDecoratorAnnotation(observableShallowAnnotation),
@@ -32311,6 +32079,7 @@ var MobXGlobals = function MobXGlobals2() {
   this.runId = 0;
   this.mobxGuid = 0;
   this.inBatch = 0;
+  this.batchId = Number.MIN_SAFE_INTEGER;
   this.pendingUnobservations = [];
   this.pendingReactions = [];
   this.isRunningReactions = false;
@@ -32375,6 +32144,9 @@ function queueForUnobservation(observable2) {
   }
 }
 function startBatch() {
+  if (globalState.inBatch === 0) {
+    globalState.batchId = globalState.batchId < Number.MAX_SAFE_INTEGER ? globalState.batchId + 1 : Number.MIN_SAFE_INTEGER;
+  }
   globalState.inBatch++;
 }
 function endBatch() {
@@ -32803,9 +32575,8 @@ function interceptHook(hook, thing, arg2, arg3) {
 }
 function extendObservable(target, properties, annotations, options) {
   var descriptors = getOwnPropertyDescriptors(properties);
-  var adm = asObservableObject(target, options)[$mobx];
-  startBatch();
-  try {
+  initObservable(function() {
+    var adm = asObservableObject(target, options)[$mobx];
     ownKeys(descriptors).forEach(function(key) {
       adm.extend_(
         key,
@@ -32814,9 +32585,7 @@ function extendObservable(target, properties, annotations, options) {
         !annotations ? true : key in annotations ? annotations[key] : true
       );
     });
-  } finally {
-    endBatch();
-  }
+  });
   return target;
 }
 var generatorId = 0;
@@ -33111,19 +32880,16 @@ function notifyListeners(listenable, change) {
   untrackedEnd(prevU);
 }
 function makeObservable(target, annotations, options) {
-  var adm = asObservableObject(target, options)[$mobx];
-  startBatch();
-  try {
+  initObservable(function() {
     var _annotations;
+    var adm = asObservableObject(target, options)[$mobx];
     if (false)
       ;
     (_annotations = annotations) != null ? _annotations : annotations = collectStoredAnnotations(target);
     ownKeys(annotations).forEach(function(key) {
       return adm.make_(key, annotations[key]);
     });
-  } finally {
-    endBatch();
-  }
+  });
   return target;
 }
 var keysSymbol = /* @__PURE__ */ Symbol("mobx-keys");
@@ -33131,16 +32897,15 @@ function makeAutoObservable(target, overrides, options) {
   if (isPlainObject(target)) {
     return extendObservable(target, target, overrides, options);
   }
-  var adm = asObservableObject(target, options)[$mobx];
-  if (!target[keysSymbol]) {
-    var proto = Object.getPrototypeOf(target);
-    var keys = new Set([].concat(ownKeys(target), ownKeys(proto)));
-    keys["delete"]("constructor");
-    keys["delete"]($mobx);
-    addHiddenProp(proto, keysSymbol, keys);
-  }
-  startBatch();
-  try {
+  initObservable(function() {
+    var adm = asObservableObject(target, options)[$mobx];
+    if (!target[keysSymbol]) {
+      var proto = Object.getPrototypeOf(target);
+      var keys = new Set([].concat(ownKeys(target), ownKeys(proto)));
+      keys["delete"]("constructor");
+      keys["delete"]($mobx);
+      addHiddenProp(proto, keysSymbol, keys);
+    }
     target[keysSymbol].forEach(function(key) {
       return adm.make_(
         key,
@@ -33148,9 +32913,7 @@ function makeAutoObservable(target, overrides, options) {
         !overrides ? true : key in overrides ? overrides[key] : true
       );
     });
-  } finally {
-    endBatch();
-  }
+  });
   return target;
 }
 var SPLICE = "splice";
@@ -33430,16 +33193,16 @@ function createObservableArray(initialValues, enhancer, name, owned) {
     owned = false;
   }
   assertProxies();
-  var adm = new ObservableArrayAdministration(name, enhancer, owned, false);
-  addHiddenFinalProp(adm.values_, $mobx, adm);
-  var proxy = new Proxy(adm.values_, arrayTraps);
-  adm.proxy_ = proxy;
-  if (initialValues && initialValues.length) {
-    var prev = allowStateChangesStart(true);
-    adm.spliceWithArray_(0, 0, initialValues);
-    allowStateChangesEnd(prev);
-  }
-  return proxy;
+  return initObservable(function() {
+    var adm = new ObservableArrayAdministration(name, enhancer, owned, false);
+    addHiddenFinalProp(adm.values_, $mobx, adm);
+    var proxy = new Proxy(adm.values_, arrayTraps);
+    adm.proxy_ = proxy;
+    if (initialValues && initialValues.length) {
+      adm.spliceWithArray_(0, 0, initialValues);
+    }
+    return proxy;
+  });
 }
 var arrayExtensions = {
   clear: function clear2() {
@@ -33614,11 +33377,13 @@ var ObservableMap = /* @__PURE__ */ function() {
     if (!isFunction$1(Map)) {
       die(18);
     }
-    this.keysAtom_ = createAtom("ObservableMap.keys()");
-    this.data_ = /* @__PURE__ */ new Map();
-    this.hasMap_ = /* @__PURE__ */ new Map();
-    allowStateChanges(true, function() {
-      _this.merge(initialData);
+    initObservable(function() {
+      _this.keysAtom_ = createAtom(false ? _this.name_ + ".keys()" : "ObservableMap.keys()");
+      _this.data_ = /* @__PURE__ */ new Map();
+      _this.hasMap_ = /* @__PURE__ */ new Map();
+      if (initialData) {
+        _this.merge(initialData);
+      }
     });
   }
   var _proto = ObservableMap2.prototype;
@@ -33936,6 +33701,7 @@ _Symbol$iterator$1 = Symbol.iterator;
 _Symbol$toStringTag$1 = Symbol.toStringTag;
 var ObservableSet = /* @__PURE__ */ function() {
   function ObservableSet2(initialData, enhancer, name_) {
+    var _this = this;
     if (enhancer === void 0) {
       enhancer = deepEnhancer;
     }
@@ -33954,13 +33720,15 @@ var ObservableSet = /* @__PURE__ */ function() {
     if (!isFunction$1(Set)) {
       die(22);
     }
-    this.atom_ = createAtom(this.name_);
     this.enhancer_ = function(newV, oldV) {
       return enhancer(newV, oldV, name_);
     };
-    if (initialData) {
-      this.replace(initialData);
-    }
+    initObservable(function() {
+      _this.atom_ = createAtom(_this.name_);
+      if (initialData) {
+        _this.replace(initialData);
+      }
+    });
   }
   var _proto = ObservableSet2.prototype;
   _proto.dehanceValue_ = function dehanceValue_(value) {
@@ -33970,12 +33738,12 @@ var ObservableSet = /* @__PURE__ */ function() {
     return value;
   };
   _proto.clear = function clear3() {
-    var _this = this;
+    var _this2 = this;
     transaction(function() {
       untracked(function() {
-        for (var _iterator = _createForOfIteratorHelperLoose(_this.data_.values()), _step; !(_step = _iterator()).done; ) {
+        for (var _iterator = _createForOfIteratorHelperLoose(_this2.data_.values()), _step; !(_step = _iterator()).done; ) {
           var value = _step.value;
-          _this["delete"](value);
+          _this2["delete"](value);
         }
       });
     });
@@ -33987,7 +33755,7 @@ var ObservableSet = /* @__PURE__ */ function() {
     }
   };
   _proto.add = function add2(value) {
-    var _this2 = this;
+    var _this3 = this;
     checkIfStateModificationsAreAllowed(this.atom_);
     if (hasInterceptors(this)) {
       var change = interceptChange(this, {
@@ -34001,8 +33769,8 @@ var ObservableSet = /* @__PURE__ */ function() {
     }
     if (!this.has(value)) {
       transaction(function() {
-        _this2.data_.add(_this2.enhancer_(value, void 0));
-        _this2.atom_.reportChanged();
+        _this3.data_.add(_this3.enhancer_(value, void 0));
+        _this3.atom_.reportChanged();
       });
       var notifySpy = false;
       var notify = hasListeners(this);
@@ -34020,7 +33788,7 @@ var ObservableSet = /* @__PURE__ */ function() {
     return this;
   };
   _proto["delete"] = function _delete(value) {
-    var _this3 = this;
+    var _this4 = this;
     if (hasInterceptors(this)) {
       var change = interceptChange(this, {
         type: DELETE,
@@ -34042,8 +33810,8 @@ var ObservableSet = /* @__PURE__ */ function() {
         oldValue: value
       } : null;
       transaction(function() {
-        _this3.atom_.reportChanged();
-        _this3.data_["delete"](value);
+        _this4.atom_.reportChanged();
+        _this4.data_["delete"](value);
       });
       if (notify) {
         notifyListeners(this, _change2);
@@ -34093,20 +33861,20 @@ var ObservableSet = /* @__PURE__ */ function() {
     });
   };
   _proto.replace = function replace2(other) {
-    var _this4 = this;
+    var _this5 = this;
     if (isObservableSet(other)) {
       other = new Set(other);
     }
     transaction(function() {
       if (Array.isArray(other)) {
-        _this4.clear();
+        _this5.clear();
         other.forEach(function(value) {
-          return _this4.add(value);
+          return _this5.add(value);
         });
       } else if (isES6Set(other)) {
-        _this4.clear();
+        _this5.clear();
         other.forEach(function(value) {
-          return _this4.add(value);
+          return _this5.add(value);
         });
       } else if (other !== null && other !== void 0) {
         die("Cannot initialize set from " + other);
@@ -34305,6 +34073,7 @@ var ObservableObjectAdministration = /* @__PURE__ */ function() {
     if (proxyTrap === void 0) {
       proxyTrap = false;
     }
+    checkIfStateModificationsAreAllowed(this.keysAtom_);
     try {
       startBatch();
       var deleteOutcome = this.delete_(key);
@@ -34345,6 +34114,7 @@ var ObservableObjectAdministration = /* @__PURE__ */ function() {
     if (proxyTrap === void 0) {
       proxyTrap = false;
     }
+    checkIfStateModificationsAreAllowed(this.keysAtom_);
     try {
       startBatch();
       var deleteOutcome = this.delete_(key);
@@ -34389,6 +34159,7 @@ var ObservableObjectAdministration = /* @__PURE__ */ function() {
     if (proxyTrap === void 0) {
       proxyTrap = false;
     }
+    checkIfStateModificationsAreAllowed(this.keysAtom_);
     try {
       startBatch();
       var deleteOutcome = this.delete_(key);
@@ -34433,6 +34204,7 @@ var ObservableObjectAdministration = /* @__PURE__ */ function() {
     if (proxyTrap === void 0) {
       proxyTrap = false;
     }
+    checkIfStateModificationsAreAllowed(this.keysAtom_);
     if (!hasProp(this.target_, key)) {
       return true;
     }
@@ -34565,6 +34337,17 @@ function recordAnnotationApplied(adm, annotation, key) {
   (_adm$target_$storedAn = adm.target_[storedAnnotationsSymbol]) == null ? true : delete _adm$target_$storedAn[key];
 }
 var ENTRY_0 = /* @__PURE__ */ createArrayEntryDescriptor(0);
+var safariPrototypeSetterInheritanceBug = /* @__PURE__ */ function() {
+  var v = false;
+  var p2 = {};
+  Object.defineProperty(p2, "0", {
+    set: function set5() {
+      v = true;
+    }
+  });
+  Object.create(p2)["0"] = 1;
+  return v === false;
+}();
 var OBSERVABLE_ARRAY_BUFFER_SIZE = 0;
 var StubArray = function StubArray2() {
 };
@@ -34589,17 +34372,17 @@ var LegacyObservableArray = /* @__PURE__ */ function(_StubArray, _Symbol$toStrin
       owned = false;
     }
     _this = _StubArray.call(this) || this;
-    var adm = new ObservableArrayAdministration(name, enhancer, owned, true);
-    adm.proxy_ = _assertThisInitialized(_this);
-    addHiddenFinalProp(_assertThisInitialized(_this), $mobx, adm);
-    if (initialValues && initialValues.length) {
-      var prev = allowStateChangesStart(true);
-      _this.spliceWithArray(0, 0, initialValues);
-      allowStateChangesEnd(prev);
-    }
-    {
-      Object.defineProperty(_assertThisInitialized(_this), "0", ENTRY_0);
-    }
+    initObservable(function() {
+      var adm = new ObservableArrayAdministration(name, enhancer, owned, true);
+      adm.proxy_ = _assertThisInitialized(_this);
+      addHiddenFinalProp(_assertThisInitialized(_this), $mobx, adm);
+      if (initialValues && initialValues.length) {
+        _this.spliceWithArray(0, 0, initialValues);
+      }
+      if (safariPrototypeSetterInheritanceBug) {
+        Object.defineProperty(_assertThisInitialized(_this), "0", ENTRY_0);
+      }
+    });
     return _this;
   }
   var _proto = LegacyObservableArray2.prototype;
@@ -34751,6 +34534,18 @@ function getDebugName(thing, property) {
     named = getAtom(thing);
   }
   return named.name_;
+}
+function initObservable(cb) {
+  var derivation = untrackedStart();
+  var allowStateChanges2 = allowStateChangesStart(true);
+  startBatch();
+  try {
+    return cb();
+  } finally {
+    endBatch();
+    allowStateChangesEnd(allowStateChanges2);
+    untrackedEnd(derivation);
+  }
 }
 var toString = objectPrototype.toString;
 function deepEqual(a, b2, depth) {
@@ -35969,7 +35764,7 @@ var k = (_b = class extends y {
       else {
         let i, n = { shouldShowSignTxnToast: false };
         i = (e == null ? void 0 : e.config) || n;
-        let r = await __vitePreload(() => import("./index-55ed7fde.js").then((n2) => n2.i), true ? ["./index-55ed7fde.js","./qr-code-styling-f6f991d3.js","./algosdk.min-e4ce2ac1.js","./index-9c89cd5b.js"] : void 0, import.meta.url), a = r.PeraWalletConnect || r.default.PeraWalletConnect;
+        let r = await __vitePreload(() => import("./index-f2512945.js").then((n2) => n2.i), true ? ["./index-f2512945.js","./qr-code-styling-87721598.js","./algosdk.min-e134c54c.js","./index-9c89cd5b.js"] : void 0, import.meta.url), a = r.PeraWalletConnect || r.default.PeraWalletConnect;
         t = new a(i);
       }
       return t = t, new _b({ sdk: t });
@@ -36081,7 +35876,7 @@ var S = (_d = class extends y {
         i = (e == null ? void 0 : e.config) || n;
         let r = await __vitePreload(() => Promise.resolve().then(() => index$1), true ? void 0 : void 0, import.meta.url);
         window.Buffer || (window.Buffer = r.Buffer || r.default.Buffer);
-        let s = (await __vitePreload(() => import("./index-a6945e0f.js").then((n2) => n2.i), true ? [] : void 0, import.meta.url)).default;
+        let s = (await __vitePreload(() => import("./index-35f2ef62.js").then((n2) => n2.i), true ? [] : void 0, import.meta.url)).default;
         t = new s(i);
       }
       return t = t, new _d({ sdk: t });
@@ -36224,7 +36019,7 @@ var b = (_g = class extends y {
       else {
         let i, n = { shouldShowSignTxnToast: false };
         i = (e == null ? void 0 : e.config) || n;
-        let r = await __vitePreload(() => import("./index-9104067b.js").then((n2) => n2.i), true ? ["./index-9104067b.js","./qr-code-styling-f6f991d3.js","./algosdk.min-e4ce2ac1.js","./lottie-6189abf9.js"] : void 0, import.meta.url), a = r.DeflyWalletConnect || r.default.DeflyWalletConnect;
+        let r = await __vitePreload(() => import("./index-4f27b3d8.js").then((n2) => n2.i), true ? ["./index-4f27b3d8.js","./qr-code-styling-87721598.js","./algosdk.min-e134c54c.js","./lottie-b035792e.js"] : void 0, import.meta.url), a = r.DeflyWalletConnect || r.default.DeflyWalletConnect;
         t = new a(i);
       }
       return new _g({ sdk: t });
@@ -47979,7 +47774,7 @@ var Ly = zt((r) => {
       else {
         let i, s = { shouldShowSignTxnToast: false };
         i = (t == null ? void 0 : t.config) || s;
-        let o = await __vitePreload(() => import("./index-c2c9a3c8.js").then((n2) => n2.i), true ? ["./index-c2c9a3c8.js","./qr-code-styling-f6f991d3.js","./algosdk.min-77fc12a3.js","./index-9c89cd5b.js"] : void 0, import.meta.url), c = o.PeraWalletConnect || o.default.PeraWalletConnect;
+        let o = await __vitePreload(() => import("./index-55265d93.js").then((n2) => n2.i), true ? ["./index-55265d93.js","./qr-code-styling-87721598.js","./algosdk.min-94b10098.js","./index-9c89cd5b.js"] : void 0, import.meta.url), c = o.PeraWalletConnect || o.default.PeraWalletConnect;
         n = new c(i);
       }
       return n = n, new Ei({ sdk: n });
@@ -48091,7 +47886,7 @@ var Ly = zt((r) => {
         i = (t == null ? void 0 : t.config) || s;
         let o = await Promise.resolve().then(() => lt(Tt(), 1));
         window.Buffer || (window.Buffer = o.Buffer || o.default.Buffer);
-        let c = (await __vitePreload(() => import("./index-a6945e0f.js").then((n2) => n2.i), true ? [] : void 0, import.meta.url)).default;
+        let c = (await __vitePreload(() => import("./index-35f2ef62.js").then((n2) => n2.i), true ? [] : void 0, import.meta.url)).default;
         n = new c(i);
       }
       return n = n, new Ti({ sdk: n });
@@ -48234,7 +48029,7 @@ var Ly = zt((r) => {
       else {
         let i, s = { shouldShowSignTxnToast: false };
         i = (t == null ? void 0 : t.config) || s;
-        let o = await __vitePreload(() => import("./index-63f3cfb7.js").then((n2) => n2.i), true ? ["./index-63f3cfb7.js","./qr-code-styling-f6f991d3.js","./algosdk.min-77fc12a3.js","./lottie-6189abf9.js"] : void 0, import.meta.url), c = o.DeflyWalletConnect || o.default.DeflyWalletConnect;
+        let o = await __vitePreload(() => import("./index-f2d5bedc.js").then((n2) => n2.i), true ? ["./index-f2d5bedc.js","./qr-code-styling-87721598.js","./algosdk.min-94b10098.js","./lottie-b035792e.js"] : void 0, import.meta.url), c = o.DeflyWalletConnect || o.default.DeflyWalletConnect;
         n = new c(i);
       }
       return new Ni({ sdk: n });
@@ -49270,14 +49065,14 @@ hi-base32/src/base32.js:
    * @license MIT
    *)
 */
-const algonaut = new fl();
-const awState = new H({
+const awState = markRaw(new H({
   storageKey: "state1"
-});
+}));
+const algonaut = new fl();
 const algodClient = new algosdk.Algodv2(
   "",
   "https://testnet-api.algonode.cloud",
-  ""
+  443
 );
 const unsubAcctChange1 = awState.subscribeToAccountChanges(
   (acct) => {
@@ -49287,8 +49082,8 @@ const unsubAcctChange1 = awState.subscribeToAccountChanges(
 const _sfc_main$1 = defineComponent({
   data() {
     return {
-      walletListOpen: false,
       awState,
+      walletListOpen: false,
       selectedAddrFromDropdown: awState.activeAccount
     };
   },
@@ -49372,7 +49167,7 @@ const _sfc_main$1 = defineComponent({
     }
   }
 });
-const Demo_vue_vue_type_style_index_0_scoped_c69686f0_lang = "";
+const Demo_vue_vue_type_style_index_0_scoped_c70210fb_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -49380,7 +49175,7 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _withScopeId = (n) => (pushScopeId("data-v-c69686f0"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-c70210fb"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "auth-test-container" };
 const _hoisted_2 = { style: { "color": "red" } };
 const _hoisted_3 = { key: 0 };
@@ -49479,7 +49274,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }, " sign transaction test (algosdk) ", 8, _hoisted_20)) : createCommentVNode("", true)
   ]);
 }
-const Demo = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-c69686f0"]]);
+const Demo = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["__scopeId", "data-v-c70210fb"]]);
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "App",
   setup(__props) {

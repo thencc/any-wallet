@@ -1,4 +1,4 @@
-import { c as commonjsRequire, r as require$$0 } from "./index-ba02b125.js";
+import { c as commonjsRequire, r as require$$0 } from "./index-76a79632.js";
 var algosdk_min = { exports: {} };
 /*! For license information please see algosdk.min.js.LICENSE.txt */
 (function(module, exports) {
