@@ -2,14 +2,15 @@
 
 
 # @thencc/any-wallet
-is a wallet connection handler for web3 dapps
+a wallet connection handler for web3 dapps
 ![](./any-wallet-screenshot.png)
 
 # [🌐 live-demo](https://thencc.github.io/any-wallet/) | [example dapp source code](https://github.com/thencc/any-wallet/blob/main/example-dapp/src/components/Demo.vue)
 
+🔗 [npm](https://www.npmjs.com/package/@thencc/any-wallet) 🔗 [jsdelivr](https://www.jsdelivr.com/package/npm/@thencc/any-wallet)
 
 ## about
-any-wallet provides a common interface layer between the dapp and the wallet so that dapp developers can treat any connected wallet the same way. any-wallet does not load a wallet's client library until it needs to / when the user starts interacting with that wallet. for optimal user experience across page loads, any-wallet saves the last connected account(s) to localstorage (dont worry, no secrets are saved, just the user's public address and a reference to which wallet they connected with).
+`any-wallet` provides a common interface layer between the dapp and the wallet so that dapp developers can treat any connected wallet the same way. any-wallet does not load a wallet's client library until it needs to / when the user starts interacting with that wallet. for optimal user experience across page loads, any-wallet saves the last connected account(s) to localstorage (dont worry, no secrets are saved, just the user's public address and a reference to which wallet they connected with).
 
 currently supported chains + wallets:
 - algorand
@@ -26,7 +27,9 @@ currently supported chains + wallets:
 
 ### install
 ```bash
-pnpm i @thencc/any-wallet
+npm i @thencc/any-wallet
+# or
+pnpm add @thencc/any-wallet
 ```
 
 ### import + construct
@@ -129,7 +132,13 @@ let accts = await awState.connectWallet('mnemonic', 'uniform eager witness salt 
 
 
 ## vue
-when used with vue, you might need to re-render a component's `<template>` computations if you are displaying information stored in `AnyWalletState` because these deep object changes arent tracked by the vue runtime. for this, there are 2 helpful functions: `subscribeToAccountChanges` and `subscribeToStateChanges` which allow you to define a callback when say the active account changes or when anything in the state tree changes.
+when used with vue, you might need to re-render a component's `<template>` computations if you are displaying information stored in `awState` because these deep object changes arent tracked by the vue runtime. for this, there is the helpful method `subscribeToAccountChanges` which allows you to define a callback when the active account changes.
+
+> Errors in builds have been observed if the entire `awState` is included in a component's `data`
+
+> This note on reactivity applies to most frontend frameworks with components in some way: 
+<br />• `this.requestUpdate()` in `lit`
+<br />• `this.forceUpdate()` in `react`.
 
 ```ts
 import {
@@ -145,19 +154,15 @@ export default defineComponent({
 			() => this.$forceUpdate()
 		);
 
-		// unsubscribe(); // if you wanted to call this at some point the handler would stop getting called
+		// unsubscribe(); // call to stop callbacks
 	},
 });
 ```
-
-> Applies to most frontends with components in some way. `this.requestUpdate()` in `lit` or `this.forceUpdate()` in `react`.
-
 
 
 ## Notes
 - this lib handles txn signing and is supposed to be used in conjuction with a lib that does txn construction + submitting (we recommend `@thencc/algonautjs` though `algosdk` works as well)
 - some wallets (like defly/pera) require that the mobile app is set to the same net (testnet/mainnet) as requested for signing by the dapp
-- ...
 
 
 ## Attributions
