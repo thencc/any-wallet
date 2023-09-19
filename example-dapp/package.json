@@ -14,7 +14,7 @@
 	"dependencies": {
 		"@thencc/algonautjs": "^0.3.70",
 		"@thencc/any-wallet": "^0.2.5",
-		"algosdk": "^2.5.0",
+		"algosdk": "^2.4.0",
 		"vue": "^3.3.4"
 	},
 	"devDependencies": {

@@ -67,27 +67,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, markRaw } from 'vue';
 import {
 	AnyWalletState,
 	WALLET_ID,
 } from '@thencc/any-wallet';
 
+// any-wallet
+const awState = markRaw(new AnyWalletState({
+	storageKey: 'state1',
+}));
+
 // algonautjs - helper lib for constructing + submitting txns
 import { Algonaut } from '@thencc/algonautjs';
 const algonaut = new Algonaut();;
-const awState = new AnyWalletState({
-	storageKey: 'state1',
-});
 
 // algosdk - main algorand sdk
 import algosdk from 'algosdk';
 const algodClient = new algosdk.Algodv2(
 	'', 
 	'https://testnet-api.algonode.cloud', 
-	''
+	443
 );
-
 // https://testnet-api.algonode.cloud
 // https://mainnet-api.algonode.cloud
 
@@ -100,9 +101,8 @@ const unsubAcctChange1 = awState.subscribeToAccountChanges(
 export default defineComponent({
 	data() {
 		return {
-			walletListOpen: false,
-			
 			awState,
+			walletListOpen: false,
 			selectedAddrFromDropdown: awState.activeAccount
 		}
 	},
