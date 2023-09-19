@@ -98,12 +98,13 @@ export const createWallet = <WalClient extends BaseClient = BaseClient>(state: A
 		disconnect = async () => {
 			logger.debug('disconnect', w.id);
 			w.removeAccounts();
-			await w.loadClient();
-			try {
-				await w.unloadClient();
-			} catch (e) {
-				console.warn(e);
-			}
+			// usually removeAccounts is what you want (if you need unloadClient do it yourself)
+			// await w.loadClient();
+			// try {
+			// 	await w.unloadClient();
+			// } catch (e) {
+			// 	console.warn(e);
+			// }
 		}
 		reconnect = async () => {
 			await w.loadClient();
